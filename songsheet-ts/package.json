@@ -1,8 +1,0 @@
-{
-  "name": "SongsheetParser",
-  "version": "1.0.0",
-  "description": "parses .st to HTML or PDF",
-  "author": "Jannes Magnusson",
-  "license": "MIT",
-  "private": true
-}

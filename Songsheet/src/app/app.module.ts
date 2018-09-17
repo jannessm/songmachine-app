@@ -16,6 +16,7 @@ import { ColorComponent } from './components/color/color.component';
 import { IconsComponent } from './components/icons/icons.component';
 
 import { DataService } from './services/data/data.service';
+import { ParserService } from './services/parser/parser.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { DataService } from './services/data/data.service';
     FormsModule
   ],
   providers: [
-    DataService
+    DataService,
+    ParserService
   ],
   bootstrap: [AppComponent]
 })
