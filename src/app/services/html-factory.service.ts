@@ -12,20 +12,16 @@ export class HtmlFactoryService {
   constructor() { }
 
   public highlightText(text:string): string[]{
-    let lines: string[] = [];
-    for(let line of text.split('\n')){
-      let html:string = '<pre class="line-wrapper">';
-      html += this._markdown(line, true)+'</pre>';
-      lines.push(html);
-    }
-    return lines;
-  }
+    return text
+        .split('\n')
+        .map(line =>`<pre class="line-wrapper">${ this._markdown(line, true) }</pre>`);
+   }
 
   public song2html(song:Song): string {
-    const title = song.title ? song.title : '';
-    const artist = song.artist ? song.artist : '';
-    const bpm = song.bpm ? song.bpm : '';
-    const books = song.books ? song.books : [];
+    const title = song.title || '';
+    const artist = song.artist || '';
+    const bpm = song.bpm || '';
+    const books = song.books || [];
 
     let html = '<div class="page">';
 
@@ -101,14 +97,13 @@ export class HtmlFactoryService {
     const arr = str.split('');
 
     // iterate over chars and add styling
-    for(let id = 0; id < arr.length; id++) {
+    arr.forEach((char, id, arr) => {
       let grey, update = false;
-      const char = arr[id];
 
       if (ignoreNext > 0){
         ignoreNext--;
         doNotAdd = false;
-        continue;
+        return;
       }
       
       if(char === '*'){
@@ -167,7 +162,7 @@ export class HtmlFactoryService {
       if(/<(r|g|b)>/gi.test(arr[id-2]+arr[id-1]+char)){
         doNotAdd = false;
       }
-    }
+    })
     return html;
   }
 
