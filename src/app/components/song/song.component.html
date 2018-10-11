@@ -3,7 +3,7 @@
         <mat-card-title>{{ song.title }}</mat-card-title>
         <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
         <div class="mods">
-            <i class="icon">edit</i>
+            <i class="icon" (click)="editSong(song)">edit</i>
             <i class="icon" (click)="emitEditMeta( song )">settings</i>
             <i class="icon" (click)="del( song )">delete</i>
         </div>
