@@ -200,7 +200,8 @@ export class HtmlFactoryService {
         '/': '&#x2F;',
         '`': '&#x60;',
         '=': '&#x3D;',
-        '|': '&#124;'
+        '|': '&#124;',
+        '♮': '&#9838;'
     };
     return entityMap[char] ? entityMap[char] : char;
   }

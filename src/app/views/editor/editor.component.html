@@ -3,6 +3,7 @@
   <button mat-button (click)="performMode()">PerformMode</button>
   <button mat-button (click)="transposeUp()">Transpose Up</button>
   <button mat-button (click)="transposeDown()">Transpose Down</button>
+  <!--button mat-button (click)="addResolveSymbol()">♮</button-->
 </div>
-<app-songsheet-textarea [input]="songIn" (value)="songOut($event)"></app-songsheet-textarea>
+<app-songsheet-textarea [input]="songIn" (value)="songOut($event)" #textfield></app-songsheet-textarea>
 <app-preview [performMode]="false" [song]="songIn"></app-preview>

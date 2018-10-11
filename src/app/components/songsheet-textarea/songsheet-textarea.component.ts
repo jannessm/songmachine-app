@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, HostListener, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 import { ParserService } from '../../services/parser.service';
@@ -20,10 +20,15 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   @Input() input: Song;
   @Output() value: EventEmitter<Song> = new EventEmitter<Song>();
 
+  @ViewChild('textfield') textfield: ElementRef;
+
   song: Song = new Song();
   inputGroup: FormGroup;
   htmlLines: string[] = [];
   doInput = true;
+
+  start: number;
+  end: number;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +61,9 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
   @HostListener('keypress', ['$event.keyCode', '$event.target'])
   autocomplete(keyCode, target) {
+    this.start = target.selectionStart;
+    this.end = target.selectionEnd;
+
     if (keyCode === KEYS.openBracket || keyCode === KEYS.star) {
       const text = target.value;
       const char_pos = target.selectionStart;
@@ -125,5 +133,12 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     for ( ; string.charAt(select_pos + i) === symbol; i++) { }
     return i;
   }
+
+  /*public addResolveSymbol() {
+    const value = this.textfield.nativeElement.value;
+
+    this.textfield.nativeElement.value = value.substr(0, this.start) + '♮' + value.substr(this.end);
+    this.textfield.nativeElement.selectionEnd = this.start;
+  }*/
 
 }

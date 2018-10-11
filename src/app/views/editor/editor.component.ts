@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentRef } from '@angular/core';
 import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { DATABASES } from '../../models/databases';
+import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
 
 @Component({
   selector: 'app-editor',
@@ -10,6 +11,8 @@ import { DATABASES } from '../../models/databases';
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
+
+ @ViewChild(SongsheetTextareaComponent) textfield: SongsheetTextareaComponent;
 
   songIn: Song;
   songId: string;
@@ -49,4 +52,8 @@ export class EditorComponent implements OnInit {
   transposeUp() {}
 
   transposeDown() {}
+
+  addResolveSymbol() {
+    // this.textfield.addResolveSymbol();
+  }
 }
