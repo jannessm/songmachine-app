@@ -10,12 +10,21 @@ export class EditorComponent implements OnInit {
 
   songIn: Song = new Song();
 
-  constructor(){}
+  constructor() {}
 
-  ngOnInit(){}
+  ngOnInit() {}
 
-  songOut(song){
+  songOut(song) {
     this.songIn = song;
   }
 
+  save() {
+
+  }
+
+  performMode() {}
+
+  transposeUp() {}
+
+  transposeDown() {}
 }
