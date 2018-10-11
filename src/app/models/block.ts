@@ -1,4 +1,4 @@
-import { Line } from "./line";
+import { Line } from './line';
 
 /**
  * Block class
@@ -9,11 +9,11 @@ import { Line } from "./line";
  * @property {number} max_diff_annotations - maximum different annotations per repetition
  * @property {number} printed - how often a block is printed
  * */
-export class Block{
+export class Block {
     title: string;
     lines: Line[];
     annotationCells: number;
-    maxLineWidth: number = 0;
+    maxLineWidth = 0;
     maxDiffAnnotationsPerRepition: number;
     printed?: number;
 }

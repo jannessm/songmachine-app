@@ -16,12 +16,12 @@ export class EditorComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService
-  ){}
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.route.params.subscribe(params => {
       const songId = params['songId'];
-      if(songId){
+      if (songId) {
         this.dataService
           .getByKey(DATABASES.songs, songId)
           .then(result => {
@@ -31,7 +31,7 @@ export class EditorComponent implements OnInit {
     });
   }
 
-  songOut(song){
+  songOut(song) {
     this.songIn = song;
   }
 
