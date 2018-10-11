@@ -1,20 +1,34 @@
+const pdf = require('html-pdf');
+const path = require('path');
+
 module.exports = class {
 
   constructor() { }
 
   static run(api) {
-    const Router = require('@marshallofsound/electron-router').Router;
-
     /**
      * Request Body
      * {
-     *     filePath: 'abs path to target file',
-     *     payload: 'html'
+     *     filePath: 'absolute path to target file',
+     *     fileName: 'name for the file',
+     *     payload: 'html',
+     *     metadata: 'pdf create opts'
+     * }
+     *
+     * Response Body
+     * {
+     *     created: 'boolean flag, false on error'
      * }
      */
     api.post('pdf', (request, response) => {
-      console.log(request.uploadData[0].json())
-      response.json({foo: 'bar'})
+      const emptyData = [{ json: () => Object.assign({}) }];
+      const requestPayload = (request.uploadData || emptyData)[0].json();
+
+      pdf.create(requestPayload.payload, requestPayload.metadata).toFile(path.join(requestPayload.filePath, requestPayload.fileName), (err, res) => {
+        response.json({
+          created: !!err
+        });
+      });
     });
 
   }
