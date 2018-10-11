@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild, Renderer2, AfterViewInit, OnChanges, HostListener } from '@angular/core';
 import { Song } from '../../models/song';
 import { HtmlFactoryService } from '../../services/html-factory.service';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-preview',
@@ -11,7 +10,7 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input()
-  preformMode = true;
+  performMode: boolean;
   @Input()
   song: Song;
 
@@ -45,6 +44,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
       this.song = new Song();
     }
     this.html = this.htmlFactory.song2html(this.song);
+    console.log(this.performMode);
   }
 
   ngAfterViewInit() {
