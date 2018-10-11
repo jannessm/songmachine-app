@@ -1,10 +1,12 @@
+import { Block } from "./block";
+
 export class Song {
   id?: string;
   title: string = '';
   artist?: string;
   bpm?: number;
   books?: string[];
-  blocks?: any;
+  blocks: Block[] = [];
   order?: string[];
   annotationCells: number = 0;
   maxLineWidth: number = 0;

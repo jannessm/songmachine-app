@@ -1,5 +1,5 @@
 <div id="wrapper">
-  <div id="highlighted-field" autosize>
+  <div id="highlighted-field">
     <div class="linenumbers"></div>
     <div class="line" *ngFor="let l of htmlLines; let i = index;" attr.data-content="{{i + 1}}" [innerHTML]="l | safe: 'html'"></div>
   </div>

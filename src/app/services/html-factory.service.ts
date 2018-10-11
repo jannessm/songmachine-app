@@ -129,8 +129,10 @@ export class HtmlFactoryService {
         update = true;
         if (colorStack.includes(arr[id+1])){
           colorStack = this._removeColor(arr[id+1], colorStack);
-          html += this._escapeHTML(char)+this._escapeHTML(arr[id+1])+this._escapeHTML(arr[id+2]);
-          doNotAdd = true;
+          if(editorParsing){
+            html += this._escapeHTML(char)+this._escapeHTML(arr[id+1])+this._escapeHTML(arr[id+2]);
+            doNotAdd = true;
+          }
         }else{
           colorStack.push(arr[id+1]);
         }
@@ -203,6 +205,7 @@ export class HtmlFactoryService {
     return `<style>
       .page {
         width: 595.3pt;
+        min-height: 841.9pt;
         background: white;
         font-family: 'RobotoMono', monospace;
         font-size: 10pt;

@@ -1,8 +1,9 @@
 @import '../../../assets/fonts.scss';
 @import '../../../assets/colors.scss';
 
-.editField{
+app-songsheet-textarea, app-preview{
   display: inline-block;
-  height: calc(100% - 100px);
-  width: 50%;
+  height: calc(100%);
+  width: 49.8%;
+  vertical-align: top;
 }

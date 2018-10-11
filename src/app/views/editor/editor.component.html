@@ -1,2 +1,2 @@
-<app-songsheet-textarea class="editField"></app-songsheet-textarea>
-<app-preview></app-preview>
+<app-songsheet-textarea (value)="songOut($event)"></app-songsheet-textarea>
+<app-preview preformMode="false" [song]="songIn"></app-preview>

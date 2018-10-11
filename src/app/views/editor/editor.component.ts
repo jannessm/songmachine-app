@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Song } from '../../models/song';
 
 @Component({
   selector: 'app-editor',
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditorComponent implements OnInit {
 
+  songIn: Song = new Song();
+
   constructor(){}
 
   ngOnInit(){}
+
+  songOut(song){
+    this.songIn = song;
+  }
 
 }

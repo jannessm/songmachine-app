@@ -1,6 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
+import { ParserService } from '../../services/parser.service';
+import { Song } from '../../models/song';
 
 const enum KEYS{
   openBracket = 91,
@@ -15,10 +17,16 @@ const enum KEYS{
 })
 export class SongsheetTextareaComponent implements OnInit {
 
+  @Output() value: EventEmitter<Song> = new EventEmitter<Song>();
+
   inputGroup: FormGroup;
   htmlLines:string[] = [];
 
-  constructor(private fb: FormBuilder, private htmlFactory: HtmlFactoryService) {
+  constructor(
+    private fb: FormBuilder, 
+    private htmlFactory: HtmlFactoryService, 
+    private parser: ParserService
+  ) {
     this.inputGroup = this.fb.group({
       'inputControl': [null]
     });
@@ -27,6 +35,7 @@ export class SongsheetTextareaComponent implements OnInit {
   ngOnInit() {
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
       this._update(v);
+      this.value.emit(this.parser.str2Obj(v));
     });
     this._update('');
   }
