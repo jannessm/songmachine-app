@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Song } from '../../models/song';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { DATABASES } from '../../models/databases';
 
@@ -12,11 +12,12 @@ import { DATABASES } from '../../models/databases';
 export class EditorComponent implements OnInit {
 
   songIn: Song;
-
+  songId: string;
 
   constructor(
     private route: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -27,6 +28,7 @@ export class EditorComponent implements OnInit {
           .getByKey(DATABASES.songs, songId)
           .then(result => {
             this.songIn = <Song>result;
+            this.songId = songId;
         });
       }
     });
@@ -40,7 +42,9 @@ export class EditorComponent implements OnInit {
 
   }
 
-  performMode() {}
+  performMode() {
+    this.router.navigateByUrl('perform/' + this.songId);
+  }
 
   transposeUp() {}
 

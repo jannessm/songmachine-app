@@ -4,5 +4,5 @@
   <button mat-button (click)="transposeUp()">Transpose Up</button>
   <button mat-button (click)="transposeDown()">Transpose Down</button>
 </div>
-<app-songsheet-textarea (value)="songOut($event)"></app-songsheet-textarea>
+<app-songsheet-textarea [input]="songIn" (value)="songOut($event)"></app-songsheet-textarea>
 <app-preview preformMode="false" [song]="songIn"></app-preview>
