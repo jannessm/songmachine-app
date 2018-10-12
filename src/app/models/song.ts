@@ -16,16 +16,16 @@ export class Song {
     if (typeof song === 'string') {
       this.title = song;
     } else if (song) {
-      this.id = song.id || undefined;
+      this.id = song.id;
       this.title = song.title || '';
-      this.artist = song.artist || undefined;
-      this.bpm = song.bpm || undefined;
+      this.artist = song.artist;
+      this.bpm = song.bpm;
       this.books = song.books || [];
       this.blocks = song.blocks || [];
       this.order = song.order ||  [];
       this.annotationCells = song.annotationCells || 0;
       this.maxLineWidth = song.maxLineWidth || 0;
-      this.preview = song.preview || undefined;
+      this.preview = song.preview;
     }
   }
 }

@@ -37,7 +37,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
-        this._update(v);
+        this.update(v);
         this.song = this.parser.str2Obj(v);
         this.value.emit(this.song);
     });
@@ -50,7 +50,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     }
   }
 
-  private _update(inputText: string) {
+  private update(inputText: string) {
     this.htmlLines = this.htmlFactory.highlightText(inputText);
   }
 
@@ -63,12 +63,12 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
       switch (keyCode) {
         case KEYS.openBracket:
-          if (text.substr(char_pos, 1) !== ']' || this._count_before(text, '[', char_pos) === this._count_after(text, ']', char_pos)) {
+          if (text.substr(char_pos, 1) !== ']' || this.countBefore(text, '[', char_pos) === this.countAfter(text, ']', char_pos)) {
             insert = ']';
           }
           break;
         case KEYS.star:
-          if (text.substr(char_pos, 1) !== '*' || this._count_before(text, '*', char_pos) === this._count_after(text, '*', char_pos)) {
+          if (text.substr(char_pos, 1) !== '*' || this.countBefore(text, '*', char_pos) === this.countAfter(text, '*', char_pos)) {
             insert = '*';
           }
           break;
@@ -115,12 +115,12 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     }
 }
 
-  private _count_before(string, symbol, select_pos) {
+  private countBefore(string, symbol, select_pos) {
     let i = 0;
     for ( ; string.charAt(select_pos - i - 1) === symbol; i++) { }
     return i;
   }
-  private _count_after(string, symbol, select_pos) {
+  private countAfter(string, symbol, select_pos) {
     let i = 0;
     for ( ; string.charAt(select_pos + i) === symbol; i++) { }
     return i;

@@ -19,7 +19,7 @@ export class HtmlFactoryService {
   public highlightText(text: string): string[] {
     return text
         .split('\n')
-        .map(line => `<pre class="line-wrapper">${ this._markdown(line, true) }</pre>`);
+        .map(line => `<pre class="line-wrapper">${ this.markdown(line, true) }</pre>`);
    }
 
   public song2html(song: Song): string {
@@ -52,21 +52,21 @@ export class HtmlFactoryService {
 
     if (!song.order && song.blocks) {
       for (const b of song.blocks) {
-        html += this._block2html(b, song.annotationCells, song.maxLineWidth);
+        html += this.blockToHTML(b, song.annotationCells, song.maxLineWidth);
       }
     } else if (song.blocks) {
       for (const b of song.order) {
         const block = song.blocks.find(elem => {
           return elem.title === b;
         });
-        html += this._block2html(block, song.annotationCells, song.maxLineWidth);
+        html += this.blockToHTML(block, song.annotationCells, song.maxLineWidth);
       }
     }
 
-    return html + '</div>' + this._style();
+    return html + '</div>' + this.style();
   }
 
-  private _block2html(block: Block, cells: number, maxLineWidth: number): string {
+  private blockToHTML(block: Block, cells: number, maxLineWidth: number): string {
     if (!block) {
       return '';
     }
@@ -77,30 +77,30 @@ export class HtmlFactoryService {
     for (const l of block.lines) {
       html += `<tr>
         <td style="width: ${maxLineWidth * 6.5}pt">
-          <pre>${this._markdown(l.lyrics.topLine)}</pre>
+          <pre>${this.markdown(l.lyrics.topLine)}</pre>
         </td>
-        ${this._extendMissingCells(0, cells)}
+        ${this.extendMissingCells(0, cells)}
       </tr>
       <tr>
         <td style="width: ${maxLineWidth * 6.5}pt">
-          <pre>${this._markdown(l.lyrics.bottomLine)}</pre>
+          <pre>${this.markdown(l.lyrics.bottomLine)}</pre>
         </td>`;
 
       let c = 0;
       for (const ann of l.annotations) {
         const id = ann.length > 1 ? l.printed : 0;
-        html += `<td class="annotation_border"><pre>${this._markdown(ann[id])}</pre></td>`;
+        html += `<td class="annotation_border"><pre>${this.markdown(ann[id])}</pre></td>`;
         l.printed++;
         c++;
       }
-      html += this._extendMissingCells(c, cells);
+      html += this.extendMissingCells(c, cells);
       html += '</tr>';
     }
 
     return html + '</table></div>';
   }
 
-  private _extendMissingCells(c: number, cells: number): string {
+  private extendMissingCells(c: number, cells: number): string {
     let html = '';
     while (c <= cells) {
       html += '<td class="annotation_border"></td>';
@@ -109,7 +109,7 @@ export class HtmlFactoryService {
     return html;
   }
 
-  private _markdown(str: string, editorParsing: boolean = false): string {
+  private markdown(str: string, editorParsing: boolean = false): string {
     if (!str) {
       return '';
     }
@@ -120,7 +120,7 @@ export class HtmlFactoryService {
     const arr = str.split('');
 
     // iterate over chars and add styling
-    arr.forEach((char, id, a) => {
+    arr.forEach((char, id) => {
       let grey, update = false;
 
       if (ignoreNext > 0) {
@@ -152,9 +152,9 @@ export class HtmlFactoryService {
       } else if (id + 2 < arr.length && /<(r|g|b)>/gi.test(char + arr[id + 1] + arr[id + 2])) {
         update = true;
         if (colorStack.includes(arr[id + 1])) {
-          colorStack = this._removeColor(arr[id + 1], colorStack);
+          colorStack = this.removeColor(arr[id + 1], colorStack);
           if (editorParsing) {
-            html += this._escapeHTML(char) + this._escapeHTML(arr[id + 1]) + this._escapeHTML(arr[id + 2]);
+            html += this.escapeHTML(char) + this.escapeHTML(arr[id + 1]) + this.escapeHTML(arr[id + 2]);
             doNotAdd = true;
           }
         } else {
@@ -176,11 +176,11 @@ export class HtmlFactoryService {
       // update
       if (update) {
         const closingTag = firstStarted ? '</pre>' : '';
-        const letter = editorParsing && !doNotAdd ? this._escapeHTML(char) : '';
-        html += closingTag + '<pre class="' + this._getMarkdownClasses(bold, italic, colorStack, grey, orange) + '">' + letter;
+        const letter = editorParsing && !doNotAdd ? this.escapeHTML(char) : '';
+        html += closingTag + '<pre class="' + this.getMarkdownClasses(bold, italic, colorStack, grey, orange) + '">' + letter;
         firstStarted = true;
       } else if (!doNotAdd) {
-        html += this._escapeHTML(char);
+        html += this.escapeHTML(char);
       }
 
       if (/<(r|g|b)>/gi.test(arr[id - 2] + arr[id - 1] + char)) {
@@ -190,7 +190,7 @@ export class HtmlFactoryService {
     return html;
   }
 
-  private _escapeHTML(char: string): string {
+  private escapeHTML(char: string): string {
     const entityMap = {
         '&': '&amp;',
         '<': '&lt;',
@@ -205,13 +205,11 @@ export class HtmlFactoryService {
     return entityMap[char] ? entityMap[char] : char;
   }
 
-  private _removeColor(color, arr) {
-    return arr.filter(val => {
-      return val !== color;
-    });
+  private removeColor(color, arr) {
+    return arr.filter(val => val !== color);
   }
 
-  private _getMarkdownClasses(
+  private getMarkdownClasses(
     bold: boolean,
     italic: boolean,
     colorStack: string[],
@@ -231,7 +229,7 @@ export class HtmlFactoryService {
     return [b, i, color, g, o].join(' ');
   }
 
-  private _style(): string {
+  private style(): string {
     return `<style>
       .page {
         width: 595.3pt;
