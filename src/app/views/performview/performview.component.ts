@@ -12,6 +12,7 @@ import { Song } from '../../models/song';
 export class PerformviewComponent implements OnInit {
 
   songs: Song[] = [];
+  activeSong = 0;
 
   constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
@@ -36,6 +37,23 @@ export class PerformviewComponent implements OnInit {
           this.songs.push(<Song>result);
       });
     }
+  }
+
+  private increaseActiveSong() {
+    setTimeout(() => {
+      this.activeSong++;
+      this.activeSong = this.activeSong % this.songs.length;
+    }, 2);
+  }
+
+  private decreaseActiveSong() {
+    setTimeout(() => {
+      this.activeSong--;
+      this.activeSong = this.activeSong % this.songs.length;
+      if (this.activeSong < 0) {
+        this.activeSong += this.songs.length;
+      }
+    }, 2);
   }
 
 }

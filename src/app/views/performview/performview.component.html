@@ -1,1 +1,12 @@
-<app-preview *ngFor="let song of songs" [performMode]="true" [song]="song"></app-preview>
+<app-preview 
+  *ngFor="let song of songs; let i = index" 
+  [performMode]="true" 
+  [song]="song" 
+  [scrollIsActive]="i === activeSong"
+  (scrolledToTop)="decreaseActiveSong()"
+  (scrolledToBottom)="increaseActiveSong()"
+  [class.left]="i+1 === activeSong"
+  [class.center]="i === activeSong"
+  [class.right]="i-1 === activeSong"
+>
+</app-preview>
