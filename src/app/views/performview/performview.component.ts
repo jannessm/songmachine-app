@@ -11,21 +11,31 @@ import { Song } from '../../models/song';
 })
 export class PerformviewComponent implements OnInit {
 
-  song: Song;
+  songs: Song[] = [];
 
   constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       const songId = params['songId'];
-      if (songId) {
-        this.dataService
-          .getByKey(DATABASES.songs, songId)
-          .then(result => {
-            this.song = <Song>result;
+      if (/_/g.test(songId)) {
+        songId.split('_').forEach(element => {
+          this.loadSong(element);
         });
+      } else {
+        this.loadSong(songId);
       }
     });
+  }
+
+  private loadSong(id) {
+    if (id) {
+      this.dataService
+        .getByKey(DATABASES.songs, id)
+        .then(result => {
+          this.songs.push(<Song>result);
+      });
+    }
   }
 
 }

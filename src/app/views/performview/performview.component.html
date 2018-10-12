@@ -1,1 +1,1 @@
-<app-preview [performMode]="true" [song]="song"></app-preview>
+<app-preview *ngFor="let song of songs" [performMode]="true" [song]="song"></app-preview>
