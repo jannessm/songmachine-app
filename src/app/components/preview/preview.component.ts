@@ -42,9 +42,8 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   constructor(private htmlFactory: HtmlFactoryService, private renderer: Renderer2) {}
 
   ngOnInit() {
-    if (!this.song) {
-      this.song = new Song();
-    }
+    this.song = this.song || new Song();
+
     this.html = this.htmlFactory.song2html(this.song);
     console.log(this.performMode);
   }
