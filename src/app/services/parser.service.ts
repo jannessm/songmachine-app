@@ -246,13 +246,10 @@ export class ParserService {
   }
 
   private joinAnnotations(line: Line): string {
-    const annotations = [];
-
-    for (const anno of line.annotations) {
-      annotations.push(anno.join('; '));
-    }
-
-    return ' | ' + annotations.join('| ');
+    return ' | ' +
+      line.annotations
+        .map(value => value.join('; '))
+        .join('| ');
   }
 
   private resetRegex() {
