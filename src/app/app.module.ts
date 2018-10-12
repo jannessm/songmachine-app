@@ -19,6 +19,7 @@ import { SongsheetTextareaComponent } from './components/songsheet-textarea/song
 import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
+import { PerformviewComponent } from './views/performview/performview.component';
 import { IconsComponent } from './views/icons/icons.component';
 import { ColorComponent } from './views/color/color.component';
 
@@ -42,7 +43,8 @@ import { ConnectivityModule } from './connectivity/connectivity.module';
     IconsComponent,
     SafePipe,
     PreviewComponent,
-    SongsheetTextareaComponent
+    SongsheetTextareaComponent,
+    PerformviewComponent
   ],
   imports: [
     ConnectivityModule,

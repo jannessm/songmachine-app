@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentRef } from '@angular/core';
 import { Song } from '../../models/song';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { DATABASES } from '../../models/databases';
+import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
 
 @Component({
   selector: 'app-editor',
@@ -11,11 +12,15 @@ import { DATABASES } from '../../models/databases';
 })
 export class EditorComponent implements OnInit {
 
+ @ViewChild(SongsheetTextareaComponent) textfield: SongsheetTextareaComponent;
+
   songIn: Song;
+  songId: string;
 
   constructor(
     private route: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -26,6 +31,7 @@ export class EditorComponent implements OnInit {
           .getByKey(DATABASES.songs, songId)
           .then(result => {
             this.songIn = <Song>result;
+            this.songId = songId;
         });
       }
     });
@@ -35,8 +41,19 @@ export class EditorComponent implements OnInit {
     this.songIn = song;
   }
 
-  songOut(song){
-    this.songIn = song;
+  save() {
+
   }
 
+  performMode() {
+    this.router.navigateByUrl('perform/' + this.songId);
+  }
+
+  transposeUp() {}
+
+  transposeDown() {}
+
+  addResolveSymbol() {
+    // this.textfield.addResolveSymbol();
+  }
 }

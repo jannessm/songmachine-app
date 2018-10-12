@@ -6,6 +6,7 @@ import {EditorComponent} from './views/editor/editor.component';
 import {SettingsComponent} from './views/settings/settings.component';
 import { ColorComponent } from './views/color/color.component';
 import { IconsComponent } from './views/icons/icons.component';
+import { PerformviewComponent } from './views/performview/performview.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent
+  },
+  {
+    path: 'perform/:songId',
+    component: PerformviewComponent
   },
   {
     path: 'colors',

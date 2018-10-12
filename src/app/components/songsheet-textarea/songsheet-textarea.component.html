@@ -4,6 +4,6 @@
     <div class="line" *ngFor="let l of htmlLines; let i = index;" attr.data-content="{{i + 1}}" [innerHTML]="l | safe: 'html'"></div>
   </div>
   <form [formGroup]="inputGroup">
-    <textarea id="edit-field" autosize formControlName="inputControl" wrap="hard"></textarea>
+    <textarea id="edit-field" autosize formControlName="inputControl" wrap="hard" #textfield></textarea>
   </form>
 </div>
