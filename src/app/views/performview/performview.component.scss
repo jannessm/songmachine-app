@@ -19,12 +19,18 @@ app-preview{
   left: 100%;
 }
 
+.counter{
+  position: absolute;
+  top: 20px;
+  right: 2%;
+  font-size: 2em;
+}
+
 .prev-button, .next-button{
   position: absolute;
   top: 50%;
   background-color: $blue;
 }
-
 .prev-button{
   left: 1%;
 }
