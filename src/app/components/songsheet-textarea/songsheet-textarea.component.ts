@@ -1,10 +1,10 @@
-import { Component, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, HostListener, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 import { ParserService } from '../../services/parser.service';
 import { Song } from '../../models/song';
 
-const enum KEYS{
+const enum KEYS {
   openBracket = 91,
   backspace = 8,
   star = 42
@@ -15,16 +15,19 @@ const enum KEYS{
   templateUrl: './songsheet-textarea.component.html',
   styleUrls: ['./songsheet-textarea.component.scss']
 })
-export class SongsheetTextareaComponent implements OnInit {
+export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
+  @Input() input: Song;
   @Output() value: EventEmitter<Song> = new EventEmitter<Song>();
 
+  song: Song = new Song();
   inputGroup: FormGroup;
-  htmlLines:string[] = [];
+  htmlLines: string[] = [];
+  doInput = true;
 
   constructor(
-    private fb: FormBuilder, 
-    private htmlFactory: HtmlFactoryService, 
+    private fb: FormBuilder,
+    private htmlFactory: HtmlFactoryService,
     private parser: ParserService
   ) {
     this.inputGroup = this.fb.group({
@@ -34,34 +37,43 @@ export class SongsheetTextareaComponent implements OnInit {
 
   ngOnInit() {
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
-      this._update(v);
-      this.value.emit(this.parser.str2Obj(v));
+        this.update(v);
+        this.song = this.parser.str2Obj(v);
+        this.value.emit(this.song);
     });
-    this._update('');
+  }
+  ngOnChanges() {
+    if (this.input && this.doInput) {
+      this.song = this.input;
+      this.inputGroup.get('inputControl').setValue(this.parser.obj2Str(this.song));
+      this.doInput = false;
+    }
   }
 
-  private _update(inputText:string){
+  private update(inputText: string) {
     this.htmlLines = this.htmlFactory.highlightText(inputText);
   }
 
   @HostListener('keypress', ['$event.keyCode', '$event.target'])
-  autocomplete(keyCode, target){
-    if(keyCode === KEYS.openBracket || keyCode === KEYS.star){
-      let text = target.value;
-      let char_pos = target.selectionStart;
+  autocomplete(keyCode, target) {
+    if (keyCode === KEYS.openBracket || keyCode === KEYS.star) {
+      const text = target.value;
+      const char_pos = target.selectionStart;
       let insert = '';
-    
-      switch(keyCode){
+
+      switch (keyCode) {
         case KEYS.openBracket:
-          if (text.substr(char_pos,1) !== ']' || this._count_before(text, '[', char_pos) === this._count_after(text, ']', char_pos))
+          if (text.substr(char_pos, 1) !== ']' || this.countBefore(text, '[', char_pos) === this.countAfter(text, ']', char_pos)) {
             insert = ']';
+          }
           break;
         case KEYS.star:
-          if (text.substr(char_pos,1) !== '*' || this._count_before(text, '*', char_pos) === this._count_after(text, '*', char_pos))
+          if (text.substr(char_pos, 1) !== '*' || this.countBefore(text, '*', char_pos) === this.countAfter(text, '*', char_pos)) {
             insert = '*';
+          }
           break;
       }
-    
+
       target.value = text.substr(0, char_pos) + insert + text.substr(char_pos);
       target.selectionStart = char_pos;
       target.selectionEnd = char_pos;
@@ -69,31 +81,33 @@ export class SongsheetTextareaComponent implements OnInit {
   }
 
   @HostListener('keydown', ['$event.keyCode', '$event.target'])
-  backspace(keyCode, target){
-    if(keyCode !== KEYS.backspace){
+  backspace(keyCode, target) {
+    if (keyCode !== KEYS.backspace) {
       return;
     }
 
-    let text = target.value;
-    let char_pos = target.selectionStart;
+    const text = target.value;
+    const char_pos = target.selectionStart;
 
     // if backspace was pressed delete '[' or '*' if they are doubled like and space is in between [|] or *|*
-    if (target.selectionStart === target.selectionEnd){
+    if (target.selectionStart === target.selectionEnd) {
 
       let remove = 0;
 
-      switch(text.charAt(char_pos - 1)){
+      switch (text.charAt(char_pos - 1)) {
         case '[':
-          if (text.charAt(char_pos) === ']')
+          if (text.charAt(char_pos) === ']') {
             remove = 1;
+          }
           break;
         case '*':
-          if (text.charAt(char_pos) === '*')
+          if (text.charAt(char_pos) === '*') {
             remove = 1;
+          }
           break;
       }
 
-      target.value = text.substr(0, char_pos) + text.substr(char_pos+remove);
+      target.value = text.substr(0, char_pos) + text.substr(char_pos + remove);
       target.selectionStart = char_pos;
       target.selectionEnd = char_pos;
 
@@ -101,14 +115,14 @@ export class SongsheetTextareaComponent implements OnInit {
     }
 }
 
-  private _count_before(string, symbol, select_pos){
+  private countBefore(string, symbol, select_pos) {
     let i = 0;
-    for( ; string.charAt(select_pos - i - 1) === symbol; i++){ }
+    for ( ; string.charAt(select_pos - i - 1) === symbol; i++) { }
     return i;
   }
-  private _count_after(string, symbol, select_pos){
+  private countAfter(string, symbol, select_pos) {
     let i = 0;
-    for( ; string.charAt(select_pos + i) === symbol; i++){ }
+    for ( ; string.charAt(select_pos + i) === symbol; i++) { }
     return i;
   }
 

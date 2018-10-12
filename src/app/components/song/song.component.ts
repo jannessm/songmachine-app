@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Song } from '../../models/song';
 import { DataService } from '../../services/data.service';
 import { DATABASES } from '../../models/databases';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-song',
@@ -15,10 +16,14 @@ export class SongComponent implements OnInit {
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
     console.log(this.song);
+  }
+
+  editSong(song:Song){
+    this.router.navigateByUrl('/editor/'+song.id);
   }
 
   emitEditMeta(song){

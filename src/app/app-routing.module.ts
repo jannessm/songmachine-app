@@ -22,6 +22,10 @@ const routes: Routes = [
     component: EditorComponent
   },
   {
+    path: 'editor/:songId',
+    component: EditorComponent
+  },
+  {
     path: 'settings',
     component: SettingsComponent
   },
