@@ -27,6 +27,7 @@ import { ParserService } from './services/parser.service';
 import { HtmlFactoryService } from './services/html-factory.service';
 
 import { SafePipe } from './pipes/safe.pipe';
+import { ConnectivityModule } from './connectivity/connectivity.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SafePipe } from './pipes/safe.pipe';
     SongsheetTextareaComponent
   ],
   imports: [
+    ConnectivityModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,

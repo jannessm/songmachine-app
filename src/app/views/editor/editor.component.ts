@@ -35,4 +35,8 @@ export class EditorComponent implements OnInit {
     this.songIn = song;
   }
 
+  songOut(song){
+    this.songIn = song;
+  }
+
 }
