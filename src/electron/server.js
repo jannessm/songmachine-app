@@ -2,7 +2,6 @@ const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
 
-
 module.exports = class {
 
   static run(api) {
@@ -49,7 +48,7 @@ module.exports = class {
     /**
      * Request Body
      * {
-     *     directoryPath: 'absolute path to directory
+     *     path: 'absolute path to directory
      * }
      *
      * Response Body Payload
@@ -57,10 +56,10 @@ module.exports = class {
      */
     api.post('index', (request, response) => {
       const payload = (request.uploadData || emptyData)[0].json();
-      if(payload.directoryPath) {
+      if(payload.path) {
         try {
           const songLinks = fileManager
-            .readDir(payload.directoryPath)
+            .readDir(payload.path)
             .listAllSongFiles();
           response.json({
             status: 200,
@@ -82,6 +81,35 @@ module.exports = class {
         });
       }
     });
-  }
 
+    /**
+     * Request Body
+     * {
+     *     path: absolute path to the file
+     *     payload: to be saved data
+     * }
+     *
+     * No response payload. statuses
+     * 201,
+     * 400 on not saved because assumed your input data was wrong
+     */
+    api.post('file', (request, response) => {
+      const payload = (request.uploadData || emptyData)[0].json();
+      fileManager.writeFile(payload.filePath, payload.payload, (err) => {
+        if(err) {
+            response.json({
+              status: 400,
+              statusMessage: ['Could not create file', err.stack].join('\n See information: ')
+            });
+        }
+        else {
+          response.json({
+            status: 201,
+            statusMessage: 'Wrote file',
+            payload: {}
+          });
+        }
+      });
+    });
+  }
 };
