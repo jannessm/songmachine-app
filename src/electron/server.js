@@ -111,5 +111,28 @@ module.exports = class {
         }
       });
     });
+
+    /**
+     * Request Body
+     * {
+     *     path: absolute path to the file
+     * }
+     * No response payload. statuses
+     * 200,
+     * 400 on not saved because assumed your input data was wrong,
+     * 404 on not existing file
+     */
+    api.delete('file', (request, response) => {
+      const payload = (request.uploadData || emptyData)[0].json();
+      try {
+        fileManager.deleteFile(payload.path)
+      } catch(err) {
+        response.json({
+          status: 404,
+          statusMessage: err.stack,
+          payload: {}
+        });
+      }
+    });
   }
 };
