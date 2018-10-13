@@ -1,4 +1,14 @@
-import { Component, Input, OnInit, ViewChild, Renderer2, AfterViewInit, OnChanges, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  Renderer2,
+  AfterViewInit,
+  OnChanges,
+  HostListener,
+  EventEmitter,
+  Output } from '@angular/core';
 import { Song } from '../../models/song';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 
@@ -13,16 +23,22 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   performMode: boolean;
   @Input()
   song: Song;
+  @Input()
+  scrollIsActive: boolean;
+
+  @Output() scrolledToTop = new EventEmitter<void>();
+  @Output() scrolledToBottom = new EventEmitter<void>();
 
   @ViewChild('wrapper') wrapperElem;
 
   html = '';
 
+
   private zoom = 1;
 
   @HostListener('window:keyup', ['$event', '$event.keyCode'])
   scroll(e, code) {
-    if (this.performMode) {
+    if (this.performMode && this.scrollIsActive) {
       e.preventDefault();
       switch (code) {
         case 13:
@@ -59,12 +75,25 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   scrollUp() {
-    const height = this.wrapperElem.nativeElement.offsetHeight * 0.75;
-    this.wrapperElem.nativeElement.scrollBy({top: -height, behavior: 'smooth'});
+    const nativeElem = this.wrapperElem.nativeElement;
+    if (nativeElem.scrollTop === 0) {
+      this.scrolledToTop.emit();
+      nativeElem.scroll({top: 0, behavior: 'smooth'});
+    } else {
+      const height = nativeElem.offsetHeight * 0.75;
+      nativeElem.scrollBy({top: -height, behavior: 'smooth'});
+    }
   }
 
   scrollDown() {
-    const height = this.wrapperElem.nativeElement.offsetHeight * 0.75;
-    this.wrapperElem.nativeElement.scrollBy({top: height, behavior: 'smooth'});
+    const nativeElem = this.wrapperElem.nativeElement;
+    if (nativeElem.scrollTop >=
+      nativeElem.scrollHeight - nativeElem.offsetHeight) {
+      this.scrolledToBottom.emit();
+      nativeElem.scroll({top: 0, behavior: 'smooth'});
+    } else {
+      const height = nativeElem.offsetHeight * 0.75;
+      nativeElem.scrollBy({top: height, behavior: 'smooth'});
+    }
   }
 }

@@ -1,1 +1,15 @@
-<app-preview [performMode]="true" [song]="song"></app-preview>
+<app-preview 
+  *ngFor="let song of songs; let i = index" 
+  [performMode]="true" 
+  [song]="song" 
+  [scrollIsActive]="i === activeSong"
+  (scrolledToTop)="decreaseActiveSong()"
+  (scrolledToBottom)="increaseActiveSong()"
+  [class.left]="i < activeSong"
+  [class.center]="i === activeSong"
+  [class.right]="i > activeSong"
+>
+</app-preview>
+<button mat-mini-fab (click)="decreaseActiveSong()" *ngIf="songs.length > 1" class="prev-button"><</button>
+<button mat-mini-fab (click)="increaseActiveSong()" *ngIf="songs.length > 1" class="next-button">></button>
+<div class="counter">{{activeSong + 1}} / {{songs.length}}</div>
