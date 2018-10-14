@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'icons';
+  src:
+    url('fonts/icons.ttf?wd1jm9') format('truetype'),
+    url('fonts/icons.woff?wd1jm9') format('woff'),
+    url('fonts/icons.svg?wd1jm9#icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cross:before {
+  content: "\e899";
+}
+.plus:before {
+  content: "\e900";
+}
+.minus:before {
+  content: "\e902";
+}
+.full-screen:before {
+  content: "\e903";
+}
+.edit:before {
+  content: "\e904";
+}
+.perform:before {
+  content: "\e905";
+}
+.editor:before {
+  content: "\e906";
+}
+.books:before {
+  content: "\e907";
+}
+.delete:before {
+  content: "\e908";
+}
+.event:before {
+  content: "\e909";
+}
+.settings:before {
+  content: "\e90a";
+}
+.song:before {
+  content: "\1f53e";
+}
+.bpm:before {
+  content: "\e90c";
+}
