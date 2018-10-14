@@ -1,6 +1,7 @@
 const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
+const Diff = require('diff');
 
 module.exports = class {
 
@@ -25,7 +26,7 @@ module.exports = class {
     api.post('pdf', (request, response) => {
       const requestPayload = (request.uploadData || emptyData)[0].json();
       if(requestPayload.filePath && requestPayload.fileName && requestPayload.payload && requestPayload.metadata) {
-        pdf.create(requestPayload.payload, requestPayload.metadata).toFile(path.join(requestPayload.filePath, requestPayload.fileName), (err, res) => {
+        pdf.create(requestPayload.payload, requestPayload.metadata).toFile(path.join(requestPayload.filePath, requestPayload.fileName), err => {
           response.json({
             status: !!err? 201: 500,
             statusMessage: err.stack,
@@ -110,6 +111,59 @@ module.exports = class {
           });
         }
       });
+    });
+
+    /**
+     * Request Body
+     * {
+     *     path: absolute path to the file
+     *     payload: to be saved data
+     * }
+     * Statuses
+     * 201,
+     * 300, when there have been changes since last load
+     * 404 if the given path was not loaded before and a synch check is not possible
+     *
+     * Response Payload on 300
+     * {
+     *     currentVersion: version from current file
+     * }
+     */
+    api.post('file/sync', (request, response) => {
+      const payload = (request.uploadData || emptyData)[0].json();
+      if(fileManager.isIndexed(payload.path)) {
+        try {
+          const currentFile = JSON.parse(fileManager.loadFile(payload.path));
+          const diff = new Diff().diffJson(currentFile, fileManager.getIndexedVersion(payload.path));
+          if(!!diff.length) {
+            fileManager.writeFile(payload.path, payload.payload);
+            response.json({
+              status: 201,
+              statusMessage: 'File was saved without conflicts',
+              payload: {}
+            });
+          } else {
+            response.json({
+              status: 300,
+              statusMessage: 'The file has been modified without being reloaded',
+              payload: {
+                currentVersion: currentFile
+              }
+            });
+          }
+        } catch (err) {
+          response.json({
+            status: 500,
+            statusMessage: ['An error occurred while loading file', err.stack].join('\n See information: ')
+          });
+        }
+      } else {
+        response.json({
+          status: 404,
+          statusMessage: 'The given resource has not been initialized',
+          payload: {}
+        });
+      }
     });
 
     /**
