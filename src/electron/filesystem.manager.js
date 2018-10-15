@@ -1,10 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 const UtilMap = require('@nilsroesel/utils').UtilMap;
+const shell = require('shelljs');
 
 module.exports = class {
 
   constructor() { this.fileMap = UtilMap.createES5UtilMap(); }
+
+  createDir(pathWithFile) {
+    const dir = path.parse(pathWithFile).dir;
+    if(!fs.existsSync(dir)) {
+      shell.mkdir('-p', dir);
+    }
+  }
 
   /**
    * Will index and map all file paths for .song files
@@ -51,6 +59,7 @@ module.exports = class {
 
   writeFile(path, document, onExecute) {
     fs.writeFile(path, JSON.stringify(document), err => {
+      this.createDir(path);
       onExecute(err);
       if(!err) this.fileMap.set(path, document);
     });
