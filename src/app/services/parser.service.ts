@@ -196,13 +196,18 @@ export class ParserService {
     // meta
     const title = song.title && song.title !== '' ? 'title: ' + song.title + '; ' : '';
     const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist + '; ' : '';
-    const bpm = song.bpm && song.bpm ? 'bpm: ' + song.bpm + '; ' : '';
-    const books = song.books && song.books ? 'books: ' + song.books.join(',') + '; ' : '';
-    str += '[' + title + artist + bpm + books + ']\n\n';
+    const bpm = song.bpm ? 'bpm: ' + song.bpm + '; ' : '';
+    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.join(',') + '; ' : '';
+
+    if (title || artist || bpm || books) {
+      str += '[' + title + artist + bpm + books + ']\n\n';
+    }
 
     // order
     const order = song.order && song.order.length > 0 ? '[order: ' + song.order.join(',') + ']' : '';
-    str += order + '\n\n';
+    if (order) {
+      str += order + '\n\n';
+    }
     return str;
   }
 
