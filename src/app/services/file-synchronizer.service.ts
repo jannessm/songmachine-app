@@ -35,7 +35,6 @@ export class FileSynchronizerService {
         const dataPath = path.join(root, FILESYSTEM.DATA, '/');
 
         res.payload.forEach(filePath => {
-          console.log(filePath);
           const file = filePath.replace(dataPath, '');
           if (file.startsWith(DATABASES.songs)) {
             this.syncOneFileIndexedDB(DATABASES.songs, filePath);
@@ -52,13 +51,12 @@ export class FileSynchronizerService {
     const root = this.configService.get('defaultPath');
     const dataPath = path.join(root, FILESYSTEM.DATA, '/');
     files = files.map(file => file.replace(dataPath, ''));
-    console.log('sync indexed -> files');
 
     this.dataService.getAll(DATABASES.songs).then(songs => {
       songs.forEach(song => {
-        const filtered = files.filter(file => file.indexOf(song) > -1);
+        const filtered = files.filter(file => file.indexOf(song.id) > -1);
         if (filtered.length === 0) {
-          this.apiService.generateFileCreateRequest(path.join(root, FILESYSTEM.SONGS, song.id), song).then(res => {
+          this.apiService.generateFileCreateRequest(path.join(root, FILESYSTEM.SONGS, song.id + '.song'), song).then(res => {
             console.log('songs added to filesystem', res);
           });
         }
@@ -67,9 +65,11 @@ export class FileSynchronizerService {
 
     this.dataService.getAll(DATABASES.events).then(songgroups => {
       songgroups.forEach(songgroup => {
-        const filtered = files.filter(file => file.indexOf(songgroup) > -1);
+        const filtered = files.filter(file => file.indexOf(songgroup.id) > -1);
         if (filtered.length === 0) {
-          this.apiService.generateFileCreateRequest(path.join(root, FILESYSTEM.EVENTS, songgroup.id), songgroup).then(res => {
+          this.apiService.generateFileCreateRequest(
+            path.join(root, FILESYSTEM.EVENTS, songgroup.id + '.songgroup'), songgroup
+          ).then(res => {
             console.log('events added to filesystem', res);
           });
         }
@@ -80,7 +80,7 @@ export class FileSynchronizerService {
   private syncOneFileIndexedDB(dbType: DATABASES, filePath: string) {
     const root = this.configService.get('defaultPath');
     const dataPath = path.join(root, FILESYSTEM.DATA, dbType, '/');
-    const file = filePath.replace(dataPath, '').replace('.song', '');
+    const file = filePath.replace(dataPath, '').replace('.songgroup', '').replace('.song', '');
 
     this.dataService.getByKey(dbType, file).then(object => {
       this.apiService.generateFileLoadRequest(filePath).then(response => {

@@ -25,7 +25,7 @@ module.exports = class {
       fs.readdirSync(dirPath).forEach(entry => {
         const entryPath = path.join(dirPath, entry);
         if(fs.statSync(entryPath).isDirectory()) this.readDir(entryPath);
-        else if(path.extname(entryPath) === '.song') this.fileMap.set(entryPath, null);
+        else if(path.extname(entryPath) === '.song' || path.extname(entryPath) === '.songgroup') this.fileMap.set(entryPath, null);
       });
     }
     return this;

@@ -96,7 +96,7 @@ module.exports = class {
      */
     api.post('file', (request, response) => {
       const payload = (request.uploadData || emptyData)[0].json();
-      fileManager.writeFile(payload.filePath, payload.payload, (err) => {
+      fileManager.writeFile(payload.path, payload.payload, (err) => {
         if(err) {
             response.json({
               status: 400,
