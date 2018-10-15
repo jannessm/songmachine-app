@@ -1,10 +1,12 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, HostListener } from '@angular/core';
 
 import { DATABASES } from './models/databases';
 import { DataService } from './services/data.service';
 import { Router } from '@angular/router';
 import { MenuItem } from './models/menuitem';
 import { FileSynchronizerService } from './services/file-synchronizer.service';
+import { Song } from './models/song';
+import { ParserService } from './services/parser.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +38,14 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  constructor(private dataService: DataService, private router: Router, private fileSynchronizer: FileSynchronizerService) { }
+  show = false;
+
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private fileSynchronizer: FileSynchronizerService,
+    private parserService: ParserService
+  ) { }
 
   ngOnInit() {
     // load data from dir or force user to set defaultDir
@@ -45,5 +54,38 @@ export class AppComponent implements OnInit {
         this.router.navigateByUrl('/settings');
       }
     });
+  }
+
+  showImport(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    if (!this.show) {
+      this.show = true;
+    }
+  }
+
+  hideImport(e) {
+    this.show = false;
+  }
+
+  importSong(e) {
+    this.show = false;
+    e.preventDefault();
+    if (e.dataTransfer.files) {
+      Array.from(e.dataTransfer.files).forEach((file: File) => {
+        const reader = new FileReader();
+        reader.readAsText(file);
+
+        reader.onloadend = res => {
+
+          if (reader.error) {
+            // TODO is dir
+          } else {
+            const song = this.parserService.str2Obj(<string>reader.result);
+            // this.dataService.upsert(DATABASES.songs, song);
+          }
+        };
+      });
+    }
   }
 }
