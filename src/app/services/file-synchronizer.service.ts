@@ -51,7 +51,7 @@ export class FileSynchronizerService {
         const filtered = files.filter(file => file.indexOf(song) > -1);
         if (filtered.length === 0) {
           this.apiService.generateFileCreateRequest(path.join(root, '/songs/', song.id), song).then(res => {
-            console.log(res);
+            console.log('songs added to filesystem', res);
           });
         }
       });
