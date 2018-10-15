@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 
 import { DATABASES } from './models/databases';
 import { DataService } from './services/data.service';
@@ -16,18 +16,22 @@ export class AppComponent implements OnInit {
     {
       route: 'browser/songs',
       icon: 'icon-song',
+      active: true
     },
     {
       route: 'browser/events',
       icon: 'icon-event',
+      active: false,
     },
     {
       route: 'editor',
-      icon: 'icon-editor'
+      icon: 'icon-editor',
+      active: false
     },
     {
       route: 'settings',
-      icon: 'icon-settings'
+      icon: 'icon-settings',
+      active: false
     }
   ];
 

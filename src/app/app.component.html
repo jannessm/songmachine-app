@@ -1,6 +1,6 @@
 <mat-sidenav-container class="nav_container">
   <mat-sidenav mode="side" opened>
-    <a mat-flat-button *ngFor="let item of menu" routerLink="{{ item.route }}"><i class="icon {{ item.icon }}"></i></a>
+    <a mat-flat-button *ngFor="let item of menu" routerLink="{{ item.route }}" routerLinkActive="active"><i class="icon {{ item.icon }}"></i></a>
   </mat-sidenav>
   <mat-sidenav-content>
       <router-outlet></router-outlet>
