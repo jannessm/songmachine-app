@@ -13,7 +13,7 @@
             <app-song *ngFor="let song of song_elems" [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
         </span>
         <span *ngSwitchCase="'events'">
-            <app-event *ngFor="let event of songgroup_elems" [event]="event" (editMeta)="showAddForm(event)" (delete)="updateElems()"></app-event>
+            <app-event *ngFor="let group of songgroup_elems" [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-event>
         </span>
     </div>
 </div>
