@@ -1,4 +1,5 @@
-@import "../assets/colors.scss";
+@import "~assets/icons";
+@import "~assets/colors.scss";
 
 mat-sidenav-container{
   height: 100%;
@@ -18,4 +19,13 @@ mat-sidenav{
     text-transform: uppercase;
     width: 100%;
   }
+}
+
+i{
+  font-size: 2em;
+  line-height: 2em;
+}
+
+.active{
+  color: $lemon !important;
 }

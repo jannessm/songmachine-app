@@ -1,5 +1,5 @@
-@import '../../../assets/icons';
-@import '../../../assets/colors';
+@import '~assets/icons';
+@import '~assets/colors';
 
 mat-card{
     min-width: 200px;
@@ -22,7 +22,6 @@ mat-card-header{
 }
 
 mat-card-content{
-    background: $white;
     padding: 24px;
 }
 
@@ -55,4 +54,13 @@ mat-card:hover .mods{
     display: none;
     position: absolute;
     right: 10px;
+}
+
+i{
+    font-size: 1.3em;
+    line-height: 1.3em;
+    cursor: pointer;
+}
+i:hover{
+    color: $lemon;
 }

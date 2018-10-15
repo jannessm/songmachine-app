@@ -18,16 +18,16 @@ export class BrowserComponent implements OnInit {
   type: DATABASES;
   headline: string;
   search_text: string;
-  searchInput:string = '';
-  
+  searchInput = '';
+
   song_view: object = {
     headline: 'Your Songs',
     search_text: 'Search a song'
-  }
+  };
   event_view: object = {
     headline: 'Your Events',
     search_text: 'Search an event'
-  }
+  };
   song_elems: Song[] = [];
   songgroup_elems: Songgroup[] = [];
 
@@ -36,11 +36,11 @@ export class BrowserComponent implements OnInit {
     private dataService: DataService,
     private dialog: MatDialog
   ) { }
-  
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.type = params['type'];
-      switch(this.type){
+      switch (this.type) {
         default:
         case DATABASES.songs:
           this.type = DATABASES.songs;
@@ -55,8 +55,8 @@ export class BrowserComponent implements OnInit {
     });
   }
 
-  showAddForm(data){
-    if (!data){
+  showAddForm(data) {
+    if (!data) {
       data = this.type === DATABASES.songs ? new Song() : new Songgroup();
     }
     const dialogRef = this.dialog.open(SongEventFormComponent, {
@@ -65,32 +65,32 @@ export class BrowserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.dataService.upsert(this.type, result);
         this.updateElems();
       }
     });
   }
 
-  updateElems(){
-    let arr = [];
+  updateElems() {
+    const arr = [];
     setTimeout(() => {
       this.dataService.getAll(this.type).then( res => {
-        for (let e of res) {
-          if(this.type === DATABASES.songs){
+        for (const e of res) {
+          if (this.type === DATABASES.songs) {
             arr.push(new Song(e));
           } else {
             arr.push(new Songgroup(e));
           }
         }
-        
-        if(this.type === DATABASES.songs){
+
+        if (this.type === DATABASES.songs) {
           this.song_elems = arr;
         } else {
           this.songgroup_elems = arr;
         }
-      })
+      });
     }, 10);
   }
-  
+
 }

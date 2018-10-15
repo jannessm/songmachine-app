@@ -22,16 +22,16 @@ export class SongComponent implements OnInit {
     console.log(this.song);
   }
 
-  editSong(song:Song){
-    this.router.navigateByUrl('/editor/'+song.id);
+  editSong(song: Song) {
+    this.router.navigateByUrl('/editor/' + song.id);
   }
 
-  emitEditMeta(song){
+  emitEditMeta(song: Song) {
     this.editMeta.emit(song);
   }
 
-  del(id){
-    this.dataService.delete(DATABASES.songs, id);
+  del(song: Song) {
+    this.dataService.delete(DATABASES.songs, song.id);
     this.delete.emit();
   }
 
