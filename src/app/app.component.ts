@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     },
     {
       route: 'browser/events',
-      icon: 'icon-songgroup',
+      icon: 'icon-event',
     },
     {
       route: 'editor',
