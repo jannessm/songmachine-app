@@ -3,22 +3,26 @@
         <mat-card-title>{{ song.title }}</mat-card-title>
         <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
         <div class="mods">
-            <i class="icon" (click)="editSong(song)">edit</i>
-            <i class="icon" (click)="emitEditMeta( song )">settings</i>
-            <i class="icon" (click)="del( song )">delete</i>
+            <i class="icon icon-editor" (click)="editSong(song)"></i>
+            <i class="icon icon-edit" (click)="emitEditMeta( song )"></i>
+            <i class="icon icon-delete" (click)="del( song )"></i>
         </div>
     </mat-card-header>
     <mat-card-content>
         <div class="song">{{ song.preview }}</div>
         <table class="song_attr">
             <tr>
-                <th class="icon-bpm"></th>
+                <th>
+                    <i class="icon-bpm"></i>
+                </th>
                 <td>
                     {{ song.bpm }}
                 </td>
             </tr>
             <tr>
-                <th class="icon-books"></th>
+                <th>
+                    <i class="icon-books"></i>
+                </th>
                 <td>
                     <ul>
                         <li *ngFor="let book of song.books">{{ book }}</li>

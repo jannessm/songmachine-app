@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DATABASES } from './models/databases';
 import { DataService } from './services/data.service';
@@ -10,34 +10,34 @@ import { MenuItem } from './models/menuitem';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   menu: MenuItem[] = [
     {
       route: 'browser/songs',
-      label: 'So',
+      icon: 'icon-song',
     },
     {
       route: 'browser/events',
-      label: 'Ev',
+      icon: 'icon-songgroup',
     },
     {
       route: 'editor',
-      label: 'Ed'
+      icon: 'icon-editor'
     },
     {
       route: 'settings',
-      label: 'Se'
+      icon: 'icon-settings'
     }
-  ]
+  ];
 
-  constructor(private DataService: DataService, private router: Router){ }
+  constructor(private dataService: DataService, private router: Router) { }
 
-  ngOnInit(){
+  ngOnInit() {
     // load data from dir or force user to set defaultDir
-    this.DataService.getByKey(DATABASES.settings, 'defaultPath').then(res => {
-      if(!res){
-        //this.router.navigateByUrl('/settings')
+    this.dataService.getByKey(DATABASES.settings, 'defaultPath').then(res => {
+      if (!res) {
+        // this.router.navigateByUrl('/settings')
       }
     });
   }

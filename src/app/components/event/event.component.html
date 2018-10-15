@@ -2,9 +2,9 @@
     <mat-card-header>
         <mat-card-title>{{ event.name }}</mat-card-title>
         <div class="mods">
-            <i class="icon" (click)="performSonggroup()">edit</i>
-            <i class="icon" (click)="emitEditMeta( event )">settings</i>
-            <i class="icon" (click)="delete( event )">delete</i>
+            <i class="icon icon-perform" (click)="performSonggroup()"></i>
+            <i class="icon icon-edit" (click)="emitEditMeta( event )"></i>
+            <i class="icon icon-delete" (click)="delete( event )"></i>
         </div>
     </mat-card-header>
     <mat-card-content>

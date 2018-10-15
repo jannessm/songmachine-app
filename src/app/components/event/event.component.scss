@@ -1,4 +1,4 @@
-@import '../../../assets/icons';
+@import '../../../assets/icons/style.scss';
 @import '../../../assets/colors';
 
 mat-card{
@@ -50,4 +50,14 @@ mat-card:hover .mods{
     display: none;
     position: absolute;
     right: 10px;
+}
+
+i{
+    font-size: 1.3em;
+    line-height: 1.3em;
+    cursor: pointer;
+}
+
+i:hover{
+    color: $orange;
 }

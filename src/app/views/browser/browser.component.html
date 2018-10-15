@@ -1,10 +1,10 @@
 
 <div id="browser_content" class="content" [ngSwitch]="type">
-    <h3>{{ headline }}<i class="icon" (click)="showAddForm()">add_box</i></h3>
+    <h3>{{ headline }}<i class="icon icon-plus" (click)="showAddForm()"></i></h3>
     <mat-form-field floatLabel="never">
         <input matInput id="search" [placeholder]="search_text" [(ngModel)]="searchInput" autofill="false">
         <button mat-button *ngIf="searchInput" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput=''">
-            <i mat-icon-button class="icon">close</i>
+            <i mat-icon-button class="icon icon-close"></i>
         </button>
     </mat-form-field>
     <div id="songs">
