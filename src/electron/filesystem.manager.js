@@ -67,4 +67,6 @@ module.exports = class {
 
   getIndexedVersion(path) { return this.fileMap.get(path); }
 
+  exists(path) { return fs.existsSync(path); }
+
 };
