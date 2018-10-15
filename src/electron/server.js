@@ -3,10 +3,16 @@ const path = require('path');
 const FileManager = require('./filesystem.manager');
 const Diff = require('diff');
 
+function assembleBufferPayload(request) {
+  const requestPayload = (request.uploadData || [{ stringContent: () => '' }]);
+  const stringData = '';
+  requestPayload.forEach(uploadData => stringData.concat(uploadData.stringContent()));
+  return JSON.parse(stringData);
+}
+
 module.exports = class {
 
   static run(api) {
-    const emptyData = [{ json: () => Object.assign({}) }];
     const fileManager = new FileManager();
 
     /**
@@ -24,7 +30,7 @@ module.exports = class {
      * }
      */
     api.post('pdf', (request, response) => {
-      const requestPayload = (request.uploadData || emptyData)[0].json();
+      const requestPayload = assembleBufferPayload(request);
       if(requestPayload.filePath && requestPayload.fileName && requestPayload.payload && requestPayload.metadata) {
         pdf.create(requestPayload.payload, requestPayload.metadata).toFile(path.join(requestPayload.filePath, requestPayload.fileName), err => {
           response.json({
@@ -56,7 +62,7 @@ module.exports = class {
      * [] Array of file system links to all song files
      */
     api.post('index', (request, response) => {
-      const payload = (request.uploadData || emptyData)[0].json();
+      const payload = assembleBufferPayload(request);
       if(payload.path) {
         try {
           const songLinks = fileManager
@@ -95,8 +101,8 @@ module.exports = class {
      * 400 on not saved because assumed your input data was wrong
      */
     api.post('file', (request, response) => {
-      const payload = (request.uploadData || emptyData)[0].json();
-      fileManager.writeFile(payload.path, payload.payload, (err) => {
+      const payload = assembleBufferPayload(request);
+      fileManager.writeFile(payload.filePath, payload.payload, (err) => {
         if(err) {
             response.json({
               status: 400,
@@ -130,7 +136,7 @@ module.exports = class {
      * }
      */
     api.post('file/sync', (request, response) => {
-      const payload = (request.uploadData || emptyData)[0].json();
+      const payload = assembleBufferPayload(request);
       if(fileManager.isIndexed(payload.path)) {
         try {
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
@@ -177,7 +183,7 @@ module.exports = class {
      * 404 on not existing file
      */
     api.delete('file', (request, response) => {
-      const payload = (request.uploadData || emptyData)[0].json();
+      const payload = assembleBufferPayload(request);
       try {
         fileManager.deleteFile(payload.path)
       } catch(err) {
@@ -202,8 +208,8 @@ module.exports = class {
      * }
      */
     api.post('read', (request, response) => {
-      const payload = (request.uploadData || emptyData)[0].json();
-      if(fileManager.exists(payload.path)) {
+      const payload = assembleBufferPayload(request);
+        if(fileManager.exists(payload.path)) {
         const file = fileManager.loadFile(payload.path);
         const data = payload.json? JSON.parse(file) : file;
         response.json({
