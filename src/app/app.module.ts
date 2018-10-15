@@ -28,7 +28,7 @@ import { ParserService } from './services/parser.service';
 import { HtmlFactoryService } from './services/html-factory.service';
 
 import { SafePipe } from './pipes/safe.pipe';
-import { ConnectivityModule } from './connectivity/connectivity.module';
+import { ConnectivityModule } from './services/connectivity/connectivity.module';
 
 @NgModule({
   declarations: [
