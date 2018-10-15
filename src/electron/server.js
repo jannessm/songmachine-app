@@ -4,9 +4,10 @@ const FileManager = require('./filesystem.manager');
 const Diff = require('diff');
 
 function assembleBufferPayload(request) {
-  const requestPayload = (request.uploadData || [{ stringContent: () => '' }]);
-  const stringData = '';
-  requestPayload.forEach(uploadData => stringData.concat(uploadData.stringContent()));
+  const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
+  const stringData = requestPayload
+    .map(data => data.stringContent())
+    .reduce((data, curr) => data.concat(curr));
   return JSON.parse(stringData);
 }
 
@@ -102,7 +103,7 @@ module.exports = class {
      */
     api.post('file', (request, response) => {
       const payload = assembleBufferPayload(request);
-      fileManager.writeFile(payload.filePath, payload.payload, (err) => {
+      fileManager.writeFile(payload.path, payload.payload, (err) => {
         if(err) {
             response.json({
               status: 400,
