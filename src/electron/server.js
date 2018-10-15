@@ -7,7 +7,7 @@ function assembleBufferPayload(request) {
   const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
   const stringData = requestPayload
     .map(data => data.stringContent())
-    .reduce((data, curr) => data.concat(curr.stringContent()));
+    .reduce((data, curr) => data.concat(curr));
   return JSON.parse(stringData);
 }
 
