@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { CreateOptions } from 'html-pdf';
 import { Connector, ConnectorFactoryFunction, Methods, Modes } from '@nilsroesel/utils';
 import {
-  CmCreateFileRequest, CmDeleteFileRequest,
+  CmCreateFileRequest, CmDeleteFileRequest, CmFileLoadRequest,
   CmFileSystemIndexRequest,
   CmPdfRequest,
-  CmResponse, CreateFileResponse, DeleteFileResponse,
+  CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
   FileSystemIndexResponse,
   PdfRequestResponse, UpdateFileResponse
 } from './model/client.model';
@@ -53,6 +53,12 @@ export class ApiService {
     return this.ConnectorFactory('file/sync')
       .setMode(Modes.CORS)
       .dispatch<CmCreateFileRequest<T>, CmResponse<UpdateFileResponse>>(Methods.POST, { path, payload });
+  }
+
+  generateFileLoadRequest<T>(path: string, asJson?: boolean): Promise<CmResponse<FileLoadResponse<T>>> {
+    return this.ConnectorFactory('read')
+      .setMode(Modes.CORS)
+      .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
   }
 
 }

@@ -188,5 +188,36 @@ module.exports = class {
         });
       }
     });
+
+    /**
+     * Request Body
+     * {
+     *     path: path to file
+     *     json?: if true it will return the file as json
+     * }
+     *
+     * Response Body
+     * {
+     *     data: utf8 encoded string or json
+     * }
+     */
+    api.post('read', (request, response) => {
+      const payload = (request.uploadData || emptyData)[0].json();
+      if(fileManager.exists(payload.path)) {
+        const file = fileManager.loadFile(payload.path);
+        const data = payload.json? JSON.parse(file) : file;
+        response.json({
+          status: 200,
+          statusMessage: 'Resource loaded',
+          payload: { data }
+        });
+      } else {
+        response.json({
+          status: 404,
+          statusMessage: 'Given path does not exist or is not readable',
+          payload: {}
+        });
+      }
+    });
   }
 };
