@@ -23,49 +23,35 @@ export class FileSynchronizerService {
     });
   }
 
-  syncAllFiles() {
+  private syncAllFiles() {
     this.syncFilesIndexedDB().then(files => this.syncIndexedDBFiles(files));
   }
 
-  syncFilesIndexedDB() {
+  private syncFilesIndexedDB(): Promise<any> {
     const root = this.configService.get('defaultPath');
     return this.apiService.generateFileSystemIndex(root).then(res => {
       return new Promise((resolve, reject) => {
 
-        const files = res.payload.map(file => file.replace(root, ''));
-        files.forEach(file => {
+        const dataPath = path.join(root, FILESYSTEM.DATA, '/');
 
+        res.payload.forEach(filePath => {
+          console.log(filePath);
+          const file = filePath.replace(dataPath, '');
           if (file.startsWith(DATABASES.songs)) {
-            file = file.replace(DATABASES.songs + '/', '');
-            this.dataService.getByKey(DATABASES.songs, file).then(song => {
-              if (song) {
-                // this.apiService.generateFileLoadRequest()
-                const fsSong = new Song();
-                this.mergeService.mergeSongs(song, fsSong);
-              } else {
-                console.log('no song in indexeddb with id', file);
-                // TODO: this.apiService.generateFileGetRequest();
-              }
-            });
+            this.syncOneFileIndexedDB(DATABASES.songs, filePath);
           } else if (file.startsWith(DATABASES.events)) {
-            file = file.replace(DATABASES.events + '/', '');
-            this.dataService.getByKey(DATABASES.events, file).then(songgroup => {
-              if (songgroup) {
-                // TODO compare timestamps
-              } else {
-                console.log('no event in indexeddb with id', file);
-                // TODO: this.apiService.generateFileGetRequest();
-              }
-            });
+            this.syncOneFileIndexedDB(DATABASES.events, filePath);
           }
         });
-        resolve(files);
+        resolve(res.payload);
       });
     });
   }
 
-  syncIndexedDBFiles(files) {
+  private syncIndexedDBFiles(files: string[]) {
     const root = this.configService.get('defaultPath');
+    const dataPath = path.join(root, FILESYSTEM.DATA, '/');
+    files = files.map(file => file.replace(dataPath, ''));
     console.log('sync indexed -> files');
 
     this.dataService.getAll(DATABASES.songs).then(songs => {
@@ -86,6 +72,22 @@ export class FileSynchronizerService {
           this.apiService.generateFileCreateRequest(path.join(root, FILESYSTEM.EVENTS, songgroup.id), songgroup).then(res => {
             console.log('events added to filesystem', res);
           });
+        }
+      });
+    });
+  }
+
+  private syncOneFileIndexedDB(dbType: DATABASES, filePath: string) {
+    const root = this.configService.get('defaultPath');
+    const dataPath = path.join(root, FILESYSTEM.DATA, dbType, '/');
+    const file = filePath.replace(dataPath, '').replace('.song', '');
+
+    this.dataService.getByKey(dbType, file).then(object => {
+      this.apiService.generateFileLoadRequest(filePath).then(response => {
+        if (object) {
+          this.mergeService.mergeSongs(object, response.payload);
+        } else {
+          this.dataService.upsert(DATABASES.songs, {id: file, value: response.payload.data});
         }
       });
     });
