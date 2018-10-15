@@ -1,4 +1,4 @@
-import { Block } from "./block";
+import { Block } from './block';
 
 /**
  * Line object
@@ -9,16 +9,16 @@ import { Block } from "./block";
  * @property {number} ann_cells - how many annotation cells are defined
  * @property {Block} parent - block where this line is in
  * */
-export class Line{
-    lyrics:Lyric = new Lyric();
+export class Line {
+    lyrics: Lyric = new Lyric();
     annotations: string[][] = [];
     lyricsWidth: number;
-    differentAnnotations: number = 0;
-    annotationCells: number = 0;
-    printed: number = 0;
+    differentAnnotations = 0;
+    annotationCells = 0;
+    printed = 0;
 }
 
-class Lyric{
-    topLine: string = '';
-    bottomLine: string = '';
+class Lyric {
+    topLine = '';
+    bottomLine = '';
 }
