@@ -1,14 +1,14 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>{{ event.name }}</mat-card-title>
+        <mat-card-title>{{ songgroup.name }}</mat-card-title>
         <div class="mods">
-            <i class="icon" (click)="performSonggroup()">edit</i>
-            <i class="icon" (click)="emitEditMeta( event )">settings</i>
-            <i class="icon" (click)="delete( event )">delete</i>
+            <i class="icon icon-perform" (click)="performSonggroup()"></i>
+            <i class="icon icon-edit" (click)="emitEditMeta( songgroup )"></i>
+            <i class="icon icon-delete" (click)="delete( songgroup )"></i>
         </div>
     </mat-card-header>
     <mat-card-content>
-        <div class="event_preview">{{ event.description }}</div>
+        <div class="event_preview">{{ songgroup.description }}</div>
         <table class="event_attr">
             <tr>
                 <th>Songs</th>

@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icons';
   src:
-    url('fonts/icons.ttf?wd1jm9') format('truetype'),
-    url('fonts/icons.woff?wd1jm9') format('woff'),
-    url('fonts/icons.svg?wd1jm9#icons') format('svg');
+    url('fonts/icons.ttf?jf5v5e') format('truetype'),
+    url('fonts/icons.woff?jf5v5e') format('woff'),
+    url('fonts/icons.svg?jf5v5e#icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -23,42 +23,48 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.cross:before {
-  content: "\e899";
+.icon-right:before {
+  content: "\e901";
 }
-.plus:before {
-  content: "\e900";
-}
-.minus:before {
-  content: "\e902";
-}
-.full-screen:before {
-  content: "\e903";
-}
-.edit:before {
-  content: "\e904";
-}
-.perform:before {
-  content: "\e905";
-}
-.editor:before {
-  content: "\e906";
-}
-.books:before {
-  content: "\e907";
-}
-.delete:before {
+.icon-left:before {
   content: "\e908";
 }
-.event:before {
+.icon-cross:before {
+  content: "\e899";
+}
+.icon-plus:before {
+  content: "\e900";
+}
+.icon-minus:before {
+  content: "\e902";
+}
+.icon-full-screen:before {
+  content: "\e903";
+}
+.icon-edit:before {
+  content: "\e904";
+}
+.icon-perform:before {
+  content: "\e905";
+}
+.icon-delete:before {
+  content: "\e90b";
+}
+.icon-editor:before {
+  content: "\e906";
+}
+.icon-books:before {
+  content: "\e907";
+}
+.icon-event:before {
   content: "\e909";
 }
-.settings:before {
+.icon-settings:before {
   content: "\e90a";
 }
-.song:before {
+.icon-song:before {
   content: "\1f53e";
 }
-.bpm:before {
+.icon-bpm:before {
   content: "\e90c";
 }

@@ -2,21 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-icons',
-  templateUrl: './icons.component.html',
-  styleUrls: ['./icons.component.scss']
+  templateUrl: '../../../assets/icons/demo.html',
+  styleUrls: ['../../../assets/icons/demo-files/demo.scss']
 })
-export class IconsComponent implements OnInit {
-
-  icons = [
-    "settings",
-    "edit",
-    "add_box",
-    "delete"
-  ]
+export class IconsComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

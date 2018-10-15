@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class EventComponent implements OnInit {
 
-  @Input() event: Songgroup;
+  @Input() songgroup: Songgroup;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
   @Output() deleted: EventEmitter<any> = new EventEmitter();
   JSON = JSON;
@@ -21,23 +21,23 @@ export class EventComponent implements OnInit {
   songs: string[] = [];
 
   ngOnInit() {
-    if (!this.event.songs) {
-      this.event = new Songgroup();
+    if (!this.songgroup.songs) {
+      this.songgroup = new Songgroup();
     }
     this.setSongs();
   }
 
-  emitEditMeta(songgroup) {
+  emitEditMeta(songgroup: Songgroup) {
     this.editMeta.emit(songgroup);
   }
 
-  delete(id) {
-    this.dataService.delete(DATABASES.events, id);
+  delete(songgroup: Songgroup) {
+    this.dataService.delete(DATABASES.events, songgroup.id);
     this.deleted.emit();
   }
 
   setSongs() {
-    this.event.songs.forEach( uuid => {
+    this.songgroup.songs.forEach( uuid => {
       this.dataService.getByKey(DATABASES.songs, uuid).then(res => {
         if (res) {
           this.songs.push(res.title);
@@ -47,6 +47,6 @@ export class EventComponent implements OnInit {
   }
 
   performSonggroup() {
-    this.router.navigateByUrl('perform/' + this.event.songs.join('_'));
+    this.router.navigateByUrl('perform/' + this.songgroup.songs.join('_'));
   }
 }

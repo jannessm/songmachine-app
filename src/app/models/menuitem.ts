@@ -1,5 +1,6 @@
 
-export class MenuItem{
-    label: string;
+export class MenuItem {
+    icon: string;
     route: string;
+    active: boolean;
   }

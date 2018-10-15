@@ -10,6 +10,10 @@
   [class.right]="i > activeSong"
 >
 </app-preview>
-<button mat-mini-fab (click)="decreaseActiveSong()" *ngIf="songs.length > 1" class="prev-button"><</button>
-<button mat-mini-fab (click)="increaseActiveSong()" *ngIf="songs.length > 1" class="next-button">></button>
+<button mat-mini-fab (click)="decreaseActiveSong($event)" *ngIf="songs.length > 1" class="prev-button">
+  <i class="icon icon-left"></i>
+</button>
+<button mat-mini-fab (click)="increaseActiveSong($event)" *ngIf="songs.length > 1" class="next-button">
+  <i class="icon icon-right"></i>
+</button>
 <div class="counter">{{activeSong + 1}} / {{songs.length}}</div>

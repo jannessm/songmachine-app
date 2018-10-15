@@ -39,14 +39,16 @@ export class PerformviewComponent implements OnInit {
     }
   }
 
-  private increaseActiveSong() {
+  private increaseActiveSong(e) {
+    e.target.blur();
     setTimeout(() => {
       this.activeSong++;
       this.activeSong = this.activeSong % this.songs.length;
     }, 2);
   }
 
-  private decreaseActiveSong() {
+  private decreaseActiveSong(e) {
+    e.target.blur();
     setTimeout(() => {
       this.activeSong--;
       this.activeSong = this.activeSong % this.songs.length;

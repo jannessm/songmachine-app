@@ -1,4 +1,4 @@
-@import '../../../assets/icons';
+@import '~assets/icons';
 mat-form-field{
     min-width: 300px;
     width: 50%;
@@ -6,4 +6,8 @@ mat-form-field{
 
 #browser_content{
     padding: 5%;
+}
+
+i{
+    cursor: pointer;
 }
