@@ -26,9 +26,12 @@ import { ColorComponent } from './views/color/color.component';
 import { DataService } from './services/data.service';
 import { ParserService } from './services/parser.service';
 import { HtmlFactoryService } from './services/html-factory.service';
+import { FileSynchronizerService } from './services/file-synchronizer.service';
+import { ConfigService } from './services/config.service';
+
+import { ConnectivityModule } from './services/connectivity/connectivity.module';
 
 import { SafePipe } from './pipes/safe.pipe';
-import { ConnectivityModule } from './services/connectivity/connectivity.module';
 
 @NgModule({
   declarations: [
@@ -65,7 +68,9 @@ import { ConnectivityModule } from './services/connectivity/connectivity.module'
   providers: [
     DataService,
     ParserService,
-    HtmlFactoryService
+    HtmlFactoryService,
+    FileSynchronizerService,
+    ConfigService
   ],
   entryComponents: [
     SongEventFormComponent,

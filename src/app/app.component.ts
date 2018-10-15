@@ -4,6 +4,7 @@ import { DATABASES } from './models/databases';
 import { DataService } from './services/data.service';
 import { Router } from '@angular/router';
 import { MenuItem } from './models/menuitem';
+import { FileSynchronizerService } from './services/file-synchronizer.service';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +36,7 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  constructor(private dataService: DataService, private router: Router) { }
+  constructor(private dataService: DataService, private router: Router, private fileSynchronizer: FileSynchronizerService) { }
 
   ngOnInit() {
     // load data from dir or force user to set defaultDir
