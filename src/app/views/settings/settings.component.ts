@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataService } from '../../services/data.service';
+import { DATABASES } from '../../models/databases';
 
 @Component({
   selector: 'app-settings',
@@ -9,16 +10,23 @@ import { DataService } from '../../services/data.service';
 export class SettingsComponent implements OnInit {
 
   path = '';
+  @ViewChild('pathinput') pathinput: ElementRef;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
+    this.dataService.getByKey(DATABASES.settings, 'defaultPath').then(data => {
+      this.path = data.value;
+    });
   }
 
-  setDefaultPath(path){
-    // TODO: use electron here
-    //console.log(path);
-    //this.dataService.upsert(DATABASES.settings, {id: 'defaultPath', value: path});
+  setDefaultPath(path) {
+    this.dataService.upsert(DATABASES.settings, {id: 'defaultPath', value: path});
+    this.path = path;
+  }
+
+  selectDirectory() {
+    this.pathinput.nativeElement.click();
   }
 
 }

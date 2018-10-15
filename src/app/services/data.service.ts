@@ -20,10 +20,10 @@ export class DataService {
         upgradeDb.createObjectStore('settings', {keyPath: 'id'});
       }
       if (!upgradeDb.objectStoreNames.contains('songs')) {
-        upgradeDb.createObjectStore('songs', {keyPath: 'id', autoIncrement: true});
+        upgradeDb.createObjectStore('songs', {keyPath: 'id'});
       }
       if (!upgradeDb.objectStoreNames.contains('events')) {
-        upgradeDb.createObjectStore('events', {keyPath: 'id', autoIncrement: true});
+        upgradeDb.createObjectStore('events', {keyPath: 'id'});
       }
     });
   }

@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     // load data from dir or force user to set defaultDir
     this.dataService.getByKey(DATABASES.settings, 'defaultPath').then(res => {
       if (!res) {
-        // this.router.navigateByUrl('/settings')
+        this.router.navigateByUrl('/settings');
       }
     });
   }
