@@ -62,6 +62,7 @@ module.exports = class {
           const songLinks = fileManager
             .readDir(payload.path)
             .listAllSongFiles();
+          console.log(songLinks);
           response.json({
             status: 200,
             statusMessage: 'All songs indexed',

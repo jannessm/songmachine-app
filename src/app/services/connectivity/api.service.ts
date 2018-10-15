@@ -37,7 +37,7 @@ export class ApiService {
 
   generateFileCreateRequest<T>(path: string, payload: T): Promise<CmResponse<CreateFileResponse>> {
     return this.ConnectorFactory('file')
-      .dispatch<CmCreateFileRequest<T>, CmResponse<CreateFileResponse>>(Methods.POST, {path, payload})
+      .dispatch<CmCreateFileRequest<T>, CmResponse<CreateFileResponse>>(Methods.POST, {path, payload});
   }
 
   generateDeleteFileRequest(path: string): Promise<CmResponse<DeleteFileResponse>> {

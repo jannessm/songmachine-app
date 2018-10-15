@@ -1,16 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { DataService } from './data.service';
 import { DATABASES } from '../models/databases';
 
 @Injectable()
 export class ConfigService {
-  private configs: any;
+  private configs: any = {};
+  public ready = new EventEmitter<void>();
 
   constructor(private dataService: DataService) {
     this.dataService.getAll(DATABASES.settings).then(data => {
       data.forEach(setting => {
         this.configs[setting.id] = setting.value;
       });
+      this.ready.emit();
     });
   }
 
