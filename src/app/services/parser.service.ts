@@ -12,7 +12,7 @@ export class ParserService {
     header: new RegExp('\\[(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
                          '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
                          '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?\\s*\\]', 'gi'),
+                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;?)?\\s*\\]', 'gi'),
     block: /\[(?:Block\s*:\s*)([\w\s-_]*)\]/gi,
     order: /\[(?:order\s*:\s*)([\w\s-_,]*)\]/gi,
     chord: /(?:\[\s*)([\w<>\*\#]*)(?:\s*\])/gi,
@@ -180,6 +180,12 @@ export class ParserService {
   }
 
   private max(a, b) {
+    if (!a) {
+      return b;
+    }
+    if (!b) {
+      return a;
+    }
     return a > b ? a : b;
   }
 
