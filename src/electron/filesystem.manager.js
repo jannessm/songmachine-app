@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const utils = require('@nilsroesel/utils');
+const UtilMap = require('@nilsroesel/utils').UtilMap;
 
 module.exports = class {
 
-  constructor() { this.fileMap = new utils.UtilMap(); }
+  constructor() { this.fileMap = UtilMap.createES5UtilMap(); }
 
   /**
    * Will index and map all file paths for .song files
