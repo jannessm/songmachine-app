@@ -33,3 +33,10 @@ export type UpdateFileResponse = UpdateFileResponseOnChanges | CreateFileRespons
 export interface CmDeleteFileRequest { path: string; }
 
 export type DeleteFileResponse = undefined;
+
+export interface CmFileLoadRequest {
+  path: string;
+  json: boolean;
+}
+
+export interface FileLoadResponse<T> { data: T; }
