@@ -1,11 +1,10 @@
-import { Component, OnInit, OnChanges, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DATABASES } from './models/databases';
 import { DataService } from './services/data.service';
 import { Router } from '@angular/router';
 import { MenuItem } from './models/menuitem';
 import { FileSynchronizerService } from './services/file-synchronizer.service';
-import { Song } from './models/song';
 import { ParserService } from './services/parser.service';
 
 @Component({
@@ -82,7 +81,7 @@ export class AppComponent implements OnInit {
             // TODO is dir
           } else {
             const song = this.parserService.str2Obj(<string>reader.result);
-            // this.dataService.upsert(DATABASES.songs, song);
+            this.dataService.upsert(DATABASES.songs, song);
           }
         };
       });

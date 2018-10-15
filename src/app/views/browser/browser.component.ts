@@ -38,6 +38,11 @@ export class BrowserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.dataService.changes.subscribe(() => {
+      console.log('hi');
+      this.updateElems();
+    });
+
     this.route.params.subscribe(params => {
       this.type = params['type'];
       switch (this.type) {

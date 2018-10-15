@@ -5,7 +5,6 @@ import { ApiService } from './connectivity/api.service';
 import { ConfigService } from './config.service';
 import { FILESYSTEM } from '../models/filesystem';
 import { MergeService } from './merge.service';
-import { Song } from '../models/song';
 
 const path = require('path');
 

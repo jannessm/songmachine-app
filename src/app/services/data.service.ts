@@ -52,7 +52,11 @@ export class DataService {
         const tx = db.transaction(database, 'readwrite');
         const store = tx.objectStore(database);
         store.add(data);
+        console.log('hi');
+        this.changes.emit(new IndexedDBChange());
         return tx.complete;
+      }).then(res => {
+        console.log(res);
       });
     });
   }
