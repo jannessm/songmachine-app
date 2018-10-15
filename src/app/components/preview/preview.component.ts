@@ -61,7 +61,6 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
     this.song = this.song || new Song();
 
     this.html = this.htmlFactory.song2html(this.song);
-    console.log(this.performMode);
   }
 
   ngAfterViewInit() {

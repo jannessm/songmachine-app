@@ -10,17 +10,13 @@ import { Router } from '@angular/router';
   templateUrl: './song.component.html',
   styleUrls: ['./song.component.scss']
 })
-export class SongComponent implements OnInit {
+export class SongComponent {
 
   @Input() song: Song;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
   constructor(private dataService: DataService, private router: Router) { }
-
-  ngOnInit() {
-    console.log(this.song);
-  }
 
   editSong(song: Song) {
     this.router.navigateByUrl('/editor/' + song.id);

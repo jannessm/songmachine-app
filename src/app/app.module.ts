@@ -28,6 +28,7 @@ import { ParserService } from './services/parser.service';
 import { HtmlFactoryService } from './services/html-factory.service';
 import { FileSynchronizerService } from './services/file-synchronizer.service';
 import { ConfigService } from './services/config.service';
+import { MergeService } from './services/merge.service';
 
 import { ConnectivityModule } from './services/connectivity/connectivity.module';
 
@@ -70,7 +71,8 @@ import { SafePipe } from './pipes/safe.pipe';
     ParserService,
     HtmlFactoryService,
     FileSynchronizerService,
-    ConfigService
+    ConfigService,
+    MergeService
   ],
   entryComponents: [
     SongEventFormComponent,

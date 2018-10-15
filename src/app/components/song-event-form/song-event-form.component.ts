@@ -19,11 +19,11 @@ export class SongEventFormComponent implements OnInit {
   songsArray: FormArray = new FormArray([]);
   type: DATABASES;
   id: string;
-  songscounter: number[] = [1];  
+  songscounter: number[] = [1];
   songs: Song[] = [];
-  
+
   song: Song = new Song();
-  songBooksStr: string = '';
+  songBooksStr = '';
 
   songgroup: Songgroup = new Songgroup();
   songUUID: string;
@@ -35,9 +35,9 @@ export class SongEventFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if(!this.data.object.songs)
+    if (!this.data.object.songs) {
       this.type = DATABASES.songs;
-    else{
+    } else {
       this.type = DATABASES.events;
       this.songsForm = new FormGroup({
         songsArray: this.songsArray
@@ -46,8 +46,8 @@ export class SongEventFormComponent implements OnInit {
     this.initValues();
   }
 
-  onNoClick():void{
-    switch(this.type){
+  onNoClick(): void {
+    switch (this.type) {
       case DATABASES.songs:
         this.dialogRef.close();
         break;
@@ -57,8 +57,8 @@ export class SongEventFormComponent implements OnInit {
     }
   }
 
-  onSave():void{
-    switch(this.type){
+  onSave(): void {
+    switch (this.type) {
       case DATABASES.songs:
         this.song.books = this.songBooksStr
           .split(';')
@@ -68,8 +68,8 @@ export class SongEventFormComponent implements OnInit {
         break;
       case DATABASES.events:
         this.songgroup.songs = [];
-        for(let control of this.songsArray.controls){
-          if(control.value.songSelect){
+        for (const control of this.songsArray.controls) {
+          if (control.value.songSelect) {
             this.songgroup.songs.push(control.value.songSelect.id);
           }
         }
@@ -78,41 +78,40 @@ export class SongEventFormComponent implements OnInit {
     }
   }
 
-  getControls(){
+  getControls() {
     return (<FormArray>this.songsForm.get('songsArray')).controls;
   }
 
-  addSongField(value?:Song){
+  addSongField(value?: Song) {
     (<FormArray>this.songsForm.get('songsArray')).push(
       new FormGroup({
         songSelect: new FormControl(value)
       })
     );
-    console.log(this.songs);
   }
 
-  removeSongField(){
+  removeSongField() {
     this.songsArray.removeAt(this.songsArray.length - 1);
   }
 
-  showSong(song?: Song){
+  showSong(song?: Song) {
     return song ? song.title : undefined;
   }
 
-  initValues(){
+  initValues() {
     this.dataService.getAll(DATABASES.songs).then( songs => {
       this.songs = songs;
-      
+
       // init song/event if editMeta is called
-      switch(this.type){
+      switch (this.type) {
         case DATABASES.songs:
           this.song = new Song(this.data.object);
           this.songBooksStr = this.song.books ? this.song.books.join('; ') : '';
           break;
-          
+
         case DATABASES.events:
           this.songgroup = new Songgroup(this.data.object);
-          for (let song of this.songgroup.songs){
+          for (const song of this.songgroup.songs) {
             this.addSongField(
               this.songs.find((val, id, obj) => {
                 return val.id === song;
@@ -121,7 +120,7 @@ export class SongEventFormComponent implements OnInit {
           }
           break;
       }
-    })
+    });
 
   }
 }
