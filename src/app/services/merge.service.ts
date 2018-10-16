@@ -13,7 +13,7 @@ export class MergeService {
     const oldSongString = this.parserService.obj2Str(oldSong);
     const newSongString = this.parserService.obj2Str(newSong);
 
-    console.log(diff.diffLines(oldSongString, newSongString));
+    console.log('diff', diff.diffJson(oldSong, newSong));
 
     return new Song();
   }

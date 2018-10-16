@@ -58,7 +58,7 @@ module.exports = class {
 
 
   writeFile(path, document, onExecute) {
-    fs.writeFile(path, JSON.stringify(document), err => {
+    fs.writeFile(path, JSON.stringify(document, null, 2), err => {
       this.createDir(path);
       onExecute(err);
       if(!err) this.fileMap.set(path, document);
