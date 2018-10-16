@@ -141,7 +141,8 @@ module.exports = class {
       if(fileManager.isIndexed(payload.path)) {
         try {
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
-          const diff = new Diff().diffJson(currentFile, fileManager.getIndexedVersion(payload.path));
+          const indexedFile = fileManager.getIndexedVersion(payload.path);
+          const diff = new Diff().diffJson(currentFile, indexedDB);
           if(!!diff.length) {
             fileManager.writeFile(payload.path, payload.payload);
             response.json({
@@ -154,7 +155,8 @@ module.exports = class {
               status: 300,
               statusMessage: 'The file has been modified without being reloaded',
               payload: {
-                currentVersion: currentFile
+                currentVersion: currentFile,
+                indexedFile: indexedFile
               }
             });
           }
