@@ -1,6 +1,6 @@
 export enum FILESYSTEM {
   DATA = 'data',
   SONGS = 'data/songs',
-  EVENTS = 'data/events',
+  SONGGROUPS = 'data/songgroups',
   PDFS = 'pdfs'
 }

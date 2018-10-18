@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BrowserComponent } from './browser.component';
 import { SongComponent } from '../song/song.component';
-import { EventComponent } from '../event/event.component';
+import { SonggroupComponent } from '../songgroup/songgroup.component';
 import { EditorComponent } from '../editor/editor.component';
 import { SettingsComponent } from '../settings/settings.component';
 
@@ -13,10 +13,10 @@ describe('BrowserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         BrowserComponent,
         SongComponent,
-        EventComponent,
+        SonggroupComponent,
         EditorComponent,
         SettingsComponent
       ],

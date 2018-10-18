@@ -27,7 +27,7 @@ export class SongComponent {
   }
 
   del(song: Song) {
-    this.dataService.delete(DATABASES.songs, song.id);
+    this.dataService.deleteSong(song.id);
     this.delete.emit();
   }
 

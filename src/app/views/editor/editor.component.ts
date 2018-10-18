@@ -28,7 +28,7 @@ export class EditorComponent implements OnInit {
       const songId = params['songId'];
       if (songId) {
         this.dataService
-          .getByKey(DATABASES.songs, songId)
+          .getSong(songId)
           .then(result => {
             this.songIn = <Song>result;
             this.songId = songId;

@@ -6,7 +6,8 @@ import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { MatDialog } from '@angular/material';
-import { SongEventFormComponent } from '../../components/song-event-form/song-event-form.component';
+import { SongSonggroupFormComponent } from '../../components/song-songgroup-form/song-songgroup-form.component';
+import { DexieService } from '../../services/dexie.service';
 
 @Component({
   selector: 'app-browser',
@@ -24,7 +25,7 @@ export class BrowserComponent implements OnInit {
     headline: 'Your Songs',
     search_text: 'Search a song'
   };
-  event_view: object = {
+  songgroup_view: object = {
     headline: 'Your Events',
     search_text: 'Search an event'
   };
@@ -34,11 +35,12 @@ export class BrowserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
+    private dexieService: DexieService,
     private dialog: MatDialog
   ) { }
 
   ngOnInit() {
-    this.dataService.changes.subscribe(() => {
+    this.dexieService.changes.subscribe(() => {
       console.log('hi');
       this.updateElems();
     });
@@ -51,8 +53,8 @@ export class BrowserComponent implements OnInit {
           this.type = DATABASES.songs;
           Object.assign(this, this.song_view);
           break;
-        case DATABASES.events:
-          Object.assign(this, this.event_view);
+        case DATABASES.songgroups:
+          Object.assign(this, this.songgroup_view);
           break;
       }
 
@@ -64,14 +66,14 @@ export class BrowserComponent implements OnInit {
     if (!data) {
       data = this.type === DATABASES.songs ? new Song() : new Songgroup();
     }
-    const dialogRef = this.dialog.open(SongEventFormComponent, {
+    const dialogRef = this.dialog.open(SongSonggroupFormComponent, {
       width: '500px',
       data: {object: data}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.upsert(this.type, result);
+        this.dataService.saveType(this.type, result);
         this.updateElems();
       }
     });

@@ -4,15 +4,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AutosizeModule } from 'ngx-autosize';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { SongComponent } from './components/song/song.component';
-import { EventComponent } from './components/event/event.component';
-import { SongEventFormComponent } from './components/song-event-form/song-event-form.component';
+import { SonggroupComponent } from './components/songgroup/songgroup.component';
+import { SongSonggroupFormComponent } from './components/song-songgroup-form/song-songgroup-form.component';
 import { PreviewComponent } from './components/preview/preview.component';
 import { SongsheetTextareaComponent } from './components/songsheet-textarea/songsheet-textarea.component';
 
@@ -33,6 +33,7 @@ import { MergeService } from './services/merge.service';
 import { ConnectivityModule } from './services/connectivity/connectivity.module';
 
 import { SafePipe } from './pipes/safe.pipe';
+import { DexieService } from './services/dexie.service';
 
 @NgModule({
   declarations: [
@@ -41,14 +42,14 @@ import { SafePipe } from './pipes/safe.pipe';
     SettingsComponent,
     EditorComponent,
     SongComponent,
-    EventComponent,
+    SonggroupComponent,
     ColorComponent,
-    SongEventFormComponent,
+    SongSonggroupFormComponent,
     IconsComponent,
     SafePipe,
     PreviewComponent,
     SongsheetTextareaComponent,
-    PerformviewComponent
+    PerformviewComponent,
   ],
   imports: [
     ConnectivityModule,
@@ -72,11 +73,22 @@ import { SafePipe } from './pipes/safe.pipe';
     HtmlFactoryService,
     FileSynchronizerService,
     ConfigService,
-    MergeService
+    MergeService,
+    DexieService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfigs,
+      deps: [ConfigService],
+      multi: false
+    }
   ],
   entryComponents: [
-    SongEventFormComponent,
+    SongSonggroupFormComponent,
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function initConfigs(configService: ConfigService) {
+  return configService.init();
+}

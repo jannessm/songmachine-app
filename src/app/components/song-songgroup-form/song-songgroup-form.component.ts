@@ -2,18 +2,18 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { DataService } from '../../services/data.service';
-
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 
+import { DataService } from '../../services/data.service';
+
 @Component({
-  selector: 'app-song-event-form',
-  templateUrl: './song-event-form.component.html',
-  styleUrls: ['./song-event-form.component.scss']
+  selector: 'app-song-songgroup-form',
+  templateUrl: './song-songgroup-form.component.html',
+  styleUrls: ['./song-songgroup-form.component.scss']
 })
-export class SongEventFormComponent implements OnInit {
+export class SongSonggroupFormComponent implements OnInit {
 
   songsForm: FormGroup;
   songsArray: FormArray = new FormArray([]);
@@ -30,7 +30,7 @@ export class SongEventFormComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private dialogRef: MatDialogRef<SongEventFormComponent>,
+    private dialogRef: MatDialogRef<SongSonggroupFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -38,7 +38,7 @@ export class SongEventFormComponent implements OnInit {
     if (!this.data.object.songs) {
       this.type = DATABASES.songs;
     } else {
-      this.type = DATABASES.events;
+      this.type = DATABASES.songgroups;
       this.songsForm = new FormGroup({
         songsArray: this.songsArray
       });
@@ -51,7 +51,7 @@ export class SongEventFormComponent implements OnInit {
       case DATABASES.songs:
         this.dialogRef.close();
         break;
-      case DATABASES.events:
+      case DATABASES.songgroups:
         this.dialogRef.close();
         break;
     }
@@ -66,7 +66,7 @@ export class SongEventFormComponent implements OnInit {
           .filter(val => /\w/g.test(val));
         this.dialogRef.close(this.song);
         break;
-      case DATABASES.events:
+      case DATABASES.songgroups:
         this.songgroup.songs = [];
         for (const control of this.songsArray.controls) {
           if (control.value.songSelect) {
@@ -99,17 +99,17 @@ export class SongEventFormComponent implements OnInit {
   }
 
   initValues() {
-    this.dataService.getAll(DATABASES.songs).then( songs => {
+    this.dataService.getSongs().then( songs => {
       this.songs = songs;
 
-      // init song/event if editMeta is called
+      // init song/songgroup if editMeta is called
       switch (this.type) {
         case DATABASES.songs:
           this.song = new Song(this.data.object);
           this.songBooksStr = this.song.books ? this.song.books.join('; ') : '';
           break;
 
-        case DATABASES.events:
+        case DATABASES.songgroups:
           this.songgroup = new Songgroup(this.data.object);
           for (const song of this.songgroup.songs) {
             this.addSongField(

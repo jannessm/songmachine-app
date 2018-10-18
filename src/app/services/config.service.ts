@@ -1,18 +1,24 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { DataService } from './data.service';
 import { DATABASES } from '../models/databases';
+import { DexieService } from './dexie.service';
 
 @Injectable()
 export class ConfigService {
   private configs: any = {};
-  public ready = new EventEmitter<void>();
 
-  constructor(private dataService: DataService) {
-    this.dataService.getAll(DATABASES.settings).then(data => {
-      data.forEach(setting => {
-        this.configs[setting.id] = setting.value;
-      });
-      this.ready.emit();
+  constructor(private dexieService: DexieService) {
+    this.init();
+  }
+
+  init() {
+    return this.dexieService.getAll(DATABASES.settings).then(data => {
+      return new Promise((res, rej) => {
+          data.forEach(setting => {
+            this.configs[setting.id] = setting.value;
+          });
+          res();
+        });
     });
   }
 
@@ -22,6 +28,6 @@ export class ConfigService {
 
   set(key: string, value: any) {
     this.configs[key] = value;
-    this.dataService.upsert(DATABASES.settings, {id: key, value: value});
+    this.dexieService.upsert(DATABASES.settings, {id: key, value: value});
   }
 }
