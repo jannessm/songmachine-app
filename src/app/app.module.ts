@@ -35,6 +35,11 @@ import { ConnectivityModule } from './services/connectivity/connectivity.module'
 import { SafePipe } from './pipes/safe.pipe';
 import { DexieService } from './services/dexie.service';
 
+
+export function initConfigs(configService: ConfigService) {
+  return () => configService.init();
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,7 +84,7 @@ import { DexieService } from './services/dexie.service';
       provide: APP_INITIALIZER,
       useFactory: initConfigs,
       deps: [ConfigService],
-      multi: false
+      multi: true
     }
   ],
   entryComponents: [
@@ -88,7 +93,3 @@ import { DexieService } from './services/dexie.service';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-export function initConfigs(configService: ConfigService) {
-  return configService.init();
-}

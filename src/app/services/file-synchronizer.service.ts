@@ -29,70 +29,78 @@ export class FileSynchronizerService {
 
   private syncFilesIndexedDB(): Promise<any> {
     const root = this.configService.get('defaultPath');
-    return this.apiService.generateFileSystemIndex(root).then(res => {
-      return new Promise((resolve, reject) => {
+    if (root) {
+      return this.apiService.generateFileSystemIndex(root).then(res => {
+        return new Promise((resolve, reject) => {
 
-        const dataPath = path.join(root, FILESYSTEM.DATA, '/');
+          const dataPath = path.join(root, FILESYSTEM.DATA, '/');
 
-        res.payload.forEach(filePath => {
-          const file = filePath.replace(dataPath, '');
-          if (file.startsWith(DATABASES.songs)) {
-            this.syncOneFileIndexedDB(DATABASES.songs, filePath);
-          } else if (file.startsWith(DATABASES.songgroups)) {
-            this.syncOneFileIndexedDB(DATABASES.songgroups, filePath);
-          }
+          res.payload.forEach(filePath => {
+            const file = filePath.replace(dataPath, '');
+            if (file.startsWith(DATABASES.songs)) {
+              this.syncOneFileIndexedDB(DATABASES.songs, filePath);
+            } else if (file.startsWith(DATABASES.songgroups)) {
+              this.syncOneFileIndexedDB(DATABASES.songgroups, filePath);
+            }
+          });
+          resolve(res.payload);
         });
-        resolve(res.payload);
       });
-    });
+    } else {
+      return new Promise(res => res([]));
+    }
   }
 
   private syncIndexedDBFiles(files: string[]) {
     const root = this.configService.get('defaultPath');
-    const dataPath = path.join(root, FILESYSTEM.DATA, '/');
-    files = files.map(file => file.replace(dataPath, ''));
+    if (root) {
+      const dataPath = path.join(root, FILESYSTEM.DATA, '/');
+      files = files.map(file => file.replace(dataPath, ''));
 
-    this.dexieService.getAll(DATABASES.songs).then(songs => {
-      songs.forEach(song => {
-        const filtered = files.filter(file => file.indexOf(song.id) > -1);
-        if (filtered.length === 0) {
-          this.apiService.generateFileCreateRequest(
-            path.join(root, FILESYSTEM.SONGS, song.id + '.song'), song
-          ).then(res => {
-            console.log('songs added to filesystem', res);
-          });
-        }
+      this.dexieService.getAll(DATABASES.songs).then(songs => {
+        songs.forEach(song => {
+          const filtered = files.filter(file => file.indexOf(song.id) > -1);
+          if (filtered.length === 0) {
+            this.apiService.generateFileCreateRequest(
+              path.join(root, FILESYSTEM.SONGS, song.id + '.song'), song
+            ).then(res => {
+              console.log('songs added to filesystem', res);
+            });
+          }
+        });
       });
-    });
 
-    this.dexieService.getAll(DATABASES.songgroups).then(songgroups => {
-      songgroups.forEach(songgroup => {
-        const filtered = files.filter(file => file.indexOf(songgroup.id) > -1);
-        if (filtered.length === 0) {
-          this.apiService.generateFileCreateRequest(
-            path.join(root, FILESYSTEM.SONGGROUPS, songgroup.id + '.songgroup'), songgroup
-          ).then(res => {
-            console.log('songgroups added to filesystem', res);
-          });
-        }
+      this.dexieService.getAll(DATABASES.songgroups).then(songgroups => {
+        songgroups.forEach(songgroup => {
+          const filtered = files.filter(file => file.indexOf(songgroup.id) > -1);
+          if (filtered.length === 0) {
+            this.apiService.generateFileCreateRequest(
+              path.join(root, FILESYSTEM.SONGGROUPS, songgroup.id + '.songgroup'), songgroup
+            ).then(res => {
+              console.log('songgroups added to filesystem', res);
+            });
+          }
+        });
       });
-    });
+    }
   }
 
   private syncOneFileIndexedDB(dbType: DATABASES, filePath: string) {
     const root = this.configService.get('defaultPath');
-    const dataPath = path.join(root, FILESYSTEM.DATA, dbType, '/');
-    const file = filePath.replace(dataPath, '').replace('.songgroup', '').replace('.song', '');
+    if (root) {
+      const dataPath = path.join(root, FILESYSTEM.DATA, dbType, '/');
+      const file = filePath.replace(dataPath, '').replace('.songgroup', '').replace('.song', '');
 
-    this.dexieService.getByKey(dbType, file).then(object => {
-      this.apiService.generateFileLoadRequest<JSON>(filePath, true).then(response => {
-        if (object) {
-          this.mergeService.mergeSongs(object, response.payload);
-        } else {
-          this.dexieService.upsert(dbType, response.payload.data);
-        }
+      this.dexieService.getByKey(dbType, file).then(object => {
+        this.apiService.generateFileLoadRequest<JSON>(filePath, true).then(response => {
+          if (object) {
+            this.mergeService.mergeSongs(object, response.payload);
+          } else {
+            this.dexieService.upsert(dbType, response.payload.data);
+          }
+        });
       });
-    });
+    }
   }
 
   public getSongs(): Promise<Song[]> {

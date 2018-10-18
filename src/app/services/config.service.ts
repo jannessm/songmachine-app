@@ -11,7 +11,7 @@ export class ConfigService {
     this.init();
   }
 
-  init() {
+  init(): Promise<any> {
     return this.dexieService.getAll(DATABASES.settings).then(data => {
       return new Promise((res, rej) => {
           data.forEach(setting => {

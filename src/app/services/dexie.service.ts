@@ -3,8 +3,6 @@ import idb, { DB } from 'idb';
 
 import { Injectable, EventEmitter } from '@angular/core';
 import { DATABASES } from '../models/databases';
-import { Song } from '../models/song';
-import { Songgroup } from '../models/songgroup';
 import { IndexedDBChange } from '../models/indexedDBChange';
 
 @Injectable()

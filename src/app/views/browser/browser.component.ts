@@ -82,7 +82,7 @@ export class BrowserComponent implements OnInit {
   updateElems() {
     const arr = [];
     setTimeout(() => {
-      this.dataService.getAll(this.type).then( res => {
+      this.dataService.getAll(<DATABASES>this.type).then( res => {
         for (const e of res) {
           if (this.type === DATABASES.songs) {
             arr.push(new Song(e));
