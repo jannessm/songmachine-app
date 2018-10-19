@@ -41,7 +41,6 @@ export class BrowserComponent implements OnInit {
 
   ngOnInit() {
     this.dexieService.changes.subscribe(() => {
-      console.log('hi');
       this.updateElems();
     });
 
@@ -74,7 +73,6 @@ export class BrowserComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.saveType(this.type, result);
-        this.updateElems();
       }
     });
   }

@@ -43,6 +43,7 @@ export class DexieService {
         const tx = db.transaction(database, 'readwrite');
         const store = tx.objectStore(database);
         store.put(data);
+        this.changes.emit(new IndexedDBChange());
         return tx.complete;
       });
     }).catch(() => {
@@ -50,7 +51,6 @@ export class DexieService {
         const tx = db.transaction(database, 'readwrite');
         const store = tx.objectStore(database);
         store.add(data);
-        console.log('hi');
         this.changes.emit(new IndexedDBChange());
         return tx.complete;
       }).then(res => {
@@ -75,6 +75,7 @@ export class DexieService {
     return this.dbPromise.then(db => {
       const tx = db.transaction(database, 'readwrite');
       tx.objectStore(database).delete(key);
+      this.changes.emit(new IndexedDBChange());
       if (database === DATABASES.settings) {
         return;
       }

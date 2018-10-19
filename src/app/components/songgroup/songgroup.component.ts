@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
-import { DATABASES } from '../../models/databases';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,7 +12,6 @@ export class SonggroupComponent implements OnInit {
 
   @Input() songgroup: Songgroup;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
-  @Output() deleted: EventEmitter<any> = new EventEmitter();
   JSON = JSON;
 
   constructor(private dataService: DataService, private router: Router) { }
@@ -33,7 +31,6 @@ export class SonggroupComponent implements OnInit {
 
   delete(songgroup: Songgroup) {
     this.dataService.deleteSonggroup(songgroup.id);
-    this.deleted.emit();
   }
 
   setSongs() {
