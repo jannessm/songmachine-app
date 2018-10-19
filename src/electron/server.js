@@ -1,7 +1,7 @@
 const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
-const Diff = require('diff');
+const jiff = require('jiff');
 
 function assembleBufferPayload(request) {
   const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
@@ -142,7 +142,7 @@ module.exports = class {
         try {
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
           const indexedFile = fileManager.getIndexedVersion(payload.path);
-          const diff = new Diff().diffJson(currentFile, indexedDB);
+          const diff = jiff.diff(currentFile, indexedDB);
           if(!!diff.length) {
             fileManager.writeFile(payload.path, payload.payload);
             response.json({
@@ -212,7 +212,7 @@ module.exports = class {
      */
     api.post('read', (request, response) => {
       const payload = assembleBufferPayload(request);
-        if(fileManager.exists(payload.path)) {
+      if(fileManager.exists(payload.path)) {
         const file = fileManager.loadFile(payload.path);
         const data = payload.json? JSON.parse(file) : file;
         response.json({

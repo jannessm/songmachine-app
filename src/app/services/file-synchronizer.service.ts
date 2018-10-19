@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DataService } from './data.service';
 import { DATABASES } from '../models/databases';
 import { ApiService } from './connectivity/api.service';
-import { ConfigService } from './config.service';
-import { FILESYSTEM } from '../models/filesystem';
 import { MergeService } from './merge.service';
 import { Songgroup } from '../models/songgroup';
 import { DexieService } from './dexie.service';
@@ -17,73 +14,60 @@ export class FileSynchronizerService {
   constructor(
     private dexieService: DexieService,
     private apiService: ApiService,
-    private configService: ConfigService,
     private mergeService: MergeService
   ) {
     this.syncAllFiles();
   }
 
   private syncAllFiles() {
-    this.syncFilesIndexedDB().then(files => this.syncIndexedDBFiles(files));
+    this.syncFilesIndexedDB(); // only from filesystem to db: files determine content!!!
   }
 
   private syncFilesIndexedDB(): Promise<any> {
     return this.apiService.generateFileSystemIndex().then(res => {
-      return new Promise((resolve, reject) => {
-        res.payload.forEach(filePath => {
-          const file = filePath.replace(this.apiService.getPath(), '');
-          if (file.startsWith(DATABASES.songs)) {
-            this.syncOneFileIndexedDB(DATABASES.songs, filePath);
-          } else if (file.startsWith(DATABASES.songgroups)) {
-            this.syncOneFileIndexedDB(DATABASES.songgroups, filePath);
-          }
-        });
-        resolve(res.payload);
-      });
-    });
-  }
-
-  private syncIndexedDBFiles(files: string[]) {
-    files = files.map(file => file.replace(this.apiService.getPath(), ''));
-
-    this.dexieService.getAll(DATABASES.songs).then(songs => {
-      songs.forEach(song => {
-        const filtered = files.filter(file => file.indexOf(song.id) > -1);
-        if (filtered.length === 0) {
-          this.apiService.generateFileCreateRequest(
-            path.join(FILESYSTEM.SONGS, song.id + '.song'), song
-          ).then(res => {
-            console.log('songs added to filesystem', res);
-          });
-        }
-      });
-    });
-
-    this.dexieService.getAll(DATABASES.songgroups).then(songgroups => {
-      songgroups.forEach(songgroup => {
-        const filtered = files.filter(file => file.indexOf(songgroup.id) > -1);
-        if (filtered.length === 0) {
-          this.apiService.generateFileCreateRequest(
-            path.join(FILESYSTEM.SONGGROUPS, songgroup.id + '.songgroup'), songgroup
-          ).then(res => {
-            console.log('songgroups added to filesystem', res);
-          });
+      this.dexieService.clear(DATABASES.songs);
+      this.dexieService.clear(DATABASES.songgroups);
+      res.payload.forEach(filePath => {
+        const file = filePath.replace(this.apiService.getPath(), '');
+        if (file.startsWith(DATABASES.songs)) {
+          this.syncOneFileIndexedDB(DATABASES.songs, filePath);
+        } else if (file.startsWith(DATABASES.songgroups)) {
+          this.syncOneFileIndexedDB(DATABASES.songgroups, filePath);
         }
       });
     });
   }
 
   private syncOneFileIndexedDB(dbType: DATABASES, filePath: string) {
-    const file = filePath.replace(this.apiService.getPath(), '').replace('.songgroup', '').replace('.song', '');
-
-    this.dexieService.getByKey(dbType, file).then(object => {
+    filePath = filePath.replace(this.apiService.getPath(), '');
+    const id = filePath.replace('.songgroup', '').replace('.song', '');
+    this.dexieService.getByKey(dbType, id).then(object => {
       this.apiService.generateFileLoadRequest<JSON>(filePath, true).then(response => {
-        if (object) {
-          this.mergeService.mergeSongs(object, response.payload);
-        } else {
-          this.dexieService.upsert(dbType, response.payload.data);
+        switch (response.status) {
+          case 200:
+            this.dexieService.upsert(dbType, response.payload.data);  // filesystem determines data!!!
+            break;
+          default:
+            console.log(response, filePath, dbType);
         }
       });
+    });
+  }
+
+  private upsertFile<T>(filePath: string, data: T): Promise<T> {
+    return this.apiService.generateFileUpdateRequest(filePath, data).then( res => {
+      switch (res.status) {
+        case 201:
+          return new Promise<T>(resolve => resolve(data));
+        case 300:
+          let merged;
+          merged = this.mergeService.merge(res.payload.indexedVersion, res.payload.currentVersion, data);
+          return this.upsertFile<T>(filePath, merged);
+        case 404:
+          return this.apiService.generateFileCreateRequest(filePath, data).then(response => {
+            return new Promise<T>(resolve => resolve(data));
+          });
+      }
     });
   }
 
@@ -99,13 +83,15 @@ export class FileSynchronizerService {
     });
   }
 
-  public saveSong(song: Song) {
-    return this.dexieService.upsert(DATABASES.songs, song);
+  public saveSong(song: Song): Promise<Song> {
+    return this.dexieService.upsert(DATABASES.songs, song).then(() => {
+      return this.upsertFile<Song>(path.join(DATABASES.songs, song.id + '.song'), song);
+    });
   }
 
   public deleteSong(songid: string) {
     return this.dexieService.delete(DATABASES.songs, songid).then(() => {
-      this.apiService.generateDeleteFileRequest(path.join(DATABASES.songs, songid, '.song'));
+      this.apiService.generateDeleteFileRequest(path.join(DATABASES.songs, songid + '.song'));
     });
   }
 
@@ -121,13 +107,15 @@ export class FileSynchronizerService {
     });
   }
 
-  public saveSonggroup(songgroup: Songgroup) {
-    return this.dexieService.upsert(DATABASES.songgroups, songgroup);
+  public saveSonggroup(songgroup: Songgroup): Promise<Songgroup> {
+    return this.dexieService.upsert(DATABASES.songgroups, songgroup).then(res => {
+      return this.upsertFile<Songgroup>(path.join(DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup);
+    });
   }
 
   public deleteSonggroup(songgroupid: string) {
     return this.dexieService.delete(DATABASES.songgroups, songgroupid).then(() => {
-      this.apiService.generateDeleteFileRequest(path.join(DATABASES.songgroups, songgroupid, '.songgroup'));
+      this.apiService.generateDeleteFileRequest(path.join(DATABASES.songgroups, songgroupid + '.songgroup'));
     });
   }
 

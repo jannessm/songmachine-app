@@ -11,7 +11,6 @@ import {
 } from './model/client.model';
 import { ConfigService } from '../config.service';
 import { FILESYSTEM } from '../../models/filesystem';
-import { DATABASES } from '../../models/databases';
 
 const Path = require('path');
 

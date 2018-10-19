@@ -42,7 +42,9 @@ export class EditorComponent implements OnInit {
   }
 
   save() {
-
+    this.dataService.saveSong(this.songIn).then(song => {
+      this.songIn = song;
+    });
   }
 
   performMode() {

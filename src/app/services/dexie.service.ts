@@ -76,9 +76,18 @@ export class DexieService {
       const tx = db.transaction(database, 'readwrite');
       tx.objectStore(database).delete(key);
       this.changes.emit(new IndexedDBChange());
-      if (database === DATABASES.settings) {
+      if (database === DATABASES.settings) {  // settings should always have a value!!!
         return;
       }
+      return tx.complete;
+    });
+  }
+
+  clear(database: DATABASES) {
+    return this.dbPromise.then(db => {
+      const tx = db.transaction(database, 'readwrite');
+      tx.objectStore(database).clear();
+      this.changes.emit(new IndexedDBChange());
       return tx.complete;
     });
   }
