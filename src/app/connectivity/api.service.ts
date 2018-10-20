@@ -3,10 +3,10 @@ import { CreateOptions } from 'html-pdf';
 import { Connector, ConnectorFactoryFunction, Methods, Modes } from '@nilsroesel/utils';
 import {
   CmCreateFileRequest, CmDeleteFileRequest, CmFileLoadRequest,
-  CmFileSystemIndexRequest,
+  CmFileSystemIndexRequest, CmObserveDirectoryRequest,
   CmPdfRequest,
   CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
-  FileSystemIndexResponse,
+  FileSystemIndexResponse, ObserveFileResponse,
   PdfRequestResponse, UpdateFileResponse
 } from './model/client.model';
 
@@ -59,6 +59,12 @@ export class ApiService {
     return this.ConnectorFactory('read')
       .setMode(Modes.CORS)
       .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
+  }
+
+  generateObserveDirectoryRequest(path: string): Promise<CmResponse<ObserveFileResponse>> {
+    return this.ConnectorFactory('observe')
+      .setMode(Modes.CORS)
+      .dispatch<CmObserveDirectoryRequest, CmResponse<ObserveFileResponse>>(Methods.POST, { path });
   }
 
 }

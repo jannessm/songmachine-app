@@ -78,4 +78,9 @@ module.exports = class {
 
   exists(path) { return fs.existsSync(path); }
 
+  observeDir(path) {
+    fs.watch(path, { recursive: true }, () => this.readDir());
+    return this;
+  }
+
 };

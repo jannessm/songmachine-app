@@ -40,3 +40,7 @@ export interface CmFileLoadRequest {
 }
 
 export interface FileLoadResponse<T> { data: T; }
+
+export interface CmObserveDirectoryRequest { path: string; }
+
+export type ObserveFileResponse = undefined;

@@ -15,7 +15,7 @@ module.exports = class {
 
   static run(api) {
     const fileManager = new FileManager();
-
+    let observerStarted = false;
     /**
      * Request Body
      * {
@@ -73,6 +73,44 @@ module.exports = class {
             status: 200,
             statusMessage: 'All songs indexed',
             payload: songLinks
+          });
+        } catch (error) {
+          response.json({
+            status: 500,
+            statusMessage: error.stack,
+            payload: {}
+          });
+        }
+      } else {
+        response.json({
+          status: 400,
+          statusMessage: 'Invalid Post Body',
+          payload: {}
+        });
+      }
+    });
+
+    /**
+     * Request Body
+     * {
+     *     path: 'absolute path to directory
+     * }
+     *
+     * Response Body
+     * None
+     */
+    api.post('observe', (request, response) => {
+      const payload = assembleBufferPayload(request);
+      if(payload.path) {
+        try {
+          if(!observerStarted) {
+            fileManager.observeDir(payload.path);
+            observerStarted = true;
+          }
+          response.json({
+            status: 200,
+            statusMessage: observerStarted? 'Observer already initialized' : 'Observer initialized',
+            payload: {}
           });
         } catch (error) {
           response.json({
