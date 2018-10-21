@@ -40,3 +40,5 @@ export interface CmFileLoadRequest {
 }
 
 export interface FileLoadResponse<T> { data: T; }
+
+export type LoadIndexFilesResponse = Array<{path: string, content: any}>;
