@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { DATABASES } from '../../models/databases';
 import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
+import { Observable, from } from 'rxjs';
 
 @Component({
   selector: 'app-editor',
@@ -14,7 +14,8 @@ export class EditorComponent implements OnInit {
 
  @ViewChild(SongsheetTextareaComponent) textfield: SongsheetTextareaComponent;
 
-  songIn: Song;
+  songIn: Observable<Song>;
+  song: Song;
   songId: string;
 
   constructor(
@@ -27,13 +28,12 @@ export class EditorComponent implements OnInit {
     this.route.params.subscribe(params => {
       const songId = params['songId'];
       if (songId) {
-        this.dataService
-          .getSong(songId)
-          .then(result => {
-            this.songIn = <Song>result;
-            this.songId = songId;
-        });
+        this.songId = songId;
+        this.songIn = from<Song>(this.dataService.getSong(songId));
       }
+    });
+    this.songIn.subscribe(song => {
+      this.song = song;
     });
   }
 
@@ -42,8 +42,8 @@ export class EditorComponent implements OnInit {
   }
 
   save() {
-    this.dataService.saveSong(this.songIn).then(song => {
-      this.songIn = song;
+    this.dataService.saveSong(this.song).then(song => {
+      this.song = song;
     });
   }
 

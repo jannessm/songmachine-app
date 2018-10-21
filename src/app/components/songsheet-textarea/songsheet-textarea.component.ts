@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 import { ParserService } from '../../services/parser.service';
 import { Song } from '../../models/song';
+import { Observable } from 'rxjs';
 
 const enum KEYS {
   openBracket = 91,
@@ -15,9 +16,9 @@ const enum KEYS {
   templateUrl: './songsheet-textarea.component.html',
   styleUrls: ['./songsheet-textarea.component.scss']
 })
-export class SongsheetTextareaComponent implements OnInit, OnChanges {
+export class SongsheetTextareaComponent implements OnInit {
 
-  @Input() input: Song;
+  @Input() input: Observable<Song>;
   @Output() value: EventEmitter<Song> = new EventEmitter<Song>();
 
   @ViewChild('textfield') textfield: ElementRef;
@@ -25,7 +26,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   song: Song = new Song();
   inputGroup: FormGroup;
   htmlLines: string[] = [];
-  doInput = true;
 
   start: number;
   end: number;
@@ -35,25 +35,21 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     private htmlFactory: HtmlFactoryService,
     private parser: ParserService
   ) {
-    this.inputGroup = this.fb.group({
-      'inputControl': [null]
-    });
   }
 
   ngOnInit() {
-    this.update('');
-    this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
-        this.update(v);
-        this.song = this.parser.str2Obj(v);
-        this.value.emit(this.song);
+    this.inputGroup = this.fb.group({
+      'inputControl': [null]
     });
-  }
-  ngOnChanges() {
-    if (this.input && this.doInput) {
-      this.song = this.input;
+    this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
+      this.update(v);
+      this.song = this.parser.str2Obj(v);
+      this.value.emit(this.song);
+    });
+    this.input.subscribe(song => {
+      this.song = song;
       this.inputGroup.get('inputControl').setValue(this.parser.obj2Str(this.song));
-      this.doInput = false;
-    }
+    });
   }
 
   private update(inputText: string) {
