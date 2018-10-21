@@ -36,7 +36,7 @@ module.exports = class {
    * Will load all .song files from a before scanned directory and return the resulting map
    */
   loadSongFiles() {
-    return this.fileMap
+    this.fileMap
       .map((value, key) => fs.readFileSync(key, 'utf8'))
       .map((value) => {
         try {
@@ -44,6 +44,7 @@ module.exports = class {
         } catch(err) { return null; }
       })
       .filter(v => !!v);
+    return this;
   }
 
   loadFile(path) { return fs.readFileSync(path, 'utf8'); }
