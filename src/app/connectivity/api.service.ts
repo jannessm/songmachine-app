@@ -7,7 +7,7 @@ import {
   CmPdfRequest,
   CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
   FileSystemIndexResponse,
-  PdfRequestResponse, UpdateFileResponse
+  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse
 } from './model/client.model';
 
 
@@ -37,6 +37,12 @@ export class ApiService {
       .dispatch<CmFileSystemIndexRequest, CmResponse<FileSystemIndexResponse>>(Methods.POST, { path });
   }
 
+  generateLoadIndexFilesResponseRequest(): Promise<CmResponse<LoadIndexFilesResponse>> {
+    return this.ConnectorFactory('index')
+      .setMode(Modes.CORS)
+      .dispatch<undefined, CmResponse<LoadIndexFilesResponse>>(Methods.GET);
+  }
+
   generateFileCreateRequest<T>(path: string, payload: T): Promise<CmResponse<CreateFileResponse>> {
     return this.ConnectorFactory('file')
       .setMode(Modes.CORS)
@@ -60,5 +66,4 @@ export class ApiService {
       .setMode(Modes.CORS)
       .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
   }
-
 }
