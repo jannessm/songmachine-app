@@ -3,7 +3,7 @@ import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-editor',
@@ -14,7 +14,7 @@ export class EditorComponent implements OnInit {
 
  @ViewChild(SongsheetTextareaComponent) textfield: SongsheetTextareaComponent;
 
-  songIn: Observable<Song>;
+  songIn$: Observable<Song>;
   song: Song;
   songId: string;
 
@@ -29,16 +29,16 @@ export class EditorComponent implements OnInit {
       const songId = params['songId'];
       if (songId) {
         this.songId = songId;
-        this.songIn = from<Song>(this.dataService.getSong(songId));
+        this.songIn$ = Observable.from<Song>(this.dataService.getSong(songId));
       }
     });
-    this.songIn.subscribe(song => {
+    this.songIn$.subscribe(song => {
       this.song = song;
     });
   }
 
   songOut(song) {
-    this.songIn = song;
+    this.songIn$ = song;
   }
 
   save() {
