@@ -68,6 +68,7 @@ module.exports = class {
         try {
           const songLinks = fileManager
             .readDir(payload.path)
+            .loadSongFiles()
             .listAllSongFiles();
           response.json({
             status: 200,
@@ -141,7 +142,7 @@ module.exports = class {
       if(fileManager.isIndexed(payload.path)) {
         try {
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
-          const indexedFile = fileManager.getIndexedVersion(payload.path);
+          const indexedFile = JSON.parse(fileManager.getIndexedVersion(payload.path));
           const diff = jiff.diff(currentFile, indexedFile);
           if(diff.length === 0) {
             fileManager.writeFile(payload.path, payload.payload, () => {});
@@ -156,7 +157,7 @@ module.exports = class {
               statusMessage: 'The file has been modified without being reloaded',
               payload: {
                 currentVersion: currentFile,
-                indexedFile: indexedFile
+                indexedVersion: indexedFile
               }
             });
           }

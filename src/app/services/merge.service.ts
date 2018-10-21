@@ -11,9 +11,13 @@ export class MergeService {
 
   merge(oldSong, newSongServer, newSongLocal): Song {
 
+    console.log(oldSong);
+    console.log(newSongServer);
+    console.log(newSongLocal);
+
     console.log('diff', jiff.diff(oldSong, newSongServer));
     console.log('diff', jiff.diff(oldSong, newSongLocal));
 
-    return new Song();
+    return newSongLocal;
   }
 }

@@ -27,6 +27,7 @@ export class FileSynchronizerService {
     return this.apiService.generateFileSystemIndex().then(res => {
       this.dexieService.clear(DATABASES.songs);
       this.dexieService.clear(DATABASES.songgroups);
+      console.log(res);
       res.payload.forEach(filePath => {
         const file = filePath.replace(this.apiService.getPath(), '');
         if (file.startsWith(DATABASES.songs)) {
@@ -62,8 +63,10 @@ export class FileSynchronizerService {
           return new Promise<T>(resolve => resolve(data));
         case 300:
           let merged;
+          console.log(res.payload);
           merged = this.mergeService.merge(res.payload.indexedVersion, res.payload.currentVersion, data);
-          return this.upsertFile<T>(filePath, merged);
+          // return this.upsertFile<T>(filePath, merged);
+          return new Promise<T>(resolve => resolve(data));
         case 404:
           return this.apiService.generateFileCreateRequest(filePath, data).then(response => {
             return new Promise<T>(resolve => resolve(data));
