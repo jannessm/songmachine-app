@@ -56,6 +56,7 @@ export class FileSynchronizerService {
 
   private upsertFile<T>(filePath: string, data: T): Promise<T> {
     return this.apiService.generateFileUpdateRequest(filePath, data).then( res => {
+      console.log('upsert file', res);
       switch (res.status) {
         case 201:
           return new Promise<T>(resolve => resolve(data));

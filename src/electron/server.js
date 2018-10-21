@@ -142,9 +142,9 @@ module.exports = class {
         try {
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
           const indexedFile = fileManager.getIndexedVersion(payload.path);
-          const diff = jiff.diff(currentFile, indexedDB);
-          if(!!diff.length) {
-            fileManager.writeFile(payload.path, payload.payload);
+          const diff = jiff.diff(currentFile, indexedFile);
+          if(diff.length === 0) {
+            fileManager.writeFile(payload.path, payload.payload, () => {});
             response.json({
               status: 201,
               statusMessage: 'File was saved without conflicts',
