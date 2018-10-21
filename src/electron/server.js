@@ -90,6 +90,27 @@ module.exports = class {
       }
     });
 
+    api.get('index', (request, response) => {
+      try {
+        const songLinks =  Array.from(fileManager.loadSongFiles(), 
+          map => Object.assign({}, { path: map[0], content: map[1] })
+          );
+        response.json({
+          status: 200,
+          statusMessage: 'All songs indexed',
+          payload: songLinks
+        });
+      } catch (error) {
+        response.json({
+          status: 500,
+          statusMessage: error.stack,
+          payload: {}
+        });
+      }
+
+    });
+    
+
     /**
      * Request Body
      * {
