@@ -199,8 +199,8 @@
     webpack-sources "^1.1.0"
 
 "@nilsroesel/utils@^0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@nilsroesel/utils/-/utils-0.2.8.tgz#e788bcdf562bbf3bb8faa4cbfcb7392ea753e9f2"
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@nilsroesel/utils/-/utils-0.2.9.tgz#8e1513e0cb3909e0300e5eeab0b1b168bc4acbd5"
   dependencies:
     eventsource "^1.0.7"
     https-proxy-agent "^2.2.1"

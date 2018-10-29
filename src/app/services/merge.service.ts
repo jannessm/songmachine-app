@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
 import { ParserService } from './parser.service';
 
-const jiff = require('jiff');
+const diff = require('diff');
 
 @Injectable()
 export class MergeService {
@@ -11,12 +11,12 @@ export class MergeService {
 
   merge(oldSong, newSongServer, newSongLocal): Song {
 
-    console.log(oldSong);
-    console.log(newSongServer);
-    console.log(newSongLocal);
+    const strOld = this.parserService.obj2Str(oldSong);
+    const strNewServer = this.parserService.obj2Str(newSongServer);
+    const strNewLocal = this.parserService.obj2Str(newSongLocal);
 
-    console.log('diff', jiff.diff(oldSong, newSongServer));
-    console.log('diff', jiff.diff(oldSong, newSongLocal));
+    console.log('diff', diff.diffLines(strOld, strNewServer));
+    console.log('diff', diff.diffLines(strOld, strNewLocal));
 
     return newSongLocal;
   }
