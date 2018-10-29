@@ -5,7 +5,7 @@ const shell = require('shelljs');
 
 module.exports = class {
 
-  constructor() { this.fileMap = UtilMap.createES5UtilMap(); }
+  constructor() { this.fileMap = UtilMap.asES5(); }
 
   createDir(pathWithFile) {
     const dir = path.parse(pathWithFile).dir;
