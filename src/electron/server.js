@@ -67,6 +67,7 @@ module.exports = class {
       if(payload.path) {
         try {
           const songLinks = fileManager
+            .clearMap()
             .readDir(payload.path)
             .loadSongFiles()
             .listAllSongFiles();

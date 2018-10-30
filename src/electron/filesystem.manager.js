@@ -22,7 +22,6 @@ module.exports = class {
    */
   readDir(dirPath) {
     if(dirPath) {
-      this.fileMap.clear();
       fs.readdirSync(dirPath).forEach(entry => {
         const entryPath = path.join(dirPath, entry);
         if(fs.statSync(entryPath).isDirectory()) this.readDir(entryPath);
@@ -79,5 +78,11 @@ module.exports = class {
   getIndexedVersion(path) { return this.fileMap.get(path); }
 
   exists(path) { return fs.existsSync(path); }
+
+  clearMap() {
+    console.log(this.fileMap);
+    this.fileMap.clear(); 
+    return this;
+  }
 
 };
