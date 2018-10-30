@@ -164,7 +164,7 @@ module.exports = class {
       if(fileManager.isIndexed(payload.path)) {
         try {
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
-          const indexedFile = JSON.parse(fileManager.getIndexedVersion(payload.path));
+          const indexedFile = fileManager.getIndexedVersion(payload.path);
           const diff = jiff.diff(currentFile, indexedFile);
           if(diff.length === 0) {
             fileManager.writeFile(payload.path, payload.payload, () => {});

@@ -83,7 +83,7 @@ export class FileSynchronizerService {
 
   public getSong(songid: string): Promise<Song> {
     return this.dexieService.getByKey(DATABASES.songs, songid).then(res => {
-      return this.map<Song>(res);
+      return <Song>res;
     });
   }
 
@@ -107,7 +107,7 @@ export class FileSynchronizerService {
 
   public getSonggroup(songgroupid: string): Promise<Songgroup> {
     return this.dexieService.getByKey(DATABASES.songgroups, songgroupid).then(res => {
-      return this.map<Songgroup>(res);
+      return <Songgroup>res;
     });
   }
 

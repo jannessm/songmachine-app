@@ -35,7 +35,7 @@ module.exports = class {
    * Will load all .song files from a before scanned directory and return the resulting map
    */
   loadSongFiles() {
-    this.fileMap
+    this.fileMap = this.fileMap
       .map((value, key) => fs.readFileSync(key, 'utf8'))
       .map((value) => {
         try {
@@ -52,7 +52,7 @@ module.exports = class {
 
   deleteFile(path) {
     if (this.fileMap.has(path)) {
-      fs.unlink(path);
+      fs.unlinkSync(path);
       this.fileMap.delete(path);
     } else throw new Error('No such resource');
   }
@@ -80,7 +80,6 @@ module.exports = class {
   exists(path) { return fs.existsSync(path); }
 
   clearMap() {
-    console.log(this.fileMap);
     this.fileMap.clear(); 
     return this;
   }

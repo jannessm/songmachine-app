@@ -25,7 +25,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   song: Song = new Song();
   inputGroup: FormGroup;
   htmlLines: string[] = [];
-  doInput = true;
 
   start: number;
   end: number;
@@ -49,10 +48,9 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     });
   }
   ngOnChanges() {
-    if (this.input && this.doInput) {
+    if (this.input) {
       this.song = this.input;
       this.inputGroup.get('inputControl').setValue(this.parser.obj2Str(this.song));
-      this.doInput = false;
     }
   }
 

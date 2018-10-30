@@ -6,4 +6,4 @@
   <!--button mat-button (click)="addResolveSymbol()">♮</button-->
 </div>
 <app-songsheet-textarea [input]="songIn$ | async" (value)="songOut($event)" #textfield></app-songsheet-textarea>
-<app-preview [performMode]="false" [song]="songIn$ | async"></app-preview>
+<app-preview [performMode]="false" [song]="song"></app-preview>

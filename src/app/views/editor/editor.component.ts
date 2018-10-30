@@ -31,13 +31,11 @@ export class EditorComponent implements OnInit {
         this.songIn$ = Observable.from<Song>(this.dataService.getSong(songId));
       }
     });
-    this.songIn$.subscribe(song => {
-      this.song = song;
-    });
   }
 
   songOut(song) {
-    this.songIn$ = song;
+    this.song = song;
+    this.song.id = this.songId;
   }
 
   save() {
