@@ -2,12 +2,13 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { DataService } from './data.service';
 import { DATABASES } from '../models/databases';
 import { DexieService } from './dexie.service';
+import { TranslationService } from './translation.service';
 
 @Injectable()
 export class ConfigService {
   private configs: any = {};
 
-  constructor(private dexieService: DexieService) {
+  constructor(private dexieService: DexieService, private translationService: TranslationService) {
     this.init();
   }
 

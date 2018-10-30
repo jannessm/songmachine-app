@@ -10,6 +10,7 @@ import { SongSonggroupFormComponent } from '../../components/song-songgroup-form
 import { DexieService } from '../../services/dexie.service';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-browser',
@@ -25,12 +26,12 @@ export class BrowserComponent implements OnInit, OnDestroy {
   searchSubscription: Subscription;
 
   songView: object = {
-    headline: 'browser.headline.songs',
-    searchText: 'browser.search.song'
+    headline: this.translationService.i18n('browser.headline.songs'),
+    searchText: this.translationService.i18n('browser.search.song')
   };
   songgroupView: object = {
-    headline: 'browser.headline.songgroups',
-    searchText: 'browser.search.songgroup'
+    headline: this.translationService.i18n('browser.headline.songgroups'),
+    searchText: this.translationService.i18n('browser.search.songgroup')
   };
   songs: Song[] = [];
   songgroups: Songgroup[] = [];
@@ -41,7 +42,8 @@ export class BrowserComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dataService: DataService,
     private dexieService: DexieService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translationService: TranslationService
   ) { }
 
   ngOnInit() {
