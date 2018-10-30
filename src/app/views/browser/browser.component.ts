@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Song } from '../../models/song';
@@ -8,29 +8,34 @@ import { DataService } from '../../services/data.service';
 import { MatDialog } from '@angular/material';
 import { SongSonggroupFormComponent } from '../../components/song-songgroup-form/song-songgroup-form.component';
 import { DexieService } from '../../services/dexie.service';
+import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-browser',
   templateUrl: './browser.component.html',
   styleUrls: ['./browser.component.scss']
 })
-export class BrowserComponent implements OnInit {
+export class BrowserComponent implements OnInit, OnDestroy {
 
   type: DATABASES;
   headline: string;
   search_text: string;
-  searchInput = '';
+  searchControl = new FormControl('');
+  searchSubscription: Subscription;
 
-  song_view: object = {
+  songView: object = {
     headline: 'Your Songs',
     search_text: 'Search a song'
   };
-  songgroup_view: object = {
+  songgroupView: object = {
     headline: 'Your Events',
     search_text: 'Search an event'
   };
-  song_elems: Song[] = [];
-  songgroup_elems: Songgroup[] = [];
+  songs: Song[] = [];
+  songgroups: Songgroup[] = [];
+
+  filteredElems: Song[] | Songgroup[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -50,15 +55,39 @@ export class BrowserComponent implements OnInit {
         default:
         case DATABASES.songs:
           this.type = DATABASES.songs;
-          Object.assign(this, this.song_view);
+          Object.assign(this, this.songView);
           break;
         case DATABASES.songgroups:
-          Object.assign(this, this.songgroup_view);
+          Object.assign(this, this.songgroupView);
           break;
       }
 
       this.updateElems();
     });
+
+    this.searchSubscription = this.searchControl.valueChanges.subscribe(searchInput => {
+      searchInput = searchInput.toLowerCase().trim();
+      if (this.type === DATABASES.songs) {
+        this.filteredElems = this.songs.filter(value => {
+          return searchInput
+            .split(' ')
+            .filter(v => !!v)
+            .map(search =>
+              value.artist.toLowerCase().indexOf(search) > -1 ||
+              value.title.toLowerCase().indexOf(search) > -1 ||
+              value.bpm.toString().indexOf(search) > -1 ||
+              value.books
+                .map(val => val.toLowerCase().indexOf(search) > -1)
+                .reduce((res, val) => res || val, false)
+            ).reduce((res, val) => res && val, true);
+        }
+        );
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.searchSubscription.unsubscribe();
   }
 
   showAddForm(data) {
@@ -90,9 +119,11 @@ export class BrowserComponent implements OnInit {
         }
 
         if (this.type === DATABASES.songs) {
-          this.song_elems = arr;
+          this.songs = arr;
+          this.filteredElems = this.songs;
         } else {
-          this.songgroup_elems = arr;
+          this.songgroups = arr;
+          this.filteredElems = this.songgroups;
         }
       });
     }, 10);

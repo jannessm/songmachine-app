@@ -2,18 +2,18 @@
 <div id="browser_content" class="content" [ngSwitch]="type">
     <h3>{{ headline }}<i class="icon icon-plus" (click)="showAddForm()"></i></h3>
     <mat-form-field floatLabel="never">
-        <input matInput id="search" [placeholder]="search_text" [(ngModel)]="searchInput" autofill="false">
-        <button mat-button *ngIf="searchInput" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput=''">
-            <i mat-icon-button class="icon icon-close"></i>
+        <input matInput id="search" [placeholder]="search_text" autofill="false" [formControl]="searchControl">
+        <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button (click)="searchControl.setValue('')">
+            <i class="icon icon-cross"></i>
         </button>
     </mat-form-field>
     <div id="songs">
 
         <span *ngSwitchCase="'songs'">
-            <app-song *ngFor="let song of song_elems" [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
+            <app-song *ngFor="let song of filteredElems" [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
         </span>
         <span *ngSwitchCase="'songgroups'">
-            <app-songgroup *ngFor="let group of songgroup_elems" [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-songgroup>
+            <app-songgroup *ngFor="let group of filteredElems" [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-songgroup>
         </span>
     </div>
 </div>
