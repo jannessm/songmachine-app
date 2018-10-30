@@ -1,115 +1,108 @@
 
-    <span [ngSwitch]="type">
+<span [ngSwitch]="type">
+    <mat-dialog-content>
         <span *ngSwitchCase="'songs'">
-            <mat-dialog-content>
-                <form>
-                    <mat-form-field>
-                        <input matInput 
-                            id="name" 
-                            name="name" 
-                            placeholder="Title"
-                            required
-                            autocomplete="off"
-                            [(ngModel)]="song.title"
-                        >
-                    </mat-form-field>
-        
-                    <mat-form-field>
-                        <input matInput 
-                            name="artist" 
-                            id="artist" 
-                            placeholder="Artist" 
-                            [(ngModel)]="song.artist"
-                            autocomplete="off"
-                        >
-                    </mat-form-field>
-        
-                    <mat-form-field>
-                        <input matInput 
-                            id="bpm" 
-                            type="number" 
-                            name="bpm" 
-                            placeholder="BPM" min="40" max="240"
-                            [value]="song.bpm"
-                            (input)="song.bpm = $event.target.value"
-                            autocomplete="off"
-                        >
-                    </mat-form-field>                       
-        
-                    <mat-form-field>
-                        <input matInput 
-                            id="books" 
-                            name="books" 
-                            placeholder="Books" 
-                            [(ngModel)]="songBooksStr"
-                            autocomplete="off"
-                        >
-                        <mat-hint>Separate each book with ';'</mat-hint>
-                    </mat-form-field>
-                </form>
-            </mat-dialog-content>
-            <div mat-dialog-actions>
-                <button mat-button (click)="onNoClick()">No Thanks</button>
-                <button mat-button (click)="onSave()" cdkFocusInitial>Save</button>
-            </div>
-        </span>
+            <form>
+                <mat-form-field>
+                    <input matInput 
+                        id="name" 
+                        name="name" 
+                        placeholder="{{ 'form.new.song.title' | translate }}"
+                        required
+                        autocomplete="off"
+                        [(ngModel)]="song.title"
+                    >
+                </mat-form-field>
     
-        <span *ngSwitchCase="'songgroups'">
-            <mat-dialog-content>
-                <form>
-                    <mat-form-field>
-                        <input matInput 
-                            id="name" 
-                            name="name" 
-                            placeholder="Name" 
-                            required 
-                            autocomplete="off"
-                            [(ngModel)]="songgroup.name"             
-                        >
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput 
-                            name="description" 
-                            id="description" 
-                            placeholder="Description" 
-                            [(ngModel)]="songgroup.description"                           
-                        >
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput 
-                            type="datetime-local" 
-                            name="date" 
-                            id="date" 
-                            placeholder="Date"
-                            [(ngModel)]="songgroup.date"
-                        >
-                    </mat-form-field>
-                    <form [formGroup]="songsForm">
-                        <div formArrayName="songsArray">
-                            <div *ngFor="let scontrol of getControls(); let i = index">
-                                <span class="songselector-label"><label for="song{{ i+1 }}">{{ i+1 }}.</label></span>
-                                <!-- if songs selectable-->
-                                <mat-form-field class="songselection-input" [formGroupName]="i" floatLabel="never">
-                                    <input matInput type="text"
-                                        formControlName="songSelect"
-                                        [value]="songUUID"
-                                        [matAutocomplete]="songselection"
-                                        placeholder="Select a song"
-                                        [attr.disabled]="songs.length === 0">
-                                    <mat-autocomplete #songselection="matAutocomplete" [displayWith]="showSong">
-                                        <mat-option *ngFor="let s of songs" [value]="s">{{ s.title }}</mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                            </div>
-                            <button mat-flat-button (click)="addSongField($event)" class="half_button">+</button>
-                            <button mat-flat-button (click)="removeSongField($event)" class="half_button">-</button>
-                        </div>
-                    </form>
-                </form>
-            </mat-dialog-content>
-            <div mat-dialog-actions>
-                <button mat-button (click)="onNoClick()">No Thanks</button>
-                <button mat-button (click)="onSave()" cdkFocusInitial>Save</button>
-            </div>
+                <mat-form-field>
+                    <input matInput 
+                        name="artist" 
+                        id="artist" 
+                        placeholder="{{ 'form.new.song.artist' | translate }}" 
+                        [(ngModel)]="song.artist"
+                        autocomplete="off"
+                    >
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <input matInput 
+                        id="bpm" 
+                        type="number" 
+                        name="bpm" 
+                        placeholder="{{ 'form.new.song.bpm' | translate }}" min="40" max="240"
+                        [value]="song.bpm"
+                        (input)="song.bpm = $event.target.value"
+                        autocomplete="off"
+                    >
+                </mat-form-field>                       
+    
+                <mat-form-field>
+                    <input matInput 
+                        id="books" 
+                        name="books" 
+                        placeholder="{{ 'form.new.song.books' | translate }}" 
+                        [(ngModel)]="songBooksStr"
+                        autocomplete="off"
+                    >
+                    <mat-hint>Separate each book with ';'</mat-hint>
+                </mat-form-field>
+            </form>
         </span>
-    </span>
+        <span *ngSwitchCase="'songgroups'">
+            <form>
+                <mat-form-field>
+                    <input matInput 
+                        id="name" 
+                        name="name" 
+                        placeholder="{{ 'form.new.songgroup.name' | translate }}" 
+                        required 
+                        autocomplete="off"
+                        [(ngModel)]="songgroup.name"             
+                    >
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        name="description" 
+                        id="description" 
+                        placeholder="{{ 'form.new.songgroup.description' | translate }}" 
+                        [(ngModel)]="songgroup.description"                           
+                    >
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        type="datetime-local" 
+                        name="date" 
+                        id="date" 
+                        placeholder="{{ 'form.new.songgroup.date' | translate }}"
+                        [(ngModel)]="songgroup.date"
+                    >
+                </mat-form-field>
+                <form [formGroup]="songsForm">
+                    <div formArrayName="songsArray">
+                        <div *ngFor="let scontrol of getControls(); let i = index">
+                            <span class="songselector-label"><label for="song{{ i+1 }}">{{ i+1 }}.</label></span>
+                            <!-- if songs selectable-->
+                            <mat-form-field class="songselection-input" [formGroupName]="i" floatLabel="never">
+                                <input matInput type="text"
+                                    formControlName="songSelect"
+                                    [value]="songUUID"
+                                    [matAutocomplete]="songselection"
+                                    placeholder="{{ 'form.new.songgroup.selectASong' | translate }}"
+                                    [attr.disabled]="songs.length === 0">
+                                <mat-autocomplete #songselection="matAutocomplete" [displayWith]="showSong">
+                                    <mat-option *ngFor="let s of songs" [value]="s">{{ s.title }}</mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <button mat-flat-button (click)="addSongField($event)" class="half_button">+</button>
+                        <button mat-flat-button (click)="removeSongField($event)" class="half_button">-</button>
+                    </div>
+                </form>
+            </form>
+        </span>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">{{ 'form.new.cancel' | translate }}</button>
+        <button mat-button (click)="onSave()" cdkFocusInitial>{{ 'form.new.save' | translate }}</button>
+    </div>
+</span>

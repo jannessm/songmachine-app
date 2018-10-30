@@ -1,9 +1,6 @@
 <div id="menu">
-  <button mat-button (click)="save()">Save</button>
-  <button mat-button (click)="performMode()">PerformMode</button>
-  <button mat-button (click)="transposeUp()">Transpose Up</button>
-  <button mat-button (click)="transposeDown()">Transpose Down</button>
-  <!--button mat-button (click)="addResolveSymbol()">♮</button-->
+  <button mat-button (click)="save()">{{ 'editor.save' | translate }}</button>
+  <button mat-button (click)="performMode()">{{ 'editor.performMode' | translate }}</button>
 </div>
 <app-songsheet-textarea [input]="songIn$ | async" (value)="songOut($event)" #textfield></app-songsheet-textarea>
 <app-preview [performMode]="false" [song]="song"></app-preview>

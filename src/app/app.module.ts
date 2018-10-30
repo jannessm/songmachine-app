@@ -29,11 +29,13 @@ import { HtmlFactoryService } from './services/html-factory.service';
 import { FileSynchronizerService } from './services/file-synchronizer.service';
 import { ConfigService } from './services/config.service';
 import { MergeService } from './services/merge.service';
+import { DexieService } from './services/dexie.service';
 
 import { ConnectivityModule } from './services/connectivity/connectivity.module';
 
 import { SafePipe } from './pipes/safe.pipe';
-import { DexieService } from './services/dexie.service';
+import { TranslatePipe } from './pipes/translate.pipe';
+import { TranslationService } from './services/translation.service';
 
 
 export function initConfigs(configService: ConfigService) {
@@ -51,10 +53,11 @@ export function initConfigs(configService: ConfigService) {
     ColorComponent,
     SongSonggroupFormComponent,
     IconsComponent,
-    SafePipe,
     PreviewComponent,
     SongsheetTextareaComponent,
     PerformviewComponent,
+    SafePipe,
+    TranslatePipe
   ],
   imports: [
     ConnectivityModule,
@@ -80,6 +83,7 @@ export function initConfigs(configService: ConfigService) {
     ConfigService,
     MergeService,
     DexieService,
+    TranslationService
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,

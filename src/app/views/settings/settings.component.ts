@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { DATABASES } from '../../models/databases';
 import { ConfigService } from '../../services/config.service';
 
 @Component({

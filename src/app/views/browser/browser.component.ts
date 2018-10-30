@@ -20,17 +20,17 @@ export class BrowserComponent implements OnInit, OnDestroy {
 
   type: DATABASES;
   headline: string;
-  search_text: string;
+  searchText: string;
   searchControl = new FormControl('');
   searchSubscription: Subscription;
 
   songView: object = {
-    headline: 'Your Songs',
-    search_text: 'Search a song'
+    headline: 'browser.headline.songs',
+    searchText: 'browser.search.song'
   };
   songgroupView: object = {
-    headline: 'Your Events',
-    search_text: 'Search an event'
+    headline: 'browser.headline.songgroups',
+    searchText: 'browser.search.songgroup'
   };
   songs: Song[] = [];
   songgroups: Songgroup[] = [];

@@ -2,7 +2,7 @@
 <div id="browser_content" class="content" [ngSwitch]="type">
     <h3>{{ headline }}<i class="icon icon-plus" (click)="showAddForm()"></i></h3>
     <mat-form-field floatLabel="never">
-        <input matInput id="search" [placeholder]="search_text" autofill="false" [formControl]="searchControl">
+        <input matInput id="search" [placeholder]="(searchText | translate)" autofill="false" [formControl]="searchControl">
         <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button (click)="searchControl.setValue('')">
             <i class="icon icon-cross"></i>
         </button>
