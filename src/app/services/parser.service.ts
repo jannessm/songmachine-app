@@ -71,7 +71,7 @@ export class ParserService {
 
     const order = this.regexs.order.exec(str);
     if (order) {
-      meta['order'] = this.deepTrim(order[1].split(','));
+      meta['order'] = order[1].split(',').map(value => value.trim());
     }
 
     const matches = this.regexs.header.exec(str);
@@ -81,7 +81,7 @@ export class ParserService {
         if (matches[i] && matches[i] !== 'books') {
           meta[matches[i]] = matches[i + 1];
         } else if (matches[i]) {
-          meta[matches[i]] = this.deepTrim(matches[i + 1].split(','));
+          meta[matches[i]] = matches[i + 1].split(',').map(value => value.trim());
              }
       }
     }
@@ -155,14 +155,14 @@ export class ParserService {
       }
     } while (m);
 
-    const annotationblocks = newLine.lyrics.bottomLine.split('|');
+    const annotationblocks = newLine.lyrics.bottomLine.split('|').map(value => value.replace(/\s*$/g, ''));
     newLine.annotationCells = annotationblocks.length - 1;
     for (const anno of annotationblocks) {
       if (anno === annotationblocks[0]) {
         continue;
       }
 
-      const annotations = this.deepTrim(anno.split(';'));
+      const annotations = anno.split(';').map(value => value.trim());
       newLine.differentAnnotations = this.max(newLine.differentAnnotations, annotations.length);
       newLine.annotations.push(annotations);
     }
@@ -170,7 +170,7 @@ export class ParserService {
     let offset = 0;
     for (let i = 0; i < matches.length; i++) {
       let len = matches[i].index - newLine.lyrics.topLine.length - offset + 1;
-      len = len > 0 ? len : 2;
+      len = len > 1 ? len : 2;
       offset += matches[i][0].length;
       newLine.lyrics.topLine += Array(len).join(' ') + matches[i][1];
     }
@@ -187,14 +187,6 @@ export class ParserService {
       return a;
     }
     return a > b ? a : b;
-  }
-
-  private deepTrim(arr: string[]): string[] {
-    const res: string[] = [];
-    arr.forEach((val, index, a) => {
-      res.push(val.trim());
-    });
-    return res;
   }
 
   public metaToString(song: Song): string {
@@ -257,6 +249,12 @@ export class ParserService {
   }
 
   private joinAnnotations(line: Line): string {
+    if (line.annotations
+      .map(value => (value.length === 1 && !value[0]))
+      .reduce((result, value) => result || value)
+    ) {
+      return '';
+    }
     return ' | ' +
       line.annotations
         .map(value => value.join('; '))

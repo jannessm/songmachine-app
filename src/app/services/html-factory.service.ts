@@ -89,7 +89,7 @@ export class HtmlFactoryService {
       let c = 0;
       for (const ann of l.annotations) {
         const id = ann.length > 1 ? l.printed : 0;
-        html += `<td class="annotation_border"><pre>${this.markdown(ann[id])}</pre></td>`;
+        html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
         l.printed++;
         c++;
       }
@@ -102,7 +102,7 @@ export class HtmlFactoryService {
 
   private extendMissingCells(c: number, cells: number): string {
     let html = '';
-    while (c <= cells) {
+    while (c < cells) {
       html += '<td class="annotation_border"></td>';
       c++;
     }
