@@ -251,7 +251,7 @@ export class ParserService {
   private joinAnnotations(line: Line): string {
     if (line.annotations
       .map(value => (value.length === 1 && !value[0]))
-      .reduce((result, value) => result || value)
+      .reduce((result, value) => result && value, true)
     ) {
       return '';
     }
