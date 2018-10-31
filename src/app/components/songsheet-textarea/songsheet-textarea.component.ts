@@ -43,14 +43,14 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     this.update('');
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
         this.update(v);
-        this.song = this.parser.str2Obj(v);
+        this.song = this.parser.stringToSong(v);
         this.value.emit(this.song);
     });
   }
   ngOnChanges() {
     if (this.input) {
       this.song = this.input;
-      this.inputGroup.get('inputControl').setValue(this.parser.obj2Str(this.song));
+      this.inputGroup.get('inputControl').setValue(this.parser.songToString(this.song));
     }
   }
 

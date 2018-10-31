@@ -21,15 +21,15 @@ export class ParserService {
 
   constructor(private htmlFactory: HtmlFactoryService) { }
 
-  public obj2PDF( song: Song ) {
-    const html = this.obj2HTML(song);
+  public songToPDF( song: Song ) {
+    const html = this.songToHTML(song);
   }
 
-  public obj2HTML( song: Song): string {
-    return this.htmlFactory.song2html(song);
+  public songToHTML( song: Song): string {
+    return this.htmlFactory.songToHTML(song);
   }
 
-  public obj2Str( song: Song ): string {
+  public songToString( song: Song ): string {
     if (!song) {
       return '';
     } else {
@@ -45,7 +45,7 @@ export class ParserService {
     return str;
   }
 
-  public str2Obj( str: string ): Song {
+  public stringToSong( str: string ): Song {
     const newSong = new Song();
     // get meta
     const meta = this.getMeta(str);

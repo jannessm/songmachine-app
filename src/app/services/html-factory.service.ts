@@ -22,7 +22,7 @@ export class HtmlFactoryService {
         .map(line => `<pre class="line-wrapper">${ this.markdown(line, true) }</pre>`);
    }
 
-  public song2html(song: Song): string {
+  public songToHTML(song: Song): string {
     if (!song) {
       return '';
     }

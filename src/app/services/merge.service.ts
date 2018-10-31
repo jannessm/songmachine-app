@@ -11,9 +11,9 @@ export class MergeService {
 
   merge(oldSong, newSongServer, newSongLocal): Song {
 
-    const strOld = this.parserService.obj2Str(oldSong);
-    const strNewServer = this.parserService.obj2Str(newSongServer);
-    const strNewLocal = this.parserService.obj2Str(newSongLocal);
+    const strOld = this.parserService.songToString(oldSong);
+    const strNewServer = this.parserService.songToString(newSongServer);
+    const strNewLocal = this.parserService.songToString(newSongLocal);
 
     console.log('diff', diff.diffLines(strOld, strNewServer));
     console.log('diff', diff.diffLines(strOld, strNewLocal));

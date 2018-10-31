@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
           if (reader.error) {
             // TODO is dir
           } else {
-            const song = this.parserService.str2Obj(<string>reader.result);
+            const song = this.parserService.stringToSong(<string>reader.result);
             this.dataService.saveSong(song);
           }
         };
