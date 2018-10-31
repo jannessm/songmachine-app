@@ -8,8 +8,8 @@ export class TranslationService {
 
   private translations = {};
 
-  constructor(private http: HttpClient, @Inject(LOCALE_ID) locale) {
-    this.setLanguage(locale);
+  constructor(private http: HttpClient) {
+    this.setLanguage(navigator.language);
   }
 
   public setLanguage(locale) {
@@ -19,6 +19,10 @@ export class TranslationService {
         this.translations = this.parseXMLIntoJson(res);
         subscr.unsubscribe();
       });
+  }
+
+  public getLanguages() {
+    return ['de', 'en'];
   }
 
   public i18n(id) {

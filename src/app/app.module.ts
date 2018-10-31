@@ -4,7 +4,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AutosizeModule } from 'ngx-autosize';
 
 import { ConnectivityModule } from './services/connectivity/connectivity.module';
@@ -90,8 +90,7 @@ export function initConfigs(configService: ConfigService) {
       useFactory: initConfigs,
       deps: [ConfigService],
       multi: true
-    },
-    { provide: LOCALE_ID, useValue: 'en' }
+    }
   ],
   entryComponents: [
     SongSonggroupFormComponent,
