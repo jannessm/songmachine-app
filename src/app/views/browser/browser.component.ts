@@ -93,7 +93,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
     this.searchSubscription.unsubscribe();
   }
 
-  showAddForm(data) {
+  showAddForm(data?) {
     if (!data) {
       data = this.type === DATABASES.songs ? new Song() : new Songgroup();
     }
