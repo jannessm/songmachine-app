@@ -27,7 +27,6 @@ export class FileSynchronizerService {
     return this.apiService.generateFileSystemIndex().then(res => {
       this.dexieService.clear(DATABASES.songs);
       this.dexieService.clear(DATABASES.songgroups);
-      console.log(res);
       res.payload.forEach(filePath => {
         const file = filePath.replace(this.apiService.getPath(), '');
         if (file.startsWith(DATABASES.songs)) {
@@ -48,8 +47,6 @@ export class FileSynchronizerService {
           case 200:
             this.dexieService.upsert(dbType, response.payload.data);  // filesystem determines data!!!
             break;
-          default:
-            console.log(response, filePath, dbType);
         }
       });
     });
@@ -63,12 +60,10 @@ export class FileSynchronizerService {
 
   private upsertSong(filePath: string, data: Song): Promise<Song> {
     return this.apiService.generateFileUpdateRequest(filePath, data).then( res => {
-      console.log('upsert file', res);
       switch (res.status) {
         case 201:
           return new Promise<Song>(resolve => resolve(data));
         case 300:
-          console.log(res.payload);
           return this.mergeService.mergeSong(res.payload.indexedVersion, res.payload.currentVersion, data).then(song => {
             return this.upsertSong(filePath, <Song>song);
           });
@@ -82,7 +77,7 @@ export class FileSynchronizerService {
 
   public getSongs(): Promise<Song[]> {
     return this.dexieService.getAll(DATABASES.songs).then(res => {
-      return this.map<Song>(res);
+      return this.cast<Song>(res);
     });
   }
 
@@ -108,7 +103,7 @@ export class FileSynchronizerService {
 
   public getSonggroups(): Promise<Songgroup[]> {
     return this.dexieService.getAll(DATABASES.songgroups).then(res => {
-      return this.map<Songgroup>(res);
+      return this.cast<Songgroup>(res);
     });
   }
 
@@ -130,11 +125,5 @@ export class FileSynchronizerService {
     });
   }
 
-  private map<T>(array) {
-    if (array && array.length > 0) {
-      return array.map(value => <T>value);
-    } else {
-      return [];
-    }
-  }
+  private cast<T>(array): Array<T> { return (array || []).map(value => <T>value); }
 }

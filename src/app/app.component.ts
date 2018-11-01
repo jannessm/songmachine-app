@@ -54,23 +54,23 @@ export class AppComponent implements OnInit {
     }
   }
 
-  showImport(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
+  showImport(clickEvent) {
+    clickEvent.preventDefault();
+    clickEvent.dataTransfer.dropEffect = 'copy';
     if (!this.show) {
       this.show = true;
     }
   }
 
-  hideImport(e) {
+  hideImport(clickEvent) {
     this.show = false;
   }
 
-  importSong(e) {
+  importSong(clickEvent) {
     this.show = false;
-    e.preventDefault();
-    if (e.dataTransfer.files) {
-      Array.from(e.dataTransfer.files).forEach((file: File) => {
+    clickEvent.preventDefault();
+    if (clickEvent.dataTransfer.files) {
+      Array.from(clickEvent.dataTransfer.files).forEach((file: File) => {
         const reader = new FileReader();
         reader.readAsText(file);
 
