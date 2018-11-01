@@ -13,12 +13,14 @@ export class PerformviewComponent implements OnInit {
 
   songs: Song[] = [];
   activeSong = 0;
+  songId = '';
 
   constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       const songId = params['songId'];
+      this.songId = songId;
       if (/_/g.test(songId)) {
         songId.split('_').forEach(element => {
           this.loadSong(element);
@@ -35,6 +37,7 @@ export class PerformviewComponent implements OnInit {
         .getByKey(DATABASES.songs, id)
         .then(result => {
           this.songs.push(<Song>result);
+          console.log(this.songs.length);
       });
     }
   }
