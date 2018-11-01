@@ -1,19 +1,17 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
-import { DATABASES } from '../../models/databases';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html',
-  styleUrls: ['./event.component.scss']
+  selector: 'app-songgroup',
+  templateUrl: './songgroup.component.html',
+  styleUrls: ['./songgroup.component.scss']
 })
-export class EventComponent implements OnInit {
+export class SonggroupComponent implements OnInit {
 
   @Input() songgroup: Songgroup;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
-  @Output() deleted: EventEmitter<any> = new EventEmitter();
   JSON = JSON;
 
   constructor(private dataService: DataService, private router: Router) { }
@@ -32,13 +30,12 @@ export class EventComponent implements OnInit {
   }
 
   delete(songgroup: Songgroup) {
-    this.dataService.delete(DATABASES.events, songgroup.id);
-    this.deleted.emit();
+    this.dataService.deleteSonggroup(songgroup.id);
   }
 
   setSongs() {
     this.songgroup.songs.forEach( uuid => {
-      this.dataService.getByKey(DATABASES.songs, uuid).then(res => {
+      this.dataService.getSong(uuid).then(res => {
         if (res) {
           this.songs.push(res.title);
         }

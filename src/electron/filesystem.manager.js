@@ -25,7 +25,7 @@ module.exports = class {
       fs.readdirSync(dirPath).forEach(entry => {
         const entryPath = path.join(dirPath, entry);
         if(fs.statSync(entryPath).isDirectory()) this.readDir(entryPath);
-        else if(path.extname(entryPath) === '.song') this.fileMap.set(entryPath, null);
+        else if(path.extname(entryPath) === '.song' || path.extname(entryPath) === '.songgroup') this.fileMap.set(entryPath, null);
       });
     }
     return this;
@@ -35,7 +35,7 @@ module.exports = class {
    * Will load all .song files from a before scanned directory and return the resulting map
    */
   loadSongFiles() {
-    return this.fileMap
+    this.fileMap = this.fileMap
       .map((value, key) => fs.readFileSync(key, 'utf8'))
       .map((value) => {
         try {
@@ -43,22 +43,27 @@ module.exports = class {
         } catch(err) { return null; }
       })
       .filter(v => !!v);
+    return this;
   }
 
-  loadFile(path) { return fs.readFileSync(path, 'utf8'); }
+  loadFile(path) { 
+    const file = fs.readFileSync(path, 'utf8');
+    this.fileMap.set(path, file);
+    return file; 
+  }
 
   listAllSongFiles() { return Array.from(this.fileMap, map => map[0]); }
 
   deleteFile(path) {
     if (this.fileMap.has(path)) {
-      fs.unlink(path);
+      fs.unlinkSync(path);
       this.fileMap.delete(path);
     } else throw new Error('No such resource');
   }
 
 
   writeFile(path, document, onExecute) {
-    fs.writeFile(path, JSON.stringify(document), err => {
+    fs.writeFile(path, JSON.stringify(document, null, 2), err => {
       this.createDir(path);
       onExecute(err);
       if(!err) this.fileMap.set(path, document);
@@ -77,5 +82,10 @@ module.exports = class {
   getIndexedVersion(path) { return this.fileMap.get(path); }
 
   exists(path) { return fs.existsSync(path); }
+
+  clearMap() {
+    this.fileMap.clear(); 
+    return this;
+  }
 
 };

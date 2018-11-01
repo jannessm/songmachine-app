@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Song } from '../../models/song';
@@ -6,68 +6,105 @@ import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { MatDialog } from '@angular/material';
-import { SongEventFormComponent } from '../../components/song-event-form/song-event-form.component';
+import { SongSonggroupFormComponent } from '../../components/song-songgroup-form/song-songgroup-form.component';
+import { DexieService } from '../../services/dexie.service';
+import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-browser',
   templateUrl: './browser.component.html',
   styleUrls: ['./browser.component.scss']
 })
-export class BrowserComponent implements OnInit {
+export class BrowserComponent implements OnInit, OnDestroy {
 
   type: DATABASES;
   headline: string;
-  search_text: string;
-  searchInput = '';
+  searchText: string;
+  searchControl = new FormControl('');
+  searchSubscription: Subscription;
 
-  song_view: object = {
-    headline: 'Your Songs',
-    search_text: 'Search a song'
+  songView: object = {
+    headline: this.translationService.i18n('browser.headline.songs'),
+    searchText: this.translationService.i18n('browser.search.song')
   };
-  event_view: object = {
-    headline: 'Your Events',
-    search_text: 'Search an event'
+  songgroupView: object = {
+    headline: this.translationService.i18n('browser.headline.songgroups'),
+    searchText: this.translationService.i18n('browser.search.songgroup')
   };
-  song_elems: Song[] = [];
-  songgroup_elems: Songgroup[] = [];
+  songs: Song[] = [];
+  songgroups: Songgroup[] = [];
+
+  filteredElems: Song[] | Songgroup[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
+    private router: Router,
+    private dexieService: DexieService,
     private dialog: MatDialog,
-    private router: Router
+    private translationService: TranslationService
   ) { }
 
   ngOnInit() {
+    this.dexieService.changes.subscribe(() => {
+      this.updateElems();
+    });
+
     this.route.params.subscribe(params => {
       this.type = params['type'];
       switch (this.type) {
         default:
         case DATABASES.songs:
           this.type = DATABASES.songs;
-          Object.assign(this, this.song_view);
+          Object.assign(this, this.songView);
           break;
-        case DATABASES.events:
-          Object.assign(this, this.event_view);
+        case DATABASES.songgroups:
+          Object.assign(this, this.songgroupView);
           break;
       }
 
       this.updateElems();
     });
+
+    this.searchSubscription = this.searchControl.valueChanges.subscribe(searchInput => {
+      searchInput = searchInput.toLowerCase().trim();
+      if (this.type === DATABASES.songs) {
+        this.filteredElems = this.songs.filter(value => {
+          return searchInput
+            .split(' ')
+            .filter(v => !!v)
+            .map(search =>
+              value.artist.toLowerCase().indexOf(search) > -1 ||
+              value.title.toLowerCase().indexOf(search) > -1 ||
+              value.bpm.toString().indexOf(search) > -1 ||
+              value.books
+                .map(val => val.toLowerCase().indexOf(search) > -1)
+                .reduce((res, val) => res || val, false)
+            ).reduce((res, val) => res && val, true);
+        }
+        );
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.searchSubscription.unsubscribe();
   }
 
   showAddForm(data) {
     if (!data) {
       data = this.type === DATABASES.songs ? new Song() : new Songgroup();
     }
-    const dialogRef = this.dialog.open(SongEventFormComponent, {
+    const dialogRef = this.dialog.open(SongSonggroupFormComponent, {
       width: '500px',
       data: {object: data}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.upsert(this.type, result).then(() => {
+        this.dataService.saveType(this.type, result).then(() => {
           if (result instanceof Song) {
             this.router.navigateByUrl('/editor/' + result.id);
           } else {
@@ -81,7 +118,7 @@ export class BrowserComponent implements OnInit {
   updateElems() {
     const arr = [];
     setTimeout(() => {
-      this.dataService.getAll(this.type).then( res => {
+      this.dataService.getAll(<DATABASES>this.type).then( res => {
         for (const e of res) {
           if (this.type === DATABASES.songs) {
             arr.push(new Song(e));
@@ -91,9 +128,11 @@ export class BrowserComponent implements OnInit {
         }
 
         if (this.type === DATABASES.songs) {
-          this.song_elems = arr;
+          this.songs = arr;
+          this.filteredElems = this.songs;
         } else {
-          this.songgroup_elems = arr;
+          this.songgroups = arr;
+          this.filteredElems = this.songgroups;
         }
       });
     }, 10);

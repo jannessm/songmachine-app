@@ -8,25 +8,25 @@ import { Component, OnInit } from '@angular/core';
 export class ColorComponent implements OnInit {
 
   colors = [
-    "black",
-    "dark-grey",
-    "grey",
-    "light-grey",
-    "white",
-    "pastel-yellow",
-    "yellow",
-    "lemon",
-    "dark-yellow",
-    "lavender",
-    "lila",
-    "dark-lila",
-    "light-orange",
-    "orange",
-    "dark-orange",
-    "pastel-blue",
-    "blue",
-    "dark-blue",
-  ]
+    'black',
+    'dark-grey',
+    'grey',
+    'light-grey',
+    'white',
+    'pastel-yellow',
+    'yellow',
+    'lemon',
+    'dark-yellow',
+    'lavender',
+    'lila',
+    'dark-lila',
+    'light-orange',
+    'orange',
+    'dark-orange',
+    'pastel-blue',
+    'blue',
+    'dark-blue',
+  ];
 
   constructor() { }
 

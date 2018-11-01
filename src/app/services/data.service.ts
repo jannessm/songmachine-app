@@ -1,93 +1,62 @@
 import { Injectable } from '@angular/core';
-let uuid = require('uuid/v1');
-
-import idb, { DB } from 'idb';
-import { DATABASES } from '../models/databases';
+import { FileSynchronizerService } from './file-synchronizer.service';
 import { Song } from '../models/song';
 import { Songgroup } from '../models/songgroup';
+import { DATABASES } from '../models/databases';
 
 @Injectable()
 export class DataService {
 
-  private dbPromise: Promise<DB>;
+  constructor(private fileSynchronizer: FileSynchronizerService) {}
 
-  constructor() { 
-    this.dbPromise = idb.open('songsheet', 1, (upgradeDb) => {
-      if (!upgradeDb.objectStoreNames.contains('settings')) {
-        upgradeDb.createObjectStore('settings', {keyPath: 'id'});
-      }
-      if (!upgradeDb.objectStoreNames.contains('songs')) {
-        upgradeDb.createObjectStore('songs', {keyPath: 'id', autoIncrement: true});
-      }
-      if (!upgradeDb.objectStoreNames.contains('events')) {
-        upgradeDb.createObjectStore('events', {keyPath: 'id', autoIncrement: true});
-      }
-    });
-  }
-
-  public upsert(database: DATABASES, data: any){
-    if(typeof data !== 'object'){
-      throw new Error('data is not an object. Only objects can be added to Indexeddb');
+  getAll(dbType: DATABASES): Promise<Song[] | Songgroup[]> {
+    switch (dbType) {
+      case DATABASES.songs:
+        return this.getSongs();
+      case DATABASES.songgroups:
+        return this.getSonggroups();
     }
-    if(!data.id && database === DATABASES.settings){
-      throw new Error('Settings need an id.');
+  }
+
+  saveType(dbType: DATABASES, data) {
+    switch (dbType) {
+      case DATABASES.songs:
+        return this.saveSong(data);
+      case DATABASES.songgroups:
+        return this.saveSonggroup(data);
     }
-    // settings has a different id property
-    if(!data.id && database !== DATABASES.settings){
-      data.id = uuid();
-    }
-
-    return this.getByKey(database, data.id).then( obj => {
-      return this.dbPromise.then(db => {
-        let tx = db.transaction(database, 'readwrite');
-        let store = tx.objectStore(database);
-        store.put(data);
-        return tx.complete;
-      })
-    }).catch(() => {
-      return this.dbPromise.then(db => {
-        let tx = db.transaction(database, 'readwrite');
-        let store = tx.objectStore(database);
-        store.add(data);
-        return tx.complete;
-      })
-    });
   }
 
-  getAll(database: DATABASES){
-    return this.dbPromise.then(db => {
-      return db.transaction(database, 'readonly').objectStore(database).getAll().then( res => {
-        let arr = [];
-        for (let elem of res){
-          switch(database){
-            case DATABASES.songs:
-              arr.push(new Song(elem));
-              break;
-            case DATABASES.events:
-              arr.push(new Songgroup(elem));
-              break;
-            default:
-              arr.push(elem);
-          }
-        }
-
-        return arr;
-      });
-    })
+  getSongs(): Promise<Song[]> {
+    return this.fileSynchronizer.getSongs();
   }
 
-  getByKey(database: DATABASES, key: string){
-    return this.dbPromise.then(db => {
-      return db.transaction(database, 'readonly').objectStore(database).get(key);
-    })
+  getSonggroups(): Promise<Songgroup[]> {
+    return this.fileSynchronizer.getSonggroups();
   }
 
-  delete(database: DATABASES, key: string){
-    return this.dbPromise.then(db => {
-      let tx = db.transaction(database, 'readwrite');
-      tx.objectStore(database).delete(key);
-      return tx.complete;
-    })
+  getSong(songid: string): Promise<Song> {
+    return this.fileSynchronizer.getSong(songid);
+  }
+
+  saveSong(song: Song): Promise<Song> {
+    return this.fileSynchronizer.saveSong(song);
+  }
+
+  deleteSong(songid: string) {
+    this.fileSynchronizer.deleteSong(songid);
+  }
+
+  getSonggroup(songgroupid: string): Promise<Songgroup> {
+    return this.fileSynchronizer.getSonggroup(songgroupid);
+  }
+
+  saveSonggroup(songgroup: Songgroup): Promise<Songgroup> {
+    return this.fileSynchronizer.saveSonggroup(songgroup);
+  }
+
+  deleteSonggroup(songgroupid: string) {
+    this.fileSynchronizer.deleteSonggroup(songgroupid);
   }
 
 }

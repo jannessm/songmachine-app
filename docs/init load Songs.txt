@@ -1,0 +1,41 @@
+title init load Songs
+actor User
+participant DataService
+database IndexedDB
+participant FileSyncService
+participant MergeService
+participant APIService
+
+FileSyncService->DataService: get me last sync timestamps
+DataService->IndexedDB: get all songs with timestamps
+IndexedDB->DataService: songs with timestamps
+DataService->FileSyncService: songs with timestamp
+FileSyncService->APIService: save songs
+
+loop while there were new files
+APIService->FileSyncService: return non successfully saved songs <ids, newer_files>
+FileSyncService->MergeService: merge songs
+MergeService->FileSyncService: newer files
+FileSyncService->APIService: save newer files
+end
+
+break there were no newer files
+APIService->FileSyncService: all done, [new_files]
+FileSyncService->DataService: [new_files]
+
+DataService->IndexedDB: save new file, keep old
+
+opt user edits new file
+DataService->User: reload data?
+opt yes
+User->DataService: yes
+DataService->IndexedDB: delete old
+IndexedDB->DataService: new file
+DataService->User: new file
+end
+opt no
+User->DataService: no
+User->DataService: closed song
+DataService->IndexedDB: remove old
+end
+end

@@ -60,8 +60,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit() {
     this.song = this.song || new Song();
 
-    this.html = this.htmlFactory.song2html(this.song);
-    console.log(this.performMode);
+    this.html = this.htmlFactory.songToHTML(this.song);
   }
 
   ngAfterViewInit() {
@@ -71,7 +70,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.html = this.htmlFactory.song2html(this.song);
+    this.html = this.htmlFactory.songToHTML(this.song);
   }
 
   scrollUp() {

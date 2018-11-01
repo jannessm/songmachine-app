@@ -1,0 +1,53 @@
+@import "~assets/fonts.scss";
+
+.row{
+  flex-direction: row;
+  display: flex;
+  margin-bottom: 20px;
+}
+.col{
+  flex-direction: column;
+  width: 33%;
+  display: flex;
+  margin-right: 20px;
+}
+.stretch-row{
+  max-height: 100%;
+}
+.stretch-col{
+  max-width: 100%;
+}
+.fill{
+  margin:	0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+::ng-deep {
+  .merge-added{
+    background: green;
+  }
+  .merge-removed{
+    background: red;
+  }
+  .merge{
+    width: 100%;
+    display: inline-block;
+  }
+}
+
+.textfield{
+  height: 100%;
+  background: grey;
+  color: white;
+  padding: 10px;
+  font-family: $robotoMono;
+  font-size: 0.9em;
+}
+
+textarea{
+  font-family: $robotoMono;
+  font-size: 0.9em;
+}
