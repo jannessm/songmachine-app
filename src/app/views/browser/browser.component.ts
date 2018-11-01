@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
@@ -34,7 +34,8 @@ export class BrowserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -66,8 +67,13 @@ export class BrowserComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.upsert(this.type, result);
-        this.updateElems();
+        this.dataService.upsert(this.type, result).then(() => {
+          if (result instanceof Song) {
+            this.router.navigateByUrl('/editor/' + result.id);
+          } else {
+            this.updateElems();
+          }
+        });
       }
     });
   }
