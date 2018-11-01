@@ -46,7 +46,11 @@ module.exports = class {
     return this;
   }
 
-  loadFile(path) { return fs.readFileSync(path, 'utf8'); }
+  loadFile(path) { 
+    const file = fs.readFileSync(path, 'utf8');
+    this.fileMap.set(path, file);
+    return file; 
+  }
 
   listAllSongFiles() { return Array.from(this.fileMap, map => map[0]); }
 

@@ -163,8 +163,8 @@ module.exports = class {
       const payload = assembleBufferPayload(request);
       if(fileManager.isIndexed(payload.path)) {
         try {
+          const indexedFile = JSON.parse(fileManager.getIndexedVersion(payload.path));
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
-          const indexedFile = fileManager.getIndexedVersion(payload.path);
           const diff = jiff.diff(currentFile, indexedFile);
           if(diff.length === 0) {
             fileManager.writeFile(payload.path, payload.payload, () => {});

@@ -1,0 +1,23 @@
+<div>
+  <div class="row stretch-row fill">
+    <div class="col stretch-col">
+      <h3>{{ 'merge.local.headline' | translate }}</h3>
+      <div class="textfield" [innerHTML]="local | safe: 'html'"></div>
+    </div>
+    <div class="col stretch-col">
+      <h3>{{ 'merge.final.headline' | translate }}</h3>
+      <mat-form-field>
+        <textarea matInput autosize [(ngModel)]="mergedInput"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="col stretch-col">
+      <h3>{{ 'merge.server.headline' | translate }}</h3>
+      <div class="textfield" [innerHTML]="server | safe: 'html'">
+    </div>
+  </div>
+</div>
+<div class="row stretch-row fill">
+  <button mat-button (click)="keepLocal()">{{ 'merge.dialog.ignoreServer' | translate }}</button>
+  <button mat-button (click)="saveMerged()">{{ 'merge.dialog.save' | translate }}</button>
+  <button mat-button (click)="keepServer()">{{ 'merge.dialog.ignoreLocal' | translate }}</button>
+</div>

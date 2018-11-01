@@ -17,13 +17,13 @@ import { SonggroupComponent } from './components/songgroup/songgroup.component';
 import { SongSonggroupFormComponent } from './components/song-songgroup-form/song-songgroup-form.component';
 import { PreviewComponent } from './components/preview/preview.component';
 import { SongsheetTextareaComponent } from './components/songsheet-textarea/songsheet-textarea.component';
-
 import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { PerformviewComponent } from './views/performview/performview.component';
 import { IconsComponent } from './views/icons/icons.component';
 import { ColorComponent } from './views/color/color.component';
+import { MergeDialogComponent } from './components/merge-dialog/merge-dialog.component';
 
 import { DataService } from './services/data.service';
 import { ParserService } from './services/parser.service';
@@ -57,7 +57,8 @@ export function initConfigs(configService: ConfigService) {
     SongsheetTextareaComponent,
     PerformviewComponent,
     SafePipe,
-    TranslatePipe
+    TranslatePipe,
+    MergeDialogComponent
   ],
   imports: [
     ConnectivityModule,
@@ -94,6 +95,7 @@ export function initConfigs(configService: ConfigService) {
   ],
   entryComponents: [
     SongSonggroupFormComponent,
+    MergeDialogComponent
   ],
   bootstrap: [AppComponent]
 })

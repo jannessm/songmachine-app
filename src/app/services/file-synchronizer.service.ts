@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DATABASES } from '../models/databases';
 import { ApiService } from './connectivity/api.service';
-import { MergeService } from './merge.service';
 import { Songgroup } from '../models/songgroup';
 import { DexieService } from './dexie.service';
 import { Song } from '../models/song';
+import { MergeService } from './merge.service';
 
 const path = require('path');
 
@@ -55,21 +55,26 @@ export class FileSynchronizerService {
     });
   }
 
-  private upsertFile<T>(filePath: string, data: T): Promise<T> {
+  private upsertSonggroup(filePath: string, data: Songgroup): Promise<Songgroup> {
+    return this.apiService.generateFileCreateRequest(filePath, data).then(res => {
+      return new Promise<Songgroup>(resolve => resolve(data));
+    });
+  }
+
+  private upsertSong(filePath: string, data: Song): Promise<Song> {
     return this.apiService.generateFileUpdateRequest(filePath, data).then( res => {
       console.log('upsert file', res);
       switch (res.status) {
         case 201:
-          return new Promise<T>(resolve => resolve(data));
+          return new Promise<Song>(resolve => resolve(data));
         case 300:
-          let merged;
           console.log(res.payload);
-          merged = this.mergeService.merge(res.payload.indexedVersion, res.payload.currentVersion, data);
-          // return this.upsertFile<T>(filePath, merged);
-          return new Promise<T>(resolve => resolve(data));
+          return this.mergeService.mergeSong(res.payload.indexedVersion, res.payload.currentVersion, data).then(song => {
+            return this.upsertSong(filePath, <Song>song);
+          });
         case 404:
           return this.apiService.generateFileCreateRequest(filePath, data).then(response => {
-            return new Promise<T>(resolve => resolve(data));
+            return new Promise<Song>(resolve => resolve(data));
           });
       }
     });
@@ -88,8 +93,10 @@ export class FileSynchronizerService {
   }
 
   public saveSong(song: Song): Promise<Song> {
-    return this.dexieService.upsert(DATABASES.songs, song).then(() => {
-      return this.upsertFile<Song>(path.join(DATABASES.songs, song.id + '.song'), song);
+    return this.upsertSong(path.join(DATABASES.songs, song.id + '.song'), song).then(s => {
+      return this.dexieService.upsert(DATABASES.songs, s).then(() => {
+        return new Promise<Song>(resolve => resolve(<Song>s));
+      });
     });
   }
 
@@ -113,7 +120,7 @@ export class FileSynchronizerService {
 
   public saveSonggroup(songgroup: Songgroup): Promise<Songgroup> {
     return this.dexieService.upsert(DATABASES.songgroups, songgroup).then(res => {
-      return this.upsertFile<Songgroup>(path.join(DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup);
+      return this.upsertSonggroup(path.join(DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup);
     });
   }
 
