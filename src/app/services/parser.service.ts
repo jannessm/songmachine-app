@@ -9,12 +9,12 @@ export class ParserService {
 
   private regexs = {
     newline: /\r?\n/,
-    header: new RegExp('\\[(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;?)?\\s*\\]', 'gi'),
-    block: /\[(?:Block\s*:\s*)([\w\s-_]*)\]/gi,
-    order: /\[(?:order\s*:\s*)([\w\s-_,]*)\]/gi,
+    header: new RegExp('\\[(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;)?' +
+                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;)?' +
+                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;)?' +
+                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;?)?\\s*\\]', 'gi'),
+    block: /\[(?:Block\s*:\s*)([\w\s-_\.]*)\]/gi,
+    order: /\[(?:order\s*:\s*)([\w\s-_\.,]*)\]/gi,
     chord: /(?:\[\s*)([\w<>\*\#]*)(?:\s*\])/gi,
     invChord: /([\w\#]+)/gi
   };
@@ -170,7 +170,7 @@ export class ParserService {
     let offset = 0;
     for (let i = 0; i < matches.length; i++) {
       let len = matches[i].index - newLine.lyrics.topLine.length - offset + 1;
-      len = len > 1 ? len : 2;
+      len = len > 1 && i > 0 ? len : 2;
       offset += matches[i][0].length;
       newLine.lyrics.topLine += Array(len).join(' ') + matches[i][1];
     }
@@ -202,7 +202,7 @@ export class ParserService {
     }
 
     // order
-    const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(',') + ']' : '';
+    const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(', ') + ']' : '';
     if (order) {
       str += order + '\n\n';
     }
