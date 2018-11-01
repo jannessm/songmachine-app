@@ -18,7 +18,7 @@ export class DataService {
     }
   }
 
-  saveType(dbType: DATABASES, data) {
+  saveType(dbType: DATABASES, data): Promise<Song|Songgroup> {
     switch (dbType) {
       case DATABASES.songs:
         return this.saveSong(data);
