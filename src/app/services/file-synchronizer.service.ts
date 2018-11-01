@@ -7,6 +7,7 @@ import { Song } from '../models/song';
 import { MergeService } from './merge.service';
 
 const path = require('path');
+const uuid = require('uuid/v1');
 
 @Injectable()
 export class FileSynchronizerService {
@@ -88,7 +89,9 @@ export class FileSynchronizerService {
   }
 
   public saveSong(song: Song): Promise<Song> {
-    console.log('file-sync1', song.id);
+    if (!song.id) {
+      song.id = uuid();
+    }
     return this.upsertSong(path.join(DATABASES.songs, song.id + '.song'), song).then(s => {
       return this.dexieService.upsert(DATABASES.songs, s).then(() => {
         return new Promise<Song>(resolve => resolve(<Song>s));
@@ -117,8 +120,11 @@ export class FileSynchronizerService {
   }
 
   public saveSonggroup(songgroup: Songgroup): Promise<Songgroup> {
-    return this.dexieService.upsert(DATABASES.songgroups, songgroup).then(res => {
-      return this.upsertSonggroup(path.join(DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup);
+    if (!songgroup.id) {
+      songgroup.id = uuid();
+    }
+    return this.upsertSonggroup(path.join(DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup).then(res => {
+      return this.dexieService.upsert(DATABASES.songgroups, songgroup).then(() => new Promise<Songgroup>(resolve => resolve(songgroup)));
     });
   }
 
