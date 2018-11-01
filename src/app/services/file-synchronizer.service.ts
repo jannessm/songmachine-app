@@ -42,7 +42,7 @@ export class FileSynchronizerService {
     filePath = filePath.replace(this.apiService.getPath(), '');
     const id = filePath.replace('.songgroup', '').replace('.song', '');
     this.dexieService.getByKey(dbType, id).then(object => {
-      this.apiService.generateFileLoadRequest<JSON>(filePath, true).then(response => {
+      this.apiService.generateFileLoadRequest<JSON>(filePath).then(response => {
         switch (response.status) {
           case 200:
             this.dexieService.upsert(dbType, response.payload.data);  // filesystem determines data!!!
@@ -60,13 +60,11 @@ export class FileSynchronizerService {
 
   private upsertSong(filePath: string, data: Song): Promise<Song> {
     return this.apiService.generateFileUpdateRequest(filePath, data).then( res => {
-      console.log(res);
       switch (res.status) {
         case 201:
           return new Promise<Song>(resolve => resolve(data));
         case 300:
           return this.mergeService.mergeSong(res.payload.indexedVersion, res.payload.currentVersion, data).then(song => {
-            console.log(song);
             return this.upsertSong(filePath, <Song>song);
           });
         case 404:
@@ -90,9 +88,9 @@ export class FileSynchronizerService {
   }
 
   public saveSong(song: Song): Promise<Song> {
-    console.log(song);
+    console.log('file-sync1', song);
     return this.upsertSong(path.join(DATABASES.songs, song.id + '.song'), song).then(s => {
-      console.log(s);
+      console.log('file-sync2', s);
       return this.dexieService.upsert(DATABASES.songs, s).then(() => {
         return new Promise<Song>(resolve => resolve(<Song>s));
       });

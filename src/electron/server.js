@@ -163,8 +163,8 @@ module.exports = class {
       const payload = assembleBufferPayload(request);
       if(fileManager.isIndexed(payload.path)) {
         try {
-          const indexedFile = JSON.parse(fileManager.getIndexedVersion(payload.path));
-          const currentFile = JSON.parse(fileManager.loadFile(payload.path));
+          const indexedFile = fileManager.getIndexedVersion(payload.path);
+          const currentFile = fileManager.loadFile(payload.path);
           const diff = jiff.diff(currentFile, indexedFile);
           if(diff.length === 0) {
             fileManager.writeFile(payload.path, payload.payload, () => {});
@@ -236,8 +236,7 @@ module.exports = class {
     api.post('read', (request, response) => {
       const payload = assembleBufferPayload(request);
       if(fileManager.exists(payload.path)) {
-        const file = fileManager.loadFile(payload.path);
-        const data = payload.json? JSON.parse(file) : file;
+        const data = fileManager.loadFile(payload.path);
         response.json({
           status: 200,
           statusMessage: 'Resource loaded',
