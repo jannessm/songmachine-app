@@ -37,7 +37,6 @@ export class PerformviewComponent implements OnInit {
         .getSong(id)
         .then(result => {
           this.songs.push(<Song>result);
-          console.log(this.songs.length);
       });
     }
   }

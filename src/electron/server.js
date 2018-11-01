@@ -212,6 +212,11 @@ module.exports = class {
       const payload = assembleBufferPayload(request);
       try {
         fileManager.deleteFile(payload.path)
+        response.json({
+          status: 200,
+          statusMessage: '',
+          payload: {}
+        })
       } catch(err) {
         response.json({
           status: 404,
