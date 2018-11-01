@@ -88,6 +88,7 @@ export class FileSynchronizerService {
   }
 
   public saveSong(song: Song): Promise<Song> {
+    console.log('file-sync1', song.id);
     return this.upsertSong(path.join(DATABASES.songs, song.id + '.song'), song).then(s => {
       return this.dexieService.upsert(DATABASES.songs, s).then(() => {
         return new Promise<Song>(resolve => resolve(<Song>s));
@@ -96,8 +97,10 @@ export class FileSynchronizerService {
   }
 
   public deleteSong(songid: string) {
-    return this.dexieService.delete(DATABASES.songs, songid).then(() => {
-      this.apiService.generateDeleteFileRequest(path.join(DATABASES.songs, songid + '.song'));
+    return this.apiService.generateDeleteFileRequest(path.join(DATABASES.songs, songid + '.song')).then(res => {
+      if (res.status === 200) {
+        return this.dexieService.delete(DATABASES.songs, songid);
+      }
     });
   }
 
