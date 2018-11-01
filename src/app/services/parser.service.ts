@@ -15,8 +15,8 @@ export class ParserService {
                          '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;?)?\\s*\\]', 'gi'),
     block: /\[(?:Block\s*:\s*)([\w\s-_\.]*)\]/gi,
     order: /\[(?:order\s*:\s*)([\w\s-_\.,]*)\]/gi,
-    chord: /(?:\[\s*)([\w<>\*\#]*)(?:\s*\])/gi,
-    invChord: /([\w\#]+)/gi
+    chord: /(?:\[\s*)([^\s]+)(?:\s*\])/gi,
+    invChord: /([^\s]+)/gi
   };
 
   constructor(private htmlFactory: HtmlFactoryService) { }
@@ -143,38 +143,44 @@ export class ParserService {
   private getLine(str: string): Line {
     this.resetRegex();
     const newLine: Line = new Line();
-    newLine.lyrics.bottomLine = str;
     const matches = [];
 
-    let m;
-    do {
-      m = this.regexs.chord.exec(str);
-      if (m) {
-        matches.push(m);
-        newLine.lyrics.bottomLine = newLine.lyrics.bottomLine.replace(m[0], '');
-      }
-    } while (m);
-
-    const annotationblocks = newLine.lyrics.bottomLine.split('|').map(value => value.replace(/\s*$/g, ''));
+    // process annotations
+    const annotationblocks = str.split('|').map(value => value.replace(/\s*$/g, ''));
     newLine.annotationCells = annotationblocks.length - 1;
-    for (const anno of annotationblocks) {
+    annotationblocks.forEach(anno => {
       if (anno === annotationblocks[0]) {
-        continue;
+        return;
       }
 
       const annotations = anno.split(';').map(value => value.trim());
       newLine.differentAnnotations = this.max(newLine.differentAnnotations, annotations.length);
       newLine.annotations.push(annotations);
-    }
+    });
+    str = annotationblocks[0];
 
-    let offset = 0;
-    for (let i = 0; i < matches.length; i++) {
-      let len = matches[i].index - newLine.lyrics.topLine.length - offset + 1;
-      len = len > 1 && i > 0 ? len : 2;
-      offset += matches[i][0].length;
-      newLine.lyrics.topLine += Array(len).join(' ') + matches[i][1];
-    }
-    newLine.lyrics.bottomLine = annotationblocks[0];
+    // process chords
+    let m;
+    do {
+      this.resetRegex();
+      m = this.regexs.chord.exec(str);
+      if (m) {
+        // chord start
+        const start = m.index;
+        // if start < topLine.length add spaces to bottomLine
+        if (newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) + 1 > 0) {
+          newLine.lyrics.bottomLine += Array(newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) + 1).join(' ');
+        } else if (newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) < 0) {
+          newLine.lyrics.topLine += Array((newLine.lyrics.bottomLine.length + start) - newLine.lyrics.topLine.length + 1).join(' ');
+        }
+        const stringUntilChord = str.substr(0, start);
+        newLine.lyrics.topLine += m[1] + ' ';
+        newLine.lyrics.bottomLine += stringUntilChord;
+        str = str.replace(stringUntilChord + m[0], '');
+      } else {
+        newLine.lyrics.bottomLine += str;
+      }
+    } while (m);
     newLine.lyricsWidth = newLine.lyrics.bottomLine.length;
     return newLine;
   }
@@ -224,28 +230,21 @@ export class ParserService {
     const finalLine = [];
 
     let m;
-    let matches = [];
+    let lastStart = 0;
     do {
       m = this.regexs.invChord.exec(line.lyrics.topLine);
       if (m) {
-        matches.push(m);
+        // add string until chord
+        finalLine.push(line.lyrics.bottomLine.substr(lastStart, m.index - lastStart).replace(/^\s+/, ' '));
+        // add chord
+        finalLine.push('[' + m[1] + ']');
+        lastStart = m.index;
+      } else {
+        finalLine.push(line.lyrics.bottomLine.substr(lastStart));
       }
     } while (m);
 
-    matches = matches.reverse(); // to ensure correct position
-    for (let i = 0; i <= matches.length; i++) {
-      // if last part start from 0
-      const start = i === matches.length ? 0 : matches[i].index;
-      // if first -> until end else prev position
-      const end = i === 0 ? undefined : i === matches.length ? matches[i - 1].index : matches[i - 1].index - matches[i].index;
-      finalLine.push(line.lyrics.bottomLine.substr(start, end));
-
-      if (i < matches.length) {
-        finalLine.push('[' + matches[i][1] + ']');
-      }
-    }
-
-    return finalLine.reverse().join('');
+    return finalLine.join('');
   }
 
   private joinAnnotations(line: Line): string {

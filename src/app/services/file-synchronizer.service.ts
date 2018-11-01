@@ -88,9 +88,7 @@ export class FileSynchronizerService {
   }
 
   public saveSong(song: Song): Promise<Song> {
-    console.log('file-sync1', song);
     return this.upsertSong(path.join(DATABASES.songs, song.id + '.song'), song).then(s => {
-      console.log('file-sync2', s);
       return this.dexieService.upsert(DATABASES.songs, s).then(() => {
         return new Promise<Song>(resolve => resolve(<Song>s));
       });
