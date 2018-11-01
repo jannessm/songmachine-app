@@ -1,7 +1,7 @@
 const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
-const Diff = require('diff');
+const jiff = require('jiff');
 
 function assembleBufferPayload(request) {
   const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
@@ -67,7 +67,9 @@ module.exports = class {
       if(payload.path) {
         try {
           const songLinks = fileManager
+            .clearMap()
             .readDir(payload.path)
+            .loadSongFiles()
             .listAllSongFiles();
           response.json({
             status: 200,
@@ -161,10 +163,11 @@ module.exports = class {
       const payload = assembleBufferPayload(request);
       if(fileManager.isIndexed(payload.path)) {
         try {
+          const indexedFile = JSON.parse(fileManager.getIndexedVersion(payload.path));
           const currentFile = JSON.parse(fileManager.loadFile(payload.path));
-          const diff = new Diff().diffJson(currentFile, fileManager.getIndexedVersion(payload.path));
-          if(!!diff.length) {
-            fileManager.writeFile(payload.path, payload.payload);
+          const diff = jiff.diff(currentFile, indexedFile);
+          if(diff.length === 0) {
+            fileManager.writeFile(payload.path, payload.payload, () => {});
             response.json({
               status: 201,
               statusMessage: 'File was saved without conflicts',
@@ -175,7 +178,8 @@ module.exports = class {
               status: 300,
               statusMessage: 'The file has been modified without being reloaded',
               payload: {
-                currentVersion: currentFile
+                currentVersion: currentFile,
+                indexedVersion: indexedFile
               }
             });
           }
@@ -231,7 +235,7 @@ module.exports = class {
      */
     api.post('read', (request, response) => {
       const payload = assembleBufferPayload(request);
-        if(fileManager.exists(payload.path)) {
+      if(fileManager.exists(payload.path)) {
         const file = fileManager.loadFile(payload.path);
         const data = payload.json? JSON.parse(file) : file;
         response.json({

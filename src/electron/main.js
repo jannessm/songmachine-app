@@ -16,8 +16,8 @@ const api = new (require('@marshallofsound/electron-router').Router)('api');
 function createWindow () {
   require('./server.js').run(api);
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600, webPreferences: { webSecurity: false}});
-
+  mainWindow = new BrowserWindow({width: 1800, height: 1600, webPreferences: { webSecurity: false}});
+  
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -25,8 +25,9 @@ function createWindow () {
     slashes: true
   }));
 
+
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -41,6 +42,11 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+
+app.on('reload', () => {
+  mainWindow = null;
+  createWindow();
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

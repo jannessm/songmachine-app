@@ -21,12 +21,12 @@ export type FileSystemIndexResponse = Array<string>;
 
 export interface CmCreateFileRequest<T> {
   path: string;
-  payload: T
+  payload: T;
 }
 
 export type CreateFileResponse = undefined;
 
-export interface UpdateFileResponseOnChanges { currentVersion: any; }
+export interface UpdateFileResponseOnChanges { currentVersion: any; indexedVersion: any; }
 
 export type UpdateFileResponse = UpdateFileResponseOnChanges | CreateFileResponse;
 

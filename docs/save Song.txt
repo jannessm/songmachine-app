@@ -1,0 +1,43 @@
+title save Song
+actor User
+participant DataService
+database IndexedDB
+participant FileSyncService
+participant MergeService
+participant APIService
+
+User->DataService: save Song
+DataService->IndexedDB: upsert Song
+DataService->FileSyncService: update song
+FileSyncService->APIService: save song
+
+loop while file has been changes
+APIService->FileSyncService: new file
+FileSyncService->MergeService: merge song and new file
+MergeService->FileSyncService: merged file
+FileSyncService->APIService: save merged file
+end
+
+break file has been saved
+APIService->FileSyncService: saved
+FileSyncService->DataService: saved, [new files]
+DataService->IndexedDB: save [new files], keep old
+
+opt file is not opened in editor
+DataService->IndexedDB: delete old
+end
+opt file is being edited
+DataService->User: reload?
+opt yes
+User->DataService: yes
+DataService->IndexedDB: delete old, get new
+IndexedDB->DataService: new file
+DataService->User: new file
+end
+opt no
+User->DataService: no
+User->DataService: closed Song
+DataService->IndexedDB: delete old
+end
+end
+end

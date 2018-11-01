@@ -32,7 +32,7 @@ export class PerformviewComponent implements OnInit {
   private loadSong(id) {
     if (id) {
       this.dataService
-        .getByKey(DATABASES.songs, id)
+        .getSong(id)
         .then(result => {
           this.songs.push(<Song>result);
       });

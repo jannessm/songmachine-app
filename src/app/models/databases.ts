@@ -1,10 +1,10 @@
 export enum DATABASES {
     settings = 'settings',
-    events = 'events',
+    songgroups = 'songgroups',
     songs = 'songs'
 }
 
 export enum BROWSERTYPES {
     songs = 'songs',
-    events = 'events'
+    songgroups = 'songgroups'
 }

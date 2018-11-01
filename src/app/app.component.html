@@ -2,7 +2,10 @@
   <mat-sidenav mode="side" opened>
     <a mat-flat-button *ngFor="let item of menu" routerLink="{{ item.route }}" routerLinkActive="active"><i class="icon {{ item.icon }}"></i></a>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content (dragover)="showImport($event)" (drop)="importSong($event)">
       <router-outlet></router-outlet>
+      <div id="drag-wrapper" [class.front]="show" [class.hide]="!show" (dragleave)="hideImport($event)">
+        import .st file
+      </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

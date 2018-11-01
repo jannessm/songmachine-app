@@ -12,7 +12,7 @@ export class ParserService {
     header: new RegExp('\\[(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
                          '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
                          '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?\\s*\\]', 'gi'),
+                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;?)?\\s*\\]', 'gi'),
     block: /\[(?:Block\s*:\s*)([\w\s-_]*)\]/gi,
     order: /\[(?:order\s*:\s*)([\w\s-_,]*)\]/gi,
     chord: /(?:\[\s*)([\w<>\*\#]*)(?:\s*\])/gi,
@@ -21,15 +21,15 @@ export class ParserService {
 
   constructor(private htmlFactory: HtmlFactoryService) { }
 
-  public obj2PDF( song: Song ) {
-    const html = this.obj2HTML(song);
+  public songToPDF( song: Song ) {
+    const html = this.songToHTML(song);
   }
 
-  public obj2HTML( song: Song): string {
-    return this.htmlFactory.song2html(song);
+  public songToHTML( song: Song): string {
+    return this.htmlFactory.songToHTML(song);
   }
 
-  public obj2Str( song: Song ): string {
+  public songToString( song: Song ): string {
     if (!song) {
       return '';
     } else {
@@ -45,7 +45,7 @@ export class ParserService {
     return str;
   }
 
-  public str2Obj( str: string ): Song {
+  public stringToSong( str: string ): Song {
     const newSong = new Song();
     // get meta
     const meta = this.getMeta(str);
@@ -71,7 +71,7 @@ export class ParserService {
 
     const order = this.regexs.order.exec(str);
     if (order) {
-      meta['order'] = this.deepTrim(order[1].split(','));
+      meta['order'] = order[1].split(',').map(value => value.trim());
     }
 
     const matches = this.regexs.header.exec(str);
@@ -81,7 +81,7 @@ export class ParserService {
         if (matches[i] && matches[i] !== 'books') {
           meta[matches[i]] = matches[i + 1];
         } else if (matches[i]) {
-          meta[matches[i]] = this.deepTrim(matches[i + 1].split(','));
+          meta[matches[i]] = matches[i + 1].split(',').map(value => value.trim());
              }
       }
     }
@@ -155,14 +155,14 @@ export class ParserService {
       }
     } while (m);
 
-    const annotationblocks = newLine.lyrics.bottomLine.split('|');
+    const annotationblocks = newLine.lyrics.bottomLine.split('|').map(value => value.replace(/\s*$/g, ''));
     newLine.annotationCells = annotationblocks.length - 1;
     for (const anno of annotationblocks) {
       if (anno === annotationblocks[0]) {
         continue;
       }
 
-      const annotations = this.deepTrim(anno.split(';'));
+      const annotations = anno.split(';').map(value => value.trim());
       newLine.differentAnnotations = this.max(newLine.differentAnnotations, annotations.length);
       newLine.annotations.push(annotations);
     }
@@ -170,7 +170,7 @@ export class ParserService {
     let offset = 0;
     for (let i = 0; i < matches.length; i++) {
       let len = matches[i].index - newLine.lyrics.topLine.length - offset + 1;
-      len = len > 0 ? len : 2;
+      len = len > 1 ? len : 2;
       offset += matches[i][0].length;
       newLine.lyrics.topLine += Array(len).join(' ') + matches[i][1];
     }
@@ -180,15 +180,13 @@ export class ParserService {
   }
 
   private max(a, b) {
+    if (!a) {
+      return b;
+    }
+    if (!b) {
+      return a;
+    }
     return a > b ? a : b;
-  }
-
-  private deepTrim(arr: string[]): string[] {
-    const res: string[] = [];
-    arr.forEach((val, index, a) => {
-      res.push(val.trim());
-    });
-    return res;
   }
 
   public metaToString(song: Song): string {
@@ -196,13 +194,18 @@ export class ParserService {
     // meta
     const title = song.title && song.title !== '' ? 'title: ' + song.title + '; ' : '';
     const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist + '; ' : '';
-    const bpm = song.bpm && song.bpm ? 'bpm: ' + song.bpm + '; ' : '';
-    const books = song.books && song.books ? 'books: ' + song.books.join(',') + '; ' : '';
-    str += '[' + title + artist + bpm + books + ']\n\n';
+    const bpm = song.bpm ? 'bpm: ' + song.bpm + '; ' : '';
+    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(',') + '; ' : '';
+
+    if (title || artist || bpm || books) {
+      str += '[' + title + artist + bpm + books + ']\n\n';
+    }
 
     // order
-    const order = song.order && song.order.length > 0 ? '[order: ' + song.order.join(',') + ']' : '';
-    str += order + '\n\n';
+    const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(',') + ']' : '';
+    if (order) {
+      str += order + '\n\n';
+    }
     return str;
   }
 
@@ -246,6 +249,12 @@ export class ParserService {
   }
 
   private joinAnnotations(line: Line): string {
+    if (line.annotations
+      .map(value => (value.length === 1 && !value[0]))
+      .reduce((result, value) => result && value, true)
+    ) {
+      return '';
+    }
     return ' | ' +
       line.annotations
         .map(value => value.join('; '))

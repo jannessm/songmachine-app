@@ -1,0 +1,10 @@
+title service structure
+actor user
+
+user->dataService:
+fileSync->configService:
+fileSync->DexiService:
+dataService->fileSync:
+fileSync->apiService:
+configService->DexiService:
+user->configService:

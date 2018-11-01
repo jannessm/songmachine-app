@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventComponent } from './event.component';
+import { SongSonggroupFormComponent } from './song-songgroup-form.component';
 
-describe('EventComponent', () => {
-  let component: EventComponent;
-  let fixture: ComponentFixture<EventComponent>;
+describe('SongSonggroupFormComponent', () => {
+  let component: SongSonggroupFormComponent;
+  let fixture: ComponentFixture<SongSonggroupFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventComponent ]
+      declarations: [ SongSonggroupFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventComponent);
+    fixture = TestBed.createComponent(SongSonggroupFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
