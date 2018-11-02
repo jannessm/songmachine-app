@@ -9,13 +9,13 @@ export class ParserService {
 
   private regexs = {
     newline: /\r?\n/,
-    header: new RegExp('\\[(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_\(\)\&,]*)\\s*;?)?\\s*\\]', 'gi'),
-    block: /\[(?:Block\s*:\s*)([\w\s-_\.]*)\]/gi,
+    title: /\[(?:[^;]*;\s*)*(?:title|titel)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    bpm: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    artist: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    block: /\[(?:block\s*:\s*)([\w\s-_\.]*)\]/gi,
     order: /\[(?:order\s*:\s*)([\w\s-_\.,]*)\]/gi,
-    chord: /(?:\[\s*)([^\s]+)(?:\s*\])/gi,
+    chord: /(?:\[\s*)([^\s]+?)(?:\s*\])/gi,
     invChord: /([^\s]+)/gi
   };
 
@@ -74,17 +74,16 @@ export class ParserService {
       meta['order'] = order[1].split(',').map(value => value.trim());
     }
 
-    const matches = this.regexs.header.exec(str);
-    if (matches && matches.length > 2) {
+    const matchTitle = this.regexs.title.exec(str);
+    const matchArtist = this.regexs.artist.exec(str);
+    const matchBPM = this.regexs.bpm.exec(str);
+    const matchBooks = this.regexs.books.exec(str);
 
-      for (let i = 1; i < matches.length; i += 2) {
-        if (matches[i] && matches[i] !== 'books') {
-          meta[matches[i]] = matches[i + 1];
-        } else if (matches[i]) {
-          meta[matches[i]] = matches[i + 1].split(',').map(value => value.trim());
-             }
-      }
-    }
+    meta['title'] = matchTitle ? matchTitle[1] : undefined;
+    meta['artist'] = matchArtist ? matchArtist[1] : undefined;
+    meta['bpm'] = matchBPM ? matchBPM[1] : undefined;
+    meta['books'] = matchBooks ? matchBooks[1].split(',').map(val => val.trim()) : undefined;
+
     return meta;
   }
 
@@ -261,10 +260,8 @@ export class ParserService {
   }
 
   private resetRegex() {
-    for (const reg in this.regexs) {
-      if (this.regexs[reg]) {
-        this.regexs[reg].lastIndex = 0;
-      }
-    }
+    Object.values(this.regexs).forEach(element => {
+      element.lastIndex = 0;
+    });
   }
 }
