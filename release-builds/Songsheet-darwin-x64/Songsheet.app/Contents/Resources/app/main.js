@@ -13,8 +13,8 @@ function createWindow () {
   require('./server.js').run(api);
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1800,
-    height: 1600,
+    width: 1000,
+    height: 600,
     webPreferences: { webSecurity: false},
     icon: path.join(__dirname, 'assets/main-icon/png/64x64.png')
   });
@@ -28,7 +28,7 @@ function createWindow () {
 
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -49,6 +49,8 @@ function createWindow () {
         {role: 'cut'},
         {role: 'copy'},
         {role: 'paste'},
+        {type: 'separator'},
+        {role: 'selectAll'}
       ]
     }
   ]
@@ -58,12 +60,11 @@ function createWindow () {
       submenu: [
         {role: 'about'},
         {type: 'separator'},
-        {role: 'services', submenu: []},
-        {type: 'separator'},
         {role: 'hide'},
         {role: 'hideothers'},
         {role: 'unhide'},
         {type: 'separator'},
+        {role: 'close'},
         {role: 'quit'}
       ]
     })

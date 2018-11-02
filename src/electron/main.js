@@ -64,6 +64,7 @@ function createWindow () {
         {role: 'hideothers'},
         {role: 'unhide'},
         {type: 'separator'},
+        {role: 'close'},
         {role: 'quit'}
       ]
     })

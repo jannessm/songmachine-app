@@ -35,6 +35,7 @@
     display: inline;
     margin: 0;
     white-space: pre-wrap;
+    font-family: $ubuntuMono;
   }
   .line-wrapper{
     padding-left: 10px;
@@ -73,9 +74,9 @@
   min-height: 100%;
   z-index: -1;
   font-family: $ubuntuMono;
-  font-size: 1em;
+  font-size: 0.8em;
+  line-height: 1.1em;
   color: $black;
-  line-height: 0.99em;
   padding: 10px 10px 0 0;
   box-sizing: border-box;
 }
@@ -94,10 +95,10 @@
   box-sizing: border-box;
   font-family: $ubuntuMono; 
   font-size: 0.8em;
+  line-height: 1.1em;
   outline: none;
   padding: 10px;
   padding-left: 45px;
-  letter-spacing: 0.1px;
 }
 #wrapper{
   position: relative;
