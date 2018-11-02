@@ -236,7 +236,7 @@ export class HtmlFactoryService {
         width: 595.3pt;
         min-height: 841.9pt;
         background: white;
-        font-family: 'RobotoMono', monospace;
+        font-family: 'ubuntuMono', monospace;
         font-size: 10pt;
         box-sizing: border-box;
         display: inline-block;

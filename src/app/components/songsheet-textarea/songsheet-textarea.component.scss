@@ -20,7 +20,7 @@
   font-size: 0.9em;
   content: attr(data-content);
   color: $white;
-  font-family: $robotoMono;
+  font-family: $ubuntuMono;
   display: table-cell;
   vertical-align: top;
 }
@@ -72,7 +72,7 @@
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
-  font-family: $robotoMono;
+  font-family: $ubuntuMono;
   font-size: 1em;
   color: $black;
   line-height: 0.99em;
@@ -92,7 +92,7 @@
   -webkit-text-fill-color: transparent;
   z-index: 10;
   box-sizing: border-box;
-  font-family: $robotoMono; 
+  font-family: $ubuntuMono; 
   font-size: 0.8em;
   outline: none;
   padding: 10px;
