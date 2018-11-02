@@ -1,11 +1,6 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title>{{ songgroup.name }}</mat-card-title>
-        <div class="mods">
-            <i class="icon icon-perform" (click)="performSonggroup()"></i>
-            <i class="icon icon-edit" (click)="emitEditMeta( songgroup )"></i>
-            <i class="icon icon-delete" (click)="delete( songgroup )"></i>
-        </div>
     </mat-card-header>
     <mat-card-content>
         <div class="songgroup_preview">{{ songgroup.description }}</div>
@@ -20,4 +15,15 @@
             </tr>
         </table>
     </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="performSonggroup()">
+            perform <i class="icon icon-perform"></i>
+        </button>
+        <button mat-button (click)="emitEditMeta( songgroup )">
+            edit metadata <i class="icon icon-edit"></i>
+        </button>
+        <button mat-button (click)="delete( songgroup )">
+            delete <i class="icon icon-delete"></i>
+        </button>
+    </mat-card-actions>
 </mat-card>

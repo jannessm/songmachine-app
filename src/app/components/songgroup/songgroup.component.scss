@@ -2,12 +2,16 @@
 @import '~assets/colors';
 
 mat-card{
-    min-width: 200px;
-    width: calc(100% / 5);
-    height: 300px;
+    @media (min-width: 1200px) {
+        width: calc((100% - 40px) / 5);
+    }
+    @media (max-width: 1199px) {
+        width: calc((100% - 20px) / 3);
+    }
+    min-height: 300px;
     padding: 0;
     display: inline-block;
-    margin: 10px;
+    margin-bottom: 20px;
 }
 
 mat-card-header{
@@ -17,6 +21,19 @@ mat-card-header{
 
     mat-card-title{
         font-size: 1.2em;
+    }
+}
+
+mat-card-actions{
+    margin: 0 !important;
+
+    button {
+        margin: 0;
+        width: 100%;
+        color: $grey;
+    }
+    :hover{
+        color: $black;
     }
 }
 
@@ -40,23 +57,4 @@ mat-card-content{
     li{
         display: block;
     }
-}
-mat-card:hover .mods{
-    display: inline-block !important;
-}
-
-.mods{
-    display: none;
-    position: absolute;
-    right: 10px;
-}
-
-i{
-    font-size: 1.3em;
-    line-height: 1.3em;
-    cursor: pointer;
-}
-
-i:hover{
-    color: $lemon;
 }

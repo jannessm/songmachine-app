@@ -90,9 +90,9 @@ export class HtmlFactoryService {
       for (const ann of l.annotations) {
         const id = ann.length > 1 ? l.printed : 0;
         html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
-        l.printed++;
         c++;
       }
+      l.printed++;
       html += this.extendMissingCells(c, cells);
       html += '</tr>';
     }
@@ -236,7 +236,7 @@ export class HtmlFactoryService {
         width: 595.3pt;
         min-height: 841.9pt;
         background: white;
-        font-family: 'Ubuntu Mono', monospace;
+        font-family: 'Ubuntu Mono', monospaced;
         font-size: 10pt;
         box-sizing: border-box;
         display: inline-block;
@@ -283,6 +283,7 @@ export class HtmlFactoryService {
       .page pre, .page pre pre{
         display: inline-block;
         margin: 0;
+        font-family: 'Ubuntu Mono', monospaced;
       }
       .page ul {
         padding: 0;

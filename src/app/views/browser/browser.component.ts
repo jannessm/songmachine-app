@@ -76,12 +76,12 @@ export class BrowserComponent implements OnInit, OnDestroy {
             .split(' ')
             .filter(v => !!v)
             .map(search =>
-              value.artist.toLowerCase().indexOf(search) > -1 ||
-              value.title.toLowerCase().indexOf(search) > -1 ||
-              value.bpm.toString().indexOf(search) > -1 ||
-              value.books
+              (value.artist && value.artist.toLowerCase().indexOf(search) > -1) ||
+              (value.title && value.title.toLowerCase().indexOf(search) > -1) ||
+              (value.bpm && value.bpm.toString().indexOf(search) > -1) ||
+              (value.books && value.books
                 .map(val => val.toLowerCase().indexOf(search) > -1)
-                .reduce((res, val) => res || val, false)
+                .reduce((res, val) => res || val, false))
             ).reduce((res, val) => res && val, true);
         }
         );
@@ -94,8 +94,10 @@ export class BrowserComponent implements OnInit, OnDestroy {
   }
 
   showAddForm(data?) {
+    let newObject = false;
     if (!data) {
       data = this.type === DATABASES.songs ? new Song() : new Songgroup();
+      newObject = true;
     }
     const dialogRef = this.dialog.open(SongSonggroupFormComponent, {
       width: '500px',
@@ -105,7 +107,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.saveType(this.type, result).then(() => {
-          if (result instanceof Song) {
+          if (result instanceof Song && newObject) {
             this.router.navigateByUrl('/editor/' + result.id);
           } else {
             this.updateElems();
@@ -128,14 +130,35 @@ export class BrowserComponent implements OnInit, OnDestroy {
         }
 
         if (this.type === DATABASES.songs) {
-          this.songs = arr;
+          this.songs = arr.sort(this.sort);
           this.filteredElems = this.songs;
         } else {
-          this.songgroups = arr;
+          this.songgroups = arr.sort(this.sort);
           this.filteredElems = this.songgroups;
         }
       });
     }, 10);
+  }
+
+  private sort(a: Song | Songgroup, b: Song | Songgroup): number {
+    if (a instanceof Song && b instanceof Song) {
+      if (a.title < b.title) {
+        return -1;
+      } else if (a.title > b.title) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else if (a instanceof Songgroup && b instanceof Songgroup) {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return 0;
   }
 
 }

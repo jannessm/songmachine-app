@@ -62,7 +62,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    const width = this.wrapperElem.nativeElement.offsetWidth * 0.8;
+    const width = this.wrapperElem.nativeElement.offsetWidth * 0.95;
     this.zoom = (width / 793.733333);
     this.renderer.setStyle(this.wrapperElem.nativeElement, 'zoom', this.zoom);
   }
