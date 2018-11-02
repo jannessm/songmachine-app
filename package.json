@@ -4,7 +4,7 @@
   "license": "all rights reserved",
   "scripts": {
     "ng": "ng",
-    "build": "ng build --prod --aot && cp src/electron/* dist/ && yarn install --prod --modules-folder dist/node_modules",
+    "build": "ng build --prod --aot && cp src/electron/* dist/ && npm install --prod --modules-folder dist/node_modules",
     "test": "karma start ./karma.conf.js",
     "lint": "ng lint",
     "e2e": "protractor ./protractor.conf.js",
