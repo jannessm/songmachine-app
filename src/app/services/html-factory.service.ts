@@ -241,6 +241,7 @@ export class HtmlFactoryService {
         box-sizing: border-box;
         display: inline-block;
         padding: 15pt;
+        font-weight: bold;
       }
       .page .title, .page .artist, .page .bpm, .page .bpm_img, .page .books, .page .books_img, .page ul {
         display: inline-block;
