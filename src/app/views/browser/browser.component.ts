@@ -142,17 +142,17 @@ export class BrowserComponent implements OnInit, OnDestroy {
 
   private sort(a: Song | Songgroup, b: Song | Songgroup): number {
     if (a instanceof Song && b instanceof Song) {
-      if (a.title < b.title) {
+      if (a.title.toLowerCase() < b.title.toLowerCase()) {
         return -1;
-      } else if (a.title > b.title) {
+      } else if (a.title.toLowerCase() > b.title.toLowerCase()) {
         return 1;
       } else {
         return 0;
       }
     } else if (a instanceof Songgroup && b instanceof Songgroup) {
-      if (a.name < b.name) {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
-      } else if (a.name > b.name) {
+      } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
         return 1;
       } else {
         return 0;

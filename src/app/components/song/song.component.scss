@@ -3,10 +3,10 @@
 
 mat-card{
     @media (min-width: 1200px) {
-        width: calc((100% - 40px) / 5);
+        width: calc((100% - 40px) / 5 - 5px);
     }
     @media (max-width: 1199px) {
-        width: calc((100% - 20px) / 3);
+        width: calc((100% - 20px) / 3 - 5px);
     }
     min-height: 300px;
     padding: 0;

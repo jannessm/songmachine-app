@@ -35,7 +35,8 @@ export class ApiService {
           metadata: opts || {}
       });
     }
-    return null;
+    return new Promise<CmResponse<PdfRequestResponse>>((res, rej) =>
+      res({status: 401, statusMessage: 'no path defined', payload: {created: false}}));
   }
 
   generateFileSystemIndex(): Promise<CmResponse<FileSystemIndexResponse>> {
@@ -45,7 +46,7 @@ export class ApiService {
         .setMode(Modes.CORS)
         .dispatch<CmFileSystemIndexRequest, CmResponse<FileSystemIndexResponse>>(Methods.POST, { path });
     }
-    return null;
+    return new Promise<CmResponse<FileSystemIndexResponse>>(res => res({status: 200, statusMessage: '', payload: []}));
   }
 
   generateLoadIndexFilesResponseRequest(): Promise<CmResponse<LoadIndexFilesResponse>> {
@@ -55,7 +56,7 @@ export class ApiService {
         .setMode(Modes.CORS)
         .dispatch<undefined, CmResponse<LoadIndexFilesResponse>>(Methods.GET);
     }
-    return null;
+    return new Promise<CmResponse<LoadIndexFilesResponse>>(res => res({status: 200, statusMessage: '', payload: []}));
   }
 
   generateFileCreateRequest<T>(path: string, payload: T): Promise<CmResponse<CreateFileResponse>> {
@@ -65,7 +66,8 @@ export class ApiService {
         .setMode(Modes.CORS)
         .dispatch<CmCreateFileRequest<T>, CmResponse<CreateFileResponse>>(Methods.POST, {path, payload});
     }
-    return null;
+    return new Promise<CmResponse<CreateFileResponse>>((res, rej) =>
+      rej({status: 401, statusMessage: 'no path defined', payload: undefined}));
   }
 
   generateDeleteFileRequest(path: string): Promise<CmResponse<DeleteFileResponse>> {
@@ -75,7 +77,8 @@ export class ApiService {
         .setMode(Modes.CORS)
         .dispatch<CmDeleteFileRequest, CmResponse<DeleteFileResponse>>(Methods.DELETE, { path });
     }
-    return null;
+    return new Promise<CmResponse<DeleteFileResponse>>((res, rej) =>
+      rej({status: 401, statusMessage: 'no path defined', payload: undefined}));
   }
 
   generateFileUpdateRequest<T>(path: string, payload: T): Promise<CmResponse<UpdateFileResponse>> {
@@ -85,7 +88,8 @@ export class ApiService {
         .setMode(Modes.CORS)
         .dispatch<CmCreateFileRequest<T>, CmResponse<UpdateFileResponse>>(Methods.POST, { path, payload });
     }
-    return null;
+    return new Promise<CmResponse<UpdateFileResponse>>((res, rej) =>
+      rej({status: 401, statusMessage: 'no path defined', payload: undefined}));
   }
 
   generateFileLoadRequest<T>(path: string, asJson?: boolean): Promise<CmResponse<FileLoadResponse<T>>> {
@@ -95,7 +99,8 @@ export class ApiService {
         .setMode(Modes.CORS)
         .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
     }
-    return null;
+    return new Promise <CmResponse<FileLoadResponse<T>>>((res, rej) =>
+      rej({status: 401, statusMessage: 'no path defined', payload: {data: undefined}}));
   }
 
   getPath() {
