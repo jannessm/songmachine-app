@@ -3,7 +3,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 import { ParserService } from '../../services/parser.service';
 import { Song } from '../../models/song';
-import { first } from 'rxjs/operator/first';
+import { MUSICAL_KEYS } from '../../models/keys';
+import { KeyFinderService } from '../../services/keyFinder.service';
 
 const enum KEYS {
   openBracket = 91,
@@ -36,7 +37,8 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private htmlFactory: HtmlFactoryService,
-    private parser: ParserService
+    private parser: ParserService,
+    private keyFinder: KeyFinderService
   ) {
     this.inputGroup = this.fb.group({
       'inputControl': [null]
@@ -55,6 +57,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.input) {
       this.song = this.input;
+      this.keyFinder.findKey(this.parser.songToString(this.song));
       this.inputGroup.get('inputControl').setValue(this.parser.songToString(this.song));
     }
   }
@@ -149,22 +152,9 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   }
 
   private transpose() {
-    let match;
-    const matches = [];
-    let flat = false;
-    const chordReg = /\[\s*([^:]*?)\s*(?:\/([^:]*?))?\]/gi;
-    do {
-      match = chordReg.exec(this.songText);
-      if (match) {
-        matches.push(match);
-        if (match[1] && match[1][1] && match[1][1].toLowerCase() === 'b') {
-          flat = true;
-        }
-        if (match[2] && match[2][1] && match[2][1].toLowerCase() === 'b') {
-          flat = true;
-        }
-      }
-    } while (match);
+    const res = this.keyFinder.getKeys(this.songText);
+    const matches: RegExpExecArray[] = res.matches;
+    const flat = res.flat;
 
     matches.reverse().forEach(m => {
       // if there is no extra basenote
@@ -183,9 +173,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   }
 
   private getNewChord(chord, flat) {
-    const keysSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    const keysFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-
     let mainKey = chord[0].toLowerCase();
     let firstTwo = false;
     if (chord[1] && (chord[1].toLowerCase() === '#' || chord[1].toLowerCase() === 'b')) {
@@ -195,18 +182,18 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
     let id = -1;
     if (flat) {
-      id = keysFlat.findIndex(val => val.toLowerCase() === mainKey);
+      id = MUSICAL_KEYS.flats.findIndex(val => val.toLowerCase() === mainKey);
     } else {
-      id = keysSharp.findIndex(val => val.toLowerCase() === mainKey);
+      id = MUSICAL_KEYS.sharps.findIndex(val => val.toLowerCase() === mainKey);
     }
 
     if (id > -1) {
       let newMainKey;
       const newId = (id + this.transposeStep + 12) % 12;
       if (flat) {
-        newMainKey = keysFlat[newId];
+        newMainKey = MUSICAL_KEYS.flats[newId];
       } else {
-        newMainKey = keysSharp[newId];
+        newMainKey = MUSICAL_KEYS.sharps[newId];
       }
 
       if (firstTwo) {

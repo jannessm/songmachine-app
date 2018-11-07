@@ -33,6 +33,7 @@ import { ConfigService } from './services/config.service';
 import { MergeService } from './services/merge.service';
 import { DexieService } from './services/dexie.service';
 import { TranslationService } from './services/translation.service';
+import { KeyFinderService } from './services/keyFinder.service';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { TranslatePipe } from './pipes/translate.pipe';
@@ -86,6 +87,7 @@ export function initConfigs(configService: ConfigService) {
     MergeService,
     DexieService,
     TranslationService,
+    KeyFinderService,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,
