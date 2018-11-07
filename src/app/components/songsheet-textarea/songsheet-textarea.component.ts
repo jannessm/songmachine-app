@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 import { ParserService } from '../../services/parser.service';
 import { Song } from '../../models/song';
+import { first } from 'rxjs/operator/first';
 
 const enum KEYS {
   openBracket = 91,
@@ -23,6 +24,8 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   @ViewChild('textfield') textfield: ElementRef;
 
   song: Song = new Song();
+  songText: string;
+  transposeSteps = 0;
   inputGroup: FormGroup;
   htmlLines: string[] = [];
 
@@ -43,6 +46,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     this.update('');
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
         this.update(v);
+        this.songText = v;
         this.song = this.parser.stringToSong(v);
         this.value.emit(this.song);
     });
@@ -117,8 +121,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
       target.value = text.substr(0, charPos) + text.substr(charPos + remove);
       target.selectionStart = charPos;
       target.selectionEnd = charPos;
-
-    // if area is selected and shall be deleted
     }
 }
 
@@ -133,11 +135,82 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     return i;
   }
 
-  /*public addResolveSymbol() {
-    const value = this.textfield.nativeElement.value;
+  public transposeUp() {
+    this.transposeSteps = (this.transposeSteps + 1) % 12;
+    this.transpose();
+  }
 
-    this.textfield.nativeElement.value = value.substr(0, this.start) + '♮' + value.substr(this.end);
-    this.textfield.nativeElement.selectionEnd = this.start;
-  }*/
+  public transposeDown() {
+    this.transposeSteps = (this.transposeSteps + 11) % 12;
+  }
+
+  private transpose() {
+    let match;
+    const matches = [];
+    let flat = false;
+    const chordReg = /(\[\s*([^:]*?)\s*\])/gi;
+    do {
+      match = chordReg.exec(this.songText);
+      if (match) {
+        matches.push(match);
+        if (match[1][1] && match[1][1].toLowerCase() === 'b') {
+          flat = true;
+        }
+        if (match[2][1] && match[2][1].toLowerCase() === 'b') {
+          flat = true;
+        }
+      }
+    } while (match);
+
+    matches.reverse().forEach(m => {
+      // if there is no extra basenote
+      if (!m[2]) {
+        this.songText = this.songText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat) + ']' +
+                        this.songText.substr(m.index + m[0].length);
+      } else {
+        this.songText = this.songText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat) + '/' +
+                        this.getNewChord(m[2], flat) + ']' +
+                        this.songText.substr(m.index + m[0].length);
+      }
+    });
+  }
+
+  private getNewChord(chord, flat) {
+    const keysSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map(val => val.toLowerCase());
+    const keysFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'].map(val => val.toLowerCase());
+
+    let mainKey = chord[0];
+    let firstTwo = false;
+    if (chord[1].toLowerCase() === '#' || chord[1].toLowerCase() === 'b') {
+      mainKey += chord[1];
+      firstTwo = true;
+    }
+
+    let id = -1;
+    if (flat) {
+      id = keysFlat.findIndex(val => val === mainKey);
+    } else {
+      id = keysSharp.findIndex(val => val === mainKey);
+    }
+
+    if (id > -1) {
+      let newMainKey;
+      const newId = (id + this.transposeSteps) % 12;
+      if (flat) {
+        newMainKey = keysFlat[newId];
+      } else {
+        newMainKey = keysSharp[newId];
+      }
+
+      if (firstTwo) {
+        chord = newMainKey + chord.substr(2);
+      } else {
+        chord = newMainKey + chord.substr(1);
+      }
+    }
+    return chord;
+  }
 
 }
