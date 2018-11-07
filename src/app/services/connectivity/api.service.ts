@@ -9,8 +9,6 @@ import {
   FileSystemIndexResponse,
   PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse
 } from './model/client.model';
-import { ConfigService } from '../config.service';
-import { FILESYSTEM } from '../../models/filesystem';
 
 const Path = require('path');
 
@@ -19,88 +17,55 @@ export class ApiService {
 
   private ConnectorFactory: ConnectorFactoryFunction;
 
-  constructor(private configService: ConfigService) {
+  constructor() {
     this.ConnectorFactory = Connector.to('api://');
   }
 
   generatePdfRequest(path: string, fileName: string, htmlData: string, opts?: CreateOptions): Promise<CmResponse<PdfRequestResponse>> {
-    if (this.getPath()) {
-      path = Path.join(this.getPath(), path);
-      return this.ConnectorFactory('pdf')
-        .setMode(Modes.CORS)
-        .dispatch<CmPdfRequest, CmResponse<PdfRequestResponse>>(Methods.POST,  {
-          filePath: path,
-          fileName: fileName,
-          payload: htmlData,
-          metadata: opts || {}
-      });
-    }
-    return null;
+    return this.ConnectorFactory('pdf')
+      .setMode(Modes.CORS)
+      .dispatch<CmPdfRequest, CmResponse<PdfRequestResponse>>(Methods.POST,  {
+        filePath: path,
+        fileName: fileName,
+        payload: htmlData,
+        metadata: opts || {}
+    });
   }
 
-  generateFileSystemIndex(): Promise<CmResponse<FileSystemIndexResponse>> {
-    if (this.getPath()) {
-      const path = this.getPath();
-      return this.ConnectorFactory('index')
-        .setMode(Modes.CORS)
-        .dispatch<CmFileSystemIndexRequest, CmResponse<FileSystemIndexResponse>>(Methods.POST, { path });
-    }
-    return null;
+  generateFileSystemIndex(path: string): Promise<CmResponse<FileSystemIndexResponse>> {
+    return this.ConnectorFactory('index')
+      .setMode(Modes.CORS)
+      .dispatch<CmFileSystemIndexRequest, CmResponse<FileSystemIndexResponse>>(Methods.POST, { path });
   }
 
   generateLoadIndexFilesResponseRequest(): Promise<CmResponse<LoadIndexFilesResponse>> {
-    if (this.getPath()) {
-      const path = this.getPath();
-      return this.ConnectorFactory('index')
-        .setMode(Modes.CORS)
-        .dispatch<undefined, CmResponse<LoadIndexFilesResponse>>(Methods.GET);
-    }
-    return null;
+    return this.ConnectorFactory('index')
+      .setMode(Modes.CORS)
+      .dispatch<undefined, CmResponse<LoadIndexFilesResponse>>(Methods.GET);
   }
 
   generateFileCreateRequest<T>(path: string, payload: T): Promise<CmResponse<CreateFileResponse>> {
-    if (this.getPath()) {
-      path = Path.join(this.getPath(), path);
-      return this.ConnectorFactory('file')
-        .setMode(Modes.CORS)
-        .dispatch<CmCreateFileRequest<T>, CmResponse<CreateFileResponse>>(Methods.POST, {path, payload});
-    }
-    return null;
+    return this.ConnectorFactory('file')
+      .setMode(Modes.CORS)
+      .dispatch<CmCreateFileRequest<T>, CmResponse<CreateFileResponse>>(Methods.POST, {path, payload});
   }
 
   generateDeleteFileRequest(path: string): Promise<CmResponse<DeleteFileResponse>> {
-    if (this.getPath()) {
-      path = Path.join(this.getPath(), path);
-      return this.ConnectorFactory('file')
-        .setMode(Modes.CORS)
-        .dispatch<CmDeleteFileRequest, CmResponse<DeleteFileResponse>>(Methods.DELETE, { path });
-    }
-    return null;
+    return this.ConnectorFactory('file')
+      .setMode(Modes.CORS)
+      .dispatch<CmDeleteFileRequest, CmResponse<DeleteFileResponse>>(Methods.DELETE, { path });
   }
 
   generateFileUpdateRequest<T>(path: string, payload: T): Promise<CmResponse<UpdateFileResponse>> {
-    if (this.getPath()) {
-      path = Path.join(this.getPath(), path);
-      return this.ConnectorFactory('file/sync')
-        .setMode(Modes.CORS)
-        .dispatch<CmCreateFileRequest<T>, CmResponse<UpdateFileResponse>>(Methods.POST, { path, payload });
-    }
-    return null;
+    return this.ConnectorFactory('file/sync')
+      .setMode(Modes.CORS)
+      .dispatch<CmCreateFileRequest<T>, CmResponse<UpdateFileResponse>>(Methods.POST, { path, payload });
   }
 
   generateFileLoadRequest<T>(path: string, asJson?: boolean): Promise<CmResponse<FileLoadResponse<T>>> {
-    if (this.getPath()) {
-      path = Path.join(this.getPath(), path);
-      return this.ConnectorFactory('read')
-        .setMode(Modes.CORS)
-        .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
-    }
-    return null;
-  }
-
-  getPath() {
-    const root = this.configService.get('defaultPath');
-    return root ? Path.join(root, FILESYSTEM.DATA, '/') : '';
+    return this.ConnectorFactory('read')
+      .setMode(Modes.CORS)
+      .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
   }
 
 }

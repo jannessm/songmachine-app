@@ -9,10 +9,10 @@
     </mat-form-field>
     <div id="songs">
 
-        <span *ngSwitchCase="'songs'">
+        <span *ngSwitchCase="'songs'" class="cards">
             <app-song *ngFor="let song of filteredElems" [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
         </span>
-        <span *ngSwitchCase="'songgroups'">
+        <span *ngSwitchCase="'songgroups'" class="cards">
             <app-songgroup *ngFor="let group of filteredElems" [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-songgroup>
         </span>
     </div>

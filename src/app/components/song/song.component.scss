@@ -2,12 +2,16 @@
 @import '~assets/colors';
 
 mat-card{
-    min-width: 200px;
-    width: calc(100% / 5);
-    height: 300px;
+    @media (min-width: 1200px) {
+        width: calc((100% - 40px) / 5 - 5px);
+    }
+    @media (max-width: 1199px) {
+        width: calc((100% - 20px) / 3 - 5px);
+    }
+    min-height: 300px;
     padding: 0;
     display: inline-block;
-    margin: 10px;
+    margin-bottom: 20px;
 }
 
 mat-card-header{
@@ -23,6 +27,18 @@ mat-card-header{
 
 mat-card-content{
     padding: 24px;
+}
+mat-card-actions{
+    margin: 0 !important;
+
+    button {
+        margin: 0;
+        width: 100%;
+        color: $grey;
+    }
+    :hover{
+        color: $black;
+    }
 }
 
 .song_attr{

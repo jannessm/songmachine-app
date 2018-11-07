@@ -90,9 +90,9 @@ export class HtmlFactoryService {
       for (const ann of l.annotations) {
         const id = ann.length > 1 ? l.printed : 0;
         html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
-        l.printed++;
         c++;
       }
+      l.printed++;
       html += this.extendMissingCells(c, cells);
       html += '</tr>';
     }
@@ -236,11 +236,12 @@ export class HtmlFactoryService {
         width: 595.3pt;
         min-height: 841.9pt;
         background: white;
-        font-family: 'RobotoMono', monospace;
+        font-family: 'Ubuntu Mono', monospaced;
         font-size: 10pt;
         box-sizing: border-box;
         display: inline-block;
         padding: 15pt;
+        font-weight: bold;
       }
       .page .title, .page .artist, .page .bpm, .page .bpm_img, .page .books, .page .books_img, .page ul {
         display: inline-block;
@@ -283,6 +284,7 @@ export class HtmlFactoryService {
       .page pre, .page pre pre{
         display: inline-block;
         margin: 0;
+        font-family: 'Ubuntu Mono', monospaced;
       }
       .page ul {
         padding: 0;
