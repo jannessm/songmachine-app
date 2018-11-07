@@ -32,8 +32,6 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('wrapper') wrapperElem;
 
   html = '';
-
-
   private zoom = 1;
 
   @HostListener('window:keyup', ['$event', '$event.keyCode'])
@@ -64,7 +62,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    const width = this.wrapperElem.nativeElement.offsetWidth * 0.8;
+    const width = this.wrapperElem.nativeElement.offsetWidth * 0.95;
     this.zoom = (width / 793.733333);
     this.renderer.setStyle(this.wrapperElem.nativeElement, 'zoom', this.zoom);
   }
@@ -86,8 +84,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   scrollDown() {
     const nativeElem = this.wrapperElem.nativeElement;
-    if (nativeElem.scrollTop >=
-      nativeElem.scrollHeight - nativeElem.offsetHeight) {
+    if (nativeElem.scrollTop >= nativeElem.scrollHeight - nativeElem.offsetHeight - 1) {
       this.scrolledToBottom.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});
     } else {

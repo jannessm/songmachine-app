@@ -47,7 +47,7 @@ module.exports = class {
   }
 
   loadFile(path) { 
-    const file = fs.readFileSync(path, 'utf8');
+    const file = JSON.parse(fs.readFileSync(path, 'utf8'));
     this.fileMap.set(path, file);
     return file; 
   }

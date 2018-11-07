@@ -1,5 +1,6 @@
 @import '~assets/icons';
 @import '~assets/colors';
+
 app-preview{
   position: absolute;
   transition: all 200ms;
@@ -36,4 +37,12 @@ app-preview{
 }
 .next-button{
   right: 1%;
+}
+.back-button{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: $black;
+  background: $blue;
+  color: white;
 }

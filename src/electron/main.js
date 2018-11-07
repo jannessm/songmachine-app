@@ -1,10 +1,6 @@
-const electron = require('electron')
-
-// Module to control application life.
-const app = electron.app;
-
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
+const {app, BrowserWindow, Menu, TouchBar} = require('electron');
+const {TouchBarLabel, TouchBarButton, TouchBarSpacer} = TouchBar;
+const Router = require('@marshallofsound/electron-router').Router;
 
 const path = require('path');
 const url = require('url');
@@ -12,11 +8,16 @@ const url = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-const api = new (require('@marshallofsound/electron-router').Router)('api');
+const api = new Router('api');
 function createWindow () {
   require('./server.js').run(api);
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1800, height: 1600, webPreferences: { webSecurity: false}});
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 600,
+    webPreferences: { webSecurity: false},
+    icon: path.join(__dirname, 'assets/main-icon/png/64x64.png')
+  });
   
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -36,6 +37,60 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   });
+
+  // Menu
+  const template = [
+    {
+      label: 'Edit',
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {type: 'separator'},
+        {role: 'selectAll'}
+      ]
+    }
+  ]
+  if (process.platform === 'darwin') {
+    template.unshift({
+      label: app.getName(),
+      submenu: [
+        {role: 'about'},
+        {type: 'separator'},
+        {role: 'hide'},
+        {role: 'hideothers'},
+        {role: 'unhide'},
+        {type: 'separator'},
+        {role: 'close'},
+        {role: 'quit'}
+      ]
+    })
+  }
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
+  // Touchbar
+
+  // SongButton
+  // const songs = new TouchBarButton({
+  //   label: 'Songs',
+  //   backgroundColor: '#B3D1EF',
+  //   click: () => {
+  //     mainWindow.loadURL(url.format({
+  //       pathname: path.join(__dirname, 'index.html'),
+  //       protocol: 'file:',
+  //       slashes: true
+  //     }));
+  //   }
+  // });
+
+  // const touchBar = new TouchBar([
+  //   songs
+  // ])
+  // mainWindow.setTouchBar(touchBar);
 }
 
 // This method will be called when Electron has finished

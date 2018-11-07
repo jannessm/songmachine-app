@@ -7,3 +7,32 @@ app-songsheet-textarea, app-preview{
   width: 49.8%;
   vertical-align: top;
 }
+
+#menu{
+  padding: 10px;
+}
+
+.row{
+  flex-direction: row;
+  display: flex;
+  margin-bottom: 20px;
+}
+.col{
+  flex-direction: column;
+  width: 33%;
+  display: flex;
+  margin-right: 20px;
+}
+.stretch-row{
+  max-height: 100%;
+}
+.stretch-col{
+  max-width: 100%;
+}
+.fill{
+  margin:	0;
+  width: 100%;
+  height: calc(100% - 56px);
+  min-width: 100%;
+  min-height: calc(100% - 56px);
+}

@@ -9,14 +9,14 @@ export class ParserService {
 
   private regexs = {
     newline: /\r?\n/,
-    header: new RegExp('\\[(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;)?' +
-                         '(?:\\s*?(title|bpm|artist|books)\\s*:\\s*([\\w\\s-_,]*)\\s*;?)?\\s*\\]', 'gi'),
-    block: /\[(?:Block\s*:\s*)([\w\s-_]*)\]/gi,
-    order: /\[(?:order\s*:\s*)([\w\s-_,]*)\]/gi,
-    chord: /(?:\[\s*)([\w<>\*\#]*)(?:\s*\])/gi,
-    invChord: /([\w\#]+)/gi
+    title: /\[(?:[^;]*;\s*)*(?:title|titel)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    bpm: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    artist: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    block: /\[(?:block\s*:\s*)([\w\s-_\.]*)\]/gi,
+    order: /\[(?:order\s*:\s*)([\w\s-_\.,]*)\]/gi,
+    chord: /(?:\[\s*)([^\s]+?)(?:\s*\])/gi,
+    invChord: /([^\s]+)/gi
   };
 
   constructor(private htmlFactory: HtmlFactoryService) { }
@@ -74,17 +74,16 @@ export class ParserService {
       meta['order'] = order[1].split(',').map(value => value.trim());
     }
 
-    const matches = this.regexs.header.exec(str);
-    if (matches && matches.length > 2) {
+    const matchTitle = this.regexs.title.exec(str);
+    const matchArtist = this.regexs.artist.exec(str);
+    const matchBPM = this.regexs.bpm.exec(str);
+    const matchBooks = this.regexs.books.exec(str);
 
-      for (let i = 1; i < matches.length; i += 2) {
-        if (matches[i] && matches[i] !== 'books') {
-          meta[matches[i]] = matches[i + 1];
-        } else if (matches[i]) {
-          meta[matches[i]] = matches[i + 1].split(',').map(value => value.trim());
-             }
-      }
-    }
+    meta['title'] = matchTitle ? matchTitle[1] : undefined;
+    meta['artist'] = matchArtist ? matchArtist[1] : undefined;
+    meta['bpm'] = matchBPM ? matchBPM[1] : undefined;
+    meta['books'] = matchBooks ? matchBooks[1].split(',').map(val => val.trim()) : undefined;
+
     return meta;
   }
 
@@ -143,38 +142,44 @@ export class ParserService {
   private getLine(str: string): Line {
     this.resetRegex();
     const newLine: Line = new Line();
-    newLine.lyrics.bottomLine = str;
     const matches = [];
 
-    let m;
-    do {
-      m = this.regexs.chord.exec(str);
-      if (m) {
-        matches.push(m);
-        newLine.lyrics.bottomLine = newLine.lyrics.bottomLine.replace(m[0], '');
-      }
-    } while (m);
-
-    const annotationblocks = newLine.lyrics.bottomLine.split('|').map(value => value.replace(/\s*$/g, ''));
+    // process annotations
+    const annotationblocks = str.split('|').map(value => value.replace(/\s*$/g, ''));
     newLine.annotationCells = annotationblocks.length - 1;
-    for (const anno of annotationblocks) {
+    annotationblocks.forEach(anno => {
       if (anno === annotationblocks[0]) {
-        continue;
+        return;
       }
 
       const annotations = anno.split(';').map(value => value.trim());
       newLine.differentAnnotations = this.max(newLine.differentAnnotations, annotations.length);
       newLine.annotations.push(annotations);
-    }
+    });
+    str = annotationblocks[0];
 
-    let offset = 0;
-    for (let i = 0; i < matches.length; i++) {
-      let len = matches[i].index - newLine.lyrics.topLine.length - offset + 1;
-      len = len > 1 ? len : 2;
-      offset += matches[i][0].length;
-      newLine.lyrics.topLine += Array(len).join(' ') + matches[i][1];
-    }
-    newLine.lyrics.bottomLine = annotationblocks[0];
+    // process chords
+    let m;
+    do {
+      this.resetRegex();
+      m = this.regexs.chord.exec(str);
+      if (m) {
+        // chord start
+        const start = m.index;
+        // if start < topLine.length add spaces to bottomLine
+        if (newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) + 1 > 0) {
+          newLine.lyrics.bottomLine += Array(newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) + 1).join(' ');
+        } else if (newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) < 0) {
+          newLine.lyrics.topLine += Array((newLine.lyrics.bottomLine.length + start) - newLine.lyrics.topLine.length + 1).join(' ');
+        }
+        const stringUntilChord = str.substr(0, start);
+        newLine.lyrics.topLine += m[1] + ' ';
+        newLine.lyrics.bottomLine += stringUntilChord;
+        str = str.replace(stringUntilChord + m[0], '');
+      } else {
+        newLine.lyrics.bottomLine += str;
+      }
+    } while (m);
     newLine.lyricsWidth = newLine.lyrics.bottomLine.length;
     return newLine;
   }
@@ -202,7 +207,7 @@ export class ParserService {
     }
 
     // order
-    const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(',') + ']' : '';
+    const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(', ') + ']' : '';
     if (order) {
       str += order + '\n\n';
     }
@@ -224,28 +229,21 @@ export class ParserService {
     const finalLine = [];
 
     let m;
-    let matches = [];
+    let lastStart = 0;
     do {
       m = this.regexs.invChord.exec(line.lyrics.topLine);
       if (m) {
-        matches.push(m);
+        // add string until chord
+        finalLine.push(line.lyrics.bottomLine.substr(lastStart, m.index - lastStart).replace(/^\s+/, ' '));
+        // add chord
+        finalLine.push('[' + m[1] + ']');
+        lastStart = m.index;
+      } else {
+        finalLine.push(line.lyrics.bottomLine.substr(lastStart));
       }
     } while (m);
 
-    matches = matches.reverse(); // to ensure correct position
-    for (let i = 0; i <= matches.length; i++) {
-      // if last part start from 0
-      const start = i === matches.length ? 0 : matches[i].index;
-      // if first -> until end else prev position
-      const end = i === 0 ? undefined : i === matches.length ? matches[i - 1].index : matches[i - 1].index - matches[i].index;
-      finalLine.push(line.lyrics.bottomLine.substr(start, end));
-
-      if (i < matches.length) {
-        finalLine.push('[' + matches[i][1] + ']');
-      }
-    }
-
-    return finalLine.reverse().join('');
+    return finalLine.join('');
   }
 
   private joinAnnotations(line: Line): string {
@@ -262,10 +260,8 @@ export class ParserService {
   }
 
   private resetRegex() {
-    for (const reg in this.regexs) {
-      if (this.regexs[reg]) {
-        this.regexs[reg].lastIndex = 0;
-      }
-    }
+    Object.values(this.regexs).forEach(element => {
+      element.lastIndex = 0;
+    });
   }
 }

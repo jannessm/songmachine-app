@@ -35,7 +35,6 @@ export class MergeService {
 
     return new Promise((resolve, reject) => {
       dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
         if (result === '--**keepLocal**--') {
           resolve(newSongLocal);
         } else if (result === '--**keepServer**--') {

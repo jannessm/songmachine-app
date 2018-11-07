@@ -2,11 +2,6 @@
     <mat-card-header>
         <mat-card-title>{{ song.title }}</mat-card-title>
         <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
-        <div class="mods">
-            <i class="icon icon-editor" (click)="editSong(song)"></i>
-            <i class="icon icon-edit" (click)="emitEditMeta( song )"></i>
-            <i class="icon icon-delete" (click)="del( song )"></i>
-        </div>
     </mat-card-header>
     <mat-card-content>
         <div class="song">{{ song.preview }}</div>
@@ -31,4 +26,15 @@
             </tr>
         </table>
     </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="editSong(song)">
+            open in editor <i class="icon icon-editor"></i>
+        </button>
+        <button mat-button (click)="emitEditMeta( song )">
+            edit metadata <i class="icon icon-edit"></i>
+        </button>
+        <button mat-button (click)="del( song )">
+            delete <i class="icon icon-delete"></i>
+        </button>
+    </mat-card-actions>
 </mat-card>

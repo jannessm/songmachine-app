@@ -27,11 +27,6 @@ export class AppComponent implements OnInit {
       active: false,
     },
     {
-      route: 'editor',
-      icon: 'icon-editor',
-      active: false
-    },
-    {
       route: 'settings',
       icon: 'icon-settings',
       active: false

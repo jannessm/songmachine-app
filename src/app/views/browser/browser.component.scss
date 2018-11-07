@@ -10,3 +10,16 @@ mat-form-field{
 i{
     cursor: pointer;
 }
+
+.cards{
+    @media (min-width: 1200px) {
+        :not(:nth-child(5)){
+            margin-right: 10px;
+        }
+    }
+    @media (max-width: 1199px) {
+        :not(:nth-child(3)){
+            margin-right: 10px;
+        }
+    }
+}
