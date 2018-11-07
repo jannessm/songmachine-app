@@ -26,6 +26,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   song: Song = new Song();
   songText: string;
   transposeSteps = 0;
+  transposeStep = 0;
   inputGroup: FormGroup;
   htmlLines: string[] = [];
 
@@ -137,26 +138,29 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
   public transposeUp() {
     this.transposeSteps = (this.transposeSteps + 1) % 12;
+    this.transposeStep = 1;
     this.transpose();
   }
 
   public transposeDown() {
-    this.transposeSteps = (this.transposeSteps + 11) % 12;
+    this.transposeSteps = (this.transposeSteps - 1) % 12;
+    this.transposeStep = -1;
+    this.transpose();
   }
 
   private transpose() {
     let match;
     const matches = [];
     let flat = false;
-    const chordReg = /(\[\s*([^:]*?)\s*\])/gi;
+    const chordReg = /\[\s*([^:]*?)\s*(?:\/([^:]*?))?\]/gi;
     do {
       match = chordReg.exec(this.songText);
       if (match) {
         matches.push(match);
-        if (match[1][1] && match[1][1].toLowerCase() === 'b') {
+        if (match[1] && match[1][1] && match[1][1].toLowerCase() === 'b') {
           flat = true;
         }
-        if (match[2][1] && match[2][1].toLowerCase() === 'b') {
+        if (match[2] && match[2][1] && match[2][1].toLowerCase() === 'b') {
           flat = true;
         }
       }
@@ -175,29 +179,30 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
                         this.songText.substr(m.index + m[0].length);
       }
     });
+    this.inputGroup.get('inputControl').setValue(this.songText);
   }
 
   private getNewChord(chord, flat) {
-    const keysSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map(val => val.toLowerCase());
-    const keysFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'].map(val => val.toLowerCase());
+    const keysSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const keysFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
-    let mainKey = chord[0];
+    let mainKey = chord[0].toLowerCase();
     let firstTwo = false;
-    if (chord[1].toLowerCase() === '#' || chord[1].toLowerCase() === 'b') {
-      mainKey += chord[1];
+    if (chord[1] && (chord[1].toLowerCase() === '#' || chord[1].toLowerCase() === 'b')) {
+      mainKey += chord[1].toLowerCase();
       firstTwo = true;
     }
 
     let id = -1;
     if (flat) {
-      id = keysFlat.findIndex(val => val === mainKey);
+      id = keysFlat.findIndex(val => val.toLowerCase() === mainKey);
     } else {
-      id = keysSharp.findIndex(val => val === mainKey);
+      id = keysSharp.findIndex(val => val.toLowerCase() === mainKey);
     }
 
     if (id > -1) {
       let newMainKey;
-      const newId = (id + this.transposeSteps) % 12;
+      const newId = (id + this.transposeStep + 12) % 12;
       if (flat) {
         newMainKey = keysFlat[newId];
       } else {

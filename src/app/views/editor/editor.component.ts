@@ -46,11 +46,11 @@ export class EditorComponent implements OnInit {
     this.router.navigateByUrl('perform/' + this.songId);
   }
 
-  transposeUp() {}
+  transposeUp() {
+    this.textfield.transposeUp();
+  }
 
-  transposeDown() {}
-
-  addResolveSymbol() {
-    // this.textfield.addResolveSymbol();
+  transposeDown() {
+    this.textfield.transposeDown();
   }
 }
