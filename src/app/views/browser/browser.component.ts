@@ -106,10 +106,10 @@ export class BrowserComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.saveType(this.type, result).then(() => {
-          if (result instanceof Song && newObject) {
-            this.router.navigateByUrl('/editor/' + result.id);
-          } else {
+        this.dataService.saveType(this.type, result).then(res => {
+          if (res instanceof Song && newObject) {
+            this.router.navigateByUrl('/editor/' + res.id);
+          } else if (res) {
             this.updateElems();
           }
         });
