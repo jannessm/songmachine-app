@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule, MatButtonModule, MatInputModule, MatCardModule, MatDialogModule } from '@angular/material';
+import { MatSidenavModule, MatButtonModule, MatInputModule, MatCardModule, MatDialogModule, MatMenuModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -37,6 +37,8 @@ import { KeyFinderService } from './services/keyFinder.service';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { TranslatePipe } from './pipes/translate.pipe';
+import { ExportService } from './services/export.service';
+import { SngService } from './services/sng.service';
 
 
 export function initConfigs(configService: ConfigService) {
@@ -73,6 +75,7 @@ export function initConfigs(configService: ConfigService) {
     MatIconModule,
     MatCardModule,
     MatDialogModule,
+    MatMenuModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     AutosizeModule,
@@ -88,6 +91,8 @@ export function initConfigs(configService: ConfigService) {
     DexieService,
     TranslationService,
     KeyFinderService,
+    ExportService,
+    SngService,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-songgroup',
@@ -14,7 +15,7 @@ export class SonggroupComponent implements OnInit {
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
   JSON = JSON;
 
-  constructor(private dataService: DataService, private router: Router) { }
+  constructor(private dataService: DataService, private router: Router, private exportService: ExportService) { }
 
   songs: string[] = [];
 
@@ -45,5 +46,9 @@ export class SonggroupComponent implements OnInit {
 
   performSonggroup() {
     this.router.navigateByUrl('perform/' + this.songgroup.songs.join('_'));
+  }
+
+  exportSt() {
+    this.exportService.getStFile(this.songgroup).then(() => console.log('yeah'));
   }
 }
