@@ -1,6 +1,10 @@
 <div id="menu">
   <button mat-button (click)="save()">{{ 'editor.save' | translate }}</button>
   <button mat-button (click)="performMode()">{{ 'editor.performMode' | translate }}</button>
+  <button mat-button disabled>{{ 'editor.transpose' | translate }}</button>
+  <button mat-button (click)="transposeUp()"><i class="icon icon-up"></i>up</button>
+  {{ textfield.transposeSteps }}
+  <button mat-button (click)="transposeDown()"><i class="icon icon-down"></i>down</button>
 </div>
 <div class="row streched-row fill">
   <app-songsheet-textarea [input]="songIn$ | async" (value)="songOut($event)" #textfield></app-songsheet-textarea>

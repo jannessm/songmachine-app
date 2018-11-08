@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { HtmlFactoryService } from '../../services/html-factory.service';
 import { ParserService } from '../../services/parser.service';
 import { Song } from '../../models/song';
+import { MUSICAL_KEYS } from '../../models/keys';
+import { KeyFinderService } from '../../services/keyFinder.service';
 
 const enum KEYS {
   openBracket = 91,
@@ -23,6 +25,9 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   @ViewChild('textfield') textfield: ElementRef;
 
   song: Song = new Song();
+  songText: string;
+  transposeSteps = 0;
+  transposeStep = 0;
   inputGroup: FormGroup;
   htmlLines: string[] = [];
 
@@ -32,7 +37,8 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private htmlFactory: HtmlFactoryService,
-    private parser: ParserService
+    private parser: ParserService,
+    private keyFinder: KeyFinderService
   ) {
     this.inputGroup = this.fb.group({
       'inputControl': [null]
@@ -43,13 +49,16 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     this.update('');
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
         this.update(v);
+        this.songText = v;
         this.song = this.parser.stringToSong(v);
+        this.song.transposedBy = this.transposeSteps;
         this.value.emit(this.song);
     });
   }
   ngOnChanges() {
     if (this.input) {
       this.song = this.input;
+      this.transposeSteps = this.song.transposedBy || 0;
       this.inputGroup.get('inputControl').setValue(this.parser.songToString(this.song));
     }
   }
@@ -117,8 +126,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
       target.value = text.substr(0, charPos) + text.substr(charPos + remove);
       target.selectionStart = charPos;
       target.selectionEnd = charPos;
-
-    // if area is selected and shall be deleted
     }
 }
 
@@ -133,11 +140,70 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     return i;
   }
 
-  /*public addResolveSymbol() {
-    const value = this.textfield.nativeElement.value;
+  public transposeUp() {
+    this.transposeSteps = (this.transposeSteps + 1) % 12;
+    this.transposeStep = 1;
+    this.transpose();
+  }
 
-    this.textfield.nativeElement.value = value.substr(0, this.start) + '♮' + value.substr(this.end);
-    this.textfield.nativeElement.selectionEnd = this.start;
-  }*/
+  public transposeDown() {
+    this.transposeSteps = (this.transposeSteps - 1) % 12;
+    this.transposeStep = -1;
+    this.transpose();
+  }
+
+  private transpose() {
+    const res = this.keyFinder.getKeys(this.songText);
+    const matches: RegExpExecArray[] = res.matches;
+    const flat = res.flat;
+
+    matches.reverse().forEach(m => {
+      // if there is no extra basenote
+      if (!m[2]) {
+        this.songText = this.songText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat) + ']' +
+                        this.songText.substr(m.index + m[0].length);
+      } else {
+        this.songText = this.songText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat) + '/' +
+                        this.getNewChord(m[2], flat) + ']' +
+                        this.songText.substr(m.index + m[0].length);
+      }
+    });
+    this.inputGroup.get('inputControl').setValue(this.songText);
+  }
+
+  private getNewChord(chord, flat) {
+    let mainKey = chord[0].toLowerCase();
+    let firstTwo = false;
+    if (chord[1] && (chord[1].toLowerCase() === '#' || chord[1].toLowerCase() === 'b')) {
+      mainKey += chord[1].toLowerCase();
+      firstTwo = true;
+    }
+
+    let id = -1;
+    if (flat) {
+      id = MUSICAL_KEYS.flats.findIndex(val => val.toLowerCase() === mainKey);
+    } else {
+      id = MUSICAL_KEYS.sharps.findIndex(val => val.toLowerCase() === mainKey);
+    }
+
+    if (id > -1) {
+      let newMainKey;
+      const newId = (id + this.transposeStep + 12) % 12;
+      if (flat) {
+        newMainKey = MUSICAL_KEYS.flats[newId];
+      } else {
+        newMainKey = MUSICAL_KEYS.sharps[newId];
+      }
+
+      if (firstTwo) {
+        chord = newMainKey + chord.substr(2);
+      } else {
+        chord = newMainKey + chord.substr(1);
+      }
+    }
+    return chord;
+  }
 
 }
