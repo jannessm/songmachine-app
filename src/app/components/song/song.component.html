@@ -2,6 +2,20 @@
     <mat-card-header>
         <mat-card-title>{{ song.title }}</mat-card-title>
         <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
+        <button mat-menu-item (click)="exportSt()">
+            <span>{{ 'menu.export.st' | translate }}</span>
+        </button>
+        <!-- <button mat-icon-button [matMenuTriggerFor]="rootMenu">
+        <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #rootMenu="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="exportMenu">
+            <span>{{ 'menu.export.title' | translate }}</span>
+        </button>
+        </mat-menu>
+
+        <mat-menu #exportMenu="matMenu">
+        </mat-menu> -->
     </mat-card-header>
     <mat-card-content>
         <div class="song">{{ song.preview }}</div>
