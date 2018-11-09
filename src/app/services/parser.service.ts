@@ -57,6 +57,10 @@ export class ParserService {
 
     // get blocks
     newSong.blocks = this.getAllBlocks(str);
+    // set default order
+    if (!newSong.order) {
+      newSong.order = newSong.blocks.map(block => block.title);
+    }
     for (const b of newSong.blocks) {
       newSong.annotationCells = this.max(b.annotationCells, newSong.annotationCells);
       newSong.maxLineWidth = this.max(b.maxLineWidth, newSong.maxLineWidth);
@@ -101,14 +105,21 @@ export class ParserService {
       }
     } while (m);
 
-    for (let i = 0; i < blockStarts.length; i++) {
-      let block;
-      if (i + 1 === blockStarts.length) {
-        block = str.substr(blockStarts[i]);
-      } else {
-        block = str.substr(blockStarts[i], blockStarts[i + 1] - blockStarts[i]);
-      }
-      blocks.push(this.getBlock(titles[i], block));
+    if (blockStarts.length > 0) {
+      blockStarts.forEach((start, i) => {
+        let block;
+        if (i + 1 === blockStarts.length) {
+          block = str.substr(start);
+        } else {
+          block = str.substr(start, blockStarts[i + 1] - start);
+        }
+        blocks.push(this.getBlock(titles[i], block));
+      });
+    } else {
+      str = str.split('\n')
+        .filter(line => !/\[.*?:.*?\]/g.test(line) )
+        .join('\n');
+      blocks.push(this.getBlock('', str));
     }
     return blocks;
   }
@@ -197,13 +208,13 @@ export class ParserService {
   public metaToString(song: Song): string {
     let str = '';
     // meta
-    const title = song.title && song.title !== '' ? 'title: ' + song.title + '; ' : '';
-    const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist + '; ' : '';
-    const bpm = song.bpm ? 'bpm: ' + song.bpm + '; ' : '';
-    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(',') + '; ' : '';
+    const title = song.title && song.title !== '' ? 'title: ' + song.title : '';
+    const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist : '';
+    const bpm = song.bpm ? 'bpm: ' + song.bpm : '';
+    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(',') : '';
 
     if (title || artist || bpm || books) {
-      str += '[' + title + artist + bpm + books + ']\n\n';
+      str += '[' + [title, artist, bpm, books].filter(val => !!val).join('; ') + ']\n\n';
     }
 
     // order
