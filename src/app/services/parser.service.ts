@@ -13,8 +13,8 @@ export class ParserService {
     bpm: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     artist: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    order: /\[(?:[^;]*;\s*)*(?:order|reihenfolge)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     block: /\[(?:block\s*:\s*)([\w\s-_\.]*)\]/gi,
-    order: /\[(?:order\s*:\s*)([\w\s-_\.,]*)\]/gi,
     chord: /(?:\[\s*)([^\s]+?)(?:\s*\])/gi,
     invChord: /([^\s]+)/gi
   };
