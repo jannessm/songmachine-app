@@ -35,9 +35,9 @@ export class ExportService {
     return new Promise<Blob>(res => res(new Blob()));
   }
 
-  public getSngFile(obj: Song | Songgroup) {
+  public getSngFile(obj: Song | Songgroup): Promise<Blob> {
     if (obj instanceof Song) {
-      return this.sngService.getSngFile(obj); // .sng
+      return new Promise(res => res(this.sngService.getSngFile(obj))); // .sng
     } else if (obj instanceof Songgroup) {
       return this.getSngFileForSonggroup(obj); // .zip
     }

@@ -30,8 +30,13 @@ export class SongComponent {
   }
 
   exportSt() {
-    this.exportService.getStFile(this.song).then(() => {
-      // snackbar, and save file by dataService
+    this.exportService.getStFile(this.song).then(blob => {
+    });
+  }
+
+  exportSng() {
+    this.exportService.getSngFile(this.song).then(blob => {
+
     });
   }
 
