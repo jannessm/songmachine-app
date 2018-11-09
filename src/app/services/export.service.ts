@@ -16,7 +16,7 @@ interface BlobFile {
 @Injectable()
 export class ExportService {
   constructor(
-    private dataService: DataService, 
+    private dataService: DataService,
     private sngService: SngService,
     private pptxService: PptxService,
     private parserService: ParserService

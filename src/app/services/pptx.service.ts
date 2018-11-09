@@ -16,7 +16,7 @@ export class PptxService {
     this.initPptx(pptx);
     this.appendSlidesForSong(pptx, song);
 
-    pptx.save();
+    pptx.save(song.title);
   }
 
   public getPptxForSonggroup(songgroup: Songgroup) {
@@ -30,7 +30,7 @@ export class PptxService {
       }));
     });
     Promise.all(promises).then(() => {
-      pptx.save();
+      pptx.save(songgroup.name);
     });
   }
 
