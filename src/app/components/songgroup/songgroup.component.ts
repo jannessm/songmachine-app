@@ -51,4 +51,12 @@ export class SonggroupComponent implements OnInit {
   exportSt() {
     this.exportService.getStFile(this.songgroup).then(() => console.log('yeah'));
   }
+
+  exportSng() {
+    this.exportService.getSngFile(this.songgroup);
+  }
+
+  exportPptx() {
+    this.exportService.getPptx(this.songgroup);
+  }
 }

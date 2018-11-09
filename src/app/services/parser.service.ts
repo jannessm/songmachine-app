@@ -264,4 +264,14 @@ export class ParserService {
       element.lastIndex = 0;
     });
   }
+
+  public getPlainLine(line: string): string {
+    return line.replace(/<(r|g|b)>/g, '') // color markdown
+      .replace(/\*/g, '') // bold, italic
+      .replace(/\s+/g, ' ') // multiple spaces
+      .replace(/\s*-\s*/g, '') // spaces in words
+      .replace(/\d+(x|X)/g, '') // amount of repetitions
+      .replace(/(x|X)\d+/g, '') // amount of repetitions
+      .trim();
+  }
 }

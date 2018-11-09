@@ -2,11 +2,14 @@
     <mat-card-header>
         <mat-card-title>{{ song.title }}</mat-card-title>
         <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
-        <button mat-menu-item (click)="exportSt()">
+        <!-- <button mat-menu-item (click)="exportSt()">
             <span>{{ 'menu.export.st' | translate }}</span>
         </button>
         <button mat-menu-item (click)="exportSng()">
             <span>{{ 'menu.export.sng' | translate }}</span>
+        </button> -->
+        <button mat-menu-item (click)="exportPptx()">
+            <span>{{ 'menu.export.pptx' | translate }}</span>
         </button>
         <!-- <button mat-icon-button [matMenuTriggerFor]="rootMenu">
         <mat-icon>more_vert</mat-icon>

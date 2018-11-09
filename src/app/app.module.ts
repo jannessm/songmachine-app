@@ -39,6 +39,7 @@ import { SafePipe } from './pipes/safe.pipe';
 import { TranslatePipe } from './pipes/translate.pipe';
 import { ExportService } from './services/export.service';
 import { SngService } from './services/sng.service';
+import { PptxService } from './services/pptx.service';
 
 
 export function initConfigs(configService: ConfigService) {
@@ -93,6 +94,7 @@ export function initConfigs(configService: ConfigService) {
     KeyFinderService,
     ExportService,
     SngService,
+    PptxService,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,

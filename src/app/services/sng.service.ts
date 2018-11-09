@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
+import { ParserService } from './parser.service';
 
 // https://wiki.openlp.org/Development:SongBeamer_-_Song_Data_Format
 @Injectable()
 export class SngService {
-  constructor() {}
+  constructor(private parserService: ParserService) {}
 
   public getSngFile(song: Song): Blob {
     let songStr = this.getSngHeader(song);
@@ -12,13 +13,7 @@ export class SngService {
     song.blocks.forEach(block => {
       songStr += `\n---\n${block.title}`;
       block.lines.forEach(line => {
-        const newLine = line.lyrics.bottomLine
-        .replace(/<(r|g|b)>/g, '') // color markdown
-        .replace(/\*/g, '') // bold, italic
-        .replace(/\s+/g, ' ') // multiple spaces
-        .replace(/\s*-\s*/g, '') // spaces in words
-        .replace(/\d+x/g, '') // amount of repetitions
-        .trim();
+        const newLine = this.parserService.getPlainLine(line.lyrics.bottomLine);
         if (newLine) {
           songStr += '\n' + newLine;
         }

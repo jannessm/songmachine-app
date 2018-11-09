@@ -40,4 +40,8 @@ export class SongComponent {
     });
   }
 
+  exportPptx() {
+    this.exportService.getPptx(this.song);
+  }
+
 }

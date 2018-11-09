@@ -4,6 +4,7 @@ import { Songgroup } from '../models/songgroup';
 import { DataService } from './data.service';
 import { SngService } from './sng.service';
 import { ParserService } from './parser.service';
+import { PptxService } from './pptx.service';
 
 const jszip = require('jszip');
 
@@ -14,7 +15,12 @@ interface BlobFile {
 
 @Injectable()
 export class ExportService {
-  constructor(private dataService: DataService, private sngService: SngService, private parserService: ParserService) {}
+  constructor(
+    private dataService: DataService, 
+    private sngService: SngService,
+    private pptxService: PptxService,
+    private parserService: ParserService
+  ) {}
 
   public getStFile(obj: Song | Songgroup): Promise<Blob> {
     if (obj instanceof Song) {
@@ -45,9 +51,9 @@ export class ExportService {
 
   public getPptx(obj: Song | Songgroup) {
     if (obj instanceof Song) {
-      return this.getPptxForSong(obj);
+      return this.pptxService.getPptxForSong(obj);
     } else if (obj instanceof Songgroup) {
-      return this.getPptxForSonggroup(obj);
+      return this.pptxService.getPptxForSonggroup(obj);
     }
   }
 
@@ -64,14 +70,6 @@ export class ExportService {
       return songs;
     });
     return new Promise(res => res(new Blob()));
-  }
-
-  private getPptxForSong(song: Song) {
-
-  }
-
-  private getPptxForSonggroup(songgroup: Songgroup) {
-    // return single pptx with empty slide between all songs
   }
 
   private zip(promises: Promise<BlobFile>[]): Promise<Blob> {
