@@ -42,3 +42,8 @@ export interface CmFileLoadRequest {
 export interface FileLoadResponse<T> { data: T; }
 
 export type LoadIndexFilesResponse = Array<{path: string, content: any}>;
+
+export interface RunHttpServerRequest { html: string; }
+export interface StopHttpServerRequest { html: string; }
+export interface RunHttpServerResponse { url: string; }
+export type HttpServerResponse = undefined;

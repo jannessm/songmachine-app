@@ -40,6 +40,8 @@ import { TranslatePipe } from './pipes/translate.pipe';
 import { ExportService } from './services/export.service';
 import { SngService } from './services/sng.service';
 import { PptxService } from './services/pptx.service';
+import { ScrollApiService } from './services/scroll-api.service';
+import { QRDialogComponent } from './components/qr-dialog/qr-dialog.component';
 
 
 export function initConfigs(configService: ConfigService) {
@@ -62,7 +64,8 @@ export function initConfigs(configService: ConfigService) {
     PerformviewComponent,
     SafePipe,
     TranslatePipe,
-    MergeDialogComponent
+    MergeDialogComponent,
+    QRDialogComponent
   ],
   imports: [
     ConnectivityModule,
@@ -95,6 +98,7 @@ export function initConfigs(configService: ConfigService) {
     ExportService,
     SngService,
     PptxService,
+    ScrollApiService,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,
@@ -104,7 +108,8 @@ export function initConfigs(configService: ConfigService) {
   ],
   entryComponents: [
     SongSonggroupFormComponent,
-    MergeDialogComponent
+    MergeDialogComponent,
+    QRDialogComponent
   ],
   bootstrap: [AppComponent]
 })

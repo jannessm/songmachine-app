@@ -38,11 +38,48 @@ app-preview{
 .next-button{
   right: 1%;
 }
-.back-button{
+.menu{
   position: absolute;
-  top: 10px;
-  left: 10px;
-  color: $black;
+  top: 65px;
+  right: 10px;
   background: $blue;
-  color: white;
+  color: $white;
+  z-index: 100;
+}
+.menu-button{
+  position: absolute;
+  right: 10px;
+  background: $blue;
+  color: $white;
+  opacity: 0;
+}
+.expanded1{
+  animation: show1 100ms ease-in forwards;
+}
+.expanded2{
+  animation: show2 100ms ease-in forwards;
+}
+.collapsed1{
+  animation: hide1 100ms ease-out forwards;
+}
+.collapsed2{
+  animation: hide2 100ms ease-out forwards;
+}
+
+@keyframes show1{
+  0% {opacity: 0; top: 95px}
+  100% {opacity: 1; top: 115px}
+}
+@keyframes show2{
+  0% {opacity: 0; top: 140px}
+  100% {opacity: 1; top: 160px}
+}
+
+@keyframes hide1{
+  0% {opacity: 1; top: 115px}
+  100% {opacity: 0; top: 95px}
+}
+@keyframes hide2{
+  0% {opacity: 1; top: 160px}
+  100% {opacity: 0; top: 140px}
 }

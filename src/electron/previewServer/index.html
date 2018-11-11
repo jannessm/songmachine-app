@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>Perform Title</title>
+    <link rel="shortcut icon" href="icon.png" type="image/png" />
+  </head>
+
+  <body>
+    <div class="testpage"></div>
+    <style>
+      html{
+        scroll-behavior: smooth;
+      }
+      .testpage{
+        width: 100%;
+        height: 200%;
+        background-image: linear-gradient(to bottom right, red, yellow);
+      }
+    </style>
+    <script>
+      let timerID;
+      connect();
+      
+      function start(){
+        let ws = new WebSocket('ws://localhost:8300/');
+
+        ws.onopen = () => {
+          if(timerID){ /* a setInterval has been fired */
+            clearInterval(timerID);
+            timerID=0;
+            console.log("connected");
+          }
+        }
+  
+        ws.onclose = () => {
+          connect();
+        }
+  
+        ws.onmessage = event => {
+          const data = JSON.parse(event.data);
+          document.body.scrollTo(0, document.body.scrollHeight * data.scrollTop);
+        }
+      }
+
+      function connect(){
+        if(!timerID){ /* Avoid firing a new setInterval, after one has been done */
+          timerID=setInterval(() => start(), 500);
+        }
+      }
+    </script>
+  </body>
+</html>

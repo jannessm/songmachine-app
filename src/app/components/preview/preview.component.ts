@@ -11,6 +11,7 @@ import {
   Output } from '@angular/core';
 import { Song } from '../../models/song';
 import { HtmlFactoryService } from '../../services/html-factory.service';
+import { ScrollApiService } from '../../services/scroll-api.service';
 
 @Component({
   selector: 'app-preview',
@@ -33,6 +34,8 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   html = '';
   private zoom = 1;
+  menuOpen = true;
+  wasExpanded = false;
 
   @HostListener('window:keyup', ['$event', '$event.keyCode'])
   scroll(e, code) {
@@ -53,7 +56,11 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  constructor(private htmlFactory: HtmlFactoryService, private renderer: Renderer2) {}
+  constructor(
+    private htmlFactory: HtmlFactoryService,
+    private renderer: Renderer2,
+    private scrollApiService: ScrollApiService
+  ) {}
 
   ngOnInit() {
     this.song = this.song || new Song();
@@ -73,23 +80,31 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   scrollUp() {
     const nativeElem = this.wrapperElem.nativeElement;
+    let scrollTop = nativeElem.scrollTop;
     if (nativeElem.scrollTop === 0) {
       this.scrolledToTop.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});
+      scrollTop = 0;
     } else {
       const height = nativeElem.offsetHeight * 0.75;
       nativeElem.scrollBy({top: -height, behavior: 'smooth'});
+      scrollTop -= height;
     }
+    this.scrollApiService.scroll(scrollTop / nativeElem.scrollHeight);
   }
 
   scrollDown() {
     const nativeElem = this.wrapperElem.nativeElement;
+    let scrollTop = nativeElem.scrollTop;
     if (nativeElem.scrollTop >= nativeElem.scrollHeight - nativeElem.offsetHeight - 1) {
       this.scrolledToBottom.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});
+      scrollTop = 0;
     } else {
       const height = nativeElem.offsetHeight * 0.75;
       nativeElem.scrollBy({top: height, behavior: 'smooth'});
+      scrollTop += height;
     }
+    this.scrollApiService.scroll(scrollTop / nativeElem.scrollHeight);
   }
 }

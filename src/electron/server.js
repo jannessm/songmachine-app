@@ -1,7 +1,9 @@
 const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
+const HttpServer = require('./previewServer/httpServer');
 const jiff = require('jiff');
+const os = require('os');
 
 function assembleBufferPayload(request) {
   const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
@@ -15,6 +17,7 @@ module.exports = class {
 
   static run(api) {
     const fileManager = new FileManager();
+    const httpServer = new HttpServer();
 
     /**
      * Request Body
@@ -254,6 +257,25 @@ module.exports = class {
           payload: {}
         });
       }
+    });
+
+    api.post('runPerformServer', (req, res) => {
+      const html = assembleBufferPayload(req);
+      const ifaces = os.networkInterfaces();
+      let host = '';
+      ifaces['en0'].forEach(function (iface) {
+        if ('IPv4' !== iface.family || iface.internal !== false) {
+          // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+          return;
+        }
+        host = iface.address;
+      });
+      httpServer.run(host, html);
+      res.send(JSON.stringify({ url: 'http://' + host + ':8080/' }))
+    });
+
+    api.get('stopPerformServer', (req, res) => {
+      httpServer.stop();
     });
   }
 };

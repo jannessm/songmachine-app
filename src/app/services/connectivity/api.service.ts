@@ -7,7 +7,7 @@ import {
   CmPdfRequest,
   CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
   FileSystemIndexResponse,
-  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse
+  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse, HttpServerResponse, RunHttpServerRequest, StopHttpServerRequest, RunHttpServerResponse
 } from './model/client.model';
 
 const Path = require('path');
@@ -66,6 +66,18 @@ export class ApiService {
     return this.ConnectorFactory('read')
       .setMode(Modes.CORS)
       .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
+  }
+
+  generateRunHttpServerRequest(html: string): Promise<CmResponse<RunHttpServerResponse>> {
+    return this.ConnectorFactory('runPerformServer')
+      .setMode(Modes.CORS)
+      .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { html });
+  }
+
+  generateStopHttpServerRequest(): Promise<CmResponse<HttpServerResponse>> {
+    return this.ConnectorFactory('stopPerformServer')
+      .setMode(Modes.CORS)
+      .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
   }
 
 }

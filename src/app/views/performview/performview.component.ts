@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { Song } from '../../models/song';
+import { HttpClient } from '@angular/common/http';
+import { ScrollApiService } from '../../services/scroll-api.service';
+import { MatDialog } from '@angular/material';
+import { QRDialogComponent } from '../../components/qr-dialog/qr-dialog.component';
+import { ApiService } from '../../services/connectivity/api.service';
 
 @Component({
   selector: 'app-performview',
@@ -14,7 +19,13 @@ export class PerformviewComponent implements OnInit {
   activeSong = 0;
   songId = '';
 
-  constructor(private route: ActivatedRoute, private dataService: DataService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: DataService,
+    private scrollApiService: ScrollApiService,
+    private dialog: MatDialog,
+    private apiService: ApiService
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -53,6 +64,7 @@ export class PerformviewComponent implements OnInit {
       this.activeSong++;
       this.activeSong = this.activeSong % this.songs.length;
       this.songId = this.songs[this.activeSong].id;
+      this.scrollApiService.changeSong(this.activeSong);
     }, 2);
   }
 
@@ -67,7 +79,18 @@ export class PerformviewComponent implements OnInit {
         this.activeSong += this.songs.length;
       }
       this.songId = this.songs[this.activeSong].id;
+      this.scrollApiService.changeSong(this.activeSong);
     }, 2);
+  }
+
+  protected showQR() {
+    this.apiService.generateRunHttpServerRequest('').then(data => {
+      const dialogRef = this.dialog.open(QRDialogComponent, {
+        height: '300px',
+        width: '300px',
+        data
+      });
+    });
   }
 
 }
