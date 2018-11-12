@@ -86,7 +86,7 @@ export class PerformviewComponent implements OnInit {
   protected showQR() {
     this.apiService.generateRunHttpServerRequest('').then(data => {
       const dialogRef = this.dialog.open(QRDialogComponent, {
-        height: '300px',
+        height: '400px',
         width: '300px',
         data
       });

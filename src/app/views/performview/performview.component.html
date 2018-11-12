@@ -17,14 +17,16 @@
 </button>
 <div class="counter">{{activeSong + 1}} / {{songs.length}}</div>
 
-<button mat-icon-button class="menu" (click)="menuOpen = !menuOpen; wasExpanded=true">
-  <i class="icon icon-editor"></i>
-</button>
-
-<button mat-mini-fab [routerLink]="'/editor/'+songId" class="menu-button" [class.expanded1]="!!menuOpen" [class.collapsed1]="!menuOpen && wasExpanded">
-  <i class="icon icon-editor"></i>
-</button>
-<button mat-mini-fab class="menu-button" (click)="showQR()" [class.expanded2]="!!menuOpen" [class.collapsed2]="!menuOpen && wasExpanded">
-  <i class="icon icon-editor"></i>
-  qr
-</button>
+<div class="menu">
+  <button mat-icon-button>
+    <i class="icon icon-editor"></i>
+  </button>
+  
+  <button mat-mini-fab [routerLink]="'/editor/'+songId" class="menu-button">
+    <i class="icon icon-editor"></i>
+  </button>
+  <button mat-mini-fab class="menu-button" (click)="showQR()">
+    <i class="icon icon-editor"></i>
+    qr
+  </button>
+</div>

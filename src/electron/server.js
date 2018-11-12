@@ -263,13 +263,18 @@ module.exports = class {
       const html = assembleBufferPayload(req);
       const ifaces = os.networkInterfaces();
       let host = '';
-      ifaces['en0'].forEach(function (iface) {
-        if ('IPv4' !== iface.family || iface.internal !== false) {
-          // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
-          return;
-        }
-        host = iface.address;
-      });
+
+      if(ifaces['en0']){
+        ifaces['en0'].forEach(function (iface) {
+          if ('IPv4' !== iface.family || iface.internal !== false) {
+            // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+            return;
+          }
+          host = iface.address;
+        });
+      } else {
+        host = '172.20.42.42';
+      }
       httpServer.run(host, html);
       res.send(JSON.stringify({ url: 'http://' + host + ':8080/' }))
     });
