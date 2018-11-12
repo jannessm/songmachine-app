@@ -260,7 +260,7 @@ module.exports = class {
     });
 
     api.post('runPerformServer', (req, res) => {
-      const html = assembleBufferPayload(req);
+      const data = assembleBufferPayload(req);
       const ifaces = os.networkInterfaces();
       let host = '';
 
@@ -275,7 +275,7 @@ module.exports = class {
       } else {
         host = '172.20.42.42';
       }
-      httpServer.run(host, html);
+      httpServer.run(host, data.htmls);
       res.send(JSON.stringify({ url: 'http://' + host + ':8080/' }))
     });
 

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { Song } from '../../models/song';
-import { HttpClient } from '@angular/common/http';
 import { ScrollApiService } from '../../services/scroll-api.service';
 import { MatDialog } from '@angular/material';
 import { QRDialogComponent } from '../../components/qr-dialog/qr-dialog.component';
 import { ApiService } from '../../services/connectivity/api.service';
+import { ParserService } from '../../services/parser.service';
 
 @Component({
   selector: 'app-performview',
@@ -24,7 +24,8 @@ export class PerformviewComponent implements OnInit {
     private dataService: DataService,
     private scrollApiService: ScrollApiService,
     private dialog: MatDialog,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private parserService: ParserService
   ) { }
 
   ngOnInit() {
@@ -84,8 +85,13 @@ export class PerformviewComponent implements OnInit {
   }
 
   protected showQR() {
-    this.apiService.generateRunHttpServerRequest('').then(data => {
-      const dialogRef = this.dialog.open(QRDialogComponent, {
+    // get html for each page
+    const htmls = [];
+    this.songs.forEach(song => {
+      htmls.push(this.parserService.songToHTML(song));
+    });
+    this.apiService.generateRunHttpServerRequest(htmls).then(data => {
+      this.dialog.open(QRDialogComponent, {
         height: '400px',
         width: '300px',
         data

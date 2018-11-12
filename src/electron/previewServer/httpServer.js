@@ -3,6 +3,7 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const fs = require('fs');
 
 module.exports = class {
 
@@ -13,7 +14,13 @@ module.exports = class {
     this.html = '';
   }
 
-  run(host, html){
+  run(host, htmls){
+    let pages = '';
+    htmls.forEach((page, id) => {
+      pages += `<div id="${id}">${page}</div>`;
+    })
+    this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8').replace('<!--Songs-->', pages);
+
     const wss = new WebSocket.Server({ port: 8300 });
 
     wss.on('error', () => {});
@@ -42,7 +49,7 @@ module.exports = class {
 
     this.httpServer = http.createServer(this.app);
     this.httpServer.on('error', () => {})
-    this.httpServer.listen(this.port, host);
+    this.httpServer.listen(this.port);
   }
 
   stop(){
