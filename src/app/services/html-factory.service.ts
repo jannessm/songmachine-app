@@ -19,7 +19,8 @@ export class HtmlFactoryService {
   public highlightText(text: string): string[] {
     return text
         .split('\n')
-        .map(line => `<pre class="line-wrapper">${ this.markdown(line, true) }</pre>`);
+        .map(line => line.split('|').map(val => this.markdown(val, true)).join('<pre>|</pre>')) // each text has to be inside of <pre>
+        .map(line => `<pre class="line-wrapper">${ line }</pre>`);
    }
 
   public songToHTML(song: Song): string {
@@ -45,9 +46,7 @@ export class HtmlFactoryService {
         <div class="books_img"></div>
         <ul>`;
 
-    for (const b of books) {
-      html += `<li>${b}</li>`;
-    }
+    books.forEach(b => html += `<li>${b}</li>`);
     html += '</ul></div>';
 
     if (!song.order && song.blocks) {
@@ -74,28 +73,28 @@ export class HtmlFactoryService {
       <h4>${block.title}</h4>
       <table class="block_table">`;
 
-    for (const l of block.lines) {
+    block.lines.forEach(line => {
       html += `<tr>
         <td style="width: ${maxLineWidth * 6.5}pt">
-          <pre>${this.markdown(l.lyrics.topLine)}</pre>
+          <pre>${this.markdown(line.lyrics.topLine)}</pre>
         </td>
         ${this.extendMissingCells(0, cells)}
       </tr>
       <tr>
         <td style="width: ${maxLineWidth * 6.5}pt">
-          <pre>${this.markdown(l.lyrics.bottomLine)}</pre>
+          <pre>${this.markdown(line.lyrics.bottomLine)}</pre>
         </td>`;
 
       let c = 0;
-      for (const ann of l.annotations) {
-        const id = ann.length > 1 ? l.printed : 0;
+      for (const ann of line.annotations) {
+        const id = ann.length > 1 ? line.printed : 0;
         html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
         c++;
       }
-      l.printed++;
+      line.printed++;
       html += this.extendMissingCells(c, cells);
       html += '</tr>';
-    }
+    });
 
     return html + '</table></div>';
   }
@@ -187,7 +186,8 @@ export class HtmlFactoryService {
         doNotAdd = false;
       }
     });
-    return html;
+    const closingTag = firstStarted ? '</pre>' : '';
+    return !closingTag ? '<pre>' + html + '</pre>' : html + closingTag;
   }
 
   private escapeHTML(char: string): string {
@@ -224,7 +224,7 @@ export class HtmlFactoryService {
       'g': 'green',
       'b': 'blue'
     };
-    const color = colorStack.length > 0 && !grey ? colors[colorStack[colorStack.length - 1]] : '';
+    const color = colorStack.length > 0 && !grey && !orange ? colors[colorStack[colorStack.length - 1]] : '';
     const g = grey ? 'grey' : '';
     const o = orange && !grey ? 'orange' : '';
     return [b, i, color, g, o].join(' ');
