@@ -37,7 +37,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   menuOpen = true;
   wasExpanded = false;
 
-  @HostListener('window:keyup', ['$event', '$event.keyCode'])
+  @HostListener('window:keypress', ['$event', '$event.keyCode'])
   scroll(e, code) {
     if (this.performMode && this.scrollIsActive) {
       e.preventDefault();
@@ -81,14 +81,14 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   scrollUp() {
     const nativeElem = this.wrapperElem.nativeElement;
     let scrollTop = nativeElem.scrollTop;
-    if (nativeElem.scrollTop === 0) {
+    if (nativeElem.scrollTop <= 0) {
       this.scrolledToTop.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});
       scrollTop = 0;
     } else {
       const height = nativeElem.offsetHeight * 0.75;
-      nativeElem.scrollBy({top: -height, behavior: 'smooth'});
       scrollTop -= height;
+      nativeElem.scrollTo(0, scrollTop / nativeElem.scrollHeight * nativeElem.scrollHeight);
     }
     this.scrollApiService.scroll(scrollTop / nativeElem.scrollHeight);
   }
@@ -102,8 +102,8 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
       scrollTop = 0;
     } else {
       const height = nativeElem.offsetHeight * 0.75;
-      nativeElem.scrollBy({top: height, behavior: 'smooth'});
       scrollTop += height;
+      nativeElem.scrollTo(0, scrollTop / nativeElem.scrollHeight * nativeElem.scrollHeight);
     }
     this.scrollApiService.scroll(scrollTop / nativeElem.scrollHeight);
   }

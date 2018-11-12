@@ -4,14 +4,74 @@
     <link rel="shortcut icon" href="icon.png" type="image/png" />
   </head>
 
-  <body>
+  <body onresize="adjustZoom()" onload="init()">
     <!--Songs-->
     <style>
-      html{
+      body{
+        background: #CCC;
+        margin: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      .pages{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 2.5%;
+        transition: all 200ms ease-out;
+        opacity: 0;
+        overflow-x: auto;
         scroll-behavior: smooth;
+        box-sizing: border-box;
+      }
+      .left{
+        left: -105%;
+        opacity: 1;
+      }
+      .right{
+        left: 105%;
+        opacity: 1;
+      }
+      .center{
+        opacity: 1;
+      }
+      /* latin */
+      @font-face {
+        font-family: 'Ubuntu Mono';
+        font-style: normal;
+        font-weight: 600;
+        src: url(UbuntuMono_latin_Bold.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
     </style>
     <script>
+      function init(){
+        focusPage(0);
+        adjustZoom();
+      }
+
+      // pages management
+      function focusPage(id) {
+        Array.from(document.getElementsByClassName('pages')).forEach(page => {
+          if (parseInt(page.id) < id) {
+            page.className = 'pages left';
+          } else if (parseInt(page.id) === id) {
+            page.className = 'pages center';
+          } else {
+            page.className = 'pages right';
+          }
+        });
+      }
+
+      function adjustZoom(){
+        Array.from(document.getElementsByClassName('pages')).forEach(page => {
+          const width = document.body.offsetWidth * 0.95;
+          page.style.zoom = (width / 793.733333);
+        });
+      }
+
+      // websocket handling
       let timerID;
       connect();
       
@@ -32,7 +92,13 @@
   
         ws.onmessage = event => {
           const data = JSON.parse(event.data);
-          document.body.scrollTo(0, document.body.scrollHeight * data.scrollTop);
+
+          if (data.scrollTop) {
+            const elem = document.getElementsByClassName('center')[0]
+            elem.scrollTo(0, elem.scrollHeight * data.scrollTop);
+          } else if (data.songId) {
+            focusPage(parseInt(data.songId));
+          }
         }
       }
 

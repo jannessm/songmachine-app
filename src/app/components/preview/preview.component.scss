@@ -8,6 +8,7 @@
   padding: 20px 2.5%;
   box-sizing: border-box;
   overflow-y: scroll;
+  scroll-behavior: smooth;
 
   ::ng-deep .page{
     box-shadow: 0 13px 21px -2px rgba(0,0,0,.12), 0 12px 22px 0 rgba(0,0,0,.24), 0 11px 15px 0 rgba(0,0,0,.22);

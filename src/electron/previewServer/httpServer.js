@@ -17,7 +17,7 @@ module.exports = class {
   run(host, htmls){
     let pages = '';
     htmls.forEach((page, id) => {
-      pages += `<div id="${id}">${page}</div>`;
+      pages += `<div id="${id}" class="pages">${page}</div>`;
     })
     this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8').replace('<!--Songs-->', pages);
 
@@ -27,7 +27,10 @@ module.exports = class {
 
     this.app.get('/', (req, res) => {
       res.send(this.html);
-      // res.sendFile(__dirname + '/index.html');
+    });
+
+    this.app.get('/UbuntuMono_latin_Bold.woff2', (req, res) => {
+      res.sendFile(__dirname + '/UbuntuMono_latin_Bold.woff2');
     });
     
     this.app.get('/changeSong/:songId', (req, res) => {

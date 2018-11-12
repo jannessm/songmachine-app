@@ -84,7 +84,11 @@ export class PerformviewComponent implements OnInit {
     }, 2);
   }
 
-  protected showQR() {
+  protected showQR(e) {
+    if (e && e.target) { // if pressed by button remove focus
+      e.target.blur();
+    }
+
     // get html for each page
     const htmls = [];
     this.songs.forEach(song => {
