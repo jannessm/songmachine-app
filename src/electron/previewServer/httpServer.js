@@ -14,12 +14,14 @@ module.exports = class {
     this.html = '';
   }
 
-  run(host, htmls){
+  run(host, htmls, title){
     let pages = '';
     htmls.forEach((page, id) => {
       pages += `<div id="${id}" class="pages">${page}</div>`;
     })
-    this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8').replace('<!--Songs-->', pages);
+    this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8')
+      .replace('<!--Songs-->', pages)
+      .replace('<!--Title-->', title);
 
     const wss = new WebSocket.Server({ port: 8300 });
 
@@ -31,6 +33,9 @@ module.exports = class {
 
     this.app.get('/UbuntuMono_latin_Bold.woff2', (req, res) => {
       res.sendFile(__dirname + '/UbuntuMono_latin_Bold.woff2');
+    });
+    this.app.get('/64x64.png', (req, res) => {
+      res.sendFile(__dirname + '/64x64.png');
     });
     
     this.app.get('/changeSong/:songId', (req, res) => {

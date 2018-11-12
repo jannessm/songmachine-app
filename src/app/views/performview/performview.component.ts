@@ -18,6 +18,7 @@ export class PerformviewComponent implements OnInit {
   songs: Song[] = [];
   activeSong = 0;
   songId = '';
+  title: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +32,7 @@ export class PerformviewComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       const songId = params['songId'];
+      this.title = params['title'];
       if (/_/g.test(songId)) {
         const proms = [];
         songId.split('_').forEach(element => {
@@ -94,7 +96,7 @@ export class PerformviewComponent implements OnInit {
     this.songs.forEach(song => {
       htmls.push(this.parserService.songToHTML(song));
     });
-    this.apiService.generateRunHttpServerRequest(htmls).then(data => {
+    this.apiService.generateRunHttpServerRequest(htmls, this.title).then(data => {
       this.dialog.open(QRDialogComponent, {
         height: '400px',
         width: '300px',

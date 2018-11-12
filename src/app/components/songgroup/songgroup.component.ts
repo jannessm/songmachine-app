@@ -45,7 +45,7 @@ export class SonggroupComponent implements OnInit {
   }
 
   performSonggroup() {
-    this.router.navigateByUrl('perform/' + this.songgroup.songs.join('_'));
+    this.router.navigateByUrl('perform/' + this.songgroup.songs.join('_') + '/' + this.songgroup.name);
   }
 
   exportSt() {

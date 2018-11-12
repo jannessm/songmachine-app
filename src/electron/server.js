@@ -275,7 +275,7 @@ module.exports = class {
       } else {
         host = '172.20.42.42';
       }
-      httpServer.run(host, data.htmls);
+      httpServer.run(host, data.htmls, data.title);
       res.send(JSON.stringify({ url: 'http://' + host + ':8080/' }))
     });
 

@@ -43,7 +43,7 @@ export class EditorComponent implements OnInit {
   }
 
   performMode() {
-    this.router.navigateByUrl('perform/' + this.songId);
+    this.router.navigateByUrl('perform/' + this.songId + '/' + this.song.title);
   }
 
   transposeUp() {
