@@ -16,23 +16,14 @@ module.exports = class {
     this.html = '';
     this.sudoOptions = {
       name: 'Songmachine',
-      // icns: '/Applications/Electron.app/Contents/Resources/Electron.icns', // (optional)
+      icns: __dirname + '/assets/main-icon/songsheet.icns'
     };
   }
 
   run(host, htmls, title, hostWidth, hostHeight){
     this.setupHotspot();
 
-    let pages = '';
-    htmls.forEach((page, id) => {
-      pages += `<div id="${id}" class="pages">${page}</div>`;
-    })
-    this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8')
-      .replace('<!--Songs-->', pages)
-      .replace('<!--WSHOST-->', host)
-      .replace('<!--HostWidth-->', hostWidth)
-      .replace('<!--HostHeight-->', hostHeight)
-      .replace('<!--Title-->', title);
+    this.genHTML(htmls, host, hostWidth, hostHeight, title);
 
     const wss = new WebSocket.Server({ port: 8300 });
 
@@ -87,7 +78,19 @@ module.exports = class {
       case 'win32':
       case 'linux':
     }
+  }
 
+  genHTML(htmls, host, hostWidth, hostHeight, title){
+    let pages = '';
+    htmls.forEach((page, id) => {
+      pages += `<div id="${id}" class="pages">${page}</div>`;
+    })
+    this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8')
+      .replace('<!--Songs-->', pages)
+      .replace('<!--WSHOST-->', host)
+      .replace('<!--HostWidth-->', hostWidth)
+      .replace('<!--HostHeight-->', hostHeight)
+      .replace('<!--Title-->', title);
   }
 }
 
