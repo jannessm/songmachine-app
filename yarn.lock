@@ -6911,6 +6911,11 @@ stylus@^0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
+sudo-prompt@^8.2.3:
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-8.2.3.tgz#abb34fde78d3458a4f6e84ae1d2a0f603f93e595"
+  integrity sha512-bjoT7WAPnrKj7CBO9T6DJVqPNC4IB+WxWyIL6zVhq8vJJsTWbUXrFV1qfvaxQRcyLgkSVGN47yNoAYxj+GNwHA==
+
 sumchecker@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/sumchecker/-/sumchecker-2.0.2.tgz#0f42c10e5d05da5d42eea3e56c3399a37d6c5b3e"

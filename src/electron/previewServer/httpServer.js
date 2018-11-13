@@ -4,6 +4,8 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
+const sudo = require('sudo-prompt');
+const os = require('os');
 
 module.exports = class {
 
@@ -12,9 +14,15 @@ module.exports = class {
     this.httpServer;
     this.port = 8080;
     this.html = '';
+    this.sudoOptions = {
+      name: 'Songmachine',
+      // icns: '/Applications/Electron.app/Contents/Resources/Electron.icns', // (optional)
+    };
   }
 
   run(host, htmls, title, hostWidth, hostHeight){
+    this.setupHotspot();
+
     let pages = '';
     htmls.forEach((page, id) => {
       pages += `<div id="${id}" class="pages">${page}</div>`;
@@ -68,6 +76,18 @@ module.exports = class {
 
   stop(){
     this.httpServer.close();
+  }
+
+  setupHotspot(){
+    switch(os.platform()){
+      case 'darwin':
+        const cmd = 'networksetup -createnetworkservice Songmachine lo0 && networksetup -setmanual Songmachine 172.20.42.42 255.255.0.0';
+        sudo.exec(cmd, this.sudoOptions, () => {});
+        break;
+      case 'win32':
+      case 'linux':
+    }
+
   }
 }
 
