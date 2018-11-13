@@ -68,10 +68,11 @@ export class ApiService {
       .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
   }
 
-  generateRunHttpServerRequest(htmls: string[], title: string): Promise<CmResponse<RunHttpServerResponse>> {
+  generateRunHttpServerRequest(
+    htmls: string[], title: string, hostWidth: number, hostHeight: number): Promise<CmResponse<RunHttpServerResponse>> {
     return this.ConnectorFactory('runPerformServer')
       .setMode(Modes.CORS)
-      .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { htmls, title });
+      .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { htmls, title, hostWidth, hostHeight });
   }
 
   generateStopHttpServerRequest(): Promise<CmResponse<HttpServerResponse>> {

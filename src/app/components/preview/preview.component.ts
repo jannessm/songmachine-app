@@ -36,6 +36,8 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   private zoom = 1;
   menuOpen = true;
   wasExpanded = false;
+  scrollSteps: number[] = [];
+  step = 0;
 
   @HostListener('window:keypress', ['$event', '$event.keyCode'])
   scroll(e, code) {
@@ -72,6 +74,17 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
     const width = this.wrapperElem.nativeElement.offsetWidth * 0.95;
     this.zoom = (width / 793.733333);
     this.renderer.setStyle(this.wrapperElem.nativeElement, 'zoom', this.zoom);
+
+    let scrollTop = 0;
+    const nativeElem = this.wrapperElem.nativeElement;
+    const scrollHeight = nativeElem.scrollHeight;
+    const scrollStep = Math.floor(nativeElem.clientHeight * 75) / 100 / scrollHeight;
+
+    while (scrollTop < 1) {
+      this.scrollSteps.push(scrollTop);
+      scrollTop += scrollStep;
+    }
+    console.log(this.scrollSteps);
   }
 
   ngOnChanges() {
@@ -80,31 +93,27 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   scrollUp() {
     const nativeElem = this.wrapperElem.nativeElement;
-    let scrollTop = nativeElem.scrollTop;
-    if (nativeElem.scrollTop <= 0) {
+    if (this.step <= 0) {
+      this.step = 0;
       this.scrolledToTop.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});
-      scrollTop = 0;
     } else {
-      const height = nativeElem.offsetHeight * 0.75;
-      scrollTop -= height;
-      nativeElem.scrollTo(0, scrollTop / nativeElem.scrollHeight * nativeElem.scrollHeight);
+      this.step--;
+      nativeElem.scrollTo(0, this.scrollSteps[this.step] * nativeElem.scrollHeight);
     }
-    this.scrollApiService.scroll(scrollTop / nativeElem.scrollHeight);
+    this.scrollApiService.scroll(this.scrollSteps[this.step]);
   }
 
   scrollDown() {
     const nativeElem = this.wrapperElem.nativeElement;
-    let scrollTop = nativeElem.scrollTop;
-    if (nativeElem.scrollTop >= nativeElem.scrollHeight - nativeElem.offsetHeight - 1) {
+    if (this.step === this.scrollSteps.length - 1) {
+      this.step = 0;
       this.scrolledToBottom.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});
-      scrollTop = 0;
     } else {
-      const height = nativeElem.offsetHeight * 0.75;
-      scrollTop += height;
-      nativeElem.scrollTo(0, scrollTop / nativeElem.scrollHeight * nativeElem.scrollHeight);
+      this.step++;
+      nativeElem.scrollTo(0, this.scrollSteps[this.step] * nativeElem.scrollHeight);
     }
-    this.scrollApiService.scroll(scrollTop / nativeElem.scrollHeight);
+    this.scrollApiService.scroll(this.scrollSteps[this.step]);
   }
 }

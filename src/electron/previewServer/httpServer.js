@@ -14,13 +14,16 @@ module.exports = class {
     this.html = '';
   }
 
-  run(host, htmls, title){
+  run(host, htmls, title, hostWidth, hostHeight){
     let pages = '';
     htmls.forEach((page, id) => {
       pages += `<div id="${id}" class="pages">${page}</div>`;
     })
     this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8')
       .replace('<!--Songs-->', pages)
+      .replace('<!--WSHOST-->', host)
+      .replace('<!--HostWidth-->', hostWidth)
+      .replace('<!--HostHeight-->', hostHeight)
       .replace('<!--Title-->', title);
 
     const wss = new WebSocket.Server({ port: 8300 });
@@ -32,6 +35,9 @@ module.exports = class {
     });
 
     this.app.get('/UbuntuMono_latin_Bold.woff2', (req, res) => {
+      res.sendFile(__dirname + '/UbuntuMono_latin_Bold.woff2');
+    });
+    this.app.get('/raleway-light.woff2', (req, res) => {
       res.sendFile(__dirname + '/UbuntuMono_latin_Bold.woff2');
     });
     this.app.get('/64x64.png', (req, res) => {

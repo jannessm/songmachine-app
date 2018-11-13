@@ -4,15 +4,23 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class ScrollApiService {
 
-  private host = 'http://localhost:8080/';
+  private host = '';
 
   constructor(private httpClient: HttpClient) {}
 
+  public setHost(host: string) {
+    this.host = host;
+  }
+
   public changeSong(songId: number) {
-    this.httpClient.get(this.host + 'changeSong/' + songId).toPromise().catch(err => console.log(err));
+    if (this.host) {
+      this.httpClient.get(`http://${this.host}/changeSong/${songId}`).toPromise().catch(err => console.log(err));
+    }
   }
 
   public scroll(scrollTop: number) {
-    this.httpClient.get(this.host + 'scroll/' + scrollTop).toPromise().catch(err => console.log(err));
+    if (this.host) {
+      this.httpClient.get(`http://${this.host}/scroll/${scrollTop}`).toPromise().catch(err => console.log(err));
+    }
   }
 }

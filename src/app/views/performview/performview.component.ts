@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { Song } from '../../models/song';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { QRDialogComponent } from '../../components/qr-dialog/qr-dialog.component';
 import { ApiService } from '../../services/connectivity/api.service';
 import { ParserService } from '../../services/parser.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-performview',
@@ -19,6 +20,7 @@ export class PerformviewComponent implements OnInit {
   activeSong = 0;
   songId = '';
   title: string;
+  host: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,7 +28,8 @@ export class PerformviewComponent implements OnInit {
     private scrollApiService: ScrollApiService,
     private dialog: MatDialog,
     private apiService: ApiService,
-    private parserService: ParserService
+    private parserService: ParserService,
+    @Inject(DOCUMENT) private doc: Document
   ) { }
 
   ngOnInit() {
@@ -96,7 +99,9 @@ export class PerformviewComponent implements OnInit {
     this.songs.forEach(song => {
       htmls.push(this.parserService.songToHTML(song));
     });
-    this.apiService.generateRunHttpServerRequest(htmls, this.title).then(data => {
+    this.apiService.generateRunHttpServerRequest(
+      htmls, this.title, this.doc.body.clientWidth, this.doc.body.clientHeight).then((data: any) => {
+      this.scrollApiService.setHost(new URL(data.url).host);
       this.dialog.open(QRDialogComponent, {
         height: '400px',
         width: '300px',
