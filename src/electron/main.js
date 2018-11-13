@@ -15,7 +15,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
-    webPreferences: { webSecurity: false},
+    webPreferences: { webSecurity: false, experimentalFeatures: true },
     icon: path.join(__dirname, 'assets/main-icon/png/64x64.png')
   });
   

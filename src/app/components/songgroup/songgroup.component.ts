@@ -7,7 +7,7 @@ import { ExportService } from '../../services/export.service';
 @Component({
   selector: 'app-songgroup',
   templateUrl: './songgroup.component.html',
-  styleUrls: ['./songgroup.component.scss']
+  styleUrls: ['./../song/song.component.scss', './songgroup.component.scss']
 })
 export class SonggroupComponent implements OnInit {
 

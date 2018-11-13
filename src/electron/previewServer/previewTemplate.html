@@ -47,6 +47,7 @@
         right: 2%;
         font-size: 2em;
         font-family: 'Raleway', sans-serif;
+        z-index: 100;
       }
 
       /* latin */
@@ -91,7 +92,7 @@
       function adjustZoom(){
         Array.from(document.getElementsByClassName('pages')).forEach(page => {
           const width = document.body.clientHeight / <!--HostHeight--> * <!--HostWidth-->;
-          page.style.right = document.body.clientWidth * ((1 - (width / 793.733333)) / 2);
+          page.style.right = document.body.offsetWidth * ((1 - (width / 793.733333)) / 2);
           page.style.zoom = (width / 793.733333);
         });
       }

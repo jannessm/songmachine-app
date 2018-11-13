@@ -1,5 +1,14 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule, MatButtonModule, MatInputModule, MatCardModule, MatDialogModule, MatMenuModule } from '@angular/material';
+import {
+  MatSidenavModule,
+  MatButtonModule,
+  MatInputModule,
+  MatCardModule,
+  MatDialogModule,
+  MatMenuModule,
+  MatDividerModule,
+  MatTooltipModule
+} from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -80,6 +89,8 @@ export function initConfigs(configService: ConfigService) {
     MatCardModule,
     MatDialogModule,
     MatMenuModule,
+    MatDividerModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     AutosizeModule,
