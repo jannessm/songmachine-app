@@ -84,7 +84,6 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
       this.scrollSteps.push(scrollTop);
       scrollTop += scrollStep;
     }
-    console.log(this.scrollSteps);
   }
 
   ngOnChanges() {

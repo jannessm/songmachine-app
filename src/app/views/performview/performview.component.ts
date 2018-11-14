@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { Song } from '../../models/song';
@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './performview.component.html',
   styleUrls: ['./performview.component.scss']
 })
-export class PerformviewComponent implements OnInit {
+export class PerformviewComponent implements OnInit, OnDestroy {
 
   songs: Song[] = [];
   activeSong = 0;
@@ -49,6 +49,10 @@ export class PerformviewComponent implements OnInit {
         this.songId = songId;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.apiService.generateStopHttpServerRequest();
   }
 
   private loadSong(id) {

@@ -28,8 +28,9 @@ module.exports = class {
     const wss = new WebSocket.Server({ port: 8300 });
 
     wss.on('error', () => {});
-
+    const that = this;
     this.app.get('/', (req, res) => {
+      that.genHTML(htmls, host, hostWidth, hostHeight, title);
       res.send(this.html);
     });
 
@@ -86,7 +87,7 @@ module.exports = class {
       pages += `<div id="${id}" class="pages">${page}</div>`;
     })
     // this.html = fs.readFileSync(__dirname + '/previewTemplate.html', 'utf8')
-    this.html = fs.readFileSync(__dirname + '/../../src/electron/previewTemplate.html', 'utf8')
+    this.html = fs.readFileSync(__dirname + '/../../src/electron/previewServer/previewTemplate.html', 'utf8')
       .replace('<!--Songs-->', pages)
       .replace('<!--WSHOST-->', host)
       .replace('<!--HostWidth-->', hostWidth)
