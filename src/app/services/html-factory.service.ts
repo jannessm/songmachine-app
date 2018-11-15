@@ -150,14 +150,15 @@ export class HtmlFactoryService {
 
       } else if (id + 2 < arr.length && /<(r|g|b)>/gi.test(char + arr[id + 1] + arr[id + 2])) {
         update = true;
-        if (colorStack.includes(arr[id + 1])) {
-          colorStack = this.removeColor(arr[id + 1], colorStack);
+        const colorCode = arr[id + 1].toLowerCase();
+        if (colorStack.includes(colorCode)) {
+          colorStack = this.removeColor(colorCode, colorStack);
           if (editorParsing) {
-            html += this.escapeHTML(char) + this.escapeHTML(arr[id + 1]) + this.escapeHTML(arr[id + 2]);
+            html += this.escapeHTML(char) + this.escapeHTML(colorCode) + this.escapeHTML(arr[id + 2]);
             doNotAdd = true;
           }
         } else {
-          colorStack.push(arr[id + 1]);
+          colorStack.push(colorCode);
         }
         ignoreNext = !editorParsing ? 2 : 0;
       } else if (editorParsing && char === '[') {

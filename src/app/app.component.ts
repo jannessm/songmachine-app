@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // load data from dir or force user to set defaultDir
     if (!this.configService.get('defaultPath')) {
-      this.router.navigateByUrl('/settings');
+      // this.router.navigateByUrl('/settings');
     }
   }
 
