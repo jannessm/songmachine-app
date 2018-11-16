@@ -25,7 +25,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SongComponent } from './components/song/song.component';
 import { SonggroupComponent } from './components/songgroup/songgroup.component';
-import { SongSonggroupFormComponent } from './components/song-songgroup-form/song-songgroup-form.component';
 import { PreviewComponent } from './components/preview/preview.component';
 import { SongsheetTextareaComponent } from './components/songsheet-textarea/songsheet-textarea.component';
 import { BrowserComponent } from './views/browser/browser.component';
@@ -53,6 +52,7 @@ import { ScrollApiService } from './services/scroll-api.service';
 import { QRDialogComponent } from './dialogs/qr-dialog/qr-dialog.component';
 import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
 import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.component';
+import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
 
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();

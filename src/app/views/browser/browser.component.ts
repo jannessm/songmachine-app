@@ -6,7 +6,7 @@ import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { MatDialog } from '@angular/material';
-import { SongSonggroupFormComponent } from '../../components/song-songgroup-form/song-songgroup-form.component';
+import { SongSonggroupFormComponent } from '../../dialogs/song-songgroup-form/song-songgroup-form.component';
 import { DexieService } from '../../services/dexie.service';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
