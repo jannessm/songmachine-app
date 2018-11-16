@@ -4,7 +4,7 @@ import { DataService } from '../../services/data.service';
 import { Song } from '../../models/song';
 import { ScrollApiService } from '../../services/scroll-api.service';
 import { MatDialog } from '@angular/material';
-import { QRDialogComponent } from '../../components/qr-dialog/qr-dialog.component';
+import { QRDialogComponent } from '../../dialogs/qr-dialog/qr-dialog.component';
 import { ApiService } from '../../services/connectivity/api.service';
 import { ParserService } from '../../services/parser.service';
 import { DOCUMENT } from '@angular/common';

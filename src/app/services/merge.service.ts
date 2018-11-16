@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
 import { ParserService } from './parser.service';
 import { MatDialog } from '@angular/material';
-import { MergeDialogComponent } from '../components/merge-dialog/merge-dialog.component';
+import { MergeDialogComponent } from '../dialogs/merge-dialog/merge-dialog.component';
 
 const diff = require('diff');
 

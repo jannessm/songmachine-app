@@ -32,7 +32,6 @@ import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { PerformviewComponent } from './views/performview/performview.component';
-import { MergeDialogComponent } from './components/merge-dialog/merge-dialog.component';
 
 import { DataService } from './services/data.service';
 import { ParserService } from './services/parser.service';
@@ -50,8 +49,10 @@ import { ExportService } from './services/export.service';
 import { SngService } from './services/sng.service';
 import { PptxService } from './services/pptx.service';
 import { ScrollApiService } from './services/scroll-api.service';
-import { QRDialogComponent } from './components/qr-dialog/qr-dialog.component';
 
+import { QRDialogComponent } from './dialogs/qr-dialog/qr-dialog.component';
+import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
+import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.component';
 
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
@@ -72,7 +73,8 @@ export function initConfigs(configService: ConfigService) {
     SafePipe,
     TranslatePipe,
     MergeDialogComponent,
-    QRDialogComponent
+    QRDialogComponent,
+    AlertDialogComponent
   ],
   imports: [
     ConnectivityModule,
@@ -120,7 +122,8 @@ export function initConfigs(configService: ConfigService) {
   entryComponents: [
     SongSonggroupFormComponent,
     MergeDialogComponent,
-    QRDialogComponent
+    QRDialogComponent,
+    AlertDialogComponent
   ],
   bootstrap: [AppComponent]
 })

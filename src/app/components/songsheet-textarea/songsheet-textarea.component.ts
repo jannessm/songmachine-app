@@ -30,6 +30,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   transposeStep = 0;
   inputGroup: FormGroup;
   htmlLines: string[] = [];
+  songHasChanged = false;
 
   start: number;
   end: number;
@@ -98,6 +99,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
   @HostListener('keydown', ['$event.keyCode', '$event.target'])
   backspace(keyCode, target) {
+    this.songHasChanged = true;
     if (keyCode !== KEYS.backspace) {
       return;
     }
