@@ -9,11 +9,11 @@ mat-sidenav-container{
 mat-sidenav{
   width: 60px;
   height: 100%;
-  background: $dark-blue;
+  background: $dark-secondary;
   padding-top: 20px;
   
   a{
-    background: $dark-blue;
+    background: $dark-secondary;
     color: $white;
     text-decoration: none;
     text-transform: uppercase;
@@ -34,7 +34,7 @@ i{
   }
 
   &.active{
-    color: $lemon;
+    color: $primary;
   }
 }
 

@@ -30,7 +30,7 @@ app-preview{
 .prev-button, .next-button{
   position: absolute;
   top: 50%;
-  background-color: $blue;
+  background-color: $secondary;
 }
 .prev-button{
   left: 1%;
@@ -48,7 +48,7 @@ app-preview{
 }
 .menu-button{
   display: block;
-  background: $blue;
+  background: $secondary;
   color: $white;
   opacity: 0;
 }

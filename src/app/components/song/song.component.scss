@@ -15,7 +15,7 @@ mat-card{
 }
 
 .mat-card-header{
-    background: $pastel-blue;
+    background: $secondary;
     padding: 24px 40px 24px 24px;
     height: 24px;
     position: relative;
@@ -101,5 +101,5 @@ i{
     cursor: pointer;
 }
 i:hover{
-    color: $lemon;
+    color: $light-primary;
 }

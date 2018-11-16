@@ -30,8 +30,6 @@ import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { PerformviewComponent } from './views/performview/performview.component';
-import { IconsComponent } from './views/icons/icons.component';
-import { ColorComponent } from './views/color/color.component';
 import { MergeDialogComponent } from './components/merge-dialog/merge-dialog.component';
 
 import { DataService } from './services/data.service';
@@ -65,9 +63,7 @@ export function initConfigs(configService: ConfigService) {
     EditorComponent,
     SongComponent,
     SonggroupComponent,
-    ColorComponent,
     SongSonggroupFormComponent,
-    IconsComponent,
     PreviewComponent,
     SongsheetTextareaComponent,
     PerformviewComponent,

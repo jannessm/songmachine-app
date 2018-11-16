@@ -4,8 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import {BrowserComponent} from './views/browser/browser.component';
 import {EditorComponent} from './views/editor/editor.component';
 import {SettingsComponent} from './views/settings/settings.component';
-import { ColorComponent } from './views/color/color.component';
-import { IconsComponent } from './views/icons/icons.component';
 import { PerformviewComponent } from './views/performview/performview.component';
 
 const routes: Routes = [
@@ -33,14 +31,6 @@ const routes: Routes = [
   {
     path: 'perform/:songId/:title',
     component: PerformviewComponent
-  },
-  {
-    path: 'colors',
-    component: ColorComponent
-  },
-  {
-    path: 'icons',
-    component: IconsComponent
   }
 ];
 

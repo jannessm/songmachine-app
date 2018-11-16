@@ -60,7 +60,7 @@ export class PptxService {
           text.push(plainText);
         }
 
-        if ((text.length === 2 || block.lines[block.lines.length - 1] === line) && text.length > 0) {
+        if ((text.length === 4 || block.lines[block.lines.length - 1] === line) && text.length > 0) {
           const slide = pptx.addNewSlide('LYRICS');
           slide.addText(text.join('\n'), {placeholder: 'body'});
           text = [];

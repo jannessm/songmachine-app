@@ -3,17 +3,15 @@ import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
 import { Block } from '../models/block';
 
-import {bpm_image, books_image} from '../../assets/icons/base64';
-
 @Injectable()
 export class HtmlFactoryService {
 
-  private bpm_image: string;
-  private books_image: string;
+  private bpm_image = '';
+  private books_image = '';
 
   constructor() {
-    this.bpm_image = bpm_image;
-    this.books_image = books_image;
+    // this.bpm_image = bpm_image;
+    // this.books_image = books_image;
   }
 
   public highlightText(text: string): string[] {
@@ -187,8 +185,8 @@ export class HtmlFactoryService {
         doNotAdd = false;
       }
     });
-    const closingTag = firstStarted ? '</pre>' : '';
-    return !closingTag ? '<pre>' + html + '</pre>' : html + closingTag;
+    const closing = firstStarted ? '</pre>' : '';
+    return !closing ? '<pre>' + html + '</pre>' : html + closing;
   }
 
   private escapeHTML(char: string): string {
