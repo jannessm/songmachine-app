@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
@@ -20,13 +20,38 @@ export class EditorComponent implements OnInit {
   song: Song;
   songId: string;
 
+  private cmdOrCtrlPressed = false;
+  private sPressed = false;
+
+  @HostListener('window:keydown', ['$event'])
+  saveHotKeyDown(event) {
+    if (/Mac/gi.test(navigator.platform) && event.key === 'Meta') {
+      this.cmdOrCtrlPressed = true;
+    } else if (!/Mac/gi.test(navigator.platform) && event.key === 'Control') {
+        this.cmdOrCtrlPressed = true;
+    } else if (event.key === 's') {
+      this.sPressed = true;
+    } else {
+      this.cmdOrCtrlPressed = false;
+      this.sPressed = false;
+    }
+  }
+  @HostListener('window:keyup')
+  saveHotKeyUp() {
+    if (this.cmdOrCtrlPressed && this.sPressed) {
+      this.save();
+    }
+    this.cmdOrCtrlPressed = false;
+    this.sPressed = false;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
     private router: Router,
     private dialog: MatDialog,
     private translationService: TranslationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

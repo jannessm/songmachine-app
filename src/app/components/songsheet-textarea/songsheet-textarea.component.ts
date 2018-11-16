@@ -99,7 +99,9 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
   @HostListener('keydown', ['$event.keyCode', '$event.target'])
   backspace(keyCode, target) {
-    this.songHasChanged = true;
+    if (![91, 93, 16, 17, 18, 20, 9, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123].find(val => val === keyCode)) {
+      this.songHasChanged = true;
+    }
     if (keyCode !== KEYS.backspace) {
       return;
     }
