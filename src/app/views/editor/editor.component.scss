@@ -1,5 +1,6 @@
 @import '~assets/fonts';
 @import '~assets/colors';
+@import '~assets/icons';
 
 app-songsheet-textarea, app-preview{
   display: inline-block;
@@ -8,8 +9,18 @@ app-songsheet-textarea, app-preview{
   vertical-align: top;
 }
 
-#menu{
-  padding: 10px;
+mat-toolbar-row{
+  span{
+    font-size: 14px;
+  }
+}
+mat-icon-button{
+  cursor: pointer;
+}
+
+.transpose-steps{
+  width: 24px;
+  text-align: center;
 }
 
 .row{

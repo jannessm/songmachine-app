@@ -7,7 +7,9 @@ import {
   MatDialogModule,
   MatMenuModule,
   MatDividerModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatToolbarModule,
+  MatGridListModule
 } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
@@ -87,6 +89,8 @@ export function initConfigs(configService: ConfigService) {
     MatMenuModule,
     MatDividerModule,
     MatTooltipModule,
+    MatToolbarModule,
+    MatGridListModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     AutosizeModule,

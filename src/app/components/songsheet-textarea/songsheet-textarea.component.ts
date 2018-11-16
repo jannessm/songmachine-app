@@ -206,4 +206,12 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
     return chord;
   }
 
+  public getStepsString() {
+    let str = this.transposeSteps > 0 ? '+' : '';
+    str = this.transposeSteps < 0 ? '-' : '';
+    str += this.transposeSteps > 9 || this.transposeSteps < -9 ? '' : ' ';
+    str += this.transposeSteps < 0 ? this.transposeSteps * -1 : this.transposeSteps;
+    return str;
+  }
+
 }

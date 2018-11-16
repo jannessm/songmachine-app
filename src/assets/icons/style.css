@@ -38,7 +38,7 @@ i {
 .icon-minus:before {
   content: "\e908";
 }
-.icon-delete:before {
+.icon-cross:before {
   content: "\e907";
 }
 .icon-menu:before {
@@ -68,13 +68,13 @@ i {
 .icon-book:before {
   content: "\e90c";
 }
-.icon-delete1:before {
+.icon-delete:before {
   content: "\e90d";
 }
 .icon-settings:before {
   content: "\e90f";
 }
-.icon-calender:before {
+.icon-calendar:before {
   content: "\e910";
 }
 .icon-song:before {

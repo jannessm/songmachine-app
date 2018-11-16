@@ -1,5 +1,9 @@
 mat-card{
-    min-height: 300px;
+    height: 100%;
+}
+mat-card-content{
+    height: 284;
+    overflow: scroll;
 }
 
 .songgroup_attr{

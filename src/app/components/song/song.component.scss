@@ -2,20 +2,15 @@
 @import '~assets/colors';
 
 mat-card{
-    @media (min-width: 1200px) {
-        width: calc((100% - 40px) / 5 - 5px);
-    }
-    @media (max-width: 1199px) {
-        width: calc((100% - 20px) / 3 - 5px);
-    }
-    min-height: 260px;
+    width: 100%;
+    height: 260px;
     padding: 0;
     display: inline-block;
     margin-bottom: 20px;
 }
 
 .mat-card-header{
-    background: $secondary;
+    background: $light-secondary;
     padding: 24px 40px 24px 24px;
     height: 24px;
     position: relative;

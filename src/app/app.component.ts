@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { DATABASES } from './models/databases';
 import { DataService } from './services/data.service';
 import { Router } from '@angular/router';
 import { MenuItem } from './models/menuitem';
-import { FileSynchronizerService } from './services/file-synchronizer.service';
 import { ParserService } from './services/parser.service';
 import { ConfigService } from './services/config.service';
 
@@ -23,7 +20,7 @@ export class AppComponent implements OnInit {
     },
     {
       route: 'browser/songgroups',
-      icon: 'icon-songgroup',
+      icon: 'icon-calendar',
       active: false,
     },
     {

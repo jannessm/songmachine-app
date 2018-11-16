@@ -1,4 +1,5 @@
 @import '~assets/icons';
+
 mat-form-field{
     width: 100%;
 }
@@ -7,19 +8,21 @@ mat-form-field{
     padding: 5%;
 }
 
-i{
-    cursor: pointer;
+.add-button{
+    top: -5px;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
 }
 
-.cards{
-    @media (min-width: 1200px) {
-        :not(:nth-child(5)){
-            margin-right: 10px;
-        }
-    }
-    @media (max-width: 1199px) {
-        :not(:nth-child(3)){
-            margin-right: 10px;
-        }
-    }
+.icon-search{
+    color: grey;
+    margin-right: 10px;
+}
+
+mat-toolbar{
+    margin-bottom: 24px;
+}
+app-song, app-songgroup{
+    width: 100%;
 }

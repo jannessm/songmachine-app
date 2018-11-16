@@ -5,7 +5,7 @@
         <div #artist class="mat-card-subtitle" matTooltip="{{ song.artist }}"  [matTooltipDisabled]="!artistTruncated">{{ song.artist }}</div>
         
         <button mat-icon-button [matMenuTriggerFor]="rootMenu" class="burger">
-            <mat-icon>...</mat-icon>
+            <i class="icon-menu"></i>
         </button>
         <mat-menu #rootMenu="matMenu">
             <button mat-menu-item [matMenuTriggerFor]="exportMenu">
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <th>
-                    <i class="icon-books"  matTooltip="{{ 'books' | translate }}"></i>
+                    <i class="icon-book"  matTooltip="{{ 'books' | translate }}"></i>
                 </th>
                 <td>
                     <ul>
