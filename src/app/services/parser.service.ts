@@ -224,6 +224,7 @@ export class ParserService {
     }
 
     // order
+    song.order = song.order.filter(val => !!val);
     const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(', ') + ']' : '';
     if (order) {
       str += order + '\n\n';

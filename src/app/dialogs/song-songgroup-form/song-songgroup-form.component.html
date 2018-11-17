@@ -11,8 +11,9 @@
                         required
                         autocomplete="off"
                         [(ngModel)]="song.title"
+                        #songTitle
                     >
-                    <mat-hint>{{ 'form.new.song.title.hint' | translate }}</mat-hint>
+                    <mat-error>{{ 'form.new.song.title.hint' | translate }}</mat-error>
                 </mat-form-field>
     
                 <mat-form-field>
@@ -58,7 +59,8 @@
                         placeholder="{{ 'form.new.songgroup.name' | translate }}" 
                         required 
                         autocomplete="off"
-                        [(ngModel)]="songgroup.name"             
+                        [(ngModel)]="songgroup.name"
+                        #songTitle    
                     >
                 </mat-form-field>
                 <mat-form-field>
