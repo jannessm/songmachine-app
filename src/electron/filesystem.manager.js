@@ -7,6 +7,10 @@ module.exports = class {
 
   constructor() { this.fileMap = UtilMap.asES5(); }
 
+  writeBlob(file, blobData, encoding) {
+    fs.writeFileSync(file, blobData, encoding || 'binary');
+  }
+
   createDir(pathWithFile) {
     const dir = path.parse(pathWithFile).dir;
     if(!fs.existsSync(dir)) {
