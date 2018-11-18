@@ -110,11 +110,20 @@ export class HtmlFactoryService {
 
   private markdown(str: string, editorParsing: boolean = false): string {
     const parseTree = this.buildParsingTree(str);
-    return this.recursiveMarkdown(parseTree, editorParsing) + '</pre>';
+    let html = str;
+    if (GramarSt.red.regex.test(str) ||
+      GramarSt.green.regex.test(str) ||
+      GramarSt.blue.regex.test(str) ||
+      GramarSt.bold.regex.test(str) ||
+      GramarSt.italic.regex.test(str) ||
+      GramarSt.boldItalic.regex.test(str)) {
+      html = this.recursiveMarkdown(parseTree, editorParsing);
+    }
+    return html;
   }
 
   private recursiveMarkdown(root: TreeNode, editorParsing: boolean): string {
-    let html = '';
+    let html = '<pre>';
 
     root.children.sort((a, b) => a.children.length - b.children.length);
     root.children.forEach(node => {
@@ -150,7 +159,7 @@ export class HtmlFactoryService {
         html += this.recursiveMarkdown(node, editorParsing);
       }
     });
-    return html;
+    return html + '</pre>';
   }
 
   private buildParsingTree(str: string): TreeNode {

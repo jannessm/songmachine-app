@@ -90,7 +90,7 @@ export class EditorComponent implements OnInit {
   public checkState(callback: Function) {
     if (this.textfield.songHasChanged) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
-        width: '300px',
+        width: '400px',
         height: '200px',
         data: {
           content: this.translationService.i18n('alert.closeWithoutSaving'),
