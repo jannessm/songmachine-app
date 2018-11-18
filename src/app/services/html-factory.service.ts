@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { Song } from '../models/song';
 import { Block } from '../models/block';
+import { GramarSt } from '../models/gramar';
+import { TreeNode } from '../models/tree';
 
 @Injectable()
 export class HtmlFactoryService {
@@ -107,126 +109,174 @@ export class HtmlFactoryService {
   }
 
   private markdown(str: string, editorParsing: boolean = false): string {
-    if (!str) {
-      return '';
-    }
-    let bold, italic, orange, firstStarted, doNotAdd = false;
-    let colorStack = [];
-    let ignoreNext = 0;
+    const parseTree = this.buildParsingTree(str);
+    return this.recursiveMarkdown(parseTree, editorParsing) + '</pre>';
+  }
+
+  private recursiveMarkdown(root: TreeNode, editorParsing: boolean): string {
     let html = '';
-    const arr = str.split('');
 
-    // iterate over chars and add styling
-    arr.forEach((char, id) => {
-      let grey, update = false;
+    root.children.sort((a, b) => a.children.length - b.children.length);
+    root.children.forEach(node => {
+      if (!node.hasChildren) {
+        // if editorParsing and markdown data
+        if (editorParsing && (GramarSt.red.regex.test(node.data) ||
+          GramarSt.green.regex.test(node.data) ||
+          GramarSt.blue.regex.test(node.data) ||
+          GramarSt.bold.regex.test(node.data) ||
+          GramarSt.italic.regex.test(node.data) ||
+          GramarSt.boldItalic.regex.test(node.data))) {
+            if (node.getSibling() && (node.getSibling().data.length < root.data.length || node.getSibling().data === 'S')) {
+              html += this.escapeHTML(node.data);
+              html += `</pre><pre class="${this.getMarkdownClasses(node.getSibling().data)}">`;
+            } else if (node.getSibling()) {
+              html += `</pre><pre class="${this.getMarkdownClasses(node.getSibling().data)}">`;
+              html += this.escapeHTML(node.data);
+            } else {
+              html += this.escapeHTML(node.data);
+            }
+        // if not editorParsing and not markdown data
+        } else if (!(GramarSt.red.regex.test(node.data) ||
+        GramarSt.green.regex.test(node.data) ||
+        GramarSt.blue.regex.test(node.data) ||
+        GramarSt.bold.regex.test(node.data) ||
+        GramarSt.italic.regex.test(node.data) ||
+        GramarSt.boldItalic.regex.test(node.data))) {
+          html += this.escapeHTML(node.data);
+        }
+      } else {
+        html += this.recursiveMarkdown(node, editorParsing);
+      }
+    });
+    return html;
+  }
 
+  private buildParsingTree(str: string): TreeNode {
+    const root = new TreeNode();
+    let ignoreNext = 0;
+    let currTransitions: string[] = GramarSt.S;
+    let currState = 'S';
+    let currNode: TreeNode = root;
+    root.data = currState;
+
+    str.split('').forEach((char, i, arr) => {
       if (ignoreNext > 0) {
         ignoreNext--;
-        doNotAdd = false;
         return;
       }
 
-      if (char === '*') {
-        update = true;
-        let countStars;
+      let lookahead = char;
+      lookahead += arr[i + 1] ? arr[i + 1] : '';
+      lookahead += arr[i + 2] ? arr[i + 2] : '';
 
-        for (countStars = 1; countStars < 4 && arr.length > id + countStars; countStars++) {
-          if (arr[id + countStars] !== '*') {
-            break;
-          }
+      if (GramarSt.boldItalic.regex.test(lookahead)) {
+        ignoreNext = 2;
+
+        currState = currTransitions[GramarSt.boldItalic.id];
+        currTransitions = GramarSt[currState];
+        currNode.createChild(lookahead);
+        if (i + 3 < arr.length) {
+          currNode = currNode.createChild(currState);
         }
 
-        italic = countStars % 2 === 1 ? !italic : italic;
-        bold = countStars > 1 ? !bold : bold;
+      } else if (GramarSt.red.regex.test(lookahead)) {
+        ignoreNext = 2;
 
-        ignoreNext = countStars - 1;
-        if (editorParsing) {
-          for ( let i = 0; i < ignoreNext; i++) {
-            html += arr[id + i];
-          }
+        currState = currTransitions[GramarSt.red.id];
+        currTransitions = GramarSt[currState];
+        currNode.createChild(lookahead);
+        if (i + 3 < arr.length) {
+          currNode = currNode.createChild(currState);
         }
 
-      } else if (id + 2 < arr.length && /<(r|g|b)>/gi.test(char + arr[id + 1] + arr[id + 2])) {
-        update = true;
-        const colorCode = arr[id + 1].toLowerCase();
-        if (colorStack.includes(colorCode)) {
-          colorStack = this.removeColor(colorCode, colorStack);
-          if (editorParsing) {
-            html += this.escapeHTML(char) + this.escapeHTML(colorCode) + this.escapeHTML(arr[id + 2]);
-            doNotAdd = true;
-          }
-        } else {
-          colorStack.push(colorCode);
+      } else if (GramarSt.green.regex.test(lookahead)) {
+        ignoreNext = 2;
+
+        currState = currTransitions[GramarSt.green.id];
+        currTransitions = GramarSt[currState];
+        currNode.createChild(lookahead);
+        if (i + 3 < arr.length) {
+          currNode = currNode.createChild(currState);
         }
-        ignoreNext = !editorParsing ? 2 : 0;
-      } else if (editorParsing && char === '[') {
-        update = true;
-        grey = true;
-        orange = true;
-      } else if ((arr[id - 1] === '[' && char !== ']') || arr[id - 1] === ']') {
-        update = true;
-      } else if (editorParsing && char === ']') {
-        update = true;
-        orange = false;
-        grey = true;
-      }
 
-      // update
-      if (update) {
-        const closingTag = firstStarted ? '</pre>' : '';
-        const letter = editorParsing && !doNotAdd ? this.escapeHTML(char) : '';
-        html += closingTag + '<pre class="' + this.getMarkdownClasses(bold, italic, colorStack, grey, orange) + '">' + letter;
-        firstStarted = true;
-      } else if (!doNotAdd) {
-        html += this.escapeHTML(char);
-      }
+      } else if (GramarSt.blue.regex.test(lookahead)) {
+        ignoreNext = 2;
 
-      if (/<(r|g|b)>/gi.test(arr[id - 2] + arr[id - 1] + char)) {
-        doNotAdd = false;
+        currState = currTransitions[GramarSt.blue.id];
+        currTransitions = GramarSt[currState];
+        currNode.createChild(lookahead);
+        if (i + 3 < arr.length) {
+          currNode = currNode.createChild(currState);
+        }
+
+      } else if (GramarSt.bold.regex.test(lookahead)) {
+        ignoreNext = 1;
+
+        currState = currTransitions[GramarSt.bold.id];
+        currTransitions = GramarSt[currState];
+        currNode.createChild(arr[i] + arr[i + 1]);
+        if (i + 2 < arr.length) {
+          currNode = currNode.createChild(currState);
+        }
+
+      } else if (GramarSt.italic.regex.test(lookahead)) {
+        currState = currTransitions[GramarSt.italic.id];
+        currTransitions = GramarSt[currState];
+        currNode.createChild(arr[i]);
+        if (i + 1 < arr.length) {
+          currNode = currNode.createChild(currState);
+        }
+
+      } else {
+        currNode.createChild(arr[i]);
+        if (i + 1 < arr.length) {
+          currNode = currNode.createChild(currState);
+        }
       }
     });
-    const closing = firstStarted ? '</pre>' : '';
-    return !closing ? '<pre>' + html + '</pre>' : html + closing;
+
+    return root;
   }
 
   private escapeHTML(char: string): string {
-    const entityMap = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        '\'': '&#39;',
-        '/': '&#x2F;',
-        '`': '&#x60;',
-        '=': '&#x3D;',
-        '|': '&#124;',
-        '♮': '&#9838;'
-    };
-    return entityMap[char] ? entityMap[char] : char;
+    if (char.length === 1) {
+      const entityMap = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          '\'': '&#39;',
+          '/': '&#x2F;',
+          '`': '&#x60;',
+          '=': '&#x3D;',
+          '|': '&#124;',
+          '♮': '&#9838;'
+      };
+      return entityMap[char] ? entityMap[char] : char;
+    } else {
+      return char.split('').map(c => this.escapeHTML(c)).join('');
+    }
   }
 
-  private removeColor(color, arr) {
-    return arr.filter(val => val !== color);
-  }
-
-  private getMarkdownClasses(
-    bold: boolean,
-    italic: boolean,
-    colorStack: string[],
-    grey: boolean = false,
-    orange: boolean = false
-    ): string {
-    const b = bold ? 'bold' : '';
-    const i = italic ? 'italic' : '';
-    const colors = {
-      'r': 'red',
-      'g': 'green',
-      'b': 'blue'
-    };
-    const color = colorStack.length > 0 && !grey && !orange ? colors[colorStack[colorStack.length - 1]] : '';
-    const g = grey ? 'grey' : '';
-    const o = orange && !grey ? 'orange' : '';
-    return [b, i, color, g, o].join(' ');
+  private getMarkdownClasses(state: string): string {
+    switch (state) {
+      case 'R': return 'red';
+      case 'G': return 'green';
+      case 'B': return 'blue';
+      case 'Bo': return 'bold';
+      case 'I': return 'italic';
+      case 'RI': return 'red italic';
+      case 'GI': return 'green italic';
+      case 'BI': return 'blue italic';
+      case 'BoI': return 'bold italic';
+      case 'RBo': return 'red bold';
+      case 'GBo': return 'green bold';
+      case 'BBo': return 'blue bold';
+      case 'RBoI': return 'red bold italic';
+      case 'GBoI': return 'green bold italic';
+      case 'BBoI': return 'blue bold italic';
+      default: return '';
+    }
   }
 
   private style(): string {

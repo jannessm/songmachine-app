@@ -84,11 +84,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
             insert = ']';
           }
           break;
-        case KEYS.star:
-          if (text.substr(charPos, 1) !== '*' || this.countBefore(text, '*', charPos) === this.countAfter(text, '*', charPos)) {
-            insert = '*';
-          }
-          break;
       }
 
       target.value = text.substr(0, charPos) + insert + text.substr(charPos);
