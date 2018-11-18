@@ -143,6 +143,8 @@ export class HtmlFactoryService {
         GramarSt.italic.regex.test(node.data) ||
         GramarSt.boldItalic.regex.test(node.data))) {
           html += this.escapeHTML(node.data);
+        } else if (node.getSibling()) {
+          html += `</pre><pre class="${this.getMarkdownClasses(node.getSibling().data)}">`;
         }
       } else {
         html += this.recursiveMarkdown(node, editorParsing);
