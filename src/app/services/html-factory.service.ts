@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Song } from '../models/song';
 import { Block } from '../models/block';
-import { GramarSt } from '../models/gramar';
+import { GrammarSt } from '../models/grammar';
 import { TreeNode } from '../models/tree';
 
 @Injectable()
@@ -109,15 +109,12 @@ export class HtmlFactoryService {
   }
 
   private markdown(str: string, editorParsing: boolean = false): string {
-    const parseTree = this.buildParsingTree(str);
     let html = str;
-    if (GramarSt.red.regex.test(str) ||
-      GramarSt.green.regex.test(str) ||
-      GramarSt.blue.regex.test(str) ||
-      GramarSt.bold.regex.test(str) ||
-      GramarSt.italic.regex.test(str) ||
-      GramarSt.boldItalic.regex.test(str)) {
+    if (/<(r|g|b)>/gi.test(str) || /\*/g.test(str)) {
+      const parseTree = this.buildParsingTree(str);
       html = this.recursiveMarkdown(parseTree, editorParsing);
+    } else {
+      html = this.escapeHTML(str);
     }
     return html;
   }
@@ -129,12 +126,12 @@ export class HtmlFactoryService {
     root.children.forEach(node => {
       if (!node.hasChildren) {
         // if editorParsing and markdown data
-        if (editorParsing && (GramarSt.red.regex.test(node.data) ||
-          GramarSt.green.regex.test(node.data) ||
-          GramarSt.blue.regex.test(node.data) ||
-          GramarSt.bold.regex.test(node.data) ||
-          GramarSt.italic.regex.test(node.data) ||
-          GramarSt.boldItalic.regex.test(node.data))) {
+        if (editorParsing && (GrammarSt.red.regex.test(node.data) ||
+          GrammarSt.green.regex.test(node.data) ||
+          GrammarSt.blue.regex.test(node.data) ||
+          GrammarSt.bold.regex.test(node.data) ||
+          GrammarSt.italic.regex.test(node.data) ||
+          GrammarSt.boldItalic.regex.test(node.data))) {
             if (node.getSibling() && (node.getSibling().data.length < root.data.length || node.getSibling().data === 'S')) {
               html += this.escapeHTML(node.data);
               html += `</pre><pre class="${this.getMarkdownClasses(node.getSibling().data)}">`;
@@ -145,12 +142,12 @@ export class HtmlFactoryService {
               html += this.escapeHTML(node.data);
             }
         // if not editorParsing and not markdown data
-        } else if (!(GramarSt.red.regex.test(node.data) ||
-        GramarSt.green.regex.test(node.data) ||
-        GramarSt.blue.regex.test(node.data) ||
-        GramarSt.bold.regex.test(node.data) ||
-        GramarSt.italic.regex.test(node.data) ||
-        GramarSt.boldItalic.regex.test(node.data))) {
+        } else if (!(GrammarSt.red.regex.test(node.data) ||
+        GrammarSt.green.regex.test(node.data) ||
+        GrammarSt.blue.regex.test(node.data) ||
+        GrammarSt.bold.regex.test(node.data) ||
+        GrammarSt.italic.regex.test(node.data) ||
+        GrammarSt.boldItalic.regex.test(node.data))) {
           html += this.escapeHTML(node.data);
         } else if (node.getSibling()) {
           html += `</pre><pre class="${this.getMarkdownClasses(node.getSibling().data)}">`;
@@ -165,7 +162,7 @@ export class HtmlFactoryService {
   private buildParsingTree(str: string): TreeNode {
     const root = new TreeNode();
     let ignoreNext = 0;
-    let currTransitions: string[] = GramarSt.S;
+    let currTransitions: string[] = GrammarSt.S;
     let currState = 'S';
     let currNode: TreeNode = root;
     root.data = currState;
@@ -180,59 +177,59 @@ export class HtmlFactoryService {
       lookahead += arr[i + 1] ? arr[i + 1] : '';
       lookahead += arr[i + 2] ? arr[i + 2] : '';
 
-      if (GramarSt.boldItalic.regex.test(lookahead)) {
+      if (GrammarSt.boldItalic.regex.test(lookahead)) {
         ignoreNext = 2;
 
-        currState = currTransitions[GramarSt.boldItalic.id];
-        currTransitions = GramarSt[currState];
+        currState = currTransitions[GrammarSt.boldItalic.id];
+        currTransitions = GrammarSt[currState];
         currNode.createChild(lookahead);
         if (i + 3 < arr.length) {
           currNode = currNode.createChild(currState);
         }
 
-      } else if (GramarSt.red.regex.test(lookahead)) {
+      } else if (GrammarSt.red.regex.test(lookahead)) {
         ignoreNext = 2;
 
-        currState = currTransitions[GramarSt.red.id];
-        currTransitions = GramarSt[currState];
+        currState = currTransitions[GrammarSt.red.id];
+        currTransitions = GrammarSt[currState];
         currNode.createChild(lookahead);
         if (i + 3 < arr.length) {
           currNode = currNode.createChild(currState);
         }
 
-      } else if (GramarSt.green.regex.test(lookahead)) {
+      } else if (GrammarSt.green.regex.test(lookahead)) {
         ignoreNext = 2;
 
-        currState = currTransitions[GramarSt.green.id];
-        currTransitions = GramarSt[currState];
+        currState = currTransitions[GrammarSt.green.id];
+        currTransitions = GrammarSt[currState];
         currNode.createChild(lookahead);
         if (i + 3 < arr.length) {
           currNode = currNode.createChild(currState);
         }
 
-      } else if (GramarSt.blue.regex.test(lookahead)) {
+      } else if (GrammarSt.blue.regex.test(lookahead)) {
         ignoreNext = 2;
 
-        currState = currTransitions[GramarSt.blue.id];
-        currTransitions = GramarSt[currState];
+        currState = currTransitions[GrammarSt.blue.id];
+        currTransitions = GrammarSt[currState];
         currNode.createChild(lookahead);
         if (i + 3 < arr.length) {
           currNode = currNode.createChild(currState);
         }
 
-      } else if (GramarSt.bold.regex.test(lookahead)) {
+      } else if (GrammarSt.bold.regex.test(lookahead)) {
         ignoreNext = 1;
 
-        currState = currTransitions[GramarSt.bold.id];
-        currTransitions = GramarSt[currState];
+        currState = currTransitions[GrammarSt.bold.id];
+        currTransitions = GrammarSt[currState];
         currNode.createChild(arr[i] + arr[i + 1]);
         if (i + 2 < arr.length) {
           currNode = currNode.createChild(currState);
         }
 
-      } else if (GramarSt.italic.regex.test(lookahead)) {
-        currState = currTransitions[GramarSt.italic.id];
-        currTransitions = GramarSt[currState];
+      } else if (GrammarSt.italic.regex.test(lookahead)) {
+        currState = currTransitions[GrammarSt.italic.id];
+        currTransitions = GrammarSt[currState];
         currNode.createChild(arr[i]);
         if (i + 1 < arr.length) {
           currNode = currNode.createChild(currState);
@@ -290,7 +287,7 @@ export class HtmlFactoryService {
     }
   }
 
-  private style(): string {
+  public style(): string {
     return `<style>
       .page {
         width: 595.3pt;

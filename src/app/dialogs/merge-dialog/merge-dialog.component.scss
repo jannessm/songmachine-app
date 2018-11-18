@@ -26,6 +26,33 @@
 }
 
 ::ng-deep {
+  pre{
+    display: inline;
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: $ubuntuMono;
+  }
+  .line-wrapper{
+    padding-left: 10px;
+    display: table-cell;
+  }
+
+  .red{
+    color: red;
+  }
+  .green{
+    color: green;
+  }
+  .blue{
+    color: blue;
+  }
+  .bold{
+    font-weight: bold;
+  }
+  .italic{
+    font-style: italic;
+  }
+
   .merge-added{
     background: green;
   }

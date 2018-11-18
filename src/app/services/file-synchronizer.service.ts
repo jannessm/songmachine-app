@@ -67,7 +67,10 @@ export class FileSynchronizerService {
           return new Promise<Song>(resolve => resolve(data));
         case 300:
           return this.mergeService.mergeSong(res.payload.indexedVersion, res.payload.currentVersion, data).then(song => {
-            return this.upsertSong(filePath, <Song>song);
+            if (song) {
+              return this.upsertSong(filePath, <Song>song);
+            }
+            return;
           });
         case 404:
           return this.apiService.generateFileCreateRequest(filePath, data).then(response => {

@@ -1,4 +1,4 @@
-export const GramarSt = {
+export const GrammarSt = {
   red: {
     id: 1,
     regex: /^<r>/gi

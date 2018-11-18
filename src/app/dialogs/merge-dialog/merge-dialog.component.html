@@ -17,6 +17,7 @@
   </div>
 </div>
 <div class="row stretch-row fill">
+  <button mat-button (click)="onNoClick()">{{ 'merge.dialog.cancel' | translate }}</button>
   <button mat-button (click)="keepLocal()">{{ 'merge.dialog.ignoreServer' | translate }}</button>
   <button mat-button (click)="saveMerged()">{{ 'merge.dialog.save' | translate }}</button>
   <button mat-button (click)="keepServer()">{{ 'merge.dialog.ignoreLocal' | translate }}</button>

@@ -39,10 +39,12 @@ export class MergeService {
           resolve(newSongLocal);
         } else if (result === '--**keepServer**--') {
           resolve(newSongServer);
-        } else {
+        } else if (result) {
           const newSong = this.parserService.stringToSong(result);
           newSong.id = newSongLocal.id;
           resolve(newSong);
+        } else {
+          resolve();
         }
       });
     });

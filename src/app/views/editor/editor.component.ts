@@ -69,8 +69,12 @@ export class EditorComponent implements OnInit {
   }
 
   save() {
-    this.textfield.songHasChanged = false;
-    this.songIn$ = Observable.from<Song>(this.dataService.saveSong(this.song));
+    this.songIn$ = Observable.from<Song>(this.dataService.saveSong(this.song).then(song => {
+      if (song) {
+        this.textfield.songHasChanged = false;
+      }
+      return song;
+    }));
   }
 
   performMode() {
