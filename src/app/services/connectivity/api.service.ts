@@ -83,10 +83,14 @@ export class ApiService {
       .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
   }
 
-  generateBlobCreateRequest(blob: any, ) {
-    return this.ConnectorFactory('blob')
+  generateBlobCreateRequest(blob: any, fileName: string, encoding?: string) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      return this.ConnectorFactory('blob')
       .setMode(Modes.CORS)
-      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob });
+      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob: reader.result, fileName, encoding});
+    };
+    reader.readAsBinaryString(blob);
   }
 
 }

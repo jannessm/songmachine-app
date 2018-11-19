@@ -49,6 +49,8 @@ export interface RunHttpServerResponse { url: string; }
 export type HttpServerResponse = undefined;
 export interface CmBlobRequest {
   blob: any;
+  fileName: string;
+  encoding: string;
 }
 
 export type BlobResponse = undefined | {};

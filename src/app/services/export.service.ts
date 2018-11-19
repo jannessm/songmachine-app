@@ -24,8 +24,8 @@ export class ExportService {
 
   public getStFile(obj: Song | Songgroup): Promise<Blob> {
     if (obj instanceof Song) {
-      return new Promise(res => {
-        res(new Blob([]));
+      return new Promise<Blob>(res => {
+        res(new Blob([this.parserService.songToString(<Song>obj)]));
       });
 
     } else if (obj instanceof Songgroup) {
@@ -38,15 +38,23 @@ export class ExportService {
 
       return this.zip(promises);
     }
-    return new Promise<Blob>(res => res(new Blob()));
+    return new Promise<Blob>(res => res());
   }
 
   public getSngFile(obj: Song | Songgroup): Promise<Blob> {
     if (obj instanceof Song) {
-      return new Promise(res => res(this.sngService.getSngFile(obj))); // .sng
+      return new Promise(res => res(new Blob([this.sngService.getSngFile(obj)]))); // .sng
     } else if (obj instanceof Songgroup) {
-      return this.getSngFileForSonggroup(obj); // .zip
+      const promises: Promise<{path: string, content: string}>[] = [];
+      obj.songs.forEach(songId => {
+        promises.push(this.dataService.getSong(songId).then(song => {
+          return {path: song.title + '.sng', content: this.sngService.getSngFile(song)};
+        }));
+      });
+
+      return this.zip(promises);
     }
+    return new Promise<Blob>(res => res());
   }
 
   public getPptx(obj: Song | Songgroup) {
@@ -55,21 +63,6 @@ export class ExportService {
     } else if (obj instanceof Songgroup) {
       return this.pptxService.getPptxForSonggroup(obj);
     }
-  }
-
-  private getSngFileForSonggroup(songgroup: Songgroup): Promise<Blob> {
-    const promises: Promise<Blob>[] = [];
-    songgroup.songs.forEach(songId => {
-      promises.push(this.dataService.getSong(songId).then(song => {
-        return this.sngService.getSngFile(song);
-      }));
-    });
-
-    Promise.all(promises).then(songs => {
-      // return .zip with all sngFiles for a songgroup
-      return songs;
-    });
-    return new Promise(res => res(new Blob()));
   }
 
   private zip(promises: Promise<BlobFile>[]): Promise<Blob> {
@@ -82,7 +75,9 @@ export class ExportService {
       return zip
         .generateInternalStream({type: 'blob'})
         .accumulate((err, content) => {
-          if (err) {}
+          if (err) {
+            return;
+          }
           return content;
         });
     });

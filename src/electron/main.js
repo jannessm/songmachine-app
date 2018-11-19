@@ -1,5 +1,4 @@
 const {app, BrowserWindow, Menu, TouchBar} = require('electron');
-const {TouchBarLabel, TouchBarButton, TouchBarSpacer} = TouchBar;
 const Router = require('@marshallofsound/electron-router').Router;
 
 const path = require('path');
@@ -10,7 +9,7 @@ const url = require('url');
 let mainWindow;
 const api = new Router('api');
 function createWindow () {
-  require('./server.js').run(api);
+  require('./server.js').run(api, app);
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1000,
@@ -71,26 +70,6 @@ function createWindow () {
   }
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-
-  // Touchbar
-
-  // SongButton
-  // const songs = new TouchBarButton({
-  //   label: 'Songs',
-  //   backgroundColor: '#B3D1EF',
-  //   click: () => {
-  //     mainWindow.loadURL(url.format({
-  //       pathname: path.join(__dirname, 'index.html'),
-  //       protocol: 'file:',
-  //       slashes: true
-  //     }));
-  //   }
-  // });
-
-  // const touchBar = new TouchBar([
-  //   songs
-  // ])
-  // mainWindow.setTouchBar(touchBar);
 }
 
 // This method will be called when Electron has finished

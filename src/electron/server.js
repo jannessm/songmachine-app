@@ -16,7 +16,7 @@ function assembleBufferPayload(request) {
 
 module.exports = class {
 
-  static run(api) {
+  static run(api, app) {
     const fileManager = new FileManager();
     const httpServer = new HttpServer();
 
@@ -288,6 +288,8 @@ module.exports = class {
      * Request Body
      * {
      *     blob: the blob data
+     *     encoding: string of nodejs encoding
+     *     fileName: string of default fileName
      * }
      *
      * Response Body
@@ -297,15 +299,26 @@ module.exports = class {
     api.post('blob', (request, response) => {
       const payload = assembleBufferPayload(request);
       try {
-        dialog.showSaveDialog(null, options, file => {
-          fileManager.writeBlob(file, payload.blob, payload.encoding);
-          response.json({
-            status: 200,
-            statusMessage: 'Created file',
-            payload: {}
-          });
+        dialog.showSaveDialog(null, {
+          defaultPath: app.getPath('documents') + '/' + payload.fileName,
+        }, file => {
+          if(file){
+            fileManager.writeBlob(file, payload.blob, payload.encoding);
+            response.json({
+              status: 200,
+              statusMessage: 'Created file',
+              payload: {}
+            });
+          } else {
+            response.json({
+              status: 401,
+              statusMessage: 'Request Cancled',
+              payload: {}
+            });
+          }
         });
       } catch (err) {
+        console.log(err);
         response.json({
           status: 500,
           statusMessage: 'Error while creating file',

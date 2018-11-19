@@ -7,6 +7,7 @@ import { ExportService } from '../../services/export.service';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
 import { TranslationService } from '../../services/translation.service';
+import { ApiService } from '../../services/connectivity/api.service';
 
 @Component({
   selector: 'app-song',
@@ -23,7 +24,8 @@ export class SongComponent {
     private router: Router,
     private exportService: ExportService,
     private dialog: MatDialog,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private apiService: ApiService
   ) { }
 
   editSong(song: Song) {
@@ -60,14 +62,15 @@ export class SongComponent {
   }
 
   exportSt() {
-    this.exportService.getStFile(this.song).then(blob => {
-    });
+    this.exportService.getStFile(this.song).then(
+      zipData => this.apiService.generateBlobCreateRequest(zipData, this.song.title + '.st')
+    ).catch(err => console.log(err));
   }
 
   exportSng() {
-    this.exportService.getSngFile(this.song).then(blob => {
-
-    });
+    this.exportService.getSngFile(this.song).then(
+      zipData => this.apiService.generateBlobCreateRequest(zipData, this.song.title + '.sng')
+    ).catch(err => console.log(err));
   }
 
   exportPptx() {

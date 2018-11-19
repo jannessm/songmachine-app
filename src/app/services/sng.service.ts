@@ -7,7 +7,7 @@ import { ParserService } from './parser.service';
 export class SngService {
   constructor(private parserService: ParserService) {}
 
-  public getSngFile(song: Song): Blob {
+  public getSngFile(song: Song): string {
     let songStr = this.getSngHeader(song);
 
     song.blocks.forEach(block => {
@@ -19,7 +19,7 @@ export class SngService {
         }
       });
     });
-    return new Blob([songStr]);
+    return songStr;
   }
 
   private getSngHeader(song: Song): string {
