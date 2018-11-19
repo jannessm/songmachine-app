@@ -64,7 +64,7 @@ export class SongSonggroupFormComponent implements OnInit {
 
   onSave(): void {
     if (!this.song.title && !this.songgroup.name) {
-      this.snackbar.open(this.translationService.i18n('error.add.from.title.missing'), undefined, {duration: 2000});
+      this.snackbar.open(this.translationService.i18n('error.add.form.title.missing'), undefined, {duration: 2000});
       this.songTitle.nativeElement.focus();
       return;
     }

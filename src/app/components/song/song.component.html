@@ -50,13 +50,13 @@
     </mat-card-content>
     <mat-card-actions>
         <button mat-button (click)="editSong(song)">
-            Editor
+            {{ 'browser.song.actions.editor' | translate }}
         </button>
         <button mat-button (click)="emitEditMeta( song )">
-            Quickedit
+            {{ 'browser.song.actions.quickedit' | translate }}
         </button>
         <button mat-button (click)="del( song )">
-            Delete
+            {{ 'browser.song.actions.delete' | translate }}
         </button>
     </mat-card-actions>
 </mat-card>

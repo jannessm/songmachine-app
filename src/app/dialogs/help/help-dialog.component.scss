@@ -35,4 +35,24 @@
       margin-left: 25%;
     }
   }
+
+  code{
+    display: block;
+    margin: 10px 0;
+  }
+
+  .italic{
+    font-weight: normal;
+    font-style: italic;
+  }
+
+  .red{
+    color: red;
+  }
+  .green{
+    color: green;
+  }
+  .blue{
+    color: blue;
+  }
 }

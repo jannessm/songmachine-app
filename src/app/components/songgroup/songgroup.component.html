@@ -37,13 +37,13 @@
     </mat-card-content>
     <mat-card-actions>
         <button mat-button (click)="performSonggroup()">
-            perform
+            {{ 'browser.songgroup.actions.performmode' | translate }}
         </button>
         <button mat-button (click)="emitEditMeta( songgroup )">
-            edit
+            {{ 'browser.song.actions.quickedit' | translate }}
         </button>
         <button mat-button (click)="delete( songgroup )">
-            delete
+            {{ 'browser.song.actions.delete' | translate }}
         </button>
     </mat-card-actions>
 </mat-card>
