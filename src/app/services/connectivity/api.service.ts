@@ -7,7 +7,9 @@ import {
   CmPdfRequest,
   CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
   FileSystemIndexResponse,
-  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse, CmBlobRequest, BlobResponse
+  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse,
+  HttpServerResponse, RunHttpServerRequest, StopHttpServerRequest, RunHttpServerResponse,
+  CmBlobRequest, BlobResponse
 } from './model/client.model';
 
 const Path = require('path');
@@ -68,10 +70,27 @@ export class ApiService {
       .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
   }
 
-  generateBlobCreateRequest(blob: any,) {
-    return this.ConnectorFactory('blob')
+  generateRunHttpServerRequest(
+    htmls: string[], title: string, hostWidth: number, hostHeight: number): Promise<CmResponse<RunHttpServerResponse>> {
+    return this.ConnectorFactory('runPerformServer')
       .setMode(Modes.CORS)
-      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob });
+      .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { htmls, title, hostWidth, hostHeight });
+  }
+
+  generateStopHttpServerRequest(): Promise<CmResponse<HttpServerResponse>> {
+    return this.ConnectorFactory('stopPerformServer')
+      .setMode(Modes.CORS)
+      .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
+  }
+
+  generateBlobCreateRequest(blob: any, fileName: string, encoding?: string) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      return this.ConnectorFactory('blob')
+      .setMode(Modes.CORS)
+      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob: reader.result, fileName, encoding});
+    };
+    reader.readAsBinaryString(blob);
   }
 
 }

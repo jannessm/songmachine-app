@@ -1,12 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 
 import { DataService } from '../../services/data.service';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-song-songgroup-form',
@@ -28,10 +29,14 @@ export class SongSonggroupFormComponent implements OnInit {
   songgroup: Songgroup = new Songgroup();
   songUUID: string;
 
+  @ViewChild('songTitle') songTitle: ElementRef;
+
   constructor(
     private dataService: DataService,
     private dialogRef: MatDialogRef<SongSonggroupFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
+    private snackbar: MatSnackBar,
+    private translationService: TranslationService
   ) {}
 
   ngOnInit() {
@@ -58,6 +63,11 @@ export class SongSonggroupFormComponent implements OnInit {
   }
 
   onSave(): void {
+    if (!this.song.title && !this.songgroup.name) {
+      this.snackbar.open(this.translationService.i18n('error.add.from.title.missing'), undefined, {duration: 2000});
+      this.songTitle.nativeElement.focus();
+      return;
+    }
     switch (this.type) {
       case DATABASES.songs:
         this.song.books = this.songBooksStr

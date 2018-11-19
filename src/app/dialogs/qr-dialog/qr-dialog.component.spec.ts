@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ColorComponent } from './color.component';
+import { QRDialogComponent } from './qr-dialog.component';
 
-describe('ColorComponent', () => {
-  let component: ColorComponent;
-  let fixture: ComponentFixture<ColorComponent>;
+describe('QRDialogComponent', () => {
+  let component: QRDialogComponent;
+  let fixture: ComponentFixture<QRDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ColorComponent ]
+      declarations: [ QRDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ColorComponent);
+    fixture = TestBed.createComponent(QRDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

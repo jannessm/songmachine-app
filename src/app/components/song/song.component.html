@@ -1,14 +1,36 @@
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>{{ song.title }}</mat-card-title>
-        <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
-    </mat-card-header>
+    <div class="mat-card-header">
+        <div #title class="mat-card-title" matTooltip="{{ song.title }}">{{ song.title }}</div>
+        <br>
+        <div #artist class="mat-card-subtitle" matTooltip="{{ song.artist }}">{{ song.artist }}</div>
+        
+        <button mat-icon-button [matMenuTriggerFor]="rootMenu" class="burger">
+            <i class="icon-menu"></i>
+        </button>
+        <mat-menu #rootMenu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="exportMenu">
+                <span>{{ 'menu.export.title' | translate }}</span>
+            </button>
+        </mat-menu>
+
+        <mat-menu #exportMenu="matMenu">
+        <button mat-menu-item (click)="exportSt()">
+            <span>{{ 'menu.export.st' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="exportSng()">
+            <span>{{ 'menu.export.sng' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="exportPptx()">
+            <span>{{ 'menu.export.pptx' | translate }}</span>
+        </button>
+        </mat-menu>
+    </div>
     <mat-card-content>
         <div class="song">{{ song.preview }}</div>
         <table class="song_attr">
             <tr>
                 <th>
-                    <i class="icon-bpm"></i>
+                    <i class="icon-bpm"  matTooltip="{{ 'bpm' | translate }}"></i>
                 </th>
                 <td>
                     {{ song.bpm }}
@@ -16,7 +38,7 @@
             </tr>
             <tr>
                 <th>
-                    <i class="icon-books"></i>
+                    <i class="icon-book"  matTooltip="{{ 'books' | translate }}"></i>
                 </th>
                 <td>
                     <ul>
@@ -28,13 +50,13 @@
     </mat-card-content>
     <mat-card-actions>
         <button mat-button (click)="editSong(song)">
-            open in editor <i class="icon icon-editor"></i>
+            Editor
         </button>
         <button mat-button (click)="emitEditMeta( song )">
-            edit metadata <i class="icon icon-edit"></i>
+            Quickedit
         </button>
         <button mat-button (click)="del( song )">
-            delete <i class="icon icon-delete"></i>
+            Delete
         </button>
     </mat-card-actions>
 </mat-card>

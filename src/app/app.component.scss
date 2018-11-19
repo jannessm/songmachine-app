@@ -7,17 +7,19 @@ mat-sidenav-container{
 }
 
 mat-sidenav{
-  width: 90px;
+  width: 60px;
   height: 100%;
-  background: $dark-blue;
+  background: $dark-secondary;
   padding-top: 20px;
   
   a{
-    background: $dark-blue;
+    background: $dark-secondary;
     color: $white;
     text-decoration: none;
     text-transform: uppercase;
     width: 100%;
+    min-width: 60px;
+    padding: 0;
   }
 }
 
@@ -26,8 +28,14 @@ i{
   line-height: 2em;
 }
 
-.active{
-  color: $lemon !important;
+.sidebar-link{
+  &:not(.active){
+    color: $grey;
+  }
+
+  &.active{
+    color: $primary;
+  }
 }
 
 #drag-wrapper{

@@ -13,8 +13,8 @@ export class ParserService {
     bpm: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     artist: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+    order: /\[(?:[^;]*;\s*)*(?:order|reihenfolge)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     block: /\[(?:block\s*:\s*)([\w\s-_\.]*)\]/gi,
-    order: /\[(?:order\s*:\s*)([\w\s-_\.,]*)\]/gi,
     chord: /(?:\[\s*)([^\s]+?)(?:\s*\])/gi,
     invChord: /([^\s]+)/gi
   };
@@ -57,6 +57,10 @@ export class ParserService {
 
     // get blocks
     newSong.blocks = this.getAllBlocks(str);
+    // set default order
+    if (!newSong.order) {
+      newSong.order = newSong.blocks.map(block => block.title);
+    }
     for (const b of newSong.blocks) {
       newSong.annotationCells = this.max(b.annotationCells, newSong.annotationCells);
       newSong.maxLineWidth = this.max(b.maxLineWidth, newSong.maxLineWidth);
@@ -101,14 +105,21 @@ export class ParserService {
       }
     } while (m);
 
-    for (let i = 0; i < blockStarts.length; i++) {
-      let block;
-      if (i + 1 === blockStarts.length) {
-        block = str.substr(blockStarts[i]);
-      } else {
-        block = str.substr(blockStarts[i], blockStarts[i + 1] - blockStarts[i]);
-      }
-      blocks.push(this.getBlock(titles[i], block));
+    if (blockStarts.length > 0) {
+      blockStarts.forEach((start, i) => {
+        let block;
+        if (i + 1 === blockStarts.length) {
+          block = str.substr(start);
+        } else {
+          block = str.substr(start, blockStarts[i + 1] - start);
+        }
+        blocks.push(this.getBlock(titles[i], block));
+      });
+    } else {
+      str = str.split('\n')
+        .filter(line => !/\[.*?:.*?\]/g.test(line) )
+        .join('\n');
+      blocks.push(this.getBlock('', str));
     }
     return blocks;
   }
@@ -142,7 +153,6 @@ export class ParserService {
   private getLine(str: string): Line {
     this.resetRegex();
     const newLine: Line = new Line();
-    const matches = [];
 
     // process annotations
     const annotationblocks = str.split('|').map(value => value.replace(/\s*$/g, ''));
@@ -160,27 +170,34 @@ export class ParserService {
 
     // process chords
     let m;
+    let strWithoutMarkdown = str.replace(/(<(r|g|b)>|\*)/gi, '');
     do {
       this.resetRegex();
-      m = this.regexs.chord.exec(str);
+      m = this.regexs.chord.exec(strWithoutMarkdown);
       if (m) {
         // chord start
         const start = m.index;
         // if start < topLine.length add spaces to bottomLine
-        if (newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) + 1 > 0) {
-          newLine.lyrics.bottomLine += Array(newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) + 1).join(' ');
-        } else if (newLine.lyrics.topLine.length - (newLine.lyrics.bottomLine.length + start) < 0) {
-          newLine.lyrics.topLine += Array((newLine.lyrics.bottomLine.length + start) - newLine.lyrics.topLine.length + 1).join(' ');
+        const chars = this.countRegexChars(newLine.lyrics.bottomLine);
+        const tpLen = newLine.lyrics.topLine.length;
+        const btLen = newLine.lyrics.bottomLine.length + start - chars;
+
+        if (tpLen - btLen + 1 > 0) {
+          newLine.lyrics.bottomLine += Array(tpLen - btLen + 1).join(' ');
+        } else if (tpLen - btLen < 0) {
+          newLine.lyrics.topLine += Array(btLen - tpLen + 1).join(' ');
         }
-        const stringUntilChord = str.substr(0, start);
+        const stringUntilChordWithMarkdown = str.substr(0, start + this.countRegexChars(str, start));
+        const stringUntilChord = strWithoutMarkdown.substr(0, start);
         newLine.lyrics.topLine += m[1] + ' ';
-        newLine.lyrics.bottomLine += stringUntilChord;
-        str = str.replace(stringUntilChord + m[0], '');
+        newLine.lyrics.bottomLine += stringUntilChordWithMarkdown;
+        strWithoutMarkdown = strWithoutMarkdown.replace(stringUntilChord + m[0], '');
+        str = str.replace(stringUntilChordWithMarkdown + m[0], '');
       } else {
         newLine.lyrics.bottomLine += str;
       }
     } while (m);
-    newLine.lyricsWidth = newLine.lyrics.bottomLine.length;
+    newLine.lyricsWidth = newLine.lyrics.bottomLine.replace(/(<(r|g|b)>|\*)/gi, '').length;
     return newLine;
   }
 
@@ -197,16 +214,17 @@ export class ParserService {
   public metaToString(song: Song): string {
     let str = '';
     // meta
-    const title = song.title && song.title !== '' ? 'title: ' + song.title + '; ' : '';
-    const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist + '; ' : '';
-    const bpm = song.bpm ? 'bpm: ' + song.bpm + '; ' : '';
-    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(',') + '; ' : '';
+    const title = song.title && song.title !== '' ? 'title: ' + song.title : '';
+    const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist : '';
+    const bpm = song.bpm ? 'bpm: ' + song.bpm : '';
+    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(',') : '';
 
     if (title || artist || bpm || books) {
-      str += '[' + title + artist + bpm + books + ']\n\n';
+      str += '[' + [title, artist, bpm, books].filter(val => !!val).join('; ') + ']\n\n';
     }
 
     // order
+    song.order = song.order.filter(val => !!val);
     const order = song.order && song.order.length > 0 ? '[order: ' + song.order.filter(val => !!val).join(', ') + ']' : '';
     if (order) {
       str += order + '\n\n';
@@ -226,24 +244,28 @@ export class ParserService {
 
   private joinTopAndBottomLine(line: Line): string {
     this.resetRegex();
-    const finalLine = [];
+    let finalLine = '';
 
     let m;
     let lastStart = 0;
+    let totalRegChars = 0;
     do {
       m = this.regexs.invChord.exec(line.lyrics.topLine);
       if (m) {
         // add string until chord
-        finalLine.push(line.lyrics.bottomLine.substr(lastStart, m.index - lastStart).replace(/^\s+/, ' '));
+        const regexChars = this.countRegexChars(line.lyrics.bottomLine, m.index + totalRegChars);
+        finalLine += line.lyrics.bottomLine.substr(
+          lastStart + totalRegChars, m.index - lastStart + regexChars - totalRegChars).replace(/^\s+/, ' ');
+        totalRegChars = this.max(regexChars, totalRegChars);
         // add chord
-        finalLine.push('[' + m[1] + ']');
+        finalLine += '[' + m[1] + ']';
         lastStart = m.index;
       } else {
-        finalLine.push(line.lyrics.bottomLine.substr(lastStart));
+        finalLine += line.lyrics.bottomLine.substr(lastStart + totalRegChars);
       }
     } while (m);
 
-    return finalLine.join('');
+    return finalLine;
   }
 
   private joinAnnotations(line: Line): string {
@@ -263,5 +285,32 @@ export class ParserService {
     Object.values(this.regexs).forEach(element => {
       element.lastIndex = 0;
     });
+  }
+
+  public getPlainLine(line: string): string {
+    return line.replace(/<(r|g|b)>/gi, '') // color markdown
+      .replace(/\*/g, '') // bold, italic
+      .replace(/\s+/g, ' ') // multiple spaces
+      .replace(/\s*-\s*/g, '') // spaces in words
+      .replace(/\d+x/gi, '') // amount of repetitions
+      .replace(/x\d+/g, '') // amount of repetitions
+      .trim();
+  }
+
+  private countRegexChars(string: string, start?: number): number {
+    let chars = 0;
+    let m;
+    const regex = /(<(r|g|b)>|\*)/gi;
+    do {
+      m = regex.exec(string);
+      if (m) {
+        if (start && m.index > start + chars) {
+          break;
+        }
+        chars += m[0].length;
+        string.replace(m[0], '');
+      }
+    } while (m);
+    return chars;
   }
 }

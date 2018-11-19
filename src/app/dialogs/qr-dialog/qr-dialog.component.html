@@ -1,0 +1,7 @@
+<div class="qr">
+  <div class="row" *ngFor="let row of qrcode.modules">
+    <div class="square" *ngFor="let sq of row" [class.black]="sq">&nbsp;</div>
+  </div>
+</div>
+<p>{{ 'qr.hint' | translate }}</p>
+<p>{{ data.url }}</p>

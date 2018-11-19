@@ -1,11 +1,14 @@
-<div id="menu">
-  <button mat-button (click)="save()">{{ 'editor.save' | translate }}</button>
-  <button mat-button (click)="performMode()">{{ 'editor.performMode' | translate }}</button>
-  <button mat-button disabled>{{ 'editor.transpose' | translate }}</button>
-  <button mat-button (click)="transposeUp()"><i class="icon icon-up"></i>up</button>
-  {{ textfield.transposeSteps }}
-  <button mat-button (click)="transposeDown()"><i class="icon icon-down"></i>down</button>
-</div>
+<mat-toolbar id="menu">
+  <mat-toolbar-row>
+    <button mat-button (click)="save()" [disabled]="!textfield.songHasChanged">{{ 'editor.save' | translate }}</button>
+    <button mat-button (click)="performMode()">{{ 'editor.performMode' | translate }}</button>
+    <span>{{ 'editor.transpose' | translate }}</span>
+    <button mat-icon-button (click)="transposeUp()"><i class="icon icon-minus"></i></button>
+    <span class="transpose-steps">{{ textfield.getStepsString() }}</span>
+    <button mat-icon-button (click)="transposeDown()"><i class="icon icon-plus"></i></button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
 <div class="row streched-row fill">
   <app-songsheet-textarea [input]="songIn$ | async" (value)="songOut($event)" #textfield></app-songsheet-textarea>
   <app-preview [performMode]="false" [song]="song"></app-preview>

@@ -1,0 +1,22 @@
+.row{
+  margin: 0;
+  height: 7.6px;
+  width: 100%;
+  box-sizing: border-box;
+
+  .square{
+    display: inline-block;
+    width: 7.6px;
+    height: 7.6px;
+    box-sizing: border-box;
+  }
+
+  .black{
+    background: #000;
+  }
+}
+
+p{
+  text-align: center;
+  width: 100%;
+}

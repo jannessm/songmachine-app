@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Song } from '../../models/song';
@@ -6,11 +6,12 @@ import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { MatDialog } from '@angular/material';
-import { SongSonggroupFormComponent } from '../../components/song-songgroup-form/song-songgroup-form.component';
+import { SongSonggroupFormComponent } from '../../dialogs/song-songgroup-form/song-songgroup-form.component';
 import { DexieService } from '../../services/dexie.service';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslationService } from '../../services/translation.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-browser',
@@ -35,6 +36,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
   };
   songs: Song[] = [];
   songgroups: Songgroup[] = [];
+  gridCols = 3;
 
   filteredElems: Song[] | Songgroup[] = [];
 
@@ -44,10 +46,24 @@ export class BrowserComponent implements OnInit, OnDestroy {
     private router: Router,
     private dexieService: DexieService,
     private dialog: MatDialog,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    @Inject(DOCUMENT) private doc: Document
   ) { }
 
+  @HostListener('window:resize', ['$event'])
+  resizeHandler(event) {
+    if (event.srcElement.document.body.clientWidth > 1199) {
+      this.gridCols = 5;
+    } else {
+      this.gridCols = 3;
+    }
+  }
+
   ngOnInit() {
+    if (this.doc.body.clientWidth > 1199) {
+      this.gridCols = 5;
+    }
+
     this.dexieService.changes.subscribe(() => {
       this.updateElems();
     });

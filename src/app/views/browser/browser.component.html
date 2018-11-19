@@ -1,19 +1,34 @@
 
 <div id="browser_content" class="content" [ngSwitch]="type">
-    <h3>{{ headline }}<i class="icon icon-plus" (click)="showAddForm()"></i></h3>
+    <h3>{{ headline }}
+        <button mat-icon-button (click)="showAddForm()" class="add-button">
+            <i class="icon icon-plus"></i>
+        </button>
+    </h3>
     <mat-form-field floatLabel="never">
-        <input matInput id="search" [placeholder]="searchText" autofill="false" [formControl]="searchControl">
-        <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button (click)="searchControl.setValue('')">
+        <input matInput id="search" [placeholder]="" autofill="false" [formControl]="searchControl">
+        <i matPrefix class="icon-search"></i>
+        <button mat-icon-button *ngIf="searchControl.value" matSuffix (click)="searchControl.setValue('')">
             <i class="icon icon-cross"></i>
         </button>
     </mat-form-field>
     <div id="songs">
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <button mat-button>{{ 'browser.new' | translate }}</button>
+                <!-- <button mat-button>{{ 'browser.import' | translate }}</button> -->
+            </mat-toolbar-row>
+        </mat-toolbar>
 
-        <span *ngSwitchCase="'songs'" class="cards">
-            <app-song *ngFor="let song of filteredElems" [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
-        </span>
-        <span *ngSwitchCase="'songgroups'" class="cards">
-            <app-songgroup *ngFor="let group of filteredElems" [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-songgroup>
-        </span>
+        <mat-grid-list [cols]="gridCols" rowHeight="260px" gutterSize="10px" *ngSwitchCase="'songs'" class="cards">
+            <mat-grid-tile rowspan="1" colspan="1" *ngFor="let song of filteredElems" >
+                <app-song [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list [cols]="gridCols" rowHeight="410px" gutterSize="10px" *ngSwitchCase="'songgroups'" class="cards">
+            <mat-grid-tile rowspan="1" colspan="1" *ngFor="let group of filteredElems">
+                <app-songgroup [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-songgroup>
+            </mat-grid-tile>
+        </mat-grid-list>
     </div>
 </div>

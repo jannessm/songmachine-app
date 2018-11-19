@@ -30,6 +30,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   transposeStep = 0;
   inputGroup: FormGroup;
   htmlLines: string[] = [];
+  songHasChanged = false;
 
   start: number;
   end: number;
@@ -83,11 +84,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
             insert = ']';
           }
           break;
-        case KEYS.star:
-          if (text.substr(charPos, 1) !== '*' || this.countBefore(text, '*', charPos) === this.countAfter(text, '*', charPos)) {
-            insert = '*';
-          }
-          break;
       }
 
       target.value = text.substr(0, charPos) + insert + text.substr(charPos);
@@ -98,6 +94,9 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
 
   @HostListener('keydown', ['$event.keyCode', '$event.target'])
   backspace(keyCode, target) {
+    if (![91, 93, 16, 17, 18, 20, 9, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123].find(val => val === keyCode)) {
+      this.songHasChanged = true;
+    }
     if (keyCode !== KEYS.backspace) {
       return;
     }
@@ -204,6 +203,14 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
       }
     }
     return chord;
+  }
+
+  public getStepsString() {
+    let str = this.transposeSteps > 0 ? '+' : '';
+    str = this.transposeSteps < 0 ? '-' : '';
+    str += this.transposeSteps > 9 || this.transposeSteps < -9 ? '' : ' ';
+    str += this.transposeSteps < 0 ? this.transposeSteps * -1 : this.transposeSteps;
+    return str;
   }
 
 }

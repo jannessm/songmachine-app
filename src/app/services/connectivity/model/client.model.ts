@@ -43,8 +43,14 @@ export interface FileLoadResponse<T> { data: T; }
 
 export type LoadIndexFilesResponse = Array<{path: string, content: any}>;
 
+export interface RunHttpServerRequest { htmls: string[]; title: string; hostWidth: number; hostHeight: number; }
+export type StopHttpServerRequest = undefined;
+export interface RunHttpServerResponse { url: string; }
+export type HttpServerResponse = undefined;
 export interface CmBlobRequest {
   blob: any;
+  fileName: string;
+  encoding: string;
 }
 
 export type BlobResponse = undefined | {};

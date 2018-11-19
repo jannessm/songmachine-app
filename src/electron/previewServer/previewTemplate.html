@@ -1,0 +1,138 @@
+<html>
+  <head>
+    <title>Songmachine - <!--Title--></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="shortcut icon" href="64x64.png" type="image/png" />
+    <script>
+      function init(){
+        focusPage(0);
+        adjustZoom();
+      }
+
+      // pages management
+      function focusPage(id) {
+        const pages = Array.from(document.getElementsByClassName('pages'));
+        pages.forEach(page => {
+          if (parseInt(page.id) < id) {
+            page.className = 'pages left';
+          } else if (parseInt(page.id) === id) {
+            page.className = 'pages center';
+          } else {
+            page.className = 'pages right';
+          }
+        });
+        document.getElementsByClassName('counter')[0].innerText = (id+1) + '/' + pages.length;
+      }
+
+      function adjustZoom(){
+        Array.from(document.getElementsByClassName('pages')).forEach(page => {
+          const width = document.body.clientHeight / <!--HostHeight--> * <!--HostWidth-->;
+          const zoom = (width / 793.733333);
+          page.style.zoom = zoom;
+          page.style.right = (document.body.clientWidth - page.offsetWidth * zoom) / 2;
+        });
+      }
+
+      // websocket handling
+      let timerID;
+      connect();
+      
+      function start(){
+        let ws = new WebSocket('ws://<!--WSHOST-->:8300/');
+
+        ws.onopen = () => {
+          if(timerID){ /* a setInterval has been fired */
+            clearInterval(timerID);
+            timerID = 0;
+          }
+        }
+  
+        ws.onclose = event => {
+          connect();
+        }
+  
+        ws.onmessage = event => {
+          const data = JSON.parse(event.data);
+
+          if (data.scrollTop) {
+            const elem = document.getElementsByClassName('center')[0]
+            elem.scrollTo(0, data.scrollTop * elem.scrollHeight);
+          } else if (data.songId) {
+            focusPage(parseInt(data.songId));
+          }
+        }
+      }
+
+      function connect(){
+        if(!timerID){ /* Avoid firing a new setInterval, after one has been done */
+          timerID=setInterval(() => start(), 500);
+        }
+      }
+    </script>
+  </head>
+
+  <body onresize="adjustZoom()" onload="init()">
+    <div class="counter"></div>
+    <!--Songs-->
+    <style>
+
+      body{
+        background: #EEE;
+        margin: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      .pages{
+        position: absolute;
+        height: 100%;
+        padding: 20px 2.5%;
+        transition: all 200ms ease-out;
+        opacity: 0;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        box-sizing: border-box;
+      }
+      .pages .page{
+        box-shadow: 0 13px 21px -2px rgba(0, 0, 0, 0.12), 0 12px 22px 0 rgba(0, 0, 0, 0.24), 0 11px 15px 0 rgba(0, 0, 0, 0.22);
+      }
+      .left{
+        left: -105%;
+        opacity: 1;
+      }
+      .right{
+        left: 105%;
+        opacity: 1;
+      }
+      .center{
+        opacity: 1;
+      }
+      .counter{
+        position: absolute;
+        top: 20px;
+        right: 2%;
+        font-size: 2em;
+        font-family: 'Raleway', sans-serif;
+        z-index: 100;
+      }
+
+      /* latin */
+      @font-face {
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 300;
+        src: url(raleway-light.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      /* latin */
+      @font-face {
+        font-family: 'Ubuntu Mono';
+        font-style: normal;
+        font-weight: 600;
+        src: url(UbuntuMono_latin_Bold.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
+  </body>
+</html>

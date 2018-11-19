@@ -1,0 +1,7 @@
+<div id="alert-container">
+  <div id="headline">{{ 'alert.title' | translate }}</div>
+  <div id="content">{{ data.content }}</div>
+  <div id="actions">
+    <button mat-flat-button *ngFor="let action of data.actions; let i = index;" (click)="close(i)">{{action}}</button>
+  </div>
+</div>

@@ -2,7 +2,9 @@ const { dialog } = require('electron');
 const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
+const HttpServer = require('./previewServer/httpServer');
 const jiff = require('jiff');
+const os = require('os');
 
 function assembleBufferPayload(request) {
   const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
@@ -14,8 +16,9 @@ function assembleBufferPayload(request) {
 
 module.exports = class {
 
-  static run(api) {
+  static run(api, app) {
     const fileManager = new FileManager();
+    const httpServer = new HttpServer();
 
     /**
      * Request Body
@@ -260,7 +263,57 @@ module.exports = class {
     /**
      * Request Body
      * {
+     *     htmls: array of html strings for each song
+     *     title: string (title for webpage)
+     *     hostWidth: number
+     *     hostHeight: number
+     * }
+     *
+     * Response Body
+     * {
+     *    url: url of server
+     * }
+     */
+    api.post('runperformserver', (request, response) => {
+      const data = assembleBufferPayload(request);
+      const ifaces = os.networkInterfaces();
+      let host = '';
+
+      if(ifaces['en0']){
+        ifaces['en0'].forEach(function (iface) {
+          if ('IPv4' !== iface.family || iface.internal !== false) {
+            // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+            return;
+          }
+          host = iface.address;
+        });
+      } else {
+        host = '172.20.42.42';
+      }
+      httpServer.run(host, data.htmls, data.title, data.hostWidth, data.hostHeight);
+      res.send(JSON.stringify({ url: 'http://' + host + ':8080/' }))
+    });
+
+    /**
+     * Request Body
+     * {
+     * }
+     *
+     * Response Body
+     * {
+     * }
+     */
+    api.get('stopperformserver', (request, response) => {
+      httpServer.stop();
+      response.send();
+    });
+
+    /**
+     * Request Body
+     * {
      *     blob: the blob data
+     *     encoding: string of nodejs encoding
+     *     fileName: string of default fileName
      * }
      *
      * Response Body
@@ -270,13 +323,23 @@ module.exports = class {
     api.post('blob', (request, response) => {
       const payload = assembleBufferPayload(request);
       try {
-        dialog.showSaveDialog(null, options, file => {
-          fileManager.writeBlob(file, payload.blob, payload.encoding);
-          response.json({
-            status: 200,
-            statusMessage: 'Created file',
-            payload: {}
-          });
+        dialog.showSaveDialog(null, {
+          defaultPath: app.getPath('documents') + '/' + payload.fileName,
+        }, file => {
+          if(file){
+            fileManager.writeBlob(file, payload.blob, payload.encoding);
+            response.json({
+              status: 200,
+              statusMessage: 'Created file',
+              payload: {}
+            });
+          } else {
+            response.json({
+              status: 499,
+              statusMessage: 'Request Canceled',
+              payload: {}
+            });
+          }
         });
       } catch (err) {
         response.json({

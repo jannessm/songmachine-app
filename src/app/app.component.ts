@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-
-import { DATABASES } from './models/databases';
+import { Component, OnInit, ViewChild, ViewContainerRef, ElementRef } from '@angular/core';
 import { DataService } from './services/data.service';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MenuItem } from './models/menuitem';
-import { FileSynchronizerService } from './services/file-synchronizer.service';
 import { ParserService } from './services/parser.service';
 import { ConfigService } from './services/config.service';
+import { EditorComponent } from './views/editor/editor.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +21,7 @@ export class AppComponent implements OnInit {
     },
     {
       route: 'browser/songgroups',
-      icon: 'icon-songgroup',
+      icon: 'icon-calendar',
       active: false,
     },
     {
@@ -33,6 +31,7 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  routedComponent: Component;
   show = false;
 
   constructor(
@@ -41,13 +40,6 @@ export class AppComponent implements OnInit {
     private parserService: ParserService,
     private configService: ConfigService
   ) { }
-
-  ngOnInit() {
-    // load data from dir or force user to set defaultDir
-    if (!this.configService.get('defaultPath')) {
-      this.router.navigateByUrl('/settings');
-    }
-  }
 
   showImport(clickEvent) {
     clickEvent.preventDefault();
@@ -79,6 +71,16 @@ export class AppComponent implements OnInit {
           }
         };
       });
+    }
+  }
+
+  testNavigation(event, link: string) {
+    event.stopPropagation();
+    event.preventDefault();
+    if ( this.routedComponent && this.routedComponent instanceof EditorComponent) {
+      this.routedComponent.checkState(() => this.router.navigateByUrl(link));
+    } else {
+      this.router.navigateByUrl(link);
     }
   }
 }

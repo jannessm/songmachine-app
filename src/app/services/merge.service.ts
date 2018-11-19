@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
 import { ParserService } from './parser.service';
 import { MatDialog } from '@angular/material';
-import { MergeDialogComponent } from '../components/merge-dialog/merge-dialog.component';
+import { MergeDialogComponent } from '../dialogs/merge-dialog/merge-dialog.component';
 
 const diff = require('diff');
 
@@ -39,10 +39,12 @@ export class MergeService {
           resolve(newSongLocal);
         } else if (result === '--**keepServer**--') {
           resolve(newSongServer);
-        } else {
+        } else if (result) {
           const newSong = this.parserService.stringToSong(result);
           newSong.id = newSongLocal.id;
           resolve(newSong);
+        } else {
+          resolve();
         }
       });
     });

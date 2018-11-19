@@ -1,5 +1,17 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule, MatButtonModule, MatInputModule, MatCardModule, MatDialogModule } from '@angular/material';
+import {
+  MatSidenavModule,
+  MatButtonModule,
+  MatInputModule,
+  MatCardModule,
+  MatDialogModule,
+  MatMenuModule,
+  MatDividerModule,
+  MatTooltipModule,
+  MatToolbarModule,
+  MatGridListModule,
+  MatSnackBarModule
+} from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,16 +26,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SongComponent } from './components/song/song.component';
 import { SonggroupComponent } from './components/songgroup/songgroup.component';
-import { SongSonggroupFormComponent } from './components/song-songgroup-form/song-songgroup-form.component';
 import { PreviewComponent } from './components/preview/preview.component';
 import { SongsheetTextareaComponent } from './components/songsheet-textarea/songsheet-textarea.component';
 import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { PerformviewComponent } from './views/performview/performview.component';
-import { IconsComponent } from './views/icons/icons.component';
-import { ColorComponent } from './views/color/color.component';
-import { MergeDialogComponent } from './components/merge-dialog/merge-dialog.component';
 
 import { DataService } from './services/data.service';
 import { ParserService } from './services/parser.service';
@@ -37,7 +45,15 @@ import { KeyFinderService } from './services/keyFinder.service';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { TranslatePipe } from './pipes/translate.pipe';
+import { ExportService } from './services/export.service';
+import { SngService } from './services/sng.service';
+import { PptxService } from './services/pptx.service';
+import { ScrollApiService } from './services/scroll-api.service';
 
+import { QRDialogComponent } from './dialogs/qr-dialog/qr-dialog.component';
+import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
+import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.component';
+import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
 
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
@@ -51,15 +67,15 @@ export function initConfigs(configService: ConfigService) {
     EditorComponent,
     SongComponent,
     SonggroupComponent,
-    ColorComponent,
     SongSonggroupFormComponent,
-    IconsComponent,
     PreviewComponent,
     SongsheetTextareaComponent,
     PerformviewComponent,
     SafePipe,
     TranslatePipe,
-    MergeDialogComponent
+    MergeDialogComponent,
+    QRDialogComponent,
+    AlertDialogComponent
   ],
   imports: [
     ConnectivityModule,
@@ -73,6 +89,12 @@ export function initConfigs(configService: ConfigService) {
     MatIconModule,
     MatCardModule,
     MatDialogModule,
+    MatMenuModule,
+    MatDividerModule,
+    MatTooltipModule,
+    MatToolbarModule,
+    MatGridListModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     AutosizeModule,
@@ -88,6 +110,10 @@ export function initConfigs(configService: ConfigService) {
     DexieService,
     TranslationService,
     KeyFinderService,
+    ExportService,
+    SngService,
+    PptxService,
+    ScrollApiService,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,
@@ -97,7 +123,9 @@ export function initConfigs(configService: ConfigService) {
   ],
   entryComponents: [
     SongSonggroupFormComponent,
-    MergeDialogComponent
+    MergeDialogComponent,
+    QRDialogComponent,
+    AlertDialogComponent
   ],
   bootstrap: [AppComponent]
 })

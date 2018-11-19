@@ -16,6 +16,16 @@
   <i class="icon icon-right"></i>
 </button>
 <div class="counter">{{activeSong + 1}} / {{songs.length}}</div>
-<button mat-mini-fab [routerLink]="'/editor/'+songId" class="back-button">
-  <i class="icon icon-editor"></i>
-</button>
+
+<div class="menu">
+  <button mat-mini-fab>
+    <i class="icon icon-menu"></i>
+  </button>
+  
+  <button mat-mini-fab [routerLink]="'/editor/'+songId" class="menu-button">
+    <i class="icon icon-editor"></i>
+  </button>
+  <!-- <button mat-mini-fab class="menu-button" (click)="showQR($event)">
+    <i class="icon icon-share"></i>
+  </button> -->
+</div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { HtmlFactoryService } from '../../services/html-factory.service';
 
 const diff = require('diff');
 
@@ -21,7 +22,11 @@ export class MergeDialogComponent implements OnInit {
   local = '';
   mergedInput = '';
 
-  constructor(public dialogRef: MatDialogRef<MergeDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(
+    public dialogRef: MatDialogRef<MergeDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private htmlFactory: HtmlFactoryService
+  ) {}
 
   ngOnInit() {
     this.server = this.createHighlightedString(this.data.diffServer);
@@ -32,13 +37,13 @@ export class MergeDialogComponent implements OnInit {
     let html = '';
     diffs.forEach(elem => {
       const css = elem.removed ? 'merge-removed' : elem.added ? 'merge-added' : '';
-      html += '<div class="merge ' + css + '">' + elem.value.replace(/[\n\r]/g, '<br>') + '</div>';
+      html += '<pre class="merge ' + css + '">' + this.htmlFactory.highlightText(elem.value).join('<br>') + '</pre>';
     });
-    return html;
+    return html + this.htmlFactory.style();
   }
 
   onNoClick(): void {
-    this.keepLocal();
+    this.dialogRef.close();
   }
 
   keepLocal(): void {
