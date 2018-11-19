@@ -7,7 +7,7 @@ import {
   CmPdfRequest,
   CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
   FileSystemIndexResponse,
-  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse
+  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse, CmBlobRequest, BlobResponse
 } from './model/client.model';
 
 const Path = require('path');
@@ -66,6 +66,12 @@ export class ApiService {
     return this.ConnectorFactory('read')
       .setMode(Modes.CORS)
       .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
+  }
+
+  generateBlobCreateRequest(blob: any,) {
+    return this.ConnectorFactory('blob')
+      .setMode(Modes.CORS)
+      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob });
   }
 
 }

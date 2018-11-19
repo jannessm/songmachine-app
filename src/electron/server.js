@@ -1,3 +1,4 @@
+const { dialog } = require('electron');
 const pdf = require('html-pdf');
 const path = require('path');
 const FileManager = require('./filesystem.manager');
@@ -255,5 +256,36 @@ module.exports = class {
         });
       }
     });
+
+    /**
+     * Request Body
+     * {
+     *     blob: the blob data
+     * }
+     *
+     * Response Body
+     * {
+     * }
+     */
+    api.post('blob', (request, response) => {
+      const payload = assembleBufferPayload(request);
+      try {
+        dialog.showSaveDialog(null, options, file => {
+          fileManager.writeBlob(file, payload.blob, payload.encoding);
+          response.json({
+            status: 200,
+            statusMessage: 'Created file',
+            payload: {}
+          });
+        });
+      } catch (err) {
+        response.json({
+          status: 500,
+          statusMessage: 'Error while creating file',
+          payload: {}
+        });
+      }
+    });
+
   }
 };
