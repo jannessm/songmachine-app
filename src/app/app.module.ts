@@ -10,7 +10,8 @@ import {
   MatTooltipModule,
   MatToolbarModule,
   MatGridListModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatExpansionModule
 } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
@@ -54,6 +55,7 @@ import { QRDialogComponent } from './dialogs/qr-dialog/qr-dialog.component';
 import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
 import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.component';
 import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
+import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
 
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
@@ -75,7 +77,8 @@ export function initConfigs(configService: ConfigService) {
     TranslatePipe,
     MergeDialogComponent,
     QRDialogComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    HelpDialogComponent
   ],
   imports: [
     ConnectivityModule,
@@ -97,6 +100,7 @@ export function initConfigs(configService: ConfigService) {
     MatSnackBarModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatExpansionModule,
     AutosizeModule,
     HttpClientModule
   ],
@@ -125,7 +129,8 @@ export function initConfigs(configService: ConfigService) {
     SongSonggroupFormComponent,
     MergeDialogComponent,
     QRDialogComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    HelpDialogComponent
   ],
   bootstrap: [AppComponent]
 })

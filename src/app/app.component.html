@@ -3,11 +3,12 @@
     <a mat-flat-button *ngFor="let item of menu" routerLink="{{ item.route }}" routerLinkActive="active" class="sidebar-link">
       <i (click)="testNavigation($event, item.route)" class="icon {{ item.icon }}"></i>
     </a>
+    <a mat-flat-button (click)="showHelp()" class="sidebar-link bottom-button"><i class="icon icon-questionaire"></i></a>
   </mat-sidenav>
   <mat-sidenav-content (dragover)="showImport($event)" (drop)="importSong($event)">
       <router-outlet (activate)="routedComponent = $event"></router-outlet>
       <div id="drag-wrapper" [class.front]="show" [class.hide]="!show" (dragleave)="hideImport($event)">
-        import .st file
+        {{ 'import.st.file' | translate }}
       </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

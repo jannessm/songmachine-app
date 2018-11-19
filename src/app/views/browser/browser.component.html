@@ -13,12 +13,12 @@
         </button>
     </mat-form-field>
     <div id="songs">
-        <mat-toolbar>
+        <!-- <mat-toolbar>
             <mat-toolbar-row>
                 <button mat-button>{{ 'browser.new' | translate }}</button>
-                <!-- <button mat-button>{{ 'browser.import' | translate }}</button> -->
+                <button mat-button>{{ 'browser.import' | translate }}</button>
             </mat-toolbar-row>
-        </mat-toolbar>
+        </mat-toolbar> -->
 
         <mat-grid-list [cols]="gridCols" rowHeight="260px" gutterSize="10px" *ngSwitchCase="'songs'" class="cards">
             <mat-grid-tile rowspan="1" colspan="1" *ngFor="let song of filteredElems" >

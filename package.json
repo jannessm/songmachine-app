@@ -6,7 +6,7 @@
   "license": "all rights reserved",
   "scripts": {
     "ng": "ng",
-    "build": "ng build --prod --aot && cp src/electron/* dist/ && cp package.json dist/ && cp yarn.lock dist/",
+    "build": "ng build --prod --aot && cp -R src/electron/* dist/ && cp package.json dist/ && cp yarn.lock dist/",
     "test": "karma start ./karma.conf.js",
     "lint": "ng lint",
     "e2e": "protractor ./protractor.conf.js",
@@ -67,6 +67,7 @@
     "codelyzer": "^4.0.1",
     "copy-webpack-plugin": "~4.4.1",
     "electron": "^3.0.3",
+    "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^12.2.0",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.29.0",
