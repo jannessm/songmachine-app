@@ -47,3 +47,8 @@ export interface RunHttpServerRequest { htmls: string[]; title: string; hostWidt
 export type StopHttpServerRequest = undefined;
 export interface RunHttpServerResponse { url: string; }
 export type HttpServerResponse = undefined;
+export interface CmBlobRequest {
+  blob: any;
+}
+
+export type BlobResponse = undefined | {};

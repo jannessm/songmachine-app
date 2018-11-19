@@ -7,7 +7,9 @@ import {
   CmPdfRequest,
   CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
   FileSystemIndexResponse,
-  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse, HttpServerResponse, RunHttpServerRequest, StopHttpServerRequest, RunHttpServerResponse
+  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse,
+  HttpServerResponse, RunHttpServerRequest, StopHttpServerRequest, RunHttpServerResponse,
+  CmBlobRequest, BlobResponse
 } from './model/client.model';
 
 const Path = require('path');
@@ -79,6 +81,12 @@ export class ApiService {
     return this.ConnectorFactory('stopPerformServer')
       .setMode(Modes.CORS)
       .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
+  }
+
+  generateBlobCreateRequest(blob: any, ) {
+    return this.ConnectorFactory('blob')
+      .setMode(Modes.CORS)
+      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob });
   }
 
 }
