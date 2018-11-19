@@ -67,6 +67,7 @@
     "codelyzer": "^4.0.1",
     "copy-webpack-plugin": "~4.4.1",
     "electron": "^3.0.3",
+    "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^12.2.0",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.29.0",
