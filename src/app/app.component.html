@@ -3,6 +3,7 @@
     <a mat-flat-button *ngFor="let item of menu" routerLink="{{ item.route }}" routerLinkActive="active" class="sidebar-link">
       <i (click)="testNavigation($event, item.route)" class="icon {{ item.icon }}"></i>
     </a>
+    <a mat-flat-button (click)="showHelp()" class="sidebar-link bottom-button">?</a>
   </mat-sidenav>
   <mat-sidenav-content (dragover)="showImport($event)" (drop)="importSong($event)">
       <router-outlet (activate)="routedComponent = $event"></router-outlet>

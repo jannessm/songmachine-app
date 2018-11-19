@@ -1,0 +1,85 @@
+<div id="help-container">
+  <div id="headline">{{ 'help.title' | translate }}</div>
+  <div id="content">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          {{ 'help.editor.title' | translate }}
+        </mat-expansion-panel-header>
+
+        {{ 'help.editor.introduction' | translate }}
+
+        <h3>{{ 'help.editor.elements' | translate }}</h3>
+
+        <h4>{{ 'help.editor.meta.title' | translate }}</h4>
+        {{ 'help.editor.meta.description' | translate }}
+        <code>[title: Wonderwall; artist: Oasis; bpm: 80; books: Songbook 1 no. 30, songbook 2 p. 1]</code>
+        <table>
+          <tr>
+            <th>title</th>
+            <td>{{ 'help.editor.title.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>artist</th>
+            <td>{{ 'help.editor.artist.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>bpm</th>
+            <td>{{ 'help.editor.bpm.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>books</th>
+            <td>{{ 'help.editor.books.description' | translate }}</td>
+          </tr>
+        </table>
+
+        <h4>{{ 'help.editor.blocks.title' | translate }}</h4>
+        {{ 'help.editor.blocks.description' | translate }}
+        <code>[block: Verse 1]</code>
+
+        {{ 'help.editor.line.description' | translate }}
+        <code>[Em] Today it's [C2]gonna be the [G]day | {{ 'help.editor.line.firstAnnotation' | translate }} | {{ 'help.editor.line.secondAnnotation' | translate }}</code>
+
+        <h4>{{ 'help.editor.order.title' | translate }}</h4>
+        {{ 'help.editor.order.description' | translate }}
+        <code>[order: Verse 1, Chorus, Verse 2, Chorus, Chorus]</code>
+
+        <h3>{{ 'help.editor.format.title' | translate }}</h3>
+        {{ 'help.editor.format.description' | translate }}
+        <table>
+          <tr>
+            <th>*text*</th>
+            <td>{{ 'help.editor.italic.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>**text**</th>
+            <td>{{ 'help.editor.bold.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>&lt;r&gt;text&lt;r&gt;</th>
+            <td>{{ 'help.editor.red.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>&lt;g&gt;text&lt;g&gt;</th>
+            <td>{{ 'help.editor.green.description' | translate }}</td>
+          </tr>
+          <tr>
+            <th>&lt;b&gt;text&lt;b&gt;</th>
+            <td>{{ 'help.editor.blue.description' | translate }}</td>
+          </tr>
+        </table>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          {{ 'help.performMode.title' | translate }}
+        </mat-expansion-panel-header>
+
+        {{ 'help.performMode.description' | translate }}
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div id="actions">
+    <button mat-flat-button (click)="onNoClick()">{{ 'help.action.close' | translate }}</button>
+  </div>
+</div>

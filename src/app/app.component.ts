@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataService } from './services/data.service';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenuItem } from './models/menuitem';
 import { ParserService } from './services/parser.service';
-import { ConfigService } from './services/config.service';
 import { EditorComponent } from './views/editor/editor.component';
+import { MatDialog } from '@angular/material';
+import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   menu: MenuItem[] = [
     {
@@ -38,7 +39,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private parserService: ParserService,
-    private configService: ConfigService
+    private dialog: MatDialog
   ) { }
 
   showImport(clickEvent) {
@@ -82,5 +83,12 @@ export class AppComponent implements OnInit {
     } else {
       this.router.navigateByUrl(link);
     }
+  }
+
+  showHelp() {
+    this.dialog.open(HelpDialogComponent, {
+      width: '80%',
+      height: '80%'
+    });
   }
 }

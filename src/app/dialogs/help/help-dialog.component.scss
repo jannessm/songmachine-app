@@ -1,0 +1,38 @@
+@import "~assets/fonts.scss";
+
+#help-container{
+  position: relative;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  margin-left: -24px;
+
+  #headline{
+    margin-top: -24px;
+    padding: 14px;
+    margin-bottom: 12px;
+    width: calc(100%);
+    text-align: center;
+    color: white;
+    background: grey;
+    box-sizing: border-box;
+  }
+
+  #content{
+    padding: 24px;
+    height: calc(100% - 155px);
+    overflow: auto;
+  }
+  
+  #actions{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+
+    button{
+      width: 50%;
+      margin-left: 25%;
+    }
+  }
+}
