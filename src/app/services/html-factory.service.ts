@@ -12,8 +12,6 @@ export class HtmlFactoryService {
   private books_image = '';
 
   constructor() {
-    // this.bpm_image = bpm_image;
-    // this.books_image = books_image;
   }
 
   public highlightText(text: string): string[] {
