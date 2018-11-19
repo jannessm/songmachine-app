@@ -1,9 +1,9 @@
 <div class="content">
   <h3>{{ 'settings.headline' | translate }}</h3>
-  <label>{{ 'settings.path' | translate }}</label>
-  <div>{{ path }}</div><button mat-flat-button (click)="selectDirectory()">{{ 'settings.select.folder' | translate }}</button>
+  <h4>{{ 'settings.path' | translate }}</h4>
+  <div class="path">{{ path }}</div> <button mat-flat-button (click)="selectDirectory()">{{ 'settings.select.folder' | translate }}</button>
   <input type="file" (change)="setDefaultPath($event.target.files[0].path)" #pathinput required webkitdirectory class="do-not-show">
-  <div class="message" *ngIf="!pathinput.valid">
+  <div class="message" *ngIf="!path">
     <h3>{{ 'settings.welcome.to.songsheet' | translate }}</h3>
     {{ 'settings.hint.default.path' | translate }}
   </div>
