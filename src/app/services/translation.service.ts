@@ -16,8 +16,12 @@ export class TranslationService {
     const subscr = this.http
       .get('assets/i18n/' + locale + '.xlf', {responseType: 'text'})
       .subscribe(res => {
-        this.translations = this.parseXMLIntoJson(res);
-        subscr.unsubscribe();
+        if (res) {
+          this.translations = this.parseXMLIntoJson(res);
+          subscr.unsubscribe();
+        } else {
+          this.setLanguage('en');
+        }
       });
   }
 
