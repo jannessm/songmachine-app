@@ -260,8 +260,22 @@ module.exports = class {
       }
     });
 
-    api.post('runPerformServer', (req, res) => {
-      const data = assembleBufferPayload(req);
+    /**
+     * Request Body
+     * {
+     *     htmls: array of html strings for each song
+     *     title: string (title for webpage)
+     *     hostWidth: number
+     *     hostHeight: number
+     * }
+     *
+     * Response Body
+     * {
+     *    url: url of server
+     * }
+     */
+    api.post('runperformserver', (request, response) => {
+      const data = assembleBufferPayload(request);
       const ifaces = os.networkInterfaces();
       let host = '';
 
@@ -280,8 +294,18 @@ module.exports = class {
       res.send(JSON.stringify({ url: 'http://' + host + ':8080/' }))
     });
 
-    api.get('stopPerformServer', (req, res) => {
+    /**
+     * Request Body
+     * {
+     * }
+     *
+     * Response Body
+     * {
+     * }
+     */
+    api.get('stopperformserver', (request, response) => {
       httpServer.stop();
+      response.send();
     });
 
     /**
@@ -311,14 +335,13 @@ module.exports = class {
             });
           } else {
             response.json({
-              status: 401,
-              statusMessage: 'Request Cancled',
+              status: 499,
+              statusMessage: 'Request Canceled',
               payload: {}
             });
           }
         });
       } catch (err) {
-        console.log(err);
         response.json({
           status: 500,
           statusMessage: 'Error while creating file',
