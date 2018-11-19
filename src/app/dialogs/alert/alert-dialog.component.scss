@@ -19,12 +19,16 @@
 
   #content{
     padding: 24px;
+    height: calc(100% - 155px);
+    overflow: auto;
   }
   
   #actions{
     position: absolute;
     bottom: 0;
     width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
 
     button{
       width: calc((100% - 10px) / 3);
