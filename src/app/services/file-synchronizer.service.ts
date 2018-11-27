@@ -32,6 +32,7 @@ export class FileSynchronizerService {
       return this.apiService.generateFileSystemIndex(mainPath).then(res => {
         res.payload.forEach(filePath => {
           const file = filePath.replace(mainPath, '');
+          console.log(file, mainPath);
           if (file.startsWith(DATABASES.songs)) {
             this.syncOneFileIndexedDB(DATABASES.songs, filePath);
           } else if (file.startsWith(DATABASES.songgroups)) {
@@ -169,7 +170,12 @@ export class FileSynchronizerService {
     return new Promise((res, rej) => {
       const root = this.configService.get('defaultPath');
       if (root) {
-        res(path.join(root, FILESYSTEM.DATA, '/'));
+        let p = path.join(root, FILESYSTEM.DATA, '/');
+        if (/Win/gi.test(navigator.platform)) {
+          console.log(p);
+          p = p.replace(/\//g, '\\');
+        }
+        res(p);
       } else {
         rej('no defaultPath defined');
       }
