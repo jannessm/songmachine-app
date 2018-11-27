@@ -5,6 +5,7 @@
   width: calc(100% + 48px);
   height: calc(100% + 48px);
   margin-left: -24px;
+  overflow: hidden;
 
   #headline{
     margin-top: -24px;
@@ -20,7 +21,7 @@
   #content{
     padding: 24px;
     height: calc(100% - 155px);
-    overflow: auto;
+    overflow: hidden;
   }
   
   #actions{
