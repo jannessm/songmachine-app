@@ -22,7 +22,7 @@ export class AppComponent {
     },
     {
       route: 'browser/songgroups',
-      icon: 'icon-calendar',
+      icon: 'icon-songgroup',
       active: false,
     },
     {
@@ -76,12 +76,20 @@ export class AppComponent {
   }
 
   testNavigation(event, link: string) {
-    event.stopPropagation();
     event.preventDefault();
+    event.stopPropagation();
     if ( this.routedComponent && this.routedComponent instanceof EditorComponent) {
       this.routedComponent.checkState(() => this.router.navigateByUrl(link));
     } else {
       this.router.navigateByUrl(link);
+      this.menu.forEach(item => {
+        if (item.route === link) {
+          item.active = true;
+        } else {
+          item.active = false;
+        }
+      });
+
     }
   }
 
