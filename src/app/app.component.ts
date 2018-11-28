@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
 import { Router } from '@angular/router';
 import { MenuItem } from './models/menuitem';
@@ -6,13 +6,19 @@ import { ParserService } from './services/parser.service';
 import { EditorComponent } from './views/editor/editor.component';
 import { MatDialog } from '@angular/material';
 import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
+import { HttpClient } from '@angular/common/http';
+import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
+import { TranslationService } from './services/translation.service';
+import { ApiService } from './services/connectivity/api.service';
+
+const packageJson = require('../../package.json');
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   menu: MenuItem[] = [
     {
@@ -39,8 +45,32 @@ export class AppComponent {
     private router: Router,
     private dataService: DataService,
     private parserService: ParserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private httpClient: HttpClient,
+    private translationService: TranslationService,
+    private apiService: ApiService
   ) { }
+
+  ngOnInit() {
+    this.httpClient.get('https://api.magnusson.berlin/songmachine/version').subscribe((res: {version: string}) => {
+      if (res.version !== packageJson.version) {
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            content: this.translationService.i18n('alert.newVersionAvailable.content'),
+            actions: [
+              this.translationService.i18n('alert.cancel'),
+              this.translationService.i18n('alert.newVersionAvailable.download')
+            ]
+          }
+        });
+        dialogRef.afterClosed().subscribe(code => {
+          if (code === 1) {
+            this.apiService.generateOpenUrlRequest('http://songmachine.magnusson.berlin');
+          }
+        });
+      }
+    }, err => console.error(err));
+  }
 
   showImport(clickEvent) {
     clickEvent.preventDefault();
