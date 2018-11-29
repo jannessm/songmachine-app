@@ -38,8 +38,8 @@ export class SongComponent {
 
   del(song: Song) {
     const dialogRef = this.dialog.open(AlertDialogComponent, {
-      width: '400px',
-      height: '300px',
+      width: '350px',
+      height: '200px',
       data: {
         content: this.translationService.i18n('alert.sureAboutDelete'),
         actions: [

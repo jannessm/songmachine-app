@@ -52,12 +52,13 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.httpClient.get('http://api.magnusson.berlin/songmachine/current').subscribe((res: {currentVersion: string}) => {
+    // this.httpClient.get('http://api.magnusson.berlin/songmachine/current').subscribe((res: {currentVersion: string}) => {
+    this.httpClient.get('http://localhost/songmachine/current').subscribe((res: {currentVersion: string}) => {
       if (res.currentVersion !== packageJson.version) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
+          width: '350px',
+          height: '200px',
           data: {
-            width: '200px',
-            height: '200px',
             content: this.translationService.i18n('alert.newVersionAvailable.content'),
             actions: [
               this.translationService.i18n('alert.cancel'),
