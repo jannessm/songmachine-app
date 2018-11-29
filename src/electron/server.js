@@ -371,7 +371,7 @@ module.exports = class {
         })
       } catch (err) {
         response.json({
-          status: 401,
+          status: 400,
           statusMessage: 'An url has to be specified',
           payload: {}
         });

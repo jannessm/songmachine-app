@@ -52,8 +52,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.httpClient.get('http://api.magnusson.berlin/songmachine/current').subscribe((res: {currentVersion: string}) => {
-    this.httpClient.get('http://localhost/songmachine/current').subscribe((res: {currentVersion: string}) => {
+    this.httpClient.get('http://api.magnusson.berlin/songmachine/current').subscribe((res: {currentVersion: string}) => {
       if (res.currentVersion !== packageJson.version) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           width: '350px',
