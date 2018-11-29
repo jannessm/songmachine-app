@@ -79,18 +79,21 @@ export class AppComponent {
     event.preventDefault();
     event.stopPropagation();
     if ( this.routedComponent && this.routedComponent instanceof EditorComponent) {
-      this.routedComponent.checkState(() => this.router.navigateByUrl(link));
+      this.routedComponent.checkState(() => this.navigate(link));
     } else {
-      this.router.navigateByUrl(link);
-      this.menu.forEach(item => {
-        if (item.route === link) {
-          item.active = true;
-        } else {
-          item.active = false;
-        }
-      });
-
+      this.navigate(link);
     }
+  }
+
+  private navigate(link: string) {
+    this.router.navigateByUrl(link);
+    this.menu.forEach(item => {
+      if (item.route === link) {
+        item.active = true;
+      } else {
+        item.active = false;
+      }
+    });
   }
 
   showHelp() {
