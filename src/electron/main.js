@@ -1,5 +1,3 @@
-if (require('electron-squirrel-startup')) return;
-
 const {app, BrowserWindow, Menu, TouchBar} = require('electron');
 const Router = require('@marshallofsound/electron-router').Router;
 
@@ -29,7 +27,7 @@ function createWindow () {
 
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
