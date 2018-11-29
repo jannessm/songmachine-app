@@ -52,10 +52,12 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.httpClient.get('https://api.magnusson.berlin/songmachine/version').subscribe((res: {version: string}) => {
-      if (res.version !== packageJson.version) {
+    this.httpClient.get('http://api.magnusson.berlin/songmachine/current').subscribe((res: {currentVersion: string}) => {
+      if (res.currentVersion !== packageJson.version) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
+            width: '200px',
+            height: '200px',
             content: this.translationService.i18n('alert.newVersionAvailable.content'),
             actions: [
               this.translationService.i18n('alert.cancel'),
@@ -69,7 +71,7 @@ export class AppComponent implements OnInit {
           }
         });
       }
-    }, err => console.error(err));
+    }, () => {});
   }
 
   showImport(clickEvent) {
