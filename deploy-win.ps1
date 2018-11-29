@@ -9,3 +9,4 @@ yarn
 cd ../songmachine-app
 .\node_modules\.bin\electron-packager ../deploy-win Songmachine --overwrite --platform=win32 --arch=ia32 --icon=dist/assets/main-icon/win/songsheet.ico --prune=true --out=release-builds --package-manager=yarn --version-string.FileDescription=CE --version-string.ProductName="Songmachine"
 rm ../deploy-win -Recurse -Force
+node build-installer.js

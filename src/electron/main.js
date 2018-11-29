@@ -1,3 +1,5 @@
+if (require('electron-squirrel-startup')) return;
+
 const {app, BrowserWindow, Menu, TouchBar} = require('electron');
 const Router = require('@marshallofsound/electron-router').Router;
 
