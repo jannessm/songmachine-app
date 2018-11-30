@@ -1,0 +1,19 @@
+digraph finite_state_machine {
+	node [shape = circle];
+  Start   -> S
+  S -> I [ label = "*" ];
+  S -> Bo [ label = "**" ];
+  S -> Bo_I [ label = "***" ];
+
+  I -> S [ label = "*" ];
+  I -> Bo_I [ label = "**" ];
+  I -> Bo [ label = "***" ];
+
+  Bo -> Bo_I [ label = "*" ];
+  Bo -> S [ label = "**" ];
+  Bo -> I [ label = "***" ];
+
+  Bo_I -> Bo [ label = "*" ];
+  Bo_I -> I [ label = "**" ];
+  Bo_I -> S [ label = "***" ];
+}

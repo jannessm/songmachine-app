@@ -1,0 +1,12 @@
+digraph finite_state_machine {
+	node [shape = circle];
+  Start   -> S
+  S -> Br [ label = "[ ^: ]" ];
+  S -> Br_D [ label = "[ : ]" ];
+
+  Br -> BrCo [ label = "*" ];
+  Br -> S [ label = "]" ];
+  Br_D -> BrCo [ label = ":" ];
+  BrCo -> S [ label = "]" ];
+  BrCo -> Br_D [ label = ";"];
+}
