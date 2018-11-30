@@ -25,7 +25,7 @@ function handleSquirrelEvent() {
   const exeName = path.basename(process.execPath);
 
   const spawn = function(command, args) {
-    let spawnedProcess, error;
+    let spawnedProcess;
 
     try {
       spawnedProcess = ChildProcess.spawn(command, args, {detached: true});
