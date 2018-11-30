@@ -5,6 +5,7 @@ const FileManager = require('./filesystem.manager');
 const HttpServer = require('./previewServer/httpServer');
 const jiff = require('jiff');
 const os = require('os');
+const open = require('open');
 
 function assembleBufferPayload(request) {
   const requestPayload = (request.uploadData || [{ stringContent: () => '{}' }]);
@@ -274,7 +275,7 @@ module.exports = class {
      *    url: url of server
      * }
      */
-    api.post('runperformserver', (request, response) => {
+    api.post('performserver/run', (request, response) => {
       const data = assembleBufferPayload(request);
       const ifaces = os.networkInterfaces();
       let host = '';
@@ -303,7 +304,7 @@ module.exports = class {
      * {
      * }
      */
-    api.get('stopperformserver', (request, response) => {
+    api.get('performserver/stop', (request, response) => {
       httpServer.stop();
       response.send();
     });
@@ -349,6 +350,33 @@ module.exports = class {
         });
       }
     });
+
+    /**
+     * Request Body
+     * {
+     *     url: string
+     * }
+     *
+     * Response Body
+     * { }
+     */
+    api.post('openurl', (request, response) => {
+      const payload = assembleBufferPayload(request);
+      try {
+        open(payload.url);
+        response.json({
+          status: 200,
+          statusMessage: 'Success',
+          payload: {}
+        })
+      } catch (err) {
+        response.json({
+          status: 400,
+          statusMessage: 'An url has to be specified',
+          payload: {}
+        });
+      }
+    })
 
   }
 };
