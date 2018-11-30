@@ -4,6 +4,9 @@ import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 import { ExportService } from '../../services/export.service';
 import { ApiService } from '../../services/connectivity/api.service';
+import { MatDialog } from '@angular/material';
+import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-songgroup',
@@ -20,7 +23,9 @@ export class SonggroupComponent implements OnInit {
     private dataService: DataService,
     private router: Router,
     private exportService: ExportService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private dialog: MatDialog,
+    private translationService: TranslationService
   ) { }
 
   songs: string[] = [];
@@ -37,7 +42,28 @@ export class SonggroupComponent implements OnInit {
   }
 
   delete(songgroup: Songgroup) {
-    this.dataService.deleteSonggroup(songgroup.id);
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      width: '350px',
+      height: '200px',
+      data: {
+        content: this.translationService.i18n('alert.sureAboutDelete'),
+        actions: [
+          this.translationService.i18n('alert.cancel'),
+          this.translationService.i18n('alert.confirm')
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(code => {
+      switch (code) {
+        case 1:
+          this.dataService.deleteSonggroup(songgroup.name);
+          break;
+        case 0:
+        default:
+          // do nothing
+      }
+    });
   }
 
   setSongs() {

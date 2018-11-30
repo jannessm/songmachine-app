@@ -54,3 +54,6 @@ export interface CmBlobRequest {
 }
 
 export type BlobResponse = undefined | {};
+
+export interface CmOpenUrlRequest { url: string; }
+export type CmOpenUrlResponse = undefined;

@@ -9,7 +9,7 @@ import {
   FileSystemIndexResponse,
   PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse,
   HttpServerResponse, RunHttpServerRequest, StopHttpServerRequest, RunHttpServerResponse,
-  CmBlobRequest, BlobResponse
+  CmBlobRequest, BlobResponse, CmOpenUrlResponse, CmOpenUrlRequest
 } from './model/client.model';
 
 const Path = require('path');
@@ -72,13 +72,13 @@ export class ApiService {
 
   generateRunHttpServerRequest(
     htmls: string[], title: string, hostWidth: number, hostHeight: number): Promise<CmResponse<RunHttpServerResponse>> {
-    return this.ConnectorFactory('runPerformServer')
+    return this.ConnectorFactory('performserver/run')
       .setMode(Modes.CORS)
       .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { htmls, title, hostWidth, hostHeight });
   }
 
   generateStopHttpServerRequest(): Promise<CmResponse<HttpServerResponse>> {
-    return this.ConnectorFactory('stopPerformServer')
+    return this.ConnectorFactory('performserver/stop')
       .setMode(Modes.CORS)
       .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
   }
@@ -91,6 +91,12 @@ export class ApiService {
       .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob: reader.result, fileName, encoding});
     };
     reader.readAsBinaryString(blob);
+  }
+
+  generateOpenUrlRequest(url: string): Promise<CmResponse<CmOpenUrlResponse>> {
+    return this.ConnectorFactory('openurl')
+      .setMode(Modes.CORS)
+      .dispatch<CmOpenUrlRequest, CmResponse<CmOpenUrlResponse>>(Methods.POST, { url: url });
   }
 
 }
