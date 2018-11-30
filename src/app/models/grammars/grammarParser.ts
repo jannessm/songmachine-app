@@ -7,6 +7,7 @@ export class GrammarParser {
   private transitions: GrammarTransitions;
   private grammarStart: string;
   private cssClasses: GrammarCssClasses;
+  private lookahead: number | string;
 
   private root: TreeNode;
 
@@ -35,6 +36,7 @@ export class GrammarParser {
     this.transitions = grammar.transitions;
     this.grammarStart = grammar.start;
     this.cssClasses = grammar.cssClasses;
+    this.lookahead = grammar.lookahead;
   }
 
   public parse(input: string, keepChars: boolean = false, tag: string = 'pre') {
@@ -80,17 +82,20 @@ export class GrammarParser {
         return;
       }
 
-      let lookahead = char;
+      let lookaheadValue = char;
       let matched = false;
-      lookahead += arr[i + 1] ? arr[i + 1] : '';
-      lookahead += arr[i + 2] ? arr[i + 2] : '';
+      if (this.lookahead === '*') {
+        lookaheadValue = input.substring(i);
+      } else {
+        lookaheadValue = input.substr(i, <number>this.lookahead);
+      }
 
       for (const regex of this.regexs) {
-        if (regex && regex.regex.test(lookahead)) {
+        if (regex && regex.regex.test(lookaheadValue)) {
           ignoreNext = regex.ignoreNext;
           currState = currTransitions[regex.id];
           currTransitions = this.transitions[currState];
-          currNode.createChild({content: lookahead.substring(0, ignoreNext + 1), isState: false});
+          currNode.createChild({content: lookaheadValue.substring(0, ignoreNext + 1), isState: false});
           currNode = currNode.createChild({content: currState, isState: true});
           matched = true;
           break;

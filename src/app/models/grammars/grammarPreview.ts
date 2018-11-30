@@ -3,6 +3,7 @@ import { Grammar } from './generalModels';
 export const GrammarPreview: Grammar = {
   // IMPORTANT: sort regexs as they should be processed (e.g. italic should be after bold)
   start: 'S',
+  lookahead: 3,
   cssClasses: {
     'S': 'normal',
     'SR': 'red',

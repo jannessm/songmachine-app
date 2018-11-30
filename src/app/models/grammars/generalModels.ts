@@ -3,6 +3,7 @@ export interface Grammar {
   transitions: GrammarTransitions;
   start: string;
   cssClasses: GrammarCssClasses;
+  lookahead: number | string;
 }
 
 export interface GrammarRegex {
