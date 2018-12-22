@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Song } from '../models/song';
 import { Block } from '../models/block';
-import { GrammarPreview } from '../models/grammars/grammarPreview';
-import { GrammarParser } from '../models/grammars/grammarParser';
+import { GrammarParser } from './grammarParser.service';
 
 @Injectable()
 export class HtmlFactoryService {
@@ -11,7 +10,7 @@ export class HtmlFactoryService {
   private bpm_image = '';
   private books_image = '';
 
-  constructor() {
+  constructor(private grammarParser: GrammarParser) {
   }
 
   public highlightText(text: string): string[] {
@@ -109,7 +108,7 @@ export class HtmlFactoryService {
   private markdown(str: string, editorParsing: boolean = false): string {
     let html = str;
     if (/<(r|g|b)>/gi.test(str) || /\*/g.test(str)) {
-      html = new GrammarParser(GrammarPreview).parse(str, editorParsing);
+      html = this.grammarParser.parse(str, editorParsing);
     } else {
       html = GrammarParser.escapeHTML(str);
     }

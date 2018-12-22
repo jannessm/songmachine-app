@@ -50,6 +50,7 @@ import { ExportService } from './services/export.service';
 import { SngService } from './services/sng.service';
 import { PptxService } from './services/pptx.service';
 import { ScrollApiService } from './services/scroll-api.service';
+import { GrammarParser } from './services/grammarParser.service';
 
 import { QRDialogComponent } from './dialogs/qr-dialog/qr-dialog.component';
 import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
@@ -118,6 +119,7 @@ export function initConfigs(configService: ConfigService) {
     SngService,
     PptxService,
     ScrollApiService,
+    GrammarParser,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfigs,
