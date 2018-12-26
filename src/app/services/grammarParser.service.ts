@@ -34,12 +34,18 @@ export class GrammarParser {
     const stParser = new nearley.Parser(nearley.Grammar.fromCompiled(stGrammar));
     try {
       stParser.feed(input);
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      const errPos = input[err.offset] === '>' ? 0 : input[err.offset - 1] === '<' ? 1 : 2;
+      const errLen = errPos === 0 ? 1 : errPos;
+
+      return `<${tag}>${GrammarParser.escapeHTML(input.substring(0, err.offset - errPos))}` +
+        `<${tag} class="error">${GrammarParser.escapeHTML(input.substr(err.offset - errPos, errLen))}</${tag}>` +
+        `${GrammarParser.escapeHTML(input.substr(err.offset - errPos + errLen))}`;
     }
     if (!stParser.results) {
       return '';
     }
+
     const results = this.flattenResults(stParser.results[0]);
     return `<${tag}>` + results.reduce((res, currVal, id, arr) => {
       let html = '';

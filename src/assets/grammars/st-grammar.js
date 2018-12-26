@@ -258,12 +258,7 @@ var grammar = {
     {"name": "b_bo_i", "symbols": [{"literal":"*"}, "b_bo"], "postprocess": pP.b_bo_i},
     {"name": "b_bo_i", "symbols": ["char", "b_bo_i"], "postprocess": pP.b_bo_i_},
     {"name": "b_bo_i", "symbols": []},
-    {"name": "char", "symbols": [{"literal":"r"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"g"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"b"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"<"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":">"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [/[^(<r>|<g>|<b>|\*)]/], "postprocess": data => data[0]}
+    {"name": "char", "symbols": [/[^<>\*)]/], "postprocess": data => data[0]}
 ]
   , ParserStart: "s"
 }

@@ -83,10 +83,10 @@ var grammar = {
     {"name": "g$subexpression$3", "symbols": [{"literal":"<"}, /[bB]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "g", "symbols": ["g$subexpression$3", "b"], "postprocess": pP.b},
     {"name": "g$string$1", "symbols": [{"literal":"*"}, {"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "g", "symbols": ["g$string$1", "bo_i"], "postprocess": pP.bo_i},
+    {"name": "g", "symbols": ["g$string$1", "g_bo_i"], "postprocess": pP.g_bo_i},
     {"name": "g$string$2", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "g", "symbols": ["g$string$2", "bo"], "postprocess": pP.bo},
-    {"name": "g", "symbols": [{"literal":"*"}, "i"], "postprocess": pP.i},
+    {"name": "g", "symbols": ["g$string$2", "g_bo"], "postprocess": pP.g_bo},
+    {"name": "g", "symbols": [{"literal":"*"}, "g_i"], "postprocess": pP.g_i},
     {"name": "g", "symbols": ["char", "g"], "postprocess": pP.g_},
     {"name": "g", "symbols": []},
     {"name": "b$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
@@ -96,10 +96,10 @@ var grammar = {
     {"name": "b$subexpression$3", "symbols": [{"literal":"<"}, /[bB]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "b", "symbols": ["b$subexpression$3", "s"], "postprocess": pP.b},
     {"name": "b$string$1", "symbols": [{"literal":"*"}, {"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "b", "symbols": ["b$string$1", "bo_i"], "postprocess": pP.bo_i},
+    {"name": "b", "symbols": ["b$string$1", "b_bo_i"], "postprocess": pP.b_bo_i},
     {"name": "b$string$2", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "b", "symbols": ["b$string$2", "bo"], "postprocess": pP.bo},
-    {"name": "b", "symbols": [{"literal":"*"}, "i"], "postprocess": pP.i},
+    {"name": "b", "symbols": ["b$string$2", "b_bo"], "postprocess": pP.b_bo},
+    {"name": "b", "symbols": [{"literal":"*"}, "b_i"], "postprocess": pP.b_i},
     {"name": "b", "symbols": ["char", "b"], "postprocess": pP.b_},
     {"name": "b", "symbols": []},
     {"name": "i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
@@ -258,13 +258,7 @@ var grammar = {
     {"name": "b_bo_i", "symbols": [{"literal":"*"}, "b_bo"], "postprocess": pP.b_bo_i},
     {"name": "b_bo_i", "symbols": ["char", "b_bo_i"], "postprocess": pP.b_bo_i_},
     {"name": "b_bo_i", "symbols": []},
-    {"name": "char", "symbols": [{"literal":"r"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"g"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"b"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"<"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":">"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [{"literal":"*"}], "postprocess": data => data[0]},
-    {"name": "char", "symbols": [/[^(<r>|<g>|<b>|\*)]/], "postprocess": data => data[0]}
+    {"name": "char", "symbols": [/[^<>\*)]/], "postprocess": data => data[0]}
 ]
   , ParserStart: "s"
 }

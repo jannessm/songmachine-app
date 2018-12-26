@@ -106,13 +106,7 @@ export class HtmlFactoryService {
   }
 
   private markdown(str: string, editorParsing: boolean = false): string {
-    let html = str;
-    if (/<(r|g|b)>/gi.test(str) || /\*/g.test(str)) {
-      html = this.grammarParser.parse(str, editorParsing);
-    } else {
-      html = GrammarParser.escapeHTML(str);
-    }
-    return html;
+    return this.grammarParser.parse(str, editorParsing);
   }
 
   public style(): string {

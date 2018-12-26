@@ -70,6 +70,10 @@
   .orange{
     color: $primary;
   }
+
+  .error {
+    border-bottom: 2px dotted red;
+  }
 }
 #highlighted-field{
   position: absolute;

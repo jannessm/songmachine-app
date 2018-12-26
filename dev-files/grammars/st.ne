@@ -142,13 +142,7 @@ b_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
   | char b_bo_i {% pP.b_bo_i_ %}
   | null
   
-char -> 
-    "r" {% data => data[0] %}
-  | "g" {% data => data[0] %}
-  | "b" {% data => data[0] %}
-  | "<" {% data => data[0] %}
-  | ">" {% data => data[0] %}
-  | [^(<r>|<g>|<b>|\*)] {% data => data[0] %}
+char -> [^<>\*)] {% data => data[0] %}
 
 @{%
 const post = function post(css, data, rest, isTerminal = true){
