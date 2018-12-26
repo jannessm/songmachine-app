@@ -2,8 +2,8 @@ mat-card{
     height: 100%;
 }
 mat-card-content{
-    height: 284;
-    overflow: scroll;
+    height: 250px;
+    overflow-y: auto;
 }
 
 .songgroup_attr{

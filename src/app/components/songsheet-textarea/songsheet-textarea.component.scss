@@ -87,14 +87,14 @@
   font-size: 0.8em;
   line-height: 1.1em;
   color: $black;
-  padding: 10px 10px 0 0;
+  padding: 10px 10px 20px 0;
   box-sizing: border-box;
 }
 #edit-field{
   position: absolute;
   top: 0;
   right: 0;
-  min-width: 100%;
+  min-width: calc(100% - 55px);
   min-height: 100%;
   opacity: 1;
   background: transparent;
@@ -102,13 +102,13 @@
   color: $white;
   -webkit-text-fill-color: transparent;
   z-index: 10;
-  box-sizing: border-box;
   font-family: $ubuntuMono; 
   font-size: 0.8em;
   line-height: 1.1em;
   outline: none;
   padding: 10px;
   padding-left: 45px;
+  resize: none;
 }
 #wrapper{
   position: relative;
