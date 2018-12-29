@@ -15,7 +15,7 @@ export class ParserService {
     books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     order: /\[(?:[^;]*;\s*)*(?:order|reihenfolge)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     block: /\[(?:block\s*:\s*)([\w\s-_\.]*)\]/gi,
-    chord: /(?:\[\s*)([^\s]+?)(?:\s*\])/gi,
+    chord: /(?:\[\s*)([^\s]*?)(?:\s*\])/gi,
     invChord: /([^\s]+)/gi
   };
 

@@ -1,16 +1,12 @@
-import { NearleyResultObj, NearleyParser } from '../models/grammars/generalModels';
+import { NearleyResultObj } from '../models/grammars/generalModels';
 import { Injectable } from '@angular/core';
 
 const nearley = require('nearley');
-const flatten = require('array-flatten');
 const stGrammar = require('../../assets/grammars/st-grammar.js');
 const editorGrammar = require('../../assets/grammars/editor-grammar.js');
 
 @Injectable()
 export class GrammarParser {
-
-  stParser: NearleyParser;
-  editorParser: NearleyParser;
 
   public static escapeHTML(char: string): string {
     if (char.length === 1) {
@@ -33,34 +29,31 @@ export class GrammarParser {
     }
   }
 
-  constructor() {
-    this.stParser = new nearley.Parser(nearley.Grammar.fromCompiled(stGrammar));
-    this.editorParser = new nearley.Parser(nearley.Grammar.fromCompiled(editorGrammar));
-  }
+  constructor() { }
 
   public parse(input: string, keepChars: boolean = false, tag: string = 'pre') {
+    const isBalanced = this.checkBalancedBrackets(input);
+    if (!!isBalanced) {
+      return isBalanced;
+    }
+
     let parser;
     if (!keepChars) {
-      parser = this.stParser.rewind(0);
+      parser = new nearley.Parser(nearley.Grammar.fromCompiled(stGrammar));
     } else {
-      parser = this.editorParser.rewind(0);
+      parser = new nearley.Parser(nearley.Grammar.fromCompiled(editorGrammar));
     }
 
     try {
       parser.feed(input);
     } catch (err) {
-      const errPos = input[err.offset] === '>' ? 0 : input[err.offset - 1] === '<' ? 1 : 2;
-      const errLen = errPos === 0 ? 1 : errPos;
-
-      return `<${tag}>${GrammarParser.escapeHTML(input.substring(0, err.offset - errPos))}` +
-        `<${tag} class="error">${GrammarParser.escapeHTML(input.substr(err.offset - errPos, errLen))}</${tag}>` +
-        `${GrammarParser.escapeHTML(input.substr(err.offset - errPos + errLen))}`;
+      console.log(err);
     }
-    if (!parser.results) {
+    if (!parser.results || (parser.results && parser.results.length === 0)) {
       return '';
     }
 
-    const results = flatten(parser.results[0]);
+    const results = parser.results[0];
     return `<${tag}>` + results.reduce((res, currVal, id, arr) => {
       let html = '';
 
@@ -88,5 +81,32 @@ export class GrammarParser {
 
       return res + html;
     }, '') + `</${tag}>`;
+  }
+
+  private checkBalancedBrackets(input: string, tag: string = 'pre'): string {
+    const stack = [];
+
+    for (let i = 0; i < input.length; i++) {
+      const char = input[i];
+      if (char === '[' && stack.length === 0) {
+        stack.push(i);
+      } else if (char === '[' && stack.length > 0) {
+        return this.composeError(input, stack.pop(), 1, tag);
+      } else if (char === ']' && stack.length === 1) {
+        stack.pop();
+      } else if (char === ']' && stack.length === 0) {
+        return this.composeError(input, i, 1, tag);
+      }
+    }
+
+    if (stack.length === 0) {
+      return '';
+    }
+  }
+
+  private composeError(input: string, from: number, length: number, tag: string = 'pre'): string {
+    return `<${tag}>${input.substr(0, from)}</${tag}>` +
+      `<${tag} class="error">${input.substr(from, length)}</${tag}>` +
+      `<${tag}>${input.substr(from + length)}</${tag}>`;
   }
 }

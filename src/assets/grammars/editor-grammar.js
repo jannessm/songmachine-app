@@ -57,9 +57,8 @@ const pP = {
       css: 'orange',
       content: fst,
       isTerminal: false
-    },
-    rest
-  ]
+    }
+  ].concat(rest);
 
   const brackets = function(data) {
     const openBr = data[0];
@@ -67,30 +66,19 @@ const pP = {
     const closingBr = data[2];
     const rest = data[3];
     return [
-      {
-        css: 'grey',
-        content: openBr,
-        isTerminal: false
-      },
-      content,
-      {
+        {
+          css: 'grey',
+          content: openBr,
+          isTerminal: false
+        }
+      ]
+      .concat(content)
+      .concat({
         css: 'grey',
         content: closingBr,
         isTerminal: false
-      },
-      rest
-    ];
-  }
-
-  const error = function(data) {
-    return [
-      {
-        css: 'error',
-        content: data[0],
-        isTerminal: false
-      },
-      data[1]
-    ]
+      })
+      .concat(rest)
   }
 var grammar = {
     Lexer: undefined,
@@ -336,7 +324,6 @@ var grammar = {
     {"name": "notColor", "symbols": [/[^rgb]/]},
     {"name": "char", "symbols": [/[^\[\]<>\*)]/], "postprocess": data => data[0]},
     {"name": "s", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "s"], "postprocess": brackets},
-    {"name": "s", "symbols": [{"literal":"["}, "s"], "postprocess": error},
     {"name": "r", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "r"], "postprocess": brackets},
     {"name": "g", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "g"], "postprocess": brackets},
     {"name": "b", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "b"], "postprocess": brackets},

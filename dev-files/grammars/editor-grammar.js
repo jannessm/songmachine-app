@@ -9,12 +9,15 @@ const post = function (css, data, rest, isTerminal = true){
         css,
         content: data,
         isTerminal
-      },
-      rest
-    ]
+      }
+    ].concat(rest);
 }
 
 const pP = {
+  error: ([fst, d]) => post("error", fst, d),
+  invError: ([fst, d]) => post("error", d, fst),
+
+  s: ([fst, d]) => [fst].concat(d),
   r: ([fst, d])  => post("red", fst, d),
   g: ([fst, d]) => post("green", fst, d),
   b: ([fst, d]) => post("blue", fst, d),
@@ -54,9 +57,8 @@ const pP = {
       css: 'orange',
       content: fst,
       isTerminal: false
-    },
-    rest
-  ]
+    }
+  ].concat(rest);
 
   const brackets = function(data) {
     const openBr = data[0];
@@ -64,30 +66,19 @@ const pP = {
     const closingBr = data[2];
     const rest = data[3];
     return [
-      {
-        css: 'grey',
-        content: openBr,
-        isTerminal: false
-      },
-      content,
-      {
+        {
+          css: 'grey',
+          content: openBr,
+          isTerminal: false
+        }
+      ]
+      .concat(content)
+      .concat({
         css: 'grey',
         content: closingBr,
         isTerminal: false
-      },
-      rest
-    ];
-  }
-
-  const error = function(data) {
-    return [
-      {
-        css: 'error',
-        content: data[0],
-        isTerminal: false
-      },
-      data[1]
-    ]
+      })
+      .concat(rest)
   }
 var grammar = {
     Lexer: undefined,
@@ -103,7 +94,8 @@ var grammar = {
     {"name": "s$string$2", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "s", "symbols": ["s$string$2", "bo"], "postprocess": pP.bo},
     {"name": "s", "symbols": [{"literal":"*"}, "i"], "postprocess": pP.i},
-    {"name": "s", "symbols": ["char", "s"]},
+    {"name": "s", "symbols": ["char", "s"], "postprocess": pP.s},
+    {"name": "s", "symbols": ["error", "s"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "s", "symbols": []},
     {"name": "r$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "r", "symbols": ["r$subexpression$1", "s"], "postprocess": pP.r},
@@ -117,6 +109,7 @@ var grammar = {
     {"name": "r", "symbols": ["r$string$2", "r_bo"], "postprocess": pP.r_bo},
     {"name": "r", "symbols": [{"literal":"*"}, "r_i"], "postprocess": pP.r_i},
     {"name": "r", "symbols": ["char", "r"], "postprocess": pP.r_},
+    {"name": "r", "symbols": ["error", "r"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "r", "symbols": []},
     {"name": "g$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "g", "symbols": ["g$subexpression$1", "r"], "postprocess": pP.r},
@@ -130,6 +123,7 @@ var grammar = {
     {"name": "g", "symbols": ["g$string$2", "g_bo"], "postprocess": pP.g_bo},
     {"name": "g", "symbols": [{"literal":"*"}, "g_i"], "postprocess": pP.g_i},
     {"name": "g", "symbols": ["char", "g"], "postprocess": pP.g_},
+    {"name": "g", "symbols": ["error", "g"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "g", "symbols": []},
     {"name": "b$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "b", "symbols": ["b$subexpression$1", "r"], "postprocess": pP.r},
@@ -143,6 +137,7 @@ var grammar = {
     {"name": "b", "symbols": ["b$string$2", "b_bo"], "postprocess": pP.b_bo},
     {"name": "b", "symbols": [{"literal":"*"}, "b_i"], "postprocess": pP.b_i},
     {"name": "b", "symbols": ["char", "b"], "postprocess": pP.b_},
+    {"name": "b", "symbols": ["error", "b"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "b", "symbols": []},
     {"name": "i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "i", "symbols": ["i$subexpression$1", "r"], "postprocess": pP.r},
@@ -156,6 +151,7 @@ var grammar = {
     {"name": "i", "symbols": ["i$string$2", "bo_i"], "postprocess": pP.bo_i},
     {"name": "i", "symbols": [{"literal":"*"}, "s"], "postprocess": pP.i},
     {"name": "i", "symbols": ["char", "i"], "postprocess": pP.i_},
+    {"name": "i", "symbols": ["error", "i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "i", "symbols": []},
     {"name": "bo$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "bo", "symbols": ["bo$subexpression$1", "r"], "postprocess": pP.r},
@@ -169,6 +165,7 @@ var grammar = {
     {"name": "bo", "symbols": ["bo$string$2", "s"], "postprocess": pP.bo},
     {"name": "bo", "symbols": [{"literal":"*"}, "i"], "postprocess": pP.i},
     {"name": "bo", "symbols": ["char", "bo"], "postprocess": pP.bo_},
+    {"name": "bo", "symbols": ["error", "bo"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "bo", "symbols": []},
     {"name": "bo_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "bo_i", "symbols": ["bo_i$subexpression$1", "r"], "postprocess": pP.r},
@@ -182,6 +179,7 @@ var grammar = {
     {"name": "bo_i", "symbols": ["bo_i$string$2", "i"], "postprocess": pP.bo_i},
     {"name": "bo_i", "symbols": [{"literal":"*"}, "bo"], "postprocess": pP.bo_i},
     {"name": "bo_i", "symbols": ["char", "bo_i"], "postprocess": pP.bo_i_},
+    {"name": "bo_i", "symbols": ["error", "bo_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "bo_i", "symbols": []},
     {"name": "r_bo$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "r_bo", "symbols": ["r_bo$subexpression$1", "bo"], "postprocess": pP.r_bo},
@@ -195,6 +193,7 @@ var grammar = {
     {"name": "r_bo", "symbols": ["r_bo$string$2", "r"], "postprocess": pP.r_bo},
     {"name": "r_bo", "symbols": [{"literal":"*"}, "r_bo_i"], "postprocess": pP.r_bo_i},
     {"name": "r_bo", "symbols": ["char", "r_bo"], "postprocess": pP.r_bo_},
+    {"name": "r_bo", "symbols": ["error", "r_bo"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "r_bo", "symbols": []},
     {"name": "r_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "r_i", "symbols": ["r_i$subexpression$1", "i"], "postprocess": pP.r_i},
@@ -208,6 +207,7 @@ var grammar = {
     {"name": "r_i", "symbols": ["r_i$string$2", "r_bo_i"], "postprocess": pP.r_bo_i},
     {"name": "r_i", "symbols": [{"literal":"*"}, "r"], "postprocess": pP.r_i},
     {"name": "r_i", "symbols": ["char", "r_i"], "postprocess": pP.r_i_},
+    {"name": "r_i", "symbols": ["error", "r_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "r_i", "symbols": []},
     {"name": "r_bo_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "r_bo_i", "symbols": ["r_bo_i$subexpression$1", "bo_i"], "postprocess": pP.r_bo_i},
@@ -221,6 +221,7 @@ var grammar = {
     {"name": "r_bo_i", "symbols": ["r_bo_i$string$2", "r_i"], "postprocess": pP.r_bo_i},
     {"name": "r_bo_i", "symbols": [{"literal":"*"}, "r_bo"], "postprocess": pP.r_bo_i},
     {"name": "r_bo_i", "symbols": ["char", "r_bo_i"], "postprocess": pP.r_bo_i_},
+    {"name": "r_bo_i", "symbols": ["error", "r_bo_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "r_bo_i", "symbols": []},
     {"name": "g_bo$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "g_bo", "symbols": ["g_bo$subexpression$1", "r_bo"], "postprocess": pP.r_bo},
@@ -234,6 +235,7 @@ var grammar = {
     {"name": "g_bo", "symbols": ["g_bo$string$2", "g"], "postprocess": pP.g_bo},
     {"name": "g_bo", "symbols": [{"literal":"*"}, "g_bo_i"], "postprocess": pP.g_bo_i},
     {"name": "g_bo", "symbols": ["char", "g_bo"], "postprocess": pP.g_bo_},
+    {"name": "g_bo", "symbols": ["error", "g_bo"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "g_bo", "symbols": []},
     {"name": "g_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "g_i", "symbols": ["g_i$subexpression$1", "r_i"], "postprocess": pP.r_i},
@@ -247,6 +249,7 @@ var grammar = {
     {"name": "g_i", "symbols": ["g_i$string$2", "g_bo_i"], "postprocess": pP.g_bo_i},
     {"name": "g_i", "symbols": [{"literal":"*"}, "g"], "postprocess": pP.g_i},
     {"name": "g_i", "symbols": ["char", "g_i"], "postprocess": pP.g_i_},
+    {"name": "g_i", "symbols": ["error", "g_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "g_i", "symbols": []},
     {"name": "g_bo_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "g_bo_i", "symbols": ["g_bo_i$subexpression$1", "r_bo_i"], "postprocess": pP.r_bo_i},
@@ -260,6 +263,7 @@ var grammar = {
     {"name": "g_bo_i", "symbols": ["g_bo_i$string$2", "g_i"], "postprocess": pP.g_bo_i},
     {"name": "g_bo_i", "symbols": [{"literal":"*"}, "g_bo"], "postprocess": pP.g_bo_i},
     {"name": "g_bo_i", "symbols": ["char", "g_bo_i"], "postprocess": pP.g_bo_i_},
+    {"name": "g_bo_i", "symbols": ["error", "g_bo_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "g_bo_i", "symbols": []},
     {"name": "b_bo$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "b_bo", "symbols": ["b_bo$subexpression$1", "r_bo"], "postprocess": pP.r_bo},
@@ -273,6 +277,7 @@ var grammar = {
     {"name": "b_bo", "symbols": ["b_bo$string$2", "b"], "postprocess": pP.b_bo},
     {"name": "b_bo", "symbols": [{"literal":"*"}, "b_bo_i"], "postprocess": pP.b_bo_i},
     {"name": "b_bo", "symbols": ["char", "b_bo"], "postprocess": pP.b_bo_},
+    {"name": "b_bo", "symbols": ["error", "b_bo"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "b_bo", "symbols": []},
     {"name": "b_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "b_i", "symbols": ["b_i$subexpression$1", "r_i"], "postprocess": pP.r_i},
@@ -286,6 +291,7 @@ var grammar = {
     {"name": "b_i", "symbols": ["b_i$string$2", "b_bo_i"], "postprocess": pP.b_bo_i},
     {"name": "b_i", "symbols": [{"literal":"*"}, "b"], "postprocess": pP.b_i},
     {"name": "b_i", "symbols": ["char", "b_i"], "postprocess": pP.b_i_},
+    {"name": "b_i", "symbols": ["error", "b_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "b_i", "symbols": []},
     {"name": "b_bo_i$subexpression$1", "symbols": [{"literal":"<"}, /[rR]/, {"literal":">"}], "postprocess": function(d) {return d.join(""); }},
     {"name": "b_bo_i", "symbols": ["b_bo_i$subexpression$1", "r_bo_i"], "postprocess": pP.r_bo_i},
@@ -299,10 +305,25 @@ var grammar = {
     {"name": "b_bo_i", "symbols": ["b_bo_i$string$2", "b_i"], "postprocess": pP.b_bo_i},
     {"name": "b_bo_i", "symbols": [{"literal":"*"}, "b_bo"], "postprocess": pP.b_bo_i},
     {"name": "b_bo_i", "symbols": ["char", "b_bo_i"], "postprocess": pP.b_bo_i_},
+    {"name": "b_bo_i", "symbols": ["error", "b_bo_i"], "postprocess": ([err, s]) => err.concat(s)},
     {"name": "b_bo_i", "symbols": []},
+    {"name": "error", "symbols": [{"literal":"<"}, "notColor"], "postprocess": pP.error},
+    {"name": "error$string$1", "symbols": [{"literal":"<"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "error", "symbols": ["error$string$1", /[^>]/], "postprocess": pP.error},
+    {"name": "error$string$2", "symbols": [{"literal":"<"}, {"literal":"g"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "error", "symbols": ["error$string$2", /[^>]/], "postprocess": pP.error},
+    {"name": "error$string$3", "symbols": [{"literal":"<"}, {"literal":"b"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "error", "symbols": ["error$string$3", /[^>]/], "postprocess": pP.error},
+    {"name": "error$string$4", "symbols": [{"literal":"r"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "error", "symbols": [/[^<]/, "error$string$4"], "postprocess": pP.invError},
+    {"name": "error$string$5", "symbols": [{"literal":"g"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "error", "symbols": [/[^<]/, "error$string$5"], "postprocess": pP.invError},
+    {"name": "error$string$6", "symbols": [{"literal":"b"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "error", "symbols": [/[^<]/, "error$string$6"], "postprocess": pP.invError},
+    {"name": "error", "symbols": ["notColor", {"literal":">"}], "postprocess": pP.invError},
+    {"name": "notColor", "symbols": [/[^rgb]/]},
     {"name": "char", "symbols": [/[^\[\]<>\*)]/], "postprocess": data => data[0]},
     {"name": "s", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "s"], "postprocess": brackets},
-    {"name": "s", "symbols": [{"literal":"["}, "s"], "postprocess": error},
     {"name": "r", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "r"], "postprocess": brackets},
     {"name": "g", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "g"], "postprocess": brackets},
     {"name": "b", "symbols": [{"literal":"["}, "br", {"literal":"]"}, "b"], "postprocess": brackets},

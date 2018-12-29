@@ -1,3 +1,3 @@
 #! /bin/bash
-nearleyc ./st.ne -o ./st-grammar.js
-nearley-test -i "a<r>sr>casdf" ./st-grammar.js
+nearleyc ./editor.ne -o ./editor-grammar.js
+nearley-test -i "a[]scasdf" ./editor-grammar.js

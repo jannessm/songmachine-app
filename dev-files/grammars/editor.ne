@@ -1,6 +1,6 @@
 @include "./st.ne"
 
-s -> "[" br "]" s {% brackets %} | "[" s {% error %}
+s -> "[" br "]" s {% brackets %}
 r -> "[" br "]" r {% brackets %}
 g -> "[" br "]" g {% brackets %}
 b -> "[" br "]" b {% brackets %}
@@ -168,9 +168,8 @@ br_b_bo_i -> "<r>"i br_r_bo_i {% pP.r_bo_i %}
       css: 'orange',
       content: fst,
       isTerminal: false
-    },
-    rest
-  ]
+    }
+  ].concat(rest);
 
   const brackets = function(data) {
     const openBr = data[0];
@@ -178,29 +177,18 @@ br_b_bo_i -> "<r>"i br_r_bo_i {% pP.r_bo_i %}
     const closingBr = data[2];
     const rest = data[3];
     return [
-      {
-        css: 'grey',
-        content: openBr,
-        isTerminal: false
-      },
-      content,
-      {
+        {
+          css: 'grey',
+          content: openBr,
+          isTerminal: false
+        }
+      ]
+      .concat(content)
+      .concat({
         css: 'grey',
         content: closingBr,
         isTerminal: false
-      },
-      rest
-    ];
-  }
-
-  const error = function(data) {
-    return [
-      {
-        css: 'error',
-        content: data[0],
-        isTerminal: false
-      },
-      data[1]
-    ]
+      })
+      .concat(rest)
   }
 %}
