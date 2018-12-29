@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Song } from '../models/song';
 import { Block } from '../models/block';
-import { GrammarParser } from './grammarParser.service';
+import { GrammarParser } from './grammar-parser.service';
 
 @Injectable()
 export class HtmlFactoryService {

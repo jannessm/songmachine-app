@@ -17,7 +17,7 @@
     "deploy-mac": "./deploy-mac.sh",
     "deploy-win": "./deploy-win.ps1",
     "deploy-linux": "./deploy-linux.sh",
-    "compile-grammars": "nearleyc ./dev-files/grammars/st.ne -o ./src/assets/grammars/st-grammar.js"
+    "compile-grammars": "nearleyc ./dev-files/grammars/st.ne -o ./src/assets/grammars/st-grammar.js && nearleyc ./dev-files/grammars/editor.ne -o ./src/assets/grammars/editor-grammar.js"
   },
   "private": true,
   "dependencies": {

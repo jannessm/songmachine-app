@@ -1,11 +1,16 @@
-import { NearleyResultObj } from '../models/grammars/generalModels';
+import { NearleyResultObj, NearleyParser } from '../models/grammars/generalModels';
 import { Injectable } from '@angular/core';
 
 const nearley = require('nearley');
+const flatten = require('array-flatten');
 const stGrammar = require('../../assets/grammars/st-grammar.js');
+const editorGrammar = require('../../assets/grammars/editor-grammar.js');
 
 @Injectable()
 export class GrammarParser {
+
+  stParser: NearleyParser;
+  editorParser: NearleyParser;
 
   public static escapeHTML(char: string): string {
     if (char.length === 1) {
@@ -28,12 +33,21 @@ export class GrammarParser {
     }
   }
 
-  constructor() { }
+  constructor() {
+    this.stParser = new nearley.Parser(nearley.Grammar.fromCompiled(stGrammar));
+    this.editorParser = new nearley.Parser(nearley.Grammar.fromCompiled(editorGrammar));
+  }
 
   public parse(input: string, keepChars: boolean = false, tag: string = 'pre') {
-    const stParser = new nearley.Parser(nearley.Grammar.fromCompiled(stGrammar));
+    let parser;
+    if (!keepChars) {
+      parser = this.stParser.rewind(0);
+    } else {
+      parser = this.editorParser.rewind(0);
+    }
+
     try {
-      stParser.feed(input);
+      parser.feed(input);
     } catch (err) {
       const errPos = input[err.offset] === '>' ? 0 : input[err.offset - 1] === '<' ? 1 : 2;
       const errLen = errPos === 0 ? 1 : errPos;
@@ -42,11 +56,11 @@ export class GrammarParser {
         `<${tag} class="error">${GrammarParser.escapeHTML(input.substr(err.offset - errPos, errLen))}</${tag}>` +
         `${GrammarParser.escapeHTML(input.substr(err.offset - errPos + errLen))}`;
     }
-    if (!stParser.results) {
+    if (!parser.results) {
       return '';
     }
 
-    const results = this.flattenResults(stParser.results[0]);
+    const results = flatten(parser.results[0]);
     return `<${tag}>` + results.reduce((res, currVal, id, arr) => {
       let html = '';
 
@@ -74,13 +88,5 @@ export class GrammarParser {
 
       return res + html;
     }, '') + `</${tag}>`;
-  }
-
-  private flattenResults(results, reduced = []) {
-    if (!results || !results[0]) {
-      return reduced;
-    }
-
-    return [results[0]].concat(this.flattenResults(results[1]));
   }
 }

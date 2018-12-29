@@ -4,7 +4,8 @@ s -> "<r>"i r {% pP.r %}
   | "***" bo_i {% pP.bo_i %}
   | "**" bo {% pP.bo %}
   | "*" i {% pP.i %}
-  | char s
+  | char s {% pP.s %}
+  | error s {% ([err, s]) => err.concat(s) %}
   | null
 
 r -> "<r>"i s {% pP.r %}
@@ -14,6 +15,7 @@ r -> "<r>"i s {% pP.r %}
   | "**" r_bo {% pP.r_bo %}
   | "*" r_i {% pP.r_i %}
   | char r {% pP.r_ %}
+  | error r {% ([err, s]) => err.concat(s) %}
   | null
 
 g -> "<r>"i r {% pP.r %}
@@ -23,6 +25,7 @@ g -> "<r>"i r {% pP.r %}
   | "**" g_bo {% pP.g_bo %}
   | "*" g_i {% pP.g_i %}
   | char g {% pP.g_ %}
+  | error g {% ([err, s]) => err.concat(s) %}
   | null
 
 b -> "<r>"i r {% pP.r %}
@@ -32,15 +35,17 @@ b -> "<r>"i r {% pP.r %}
   | "**" b_bo {% pP.b_bo %}
   | "*" b_i {% pP.b_i %}
   | char b {% pP.b_ %}
+  | error b {% ([err, s]) => err.concat(s) %}
   | null
 
 i -> "<r>"i r {% pP.r %}
   | "<g>"i g {% pP.g %}
   | "<b>"i b {% pP.b %}
   | "***" bo {% pP.bo_i %}
-  | "**" bo {% pP.bo %}
+  | "**" bo_i {% pP.bo_i %}
   | "*" s {% pP.i %}
   | char i {% pP.i_ %}
+  | error i {% ([err, s]) => err.concat(s) %}
   | null
 
 bo -> "<r>"i r {% pP.r %}
@@ -50,6 +55,7 @@ bo -> "<r>"i r {% pP.r %}
   | "**" s {% pP.bo %}
   | "*" i {% pP.i %}
   | char bo {% pP.bo_ %}
+  | error bo {% ([err, s]) => err.concat(s) %}
   | null
 
 bo_i -> "<r>"i r {% pP.r %}
@@ -59,6 +65,7 @@ bo_i -> "<r>"i r {% pP.r %}
   | "**" i {% pP.bo_i %}
   | "*" bo {% pP.bo_i %}
   | char bo_i {% pP.bo_i_ %}
+  | error bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 r_bo -> "<r>"i bo {% pP.r_bo %}
@@ -68,6 +75,7 @@ r_bo -> "<r>"i bo {% pP.r_bo %}
   | "**" r {% pP.r_bo %}
   | "*" r_bo_i {% pP.r_bo_i %}
   | char r_bo {% pP.r_bo_ %}
+  | error r_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 r_i -> "<r>"i i {% pP.r_i %}
@@ -77,6 +85,7 @@ r_i -> "<r>"i i {% pP.r_i %}
   | "**" r_bo_i {% pP.r_bo_i %}
   | "*" r {% pP.r_i %}
   | char r_i {% pP.r_i_ %}
+  | error r_i {% ([err, s]) => err.concat(s) %}
   | null
 
 r_bo_i -> "<r>"i bo_i {% pP.r_bo_i %}
@@ -86,6 +95,7 @@ r_bo_i -> "<r>"i bo_i {% pP.r_bo_i %}
   | "**" r_i {% pP.r_bo_i %}
   | "*" r_bo {% pP.r_bo_i %}
   | char r_bo_i {% pP.r_bo_i_ %}
+  | error r_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 g_bo -> "<r>"i r_bo {% pP.r_bo %}
@@ -95,6 +105,7 @@ g_bo -> "<r>"i r_bo {% pP.r_bo %}
   | "**" g {% pP.g_bo %}
   | "*" g_bo_i {% pP.g_bo_i %}
   | char g_bo {% pP.g_bo_ %}
+  | error g_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 g_i -> "<r>"i r_i {% pP.r_i %}
@@ -104,6 +115,7 @@ g_i -> "<r>"i r_i {% pP.r_i %}
   | "**" g_bo_i {% pP.g_bo_i %}
   | "*" g {% pP.g_i %}
   | char g_i {% pP.g_i_ %}
+  | error g_i {% ([err, s]) => err.concat(s) %}
   | null
 
 g_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
@@ -113,6 +125,7 @@ g_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
   | "**" g_i {% pP.g_bo_i %}
   | "*" g_bo {% pP.g_bo_i %}
   | char g_bo_i {% pP.g_bo_i_ %}
+  | error g_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 b_bo -> "<r>"i r_bo {% pP.r_bo %}
@@ -122,6 +135,7 @@ b_bo -> "<r>"i r_bo {% pP.r_bo %}
   | "**" b {% pP.b_bo %}
   | "*" b_bo_i {% pP.b_bo_i %}
   | char b_bo {% pP.b_bo_ %}
+  | error b_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 b_i -> "<r>"i r_i {% pP.r_i %}
@@ -131,6 +145,7 @@ b_i -> "<r>"i r_i {% pP.r_i %}
   | "**" b_bo_i {% pP.b_bo_i %}
   | "*" b {% pP.b_i %}
   | char b_i {% pP.b_i_ %}
+  | error b_i {% ([err, s]) => err.concat(s) %}
   | null
 
 b_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
@@ -140,23 +155,38 @@ b_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
   | "**" b_i {% pP.b_bo_i %}
   | "*" b_bo {% pP.b_bo_i %}
   | char b_bo_i {% pP.b_bo_i_ %}
+  | error b_bo_i {% ([err, s]) => err.concat(s) %}
   | null
   
-char -> [^<>\*)] {% data => data[0] %}
+error -> "<" notColor {% pP.error %}
+  | "<r" [^>] {% pP.error %}
+  | "<g" [^>] {% pP.error %}
+  | "<b" [^>] {% pP.error %}
+  | [^<] "r>" {% pP.invError %}
+  | [^<] "g>" {% pP.invError %}
+  | [^<] "b>" {% pP.invError %}
+  | notColor ">" {% pP.invError %}
+
+notColor -> [^rgb]
+char -> [^\[\]<>\*)] {% data => data[0] %}
+
 
 @{%
-const post = function post(css, data, rest, isTerminal = true){
+const post = function (css, data, rest, isTerminal = true){
   return [
       {
-        css: css,
+        css,
         content: data,
         isTerminal
-      },
-      rest
-    ]
+      }
+    ].concat(rest);
 }
 
 const pP = {
+  error: ([fst, d]) => post("error", fst, d),
+  invError: ([fst, d]) => post("error", d, fst),
+
+  s: ([fst, d]) => [fst].concat(d),
   r: ([fst, d])  => post("red", fst, d),
   g: ([fst, d]) => post("green", fst, d),
   b: ([fst, d]) => post("blue", fst, d),

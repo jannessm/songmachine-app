@@ -50,7 +50,7 @@ import { ExportService } from './services/export.service';
 import { SngService } from './services/sng.service';
 import { PptxService } from './services/pptx.service';
 import { ScrollApiService } from './services/scroll-api.service';
-import { GrammarParser } from './services/grammarParser.service';
+import { GrammarParser } from './services/grammar-parser.service';
 
 import { QRDialogComponent } from './dialogs/qr-dialog/qr-dialog.component';
 import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';

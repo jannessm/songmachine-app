@@ -4,8 +4,11 @@ export interface NearleyResultObj {
   isTerminal: boolean;
 }
 
-export interface GrammarRegex {
-  id: number;
-  regex: RegExp;
-  ignoreNext: number;
+export interface NearleyParser {
+  feed: Feed;
+  rewind: Rewind;
+  results: Array<any>;
 }
+
+type Feed = (input: string) => NearleyParser;
+type Rewind = (index: number) => NearleyParser;
