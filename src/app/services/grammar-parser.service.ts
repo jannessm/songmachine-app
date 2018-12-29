@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 const nearley = require('nearley');
 const stGrammar = require('../../assets/grammars/st-grammar.js');
 const editorGrammar = require('../../assets/grammars/editor-grammar.js');
+const chordsGrammar = require('../../assets/grammars/chords-grammar.js');
 
 @Injectable()
 export class GrammarParser {
@@ -81,6 +82,31 @@ export class GrammarParser {
 
       return res + html;
     }, '') + `</${tag}>`;
+  }
+
+  public parseChords(input: string): string[] {
+    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(chordsGrammar));
+    try {
+      parser.feed(input);
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (!parser.results || (parser.results && parser.results.length === 0)) {
+      return [];
+    }
+
+    return parser.results[0].reduce((reduced, curr) => {
+      if (typeof curr === 'string' && reduced.length === 0) {
+        reduced.push(curr);
+      } else if (typeof curr === 'string') {
+        reduced.push(reduced.pop() + curr);
+      } else if (curr.isChord) {
+        reduced.push({chord: curr.char.join('')});
+        reduced.push('');
+      }
+      return reduced;
+    }, []);
   }
 
   private checkBalancedBrackets(input: string, tag: string = 'pre'): string {

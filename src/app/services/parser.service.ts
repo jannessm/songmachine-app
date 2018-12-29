@@ -3,6 +3,7 @@ import { Song } from '../models/song';
 import { Block } from '../models/block';
 import { Line } from '../models/line';
 import { HtmlFactoryService } from './html-factory.service';
+import { GrammarParser } from './grammar-parser.service';
 
 @Injectable()
 export class ParserService {
@@ -19,7 +20,7 @@ export class ParserService {
     invChord: /([^\s]+)/gi
   };
 
-  constructor(private htmlFactory: HtmlFactoryService) { }
+  constructor(private htmlFactory: HtmlFactoryService, private grammarParser: GrammarParser) { }
 
   public songToPDF( song: Song ) {
     const html = this.songToHTML(song);
@@ -169,35 +170,22 @@ export class ParserService {
     str = annotationblocks[0];
 
     // process chords
-    let m;
-    let strWithoutMarkdown = str.replace(/(<(r|g|b)>|\*)/gi, '');
-    do {
-      this.resetRegex();
-      m = this.regexs.chord.exec(strWithoutMarkdown);
-      if (m) {
-        // chord start
-        const start = m.index;
-        // if start < topLine.length add spaces to bottomLine
-        const chars = this.countRegexChars(newLine.lyrics.bottomLine);
-        const charsTopLine = this.countRegexChars(newLine.lyrics.topLine);
-        const tpLen = newLine.lyrics.topLine.length - charsTopLine;
-        const btLen = newLine.lyrics.bottomLine.length + start - chars;
+    const splitted = this.grammarParser.parseChords(str);
+    splitted.forEach((val: string | {chord: string[]}) => {
+      if (typeof val === 'string') {
+        newLine.lyrics.bottomLine += val;
+      } else if (val.chord) {
+        let bottomLen = newLine.lyrics.bottomLine.length - this.countRegexChars(newLine.lyrics.bottomLine);
+        const topLen = newLine.lyrics.topLine.length - this.countRegexChars(newLine.lyrics.topLine);
 
-        if (tpLen - btLen + 1 > 0) {
-          newLine.lyrics.bottomLine += Array(tpLen - btLen + 1).join(' ');
-        } else if (tpLen - btLen < 0) {
-          newLine.lyrics.topLine += Array(btLen - tpLen + 1).join(' ');
+        if (topLen >= bottomLen) {
+          newLine.lyrics.bottomLine += Array(topLen + 1 - bottomLen + 1).join(' ');
+          bottomLen = newLine.lyrics.bottomLine.length - this.countRegexChars(newLine.lyrics.bottomLine);
         }
-        const stringUntilChordWithMarkdown = str.substr(0, start + this.countRegexChars(str, start));
-        const stringUntilChord = strWithoutMarkdown.substr(0, start);
-        newLine.lyrics.topLine += m[1] + ' ';
-        newLine.lyrics.bottomLine += stringUntilChordWithMarkdown;
-        strWithoutMarkdown = strWithoutMarkdown.replace(stringUntilChord + m[0], '');
-        str = str.replace(stringUntilChordWithMarkdown + m[0], '');
-      } else {
-        newLine.lyrics.bottomLine += str;
+
+        newLine.lyrics.topLine += Array(bottomLen - topLen + 1).join(' ') + val.chord;
       }
-    } while (m);
+    });
     newLine.lyricsWidth = newLine.lyrics.bottomLine.replace(/(<(r|g|b)>|\*)/gi, '').length;
     return newLine;
   }
