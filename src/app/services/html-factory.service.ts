@@ -24,11 +24,12 @@ export class HtmlFactoryService {
   }
 
   public addTooltips(htmlLines: string[]): string[] {
-    return htmlLines.map(line => {
-      const xml = convert.xml2js(line);
-      xml.elements[0].elements.map(tag => this.addTooltipXml(tag));
-      return convert.js2xml(xml);
-    });
+    // return htmlLines.map(line => {
+    //   const xml = convert.xml2js(line);
+    //   xml.elements[0].elements.map(tag => this.addTooltipXml(tag));
+    //   return convert.js2xml(xml);
+    // });
+    return htmlLines;
   }
 
   private addTooltipXml(xmlObj) {

@@ -179,7 +179,8 @@ export class ParserService {
         const start = m.index;
         // if start < topLine.length add spaces to bottomLine
         const chars = this.countRegexChars(newLine.lyrics.bottomLine);
-        const tpLen = newLine.lyrics.topLine.length;
+        const charsTopLine = this.countRegexChars(newLine.lyrics.topLine);
+        const tpLen = newLine.lyrics.topLine.length - charsTopLine;
         const btLen = newLine.lyrics.bottomLine.length + start - chars;
 
         if (tpLen - btLen + 1 > 0) {

@@ -25,15 +25,16 @@ br -> "<r>"i br_r {% pP.r %}
   | "**" br_bo {% pP.bo %}
   | "*" br_i {% pP.i %}
   | char br {% inBrackets %}
+  | error br {% ([err, s]) => err.concat(s) %}
   | null
 
 br_r -> "<r>"i br {% pP.r %}
-  | "<g>"i br_g {% pP.g %}
   | "<b>"i br_b {% pP.b %}
   | "***" br_r_bo_i {% pP.r_bo_i %}
   | "**" br_r_bo {% pP.r_bo %}
   | "*" br_r_i {% pP.r_i %}
   | char br_r {% pP.r_ %}
+  | error br_r {% ([err, s]) => err.concat(s) %}
   | null
 
 br_g -> "<r>"i br_r {% pP.r %}
@@ -43,6 +44,7 @@ br_g -> "<r>"i br_r {% pP.r %}
   | "**" br_g_bo {% pP.g_bo %}
   | "*" br_g_i {% pP.g_i %}
   | char br_g {% pP.g_ %}
+  | error br_g {% ([err, s]) => err.concat(s) %}
   | null
 
 br_b -> "<r>"i br_r {% pP.r %}
@@ -52,6 +54,7 @@ br_b -> "<r>"i br_r {% pP.r %}
   | "**" br_b_bo {% pP.b_bo %}
   | "*" br_b_i {% pP.b_i %}
   | char br_b {% pP.b_ %}
+  | error br_b {% ([err, s]) => err.concat(s) %}
   | null
 
 br_i -> "<r>"i br_r {% pP.r %}
@@ -61,6 +64,7 @@ br_i -> "<r>"i br_r {% pP.r %}
   | "**" br_bo_i {% pP.bo_i %}
   | "*" br {% pP.i %}
   | char br_i {% pP.i_ %}
+  | error br_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_bo -> "<r>"i br_r {% pP.r %}
@@ -70,6 +74,7 @@ br_bo -> "<r>"i br_r {% pP.r %}
   | "**" br {% pP.bo %}
   | "*" br_i {% pP.i %}
   | char br_bo {% pP.bo_ %}
+  | error br_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 br_bo_i -> "<r>"i br_r {% pP.r %}
@@ -79,6 +84,7 @@ br_bo_i -> "<r>"i br_r {% pP.r %}
   | "**" br_i {% pP.bo_i %}
   | "*" br_bo {% pP.bo_i %}
   | char br_bo_i {% pP.bo_i_ %}
+  | error br_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_r_bo -> "<r>"i br_bo {% pP.r_bo %}
@@ -88,6 +94,7 @@ br_r_bo -> "<r>"i br_bo {% pP.r_bo %}
   | "**" br_r {% pP.r_bo %}
   | "*" br_r_bo_i {% pP.r_bo_i %}
   | char br_r_bo {% pP.r_bo_ %}
+  | error br_r_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 br_r_i -> "<r>"i br_i {% pP.r_i %}
@@ -97,6 +104,7 @@ br_r_i -> "<r>"i br_i {% pP.r_i %}
   | "**" br_r_bo_i {% pP.r_bo_i %}
   | "*" br_r {% pP.r_i %}
   | char br_r_i {% pP.r_i_ %}
+  | error br_r_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_r_bo_i -> "<r>"i br_bo_i {% pP.r_bo_i %}
@@ -106,6 +114,7 @@ br_r_bo_i -> "<r>"i br_bo_i {% pP.r_bo_i %}
   | "**" br_r_i {% pP.r_bo_i %}
   | "*" br_r_bo {% pP.r_bo_i %}
   | char br_r_bo_i {% pP.r_bo_i_ %}
+  | error br_r_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_g_bo -> "<r>"i br_r_bo {% pP.r_bo %}
@@ -115,6 +124,7 @@ br_g_bo -> "<r>"i br_r_bo {% pP.r_bo %}
   | "**" br_g {% pP.g_bo %}
   | "*" br_g_bo_i {% pP.g_bo_i %}
   | char br_g_bo {% pP.g_bo_ %}
+  | error br_g_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 br_g_i -> "<r>"i br_r_i {% pP.r_i %}
@@ -124,6 +134,7 @@ br_g_i -> "<r>"i br_r_i {% pP.r_i %}
   | "**" br_g_bo_i {% pP.g_bo_i %}
   | "*" br_g {% pP.g_i %}
   | char br_g_i {% pP.g_i_ %}
+  | error br_g_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_g_bo_i -> "<r>"i br_r_bo_i {% pP.r_bo_i %}
@@ -133,6 +144,7 @@ br_g_bo_i -> "<r>"i br_r_bo_i {% pP.r_bo_i %}
   | "**" br_g_i {% pP.g_bo_i %}
   | "*" br_g_bo {% pP.g_bo_i %}
   | char br_g_bo_i {% pP.g_bo_i_ %}
+  | error br_g_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_b_bo -> "<r>"i br_r_bo {% pP.r_bo %}
@@ -142,6 +154,7 @@ br_b_bo -> "<r>"i br_r_bo {% pP.r_bo %}
   | "**" br_b {% pP.b_bo %}
   | "*" br_b_bo_i {% pP.b_bo_i %}
   | char br_b_bo {% pP.b_bo_ %}
+  | error br_b_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 br_b_i -> "<r>"i br_r_i {% pP.r_i %}
@@ -151,6 +164,7 @@ br_b_i -> "<r>"i br_r_i {% pP.r_i %}
   | "**" br_b_bo_i {% pP.b_bo_i %}
   | "*" br_b {% pP.b_i %}
   | char br_b_i {% pP.b_i_ %}
+  | error br_b_i {% ([err, s]) => err.concat(s) %}
   | null
 
 br_b_bo_i -> "<r>"i br_r_bo_i {% pP.r_bo_i %}
@@ -160,6 +174,7 @@ br_b_bo_i -> "<r>"i br_r_bo_i {% pP.r_bo_i %}
   | "**" br_b_i {% pP.b_bo_i %}
   | "*" br_b_bo {% pP.b_bo_i %}
   | char br_b_bo_i {% pP.b_bo_i_ %}
+  | error br_b_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 @{%

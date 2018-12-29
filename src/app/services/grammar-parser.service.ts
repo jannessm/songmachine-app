@@ -9,7 +9,7 @@ const editorGrammar = require('../../assets/grammars/editor-grammar.js');
 export class GrammarParser {
 
   public static escapeHTML(char: string): string {
-    if (char.length === 1) {
+    if (char && char.length === 1) {
       const entityMap = {
           '&': '&amp;',
           '<': '&lt;',
