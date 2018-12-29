@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
 import { Block } from '../models/block';
 import { GrammarParser } from './grammar-parser.service';
+import { TranslationService } from './translation.service';
+
+const convert = require('xml-js');
 
 @Injectable()
 export class HtmlFactoryService {
@@ -10,15 +13,45 @@ export class HtmlFactoryService {
   private bpm_image = '';
   private books_image = '';
 
-  constructor(private grammarParser: GrammarParser) {
+  constructor(private grammarParser: GrammarParser, private translationService: TranslationService) {
   }
 
   public highlightText(text: string): string[] {
     return text
-        .split('\n')
-        .map(line => line.split('|').map(val => this.markdown(val, true)).join('<pre>|</pre>')) // each text has to be inside of <pre>
-        .map(line => `<pre class="line-wrapper">${ line }</pre>`);
-   }
+      .split('\n')
+      .map(line => line.split('|').map(val => this.markdown(val, true)).join('<pre>|</pre>')) // each text has to be inside of <pre>
+      .map(line => `<pre class="line-wrapper">${ line }</pre>`);
+  }
+
+  public addTooltips(htmlLines: string[]): string[] {
+    return htmlLines.map(line => {
+      const xml = convert.xml2js(line);
+      xml.elements[0].elements.map(tag => this.addTooltipXml(tag));
+      return convert.js2xml(xml);
+    });
+  }
+
+  private addTooltipXml(xmlObj) {
+    if (xmlObj.attributes && /error/.test(xmlObj.attributes.class)) {
+      const inner = xmlObj.elements[0].text;
+      let tooltip = '';
+      if (inner === '[' || inner === ']') {
+        tooltip = this.translationService.i18n('editor.brackets.error');
+      } else if (/[<>]/.test(inner)) {
+        tooltip = this.translationService.i18n('editor.colors.error');
+      }
+      xmlObj.elements.push({
+        type: 'element',
+        name: 'span',
+        elements: [{
+          type: 'text',
+          text: tooltip
+        }]
+      });
+    }
+
+    return xmlObj;
+  }
 
   public songToHTML(song: Song): string {
     if (!song) {

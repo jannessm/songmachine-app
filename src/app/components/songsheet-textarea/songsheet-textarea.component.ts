@@ -65,7 +65,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   }
 
   private update(inputText: string) {
-    this.htmlLines = this.htmlFactory.highlightText(inputText);
+    this.htmlLines = this.htmlFactory.addTooltips(this.htmlFactory.highlightText(inputText));
   }
 
   @HostListener('keypress', ['$event.keyCode', '$event.target'])
