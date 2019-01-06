@@ -7,33 +7,39 @@ const xml = require('./xml');
 export class TranslationService {
 
   private translations = {};
+  private currLanguage = 'en';
 
   constructor(private http: HttpClient) {
     this.setLanguage(navigator.language);
   }
 
-  public setLanguage(locale) {
-    const subscr = this.http
+  public setLanguage(locale: string): Promise<void> {
+    this.currLanguage = locale;
+    return this.http
       .get('assets/i18n/' + locale + '.xlf', {responseType: 'text'})
-      .subscribe(res => {
-        if (res) {
+      .toPromise()
+      .then(res => {
+        return new Promise<void>(resolve => {
           this.translations = this.parseXMLIntoJson(res);
-          subscr.unsubscribe();
-        } else {
-          this.setLanguage('en');
-        }
-      });
+          resolve();
+        });
+      })
+      .catch(() => this.setLanguage('en'));
   }
 
-  public getLanguages() {
+  public getLanguages(): Array<string> {
     return ['de', 'en'];
   }
 
-  public i18n(id) {
+  public getCurrentLanguage(): string {
+    return this.currLanguage;
+  }
+
+  public i18n(id: string): string {
     return this.translations[id] || id;
   }
 
-  private parseXMLIntoJson(xmlString) {
+  private parseXMLIntoJson(xmlString: string): {[key: string]: string} {
     const nodes = xml.parse(xmlString);
     const map = {};
     const units = nodes.children[0].children[0].children[0].children;

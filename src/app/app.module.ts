@@ -11,7 +11,8 @@ import {
   MatToolbarModule,
   MatGridListModule,
   MatSnackBarModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSelectModule
 } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
@@ -102,6 +103,7 @@ export function initConfigs(configService: ConfigService) {
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatExpansionModule,
+    MatSelectModule,
     AutosizeModule,
     HttpClientModule
   ],

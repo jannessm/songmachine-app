@@ -652,12 +652,20 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="settings.language" datatype="html">
+        <source></source>
+        <target>Sprache</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="settings.welcome.to.songsheet" datatype="html">
         <source></source>
         <target>Willkommen bei Songmachine!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
-          <context context-type="linenumber">7</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="settings.hint.default.path" datatype="html">
@@ -667,7 +675,7 @@
         Viel Spaß!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
     </body>

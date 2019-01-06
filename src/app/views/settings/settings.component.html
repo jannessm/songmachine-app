@@ -1,10 +1,20 @@
 <div class="content">
-  <h3>{{ 'settings.headline' | translate }}</h3>
-  <h4>{{ 'settings.path' | translate }}</h4>
-  <div class="path">{{ path }}</div> <button mat-flat-button (click)="selectDirectory()">{{ 'settings.select.folder' | translate }}</button>
+  <h3>{{ 'settings.headline' | translate:reload }}</h3>
+  <h4>{{ 'settings.path' | translate:reload }}</h4>
+
+  <div class="path">{{ path }}</div> <button mat-flat-button (click)="selectDirectory()">{{ 'settings.select.folder' | translate:reload }}</button>
   <input type="file" (change)="setDefaultPath($event.target.files[0].path)" #pathinput required webkitdirectory class="do-not-show">
+
+  <h4>{{ 'settings.language' | translate:reload }}</h4>
+  <mat-form-field>
+    <mat-select [formControl]="currLang">
+      <mat-option *ngFor="let lang of languages" [value]="lang">
+        {{ lang }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <div class="message" *ngIf="!path">
-    <h3>{{ 'settings.welcome.to.songsheet' | translate }}</h3>
-    {{ 'settings.hint.default.path' | translate }}
+    <h3>{{ 'settings.welcome.to.songsheet' | translate:reload }}</h3>
+    {{ 'settings.hint.default.path' | translate:reload }}
   </div>
 </div>
