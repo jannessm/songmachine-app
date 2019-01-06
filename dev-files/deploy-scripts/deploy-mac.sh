@@ -9,4 +9,4 @@ electron-packager ../deploy-mac Songmachine --overwrite --platform=darwin --arch
 rm -rf ../deploy-mac
 
 # build installer
-electron-installer-dmg ./release-builds/Songmachine-darwin-x64/Songmachine.app Songmachine --out=./release-builds --icon=dist/assets/main-icon/mac/songsheet.icns --overwrite --background=./dev-tools/dmg-installer-bkg.png --title="Songmachine Installer" 
+electron-installer-dmg ./release-builds/Songmachine-darwin-x64/Songmachine.app Songmachine --out=./release-builds --icon=dist/assets/main-icon/mac/songsheet.icns --overwrite --background=./dev-files/dmg-installer-bkg.png --title="Songmachine Installer" 
