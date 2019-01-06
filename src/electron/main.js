@@ -1,4 +1,3 @@
-
 const {app, BrowserWindow, Menu} = require('electron');
 const Router = require('@marshallofsound/electron-router').Router;
 

@@ -38,15 +38,21 @@ export class TreeNode {
 
   getSibling(): TreeNode {
     const thisId = this.parent.children.findIndex(node => node.id === this.id);
-    const nextId = thisId + 1 % this.parent.children.length;
+    const nextId = (thisId + 1) % this.parent.children.length;
     return nextId === thisId ? undefined : this.parent.children[nextId];
   }
 
   toJSON(): any {
-    const json = {};
+    const json = { data:  this.dataAsJSON()};
     this.children.forEach(child => {
-      json[child.data] = child.toJSON();
+      json[child.id] = child.toJSON();
     });
     return Object.values(json).length > 0 ? json : undefined;
+  }
+
+  private dataAsJSON(): any {
+    const json = {};
+    Object.keys(this.data).forEach(key => json[key] = this.data[key]);
+    return json;
   }
 }

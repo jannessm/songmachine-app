@@ -42,6 +42,12 @@
     display: table-cell;
   }
 
+  .normal{
+    font-style: normal;
+    font-weight: normal;
+    color: $white;
+  }
+
   .red{
     color: red;
   }
@@ -64,6 +70,40 @@
   .orange{
     color: $primary;
   }
+
+  .error {
+    border-bottom: 2px dotted red;
+
+    & span{
+      visibility: hidden;
+      width: 120px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      border-radius: 6px;
+
+      /* Position the tooltip text */
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+
+      /* Fade in tooltip */
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover span{
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:hover{
+      color:black;
+    }
+  }
 }
 #highlighted-field{
   position: absolute;
@@ -77,14 +117,14 @@
   font-size: 0.8em;
   line-height: 1.1em;
   color: $black;
-  padding: 10px 10px 0 0;
+  padding: 10px 10px 20px 0;
   box-sizing: border-box;
 }
 #edit-field{
   position: absolute;
   top: 0;
   right: 0;
-  min-width: 100%;
+  min-width: calc(100% - 55px);
   min-height: 100%;
   opacity: 1;
   background: transparent;
@@ -92,13 +132,13 @@
   color: $white;
   -webkit-text-fill-color: transparent;
   z-index: 10;
-  box-sizing: border-box;
   font-family: $ubuntuMono; 
   font-size: 0.8em;
   line-height: 1.1em;
   outline: none;
   padding: 10px;
   padding-left: 45px;
+  resize: none;
 }
 #wrapper{
   position: relative;
