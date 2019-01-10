@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
 import { FILESYSTEM } from '../models/filesystem';
 
-const path = require('path');
 const uuid = require('uuid/v1');
 
 @Injectable()
@@ -97,7 +96,7 @@ export class FileSynchronizerService {
       song.id = uuid();
     }
     return this.pathGuard().then(mainPath => {
-      return this.upsertSong(path.join(mainPath, DATABASES.songs, song.id + '.song'), song).then(s => {
+      return this.upsertSong(this.pathJoin(mainPath, DATABASES.songs, song.id + '.song'), song).then(s => {
         if (s) {
           return this.dexieService.upsert(DATABASES.songs, s).then(() => {
             return new Promise<Song>(resolve => resolve(<Song>s));
@@ -113,7 +112,7 @@ export class FileSynchronizerService {
 
   public deleteSong(songid: string) {
     return this.pathGuard().then(mainPath => {
-      return this.apiService.generateDeleteFileRequest(path.join(mainPath, DATABASES.songs, songid + '.song')).then(res => {
+      return this.apiService.generateDeleteFileRequest(this.pathJoin(mainPath, DATABASES.songs, songid + '.song')).then(res => {
         if (res.status === 200) {
           return this.dexieService.delete(DATABASES.songs, songid);
         }
@@ -141,7 +140,7 @@ export class FileSynchronizerService {
       songgroup.id = uuid();
     }
     return this.pathGuard().then(mainPath => {
-      return this.upsertSonggroup(path.join(DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup).then(res => {
+      return this.upsertSonggroup(this.pathJoin(mainPath, DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup).then(res => {
         if (res) {
           return this.dexieService.upsert(DATABASES.songgroups, res).then(() => new Promise<Songgroup>(resolve => resolve(songgroup)));
         } else {
@@ -157,8 +156,10 @@ export class FileSynchronizerService {
 
   public deleteSonggroup(songgroupid: string) {
     return this.pathGuard().then(mainPath => {
-      return this.apiService.generateDeleteFileRequest(path.join(mainPath, DATABASES.songgroups, songgroupid + '.songgroup')).then(() => {
-        this.dexieService.delete(DATABASES.songgroups, songgroupid);
+      return this.apiService.generateDeleteFileRequest(
+          this.pathJoin(mainPath, DATABASES.songgroups, songgroupid + '.songgroup')
+        ).then(() => {
+          this.dexieService.delete(DATABASES.songgroups, songgroupid);
      });
     });
   }
@@ -169,14 +170,24 @@ export class FileSynchronizerService {
     return new Promise((res, rej) => {
       const root = this.configService.get('defaultPath');
       if (root) {
-        let p = path.join(root, FILESYSTEM.DATA, '/');
-        if (/Win/gi.test(navigator.platform)) {
-          p = p.replace(/\//g, '\\');
-        }
+        const p = this.pathJoin(root, FILESYSTEM.DATA, '');
         res(p);
       } else {
         rej('no defaultPath defined');
       }
     });
+  }
+
+  private pathJoin(...args: string[]): string {
+    let delimiter = '/';
+    if (/Win/gi.test(navigator.platform)) {
+      delimiter = '\\';
+    }
+    return args.reduce((path, val) => {
+      if (path !== '' && path[path.length - 1] !== delimiter) {
+        path += delimiter;
+      }
+      return path + val;
+    }, '');
   }
 }
