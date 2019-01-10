@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title matTooltip="{{ songgroup.name }}" [matTooltipDisabled]="songgroup.name.length < 46">{{ songgroup.name }}</mat-card-title>
+        <mat-card-title matTooltip="{{ songgroup.name }}" [matTooltipDisabled]="songgroup.name.length < 46 || true">{{ songgroup.name }}</mat-card-title>
         
         <button mat-icon-button [matMenuTriggerFor]="rootMenu" class="burger">
             <i class="icon-menu"></i>

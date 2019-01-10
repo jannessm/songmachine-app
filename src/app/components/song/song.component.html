@@ -1,8 +1,8 @@
 <mat-card>
     <div class="mat-card-header">
-        <div #title class="mat-card-title" matTooltip="{{ song.title }}">{{ song.title }}</div>
+        <div #title class="mat-card-title">{{ song.title }}</div>
         <br>
-        <div #artist class="mat-card-subtitle" matTooltip="{{ song.artist }}">{{ song.artist }}</div>
+        <div #artist class="mat-card-subtitle">{{ song.artist }}</div>
         
         <button mat-icon-button [matMenuTriggerFor]="rootMenu" class="burger">
             <i class="icon-menu"></i>
