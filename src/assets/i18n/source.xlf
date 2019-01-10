@@ -2,6 +2,174 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="alert.newVersionAvailable.content" datatype="html">
+        <source>alert.newVersionAvailable.content</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.cancel" datatype="html">
+        <source>alert.cancel</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.newVersionAvailable.download" datatype="html">
+        <source>alert.newVersionAvailable.download</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.sureAboutDelete" datatype="html">
+        <source>alert.sureAboutDelete</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.cancel" datatype="html">
+        <source>alert.cancel</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.confirm" datatype="html">
+        <source>alert.confirm</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.sureAboutDelete" datatype="html">
+        <source>alert.sureAboutDelete</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.cancel" datatype="html">
+        <source>alert.cancel</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.confirm" datatype="html">
+        <source>alert.confirm</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.add.form.title.missing" datatype="html">
+        <source>error.add.form.title.missing</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editor.brackets.error" datatype="html">
+        <source>editor.brackets.error</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/services/html-factory.service.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editor.colors.error" datatype="html">
+        <source>editor.colors.error</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/services/html-factory.service.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.headline.songs" datatype="html">
+        <source>browser.headline.songs</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.search.song" datatype="html">
+        <source>browser.search.song</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.headline.songgroups" datatype="html">
+        <source>browser.headline.songgroups</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.search.songgroup" datatype="html">
+        <source>browser.search.songgroup</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.closeWithoutSaving" datatype="html">
+        <source>alert.closeWithoutSaving</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.ts</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.doNotSave" datatype="html">
+        <source>alert.doNotSave</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.cancel" datatype="html">
+        <source>alert.cancel</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.ts</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.save" datatype="html">
+        <source>alert.save</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.ts</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="import.st.file" datatype="html">
+        <source></source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="menu.export.title" datatype="html">
         <source></source>
         <target></target>
@@ -112,14 +280,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
           <context context-type="linenumber">29</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="browser.songgroup.actions.performmode" datatype="html">
-        <source></source>
-        <target></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
-          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="browser.song.actions.quickedit" datatype="html">
@@ -591,7 +751,15 @@
         <target></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
-          <context context-type="linenumber">4</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.language" datatype="html">
+        <source></source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="settings.welcome.to.songsheet" datatype="html">
@@ -599,7 +767,7 @@
         <target></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
-          <context context-type="linenumber">7</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="settings.hint.default.path" datatype="html">
@@ -607,7 +775,7 @@
         <target></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
     </body>

@@ -1,8 +1,12 @@
 {
   "name": "songmachine",
   "productName": "Songmachine",
-  "main": "main.js",
-  "version": "0.0.0",
+  "author": {
+    "name": "Jannes Magnusson",
+    "email": "jannes@magnusson.berlin"
+  },
+  "main": "dist/main.js",
+  "version": "1.0.0",
   "license": "all rights reserved",
   "description": "Manage your songs and events for your band. Take notes during the practice lessons and use screens during your gig.",
   "scripts": {
@@ -14,10 +18,29 @@
     "electron-dev": "cp -R src/electron/* dist/ && ./node_modules/.bin/electron dist/main.js",
     "webpack": "webpack --watch",
     "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
-    "deploy-mac": "./dev-files/deploy-scripts/deploy-mac.sh",
-    "deploy-win": "./dev-files/deploy-scripts/deploy-win.ps1",
-    "deploy-linux": "./dev-files/deploy-scripts/deploy-linux.sh",
-    "compile-grammars": "nearleyc ./dev-files/grammars/st.ne -o ./src/assets/grammars/st-grammar.js && nearleyc ./dev-files/grammars/editor.ne -o ./src/assets/grammars/editor-grammar.js && nearleyc ./dev-files/grammars/chords.ne -o ./src/assets/grammars/chords-grammar.js"
+    "deploy": "yarn build && electron-builder -mw",
+    "compile-grammars": "nearleyc ./dev-files/grammars/st.ne -o ./src/assets/grammars/st-grammar.js && nearleyc ./dev-files/grammars/editor.ne -o ./src/assets/grammars/editor-grammar.js && nearleyc ./dev-files/grammars/chords.ne -o ./src/assets/grammars/chords-grammar.js",
+    "extract": "../../xliff-extractor/bin/cli.js -i ./src -o ./src/assets/i18n/source.xlf -m i18n"
+  },
+  "build": {
+    "appId": "berlin.magnusson.songmachine",
+    "productName": "Songmachine",
+    "copyright": "Copyright © 2019 ${author}",
+    "directories": {
+      "output": "release-builds"
+    },
+    "files": [
+      "dist/**/*"
+    ],
+    "mac": {
+      "icon": "./src/assets/main-icon/mac/songsheet.icns"
+    },
+    "dmg": {
+      "icon": "./src/assets/main-icon/mac/songsheet.icns"
+    },
+    "win": {
+      "icon": "./src/assets/main-icon/win/songsheet.ico"
+    }
   },
   "private": true,
   "dependencies": {
@@ -34,6 +57,7 @@
     "@angular/router": "^5.2.0",
     "@marshallofsound/electron-router": "^1.2.3",
     "@nilsroesel/utils": "^0.2.9",
+    "compare-versions": "^3.4.0",
     "core-js": "^2.4.1",
     "diff": "^3.5.0",
     "express": "^4.16.4",
@@ -73,9 +97,7 @@
     "codelyzer": "^4.0.1",
     "copy-webpack-plugin": "~4.4.1",
     "electron": "^3.0.3",
-    "electron-installer-dmg": "^2.0.0",
-    "electron-packager": "^12.2.0",
-    "electron-winstaller": "^2.7.0",
+    "electron-builder": "^20.38.4",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.29.0",
     "istanbul-instrumenter-loader": "^3.0.0",

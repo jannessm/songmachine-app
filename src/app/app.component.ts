@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
 import { TranslationService } from './services/translation.service';
 import { ApiService } from './services/connectivity/api.service';
+import * as compareVersions from 'compare-versions';
 
 const packageJson = require('../../package.json');
 
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.httpClient.get('http://api.magnusson.berlin/songmachine/current').subscribe((res: {currentVersion: string}) => {
-      if (res.currentVersion !== packageJson.version) {
+      if (compareVersions(res.currentVersion, packageJson.version) > 0) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           width: '350px',
           height: '200px',
