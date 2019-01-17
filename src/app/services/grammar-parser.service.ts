@@ -38,7 +38,6 @@ export class GrammarParser {
     }
     const isBalanced = this.checkBalancedBrackets(input);
     if (!!isBalanced) {
-      console.log(isBalanced);
       return isBalanced;
     }
 
