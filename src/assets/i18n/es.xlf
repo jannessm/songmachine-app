@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="menu.export.title" datatype="html">
+        <source></source>
+        <target>Exportar como</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="menu.export.st" datatype="html">
+        <source></source>
+        <target>Songmachine (.st)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="menu.export.sng" datatype="html">
+        <source></source>
+        <target>Songbeamer (.sng)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="menu.export.pptx" datatype="html">
+        <source></source>
+        <target>Powerpoint (.pptx)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bpm" datatype="html">
+        <source></source>
+        <target>bpm</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="books" datatype="html">
+        <source></source>
+        <target>Cancionero</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Songs" datatype="html">
+        <source></source>
+        <target>Canciones</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.title" datatype="html">
+        <source></source>
+        <target>Atención</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.sureAboutDelete" datatype="html">
+        <source></source>
+        <target>Seguro que quieres eliminar este elemento?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.cancel" datatype="html">
+        <source></source>
+        <target>Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.confirm" datatype="html">
+        <source></source>
+        <target>Confirmar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.closeWithoutSaving" datatype="html">
+        <source></source>
+        <target>Todos modificaciónes van deshacer. Quieres guadarlo?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.doNotSave" datatype="html">
+        <source></source>
+        <target>Deshacer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.save" datatype="html">
+        <source></source>
+        <target>Guardar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.add.form.title.missing" datatype="html">
+        <source></source>
+        <target>Necesite un título!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.title" datatype="html">
+        <source></source>
+        <target>Ayuda</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.title" datatype="html">
+        <source></source>
+        <target>Editor</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.introduction" datatype="html">
+        <source></source>
+        <target>Songmachine oferte un formato especial con que se admistra canciones muy facíl. En esté página encontra una visión general de todas funciones soportido.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.elements" datatype="html">
+        <source></source>
+        <target>Elementos especiales</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.meta.title" datatype="html">
+        <source></source>
+        <target>Informaciones generales</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.meta.description" datatype="html">
+        <source></source>
+        <target>En Songmachine puedes añadir informaciones generales a tus canciones. Los son título, ártista, bpm y referencias a cancioneros y las numeros. Todas informaciones ayuden buscar canciones en la visión general de caciones. Se los escriben entre chorchetes uno detrás de otro y seperado con puntos y comas. Un ejemplo:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.title.description" datatype="html">
+        <source></source>
+        <target>Indicar un título.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.artist.description" datatype="html">
+        <source></source>
+        <target>Indicar la ártista de una canción.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.bpm.description" datatype="html">
+        <source></source>
+        <target>Indicar el tempo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.books.description" datatype="html">
+        <source></source>
+        <target>Con books puedes referenciar cancioneros. Todas tienes que seperar con comas.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.blocks.title" datatype="html">
+        <source></source>
+        <target>Bloques</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.blocks.description" datatype="html">
+        <source></source>
+        <target>Cuando una canción tiene muchas partes y unas partes se repeten, se merece la pena de organizar las en bloques. Un bloque empieza con:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.line.description" datatype="html">
+        <source></source>
+        <target>Toda línea inclue acordes y puedes completar con notas. Acordes se escriben entre corchetes. Con esté, se asegure que todas acordes estan siempre arriba del carácter siguente.
+        Notas añades con |. Todos | carácteres añaden una columna, en que puedes escribir notas para persones diferentes. Para agregar notas diferentes por repeticiones diferentes, puedes separar toda repectición con un punto y coma. En el ejemplo sigiuente va aparecer 'Break' en el tercero uso del bloque en la primera columna de notas. Pero en la segunda cada vez se escribe 'Mia 2. voz'.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.line.firstAnnotation" datatype="html">
+        <source></source>
+        <target>;;Break</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.line.secondAnnotation" datatype="html">
+        <source></source>
+        <target>Mia 2. voz</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.order.title" datatype="html">
+        <source></source>
+        <target>Orden</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.order.description" datatype="html">
+        <source></source>
+        <target>Para fijar un orden de los bloques, puede escribirlo debajo de las informaciones generales con el palabra clave order. Es importa de escribir todos bloques como en el elemto. Todos bloques se sepera con un coma:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.format.title" datatype="html">
+        <source></source>
+        <target>Formateo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.format.description" datatype="html">
+        <source></source>
+        <target>Puedes formatear el text con los elementos siguientes:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.italic.description" datatype="html">
+        <source></source>
+        <target>texto itálico</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.bold.description" datatype="html">
+        <source></source>
+        <target>texto negrita</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.red.description" datatype="html">
+        <source></source>
+        <target>texto rojo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.green.description" datatype="html">
+        <source></source>
+        <target>texto verde</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.editor.blue.description" datatype="html">
+        <source></source>
+        <target>texto azúl</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.performMode.title" datatype="html">
+        <source></source>
+        <target>Modo de actuación</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.performMode.description" datatype="html">
+        <source></source>
+        <target>Esté modo puedes usar para actuaciones. Con la ayuda de la tecla Return y el espaciador, puedes navegar en está vista. Se comenza un evento en esté modo, al término de una canción se navega de la siguiente.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.mergeDialog.title" datatype="html">
+        <source></source>
+        <target>Diálogo de reunir</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.mergeDialog.description" datatype="html">
+        <source></source>
+        <target>Cuando usas Songmachine con Dropbox, Google Drive o parecidos como un lugar de guardar, en casos raros una persona ha podido modificar el mismo cancion como tú.
+        En esté caso cuando puedes guardar tús modificaciones, un diálogo abre dónde puedes reunirlas con las en el Dropbox. Puedes usar solo las modificaciones de una version o crear una version nueva en el medio de las otras versiones.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.action.close" datatype="html">
+        <source></source>
+        <target>Cerrar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.local.headline" datatype="html">
+        <source></source>
+        <target>Modificaciones locales</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.final.headline" datatype="html">
+        <source></source>
+        <target>Modificaciones reunidas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.server.headline" datatype="html">
+        <source></source>
+        <target>Modificaciones ajenas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.dialog.cancel" datatype="html">
+        <source></source>
+        <target>Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.dialog.ignoreServer" datatype="html">
+        <source></source>
+        <target>Ignorarlas ajenas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.dialog.save" datatype="html">
+        <source></source>
+        <target>Guardarlas reunidas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="merge.dialog.ignoreLocal" datatype="html">
+        <source></source>
+        <target>Ignorarlas locales</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/merge-dialog/merge-dialog.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="qr.hint" datatype="html">
+        <source></source>
+        <target>Cada dispositivo puede abrir está dirección y mostrar las canciones.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/qr-dialog/qr-dialog.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.song.title" datatype="html">
+        <source></source>
+        <target>Título</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.song.title.hint" datatype="html">
+        <source></source>
+        <target>Especifica un título.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.song.artist" datatype="html">
+        <source></source>
+        <target>Ártistas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.song.bpm" datatype="html">
+        <source></source>
+        <target>bpm</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.song.books" datatype="html">
+        <source></source>
+        <target>Cancioneros</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.songgroup.name" datatype="html">
+        <source></source>
+        <target>Título</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.songgroup.description" datatype="html">
+        <source></source>
+        <target>Descripción</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.songgroup.date" datatype="html">
+        <source></source>
+        <target>Fecha</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.songgroup.selectASong" datatype="html">
+        <source></source>
+        <target>Selecciona una canción</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.cancel" datatype="html">
+        <source></source>
+        <target>Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.new.save" datatype="html">
+        <source></source>
+        <target>Guardar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dialogs/song-songgroup-form/song-songgroup-form.component.html</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.new" datatype="html">
+        <source></source>
+        <target>Canción nueva</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.import" datatype="html">
+        <source></source>
+        <target>Importar una canción</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.headline.songs" datatype="html">
+        <source></source>
+        <target>Tús canciones</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.headline.songgroups" datatype="html">
+        <source></source>
+        <target>Tús eventos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.search.songs" datatype="html">
+        <source></source>
+        <target>Busca una canción</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.search.songgroups" datatype="html">
+        <source></source>
+        <target>Busca un evento</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+       <trans-unit id="browser.song.actions.editor" datatype="html">
+        <source></source>
+        <target>Editor</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.song.actions.quickedit" datatype="html">
+        <source></source>
+        <target>editar rápido</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.song.actions.delete" datatype="html">
+        <source></source>
+        <target>Eliminar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/song/song.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.songgroup.actions.performmode" datatype="html">
+        <source></source>
+        <target>Modo de actuación</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.song.actions.quickedit" datatype="html">
+        <source></source>
+        <target>Editar rápido</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.song.actions.delete" datatype="html">
+        <source></source>
+        <target>Eliminar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editor.save" datatype="html">
+        <source></source>
+        <target>Guardar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editor.performMode" datatype="html">
+        <source></source>
+        <target>Modo de actuación</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editor.transpose" datatype="html">
+        <source></source>
+        <target>Transportar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.headline" datatype="html">
+        <source></source>
+        <target>Ajustes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.path" datatype="html">
+        <source></source>
+        <target>Lugar de guardar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.select.folder" datatype="html">
+        <source></source>
+        <target>Selecciona una carpeta</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.language" datatype="html">
+        <source></source>
+        <target>Idioma</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.welcome.to.songsheet" datatype="html">
+        <source></source>
+        <target>Bienvenidos a Songmachine!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.hint.default.path" datatype="html">
+        <source></source>
+        <target>Para usar Songmachine tienes que seleccionar una lugar de guardar. Cuando muchas personas deben acceder los datos, selecciona una carpeta en Dropbox, Google Drive u otras y compartela.
+        También, recomende de leer las páginas de ayuda para obtener una vista general de todas funciones.
+        ¡Que te diviertas!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.newVersionAvailable.content" datatype="html">
+        <source>alert.newVersionAvailable.content</source>
+        <target>Una version nueva esta dispondible. ¡Descarga ahora!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="alert.newVersionAvailable.download" datatype="html">
+        <source>alert.newVersionAvailable.download</source>
+        <target>Descargar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
