@@ -146,11 +146,10 @@ export class HtmlFactoryService {
   public style(): string {
     return `<style>
       .page {
-        width: 595.3pt;
+        width: 100%;
         min-height: 841.9pt;
         background: white;
         font-family: 'Ubuntu Mono', monospaced;
-        font-size: 10pt;
         box-sizing: border-box;
         display: inline-block;
         padding: 15pt;

@@ -1,2 +1,3 @@
-<div #wrapper class="page-wrapper" [innerHTML]="html | safe: 'html'"></div>
+<div #wrapper class="page-wrapper small-font" *ngIf="!performMode" [innerHTML]="html | safe: 'html'"></div>
+<div #wrapper class="page-wrapper large-font" *ngIf="performMode" [innerHTML]="html | safe: 'html'"></div>
 <div id="scrollLine" *ngIf="performMode"></div>

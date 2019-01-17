@@ -38,7 +38,7 @@ export class PerformviewComponent implements OnInit, OnDestroy {
       this.title = params['title'];
       if (/_/g.test(songId)) {
         const proms = [];
-        songId.split('_').forEach(element => {
+        songId.split('_').filter(val => !!val).forEach(element => {
           proms.push(this.loadSong(element));
         });
         Promise.all(proms).then(() => {
@@ -63,7 +63,7 @@ export class PerformviewComponent implements OnInit, OnDestroy {
           this.songs.push(<Song>result);
       });
     }
-    return new Promise(res => res());
+    return Promise.resolve();
   }
 
   protected increaseActiveSong(e) {
