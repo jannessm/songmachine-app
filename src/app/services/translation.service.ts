@@ -28,7 +28,7 @@ export class TranslationService {
   }
 
   public getLanguages(): Array<string> {
-    return ['de', 'en'];
+    return ['de', 'en', 'es'];
   }
 
   public getCurrentLanguage(): string {

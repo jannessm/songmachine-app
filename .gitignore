@@ -6,6 +6,7 @@
 /tmp
 /out-tsc
 /release-builds
+/release-builds*
 
 # dependencies
 /node_modules
