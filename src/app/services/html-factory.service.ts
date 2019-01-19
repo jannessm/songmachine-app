@@ -81,9 +81,7 @@ export class HtmlFactoryService {
     html += '</ul></div>';
 
     if (!song.order && song.blocks) {
-      for (const b of song.blocks) {
-        html += this.blockToHTML(b, song.annotationCells, song.maxLineWidth);
-      }
+      html += song.blocks.reduce((red, b) => red + this.blockToHTML(b, song.annotationCells, song.maxLineWidth), '');
     } else if (song.blocks) {
       for (const b of song.order) {
         const block = song.blocks.find(elem => {
@@ -92,6 +90,9 @@ export class HtmlFactoryService {
         html += this.blockToHTML(block, song.annotationCells, song.maxLineWidth);
       }
     }
+
+    // reset print counter
+    // song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
 
     return html + '</div>' + this.style();
   }
@@ -119,7 +120,11 @@ export class HtmlFactoryService {
       let c = 0;
       for (const ann of line.annotations) {
         const id = ann.length > 1 ? line.printed : 0;
-        html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
+        if (ann[id]) {
+          html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
+        } else {
+          html += '<td class="annotation_border"></td>';
+        }
         c++;
       }
       line.printed++;
@@ -146,11 +151,10 @@ export class HtmlFactoryService {
   public style(): string {
     return `<style>
       .page {
-        width: 595.3pt;
+        width: 100%;
         min-height: 841.9pt;
         background: white;
         font-family: 'Ubuntu Mono', monospaced;
-        font-size: 10pt;
         box-sizing: border-box;
         display: inline-block;
         padding: 15pt;

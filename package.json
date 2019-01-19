@@ -6,7 +6,7 @@
     "email": "jannes@magnusson.berlin"
   },
   "main": "dist/main.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "all rights reserved",
   "description": "Manage your songs and events for your band. Take notes during the practice lessons and use screens during your gig.",
   "scripts": {
@@ -122,7 +122,6 @@
     "typescript": "~2.5.3",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "url-loader": "^0.6.2",
-    "webpack": "~3.11.0",
-    "webpack-dev-server": "~2.11.0"
+    "webpack": "~3.11.0"
   }
 }

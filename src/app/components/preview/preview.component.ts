@@ -33,7 +33,6 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('wrapper') wrapperElem;
 
   html = '';
-  private zoom = 1;
   menuOpen = true;
   wasExpanded = false;
   scrollSteps: number[] = [];
@@ -66,15 +65,10 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit() {
     this.song = this.song || new Song();
-
     this.html = this.htmlFactory.songToHTML(this.song);
   }
 
   ngAfterViewInit() {
-    const width = this.wrapperElem.nativeElement.offsetWidth * 0.95;
-    this.zoom = (width / 793.733333);
-    this.renderer.setStyle(this.wrapperElem.nativeElement, 'zoom', this.zoom);
-
     let scrollTop = 0;
     const nativeElem = this.wrapperElem.nativeElement;
     const scrollHeight = nativeElem.scrollHeight;
@@ -105,7 +99,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   scrollDown() {
     const nativeElem = this.wrapperElem.nativeElement;
-    if (this.step === this.scrollSteps.length - 1) {
+    if (this.step === this.scrollSteps.length - 2) {
       this.step = 0;
       this.scrolledToBottom.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});

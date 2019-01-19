@@ -1,31 +1,33 @@
-<app-preview 
-  *ngFor="let song of songs; let i = index" 
-  [performMode]="true" 
-  [song]="song" 
-  [scrollIsActive]="i === activeSong"
-  (scrolledToTop)="decreaseActiveSong()"
-  (scrolledToBottom)="increaseActiveSong()"
-  [class.left]="i < activeSong"
-  [class.center]="i === activeSong"
-  [class.right]="i > activeSong">
-</app-preview>
-<button mat-mini-fab (click)="decreaseActiveSong($event)" *ngIf="songs.length > 1" class="prev-button">
-  <i class="icon icon-left"></i>
-</button>
-<button mat-mini-fab (click)="increaseActiveSong($event)" *ngIf="songs.length > 1" class="next-button">
-  <i class="icon icon-right"></i>
-</button>
-<div class="counter">{{activeSong + 1}} / {{songs.length}}</div>
-
-<div class="menu">
-  <button mat-mini-fab>
-    <i class="icon icon-menu"></i>
+<div class="wrapper">
+  <app-preview 
+    *ngFor="let song of songs; let i = index" 
+    [performMode]="true" 
+    [song]="song" 
+    [scrollIsActive]="i === activeSong"
+    (scrolledToTop)="decreaseActiveSong()"
+    (scrolledToBottom)="increaseActiveSong()"
+    [class.left]="i < activeSong"
+    [class.center]="i === activeSong"
+    [class.right]="i > activeSong">
+  </app-preview>
+  <button mat-mini-fab (click)="decreaseActiveSong($event)" *ngIf="songs.length > 1" class="prev-button">
+    <i class="icon icon-left"></i>
   </button>
+  <button mat-mini-fab (click)="increaseActiveSong($event)" *ngIf="songs.length > 1" class="next-button">
+    <i class="icon icon-right"></i>
+  </button>
+  <div class="counter">{{activeSong + 1}} / {{songs.length}}</div>
   
-  <button mat-mini-fab [routerLink]="'/editor/'+songId" class="menu-button">
-    <i class="icon icon-editor"></i>
-  </button>
-  <!-- <button mat-mini-fab class="menu-button" (click)="showQR($event)">
-    <i class="icon icon-share"></i>
-  </button> -->
+  <div class="menu">
+    <button mat-mini-fab>
+      <i class="icon icon-menu"></i>
+    </button>
+    
+    <button mat-mini-fab [routerLink]="'/editor/'+songId" class="menu-button">
+      <i class="icon icon-editor"></i>
+    </button>
+    <!-- <button mat-mini-fab class="menu-button" (click)="showQR($event)">
+      <i class="icon icon-share"></i>
+    </button> -->
+  </div>
 </div>

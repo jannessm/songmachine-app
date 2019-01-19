@@ -33,6 +33,9 @@ export class GrammarParser {
   constructor() { }
 
   public parse(input: string, keepChars: boolean = false, tag: string = 'pre') {
+    if (!input) {
+      return input;
+    }
     const isBalanced = this.checkBalancedBrackets(input);
     if (!!isBalanced) {
       return isBalanced;
@@ -111,11 +114,14 @@ export class GrammarParser {
 
   private checkBalancedBrackets(input: string, tag: string = 'pre'): string {
     const stack = [];
+    let i = 0;
+    let lastOpened;
 
-    for (let i = 0; i < input.length; i++) {
+    for (i = 0; input && i < input.length; i++) {
       const char = input[i];
       if (char === '[' && stack.length === 0) {
         stack.push(i);
+        lastOpened = i;
       } else if (char === '[' && stack.length > 0) {
         return this.composeError(input, stack.pop(), 1, tag);
       } else if (char === ']' && stack.length === 1) {
@@ -127,6 +133,8 @@ export class GrammarParser {
 
     if (stack.length === 0) {
       return '';
+    } else {
+      return this.composeError(input, lastOpened, 1, tag);
     }
   }
 

@@ -3,9 +3,9 @@
     <button mat-button (click)="save()" [disabled]="!textfield.songHasChanged">{{ 'editor.save' | translate }}</button>
     <button mat-button (click)="performMode()">{{ 'editor.performMode' | translate }}</button>
     <span>{{ 'editor.transpose' | translate }}</span>
-    <button mat-icon-button (click)="transposeUp()"><i class="icon icon-minus"></i></button>
+    <button mat-icon-button (click)="transposeDown()"><i class="icon icon-minus"></i></button>
     <span class="transpose-steps">{{ textfield.getStepsString() }}</span>
-    <button mat-icon-button (click)="transposeDown()"><i class="icon icon-plus"></i></button>
+    <button mat-icon-button (click)="transposeUp()"><i class="icon icon-plus"></i></button>
   </mat-toolbar-row>
 </mat-toolbar>
 
