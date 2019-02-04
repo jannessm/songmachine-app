@@ -1,4 +1,7 @@
 <html>
+  <head>
+    <title>Grammar Tester</title>
+  </head>
   <body>
     {{body}}
   <script>
@@ -9,7 +12,7 @@
         e.target.nextElementSibling.style.display = 'none';
       }
     }
-    function toggleClass(e){
+    function toggleClassWrapper(e){
       if(e.target.nextElementSibling.style.display === 'none'){
         e.target.nextElementSibling.style.display = 'inline-flex';
       } else {
@@ -62,24 +65,30 @@
       display: inline-block;
       position: relative;
     }
-    h3.correct::after, h3.not-correct::after, h1.correct::after, h1.not-correct::after{
+    .correct::after, .not-correct::after{
       margin-left: 10px;
       content: "✓";
       color: white;
       background: green;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
+      border-radius: 5px;
+      width: 28px;
+      height: 28px;
       position: absolute;
       top: 5px;
-      padding: 4px;
+      padding: 0 3px;
       box-sizing: border-box;
-      font-size: 1em;
+      font-size: 25px;
     }
-    h1.correct::after, h1.not-correct::after{
+    h1.correct::after, h1.not-correct::after, h2.correct::after, h2.not-correct::after{
       top: unset;
     }
-    h3.not-correct::after, h1.not-correct::after{
+    h3.correct::after, h3.not-correct::after{
+      width: 22px;
+      height: 22px;
+      padding: 0 2px;
+      font-size: 20px;
+    }
+    .not-correct::after, .not-correct::after{
       content: "x";
       background: red;
     }
@@ -120,9 +129,6 @@
     .res-char{
       padding: 5px;
       margin: 0;
-    }
-    .dont-show{
-      display: none;
     }
 
     .red{

@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
   const results = [];
   const tests = eval(fs.readFileSync(__dirname + '/tests.js').toString());
   Object.keys(tests).forEach(testFile => {
-    const grammarInput = fs.readFileSync(__dirname + '/'+testFile+'.ne');
+    const grammarInput = fs.readFileSync(__dirname + '/../'+testFile+'.ne');
     let fileResults = [];
     let compiled;
 

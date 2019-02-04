@@ -15,7 +15,7 @@ function prepareTestFile(testFile) {
     <div class="res-card">
       <h1 onclick="toggleFile(event)" class="${testFile.correct === undefined ? '': testFile.correct ? 'correct' : 'not-correct'}">${testFile.name}</h1>
       <div class="res-file">
-        <h3 onclick="toggleClass(event)">Editor</h3>
+        <h3 onclick="toggleClassWrapper(event)">Editor</h3>
         <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
         <div class="res-wrapper error-wide">
           <div class="res-query-wrapper"><pre class="res">${testFile.results.stack}</pre></div>
@@ -26,8 +26,8 @@ function prepareTestFile(testFile) {
     return `
     <div class="res-card">
       <h1 onclick="toggleFile(event)" class="${testFile.correct === undefined ? '': testFile.correct ? 'correct' : 'not-correct'}">${testFile.name}</h1>
-      <div class="res-file ${testFile.correct === undefined ? '': testFile.correct ? 'dont-show' : ''}">
-        <h3 onclick="toggleClass(event)">Editor</h3>
+      <div class="res-file" ${testFile.correct === undefined ? '': testFile.correct ? 'style="display: none;"' : ''}>
+        <h2 onclick="toggleClassWrapper(event)">Editor</h2>
         <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
         ${testFile.results.map(testClass => prepareClass(testClass)).join('<hr>')}
       </div>
@@ -38,8 +38,8 @@ function prepareTestFile(testFile) {
 function prepareClass(testClass) {
   return `
   <div class="res-class">
-  <h3 onclick="toggleClass(event)" class="${testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct'}">${testClass.name}</h3>
-    <div class="flex-wrapper ${testClass.correct ? 'dont-show' : ''}">
+  <h2 onclick="toggleClassWrapper(event)" class="${testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct'}">${testClass.name}</h2>
+    <div class="flex-wrapper" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
       <div class="flex">
       ${testClass.results.map(query => prepareQuery(query)).join('')}
       </div>
@@ -80,7 +80,7 @@ function prepareChar(char) {
   if(typeof char === 'string'){
     return '<pre class="res-char">' + escapeHTML(char) + '</pre>';
   } else {
-    return `<pre class="res-char ${char.css} dont-show" onclick="toggleChar(event.target, event.target.nextElementSibling)">${
+    return `<pre class="res-char ${char.css}" onclick="toggleChar(event.target, event.target.nextElementSibling)" style="display: none;">${
       escapeHTML(JSON.stringify(char, null, 2))
     }</pre>
     <pre class="res-char ${char.css} ${char.isTerminal ? 'isTerminal' : ''}" onclick="toggleChar(event.target, event.target.previousElementSibling)">${
