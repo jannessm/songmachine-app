@@ -54,6 +54,7 @@
     .res-card{
       box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
       padding: 20px;
+      position: relative;
     }
     .res-wrapper {
       width: 300px;
@@ -61,7 +62,7 @@
       display: inline-block;
       position: relative;
     }
-    .res-wrapper h3.correct::after, .res-wrapper h3.not-correct::after{
+    h3.correct::after, h3.not-correct::after, h1.correct::after, h1.not-correct::after{
       margin-left: 10px;
       content: "✓";
       color: white;
@@ -74,7 +75,7 @@
       padding: 4px;
       box-sizing: border-box;
     }
-    .res-wrapper h3.not-correct::after{
+    h3.not-correct::after, h1.not-correct::after{
       content: "x";
       background: red;
     }
@@ -91,6 +92,11 @@
       font-family: monospace;
     }
     .res-class{
+      overflow: auto;
+      width: 100%;
+      position: relative;
+    }
+    .flex-wrapper{
       overflow: auto;
       width: 100%;
     }

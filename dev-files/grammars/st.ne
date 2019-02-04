@@ -3,30 +3,176 @@ const moo = require("moo");
 
 const lexer = moo.compile({
   char: {match: /[^\[\]<>\*]/, lineBreaks: true},
-  notColor: /[rgbRGB]/,
-  color: /[rgbRGB]/,
   r: /<(?:r|R)>/,
   g: /<(?:g|G)>/,
   b: /<(?:b|B)>/,
-  bo: /(?!\*)\*\*(?!\*)/,
-  i: /(?!\*)\*(?!\*)/,
-  bo_i: /(?!\*)\*\*\*(?!\*)/,
+  bo_i: /\*\*\*/,
+  bo: /\*\*/,
+  i: /\*/,
+  noTag: /(?:(?!<)[^\*]?>)|(?:<[^\*]?(?!>))/,
 });
 %}
 @lexer lexer
 
 s -> %r r {% pP.r %}
-  | %g s {% pP.g %}
-  | %b s {% pP.b %}
+  | %g g {% pP.g %}
+  | %b b {% pP.b %}
+  | %i i {% pP.i %}
+  | %bo bo {% pP.bo %}
+  | %bo_i bo_i {% pP.bo_i %}
   | %char s {% pP.s %}
+  | %noTag s {% pP.s %}
   | null
 
 r -> %r s {% pP.r %}
-  | %g r {% pP.r %}
-  | %b r {% pP.r %}
+  | %g g {% pP.g %}
+  | %b b {% pP.b %}
+  | %i r_i {% pP.r_i %}
+  | %bo r_bo {% pP.r_bo %}
+  | %bo_i r_bo_i {% pP.r_bo_i %}
   | %char r {% pP.r_ %}
+  | %noTag r {% pP.r_ %}
   | null
 
+g -> %r r {% pP.r %}
+  | %g s {% pP.g %}
+  | %b b {% pP.b %}
+  | %i g_i {% pP.g_i %}
+  | %bo g_bo {% pP.g_bo %}
+  | %bo_i g_bo_i {% pP.g_bo_i %}
+  | %char g {% pP.g_ %}
+  | %noTag g {% pP.g_ %}
+  | null
+
+b -> %r r {% pP.r %}
+  | %g g {% pP.g %}
+  | %b s {% pP.b %}
+  | %i b_i {% pP.b_i %}
+  | %bo b_bo {% pP.b_bo %}
+  | %bo_i b_bo_i {% pP.b_bo_i %}
+  | %char b {% pP.b_ %}
+  | %noTag b {% pP.b_ %}
+  | null
+
+i -> %r r_i {% pP.r_i %}
+  | %g g_i {% pP.g_i %}
+  | %b b_i {% pP.b_i %}
+  | %i s {% pP.i %}
+  | %bo bo_i {% pP.bo_i %}
+  | %bo_i bo {% pP.bo_i %}
+  | %char i {% pP.i_ %}
+  | %noTag i {% pP.i_ %}
+  | null
+
+bo -> %r r_bo {% pP.r_bo %}
+  | %g g_bo {% pP.g_bo %}
+  | %b b_bo {% pP.b_bo %}
+  | %i bo_i {% pP.bo_i %}
+  | %bo s {% pP.bo %}
+  | %bo_i i {% pP.bo_i %}
+  | %char bo {% pP.bo_ %}
+  | %noTag bo {% pP.bo_ %}
+  | null
+
+bo_i -> %r r_bo_i {% pP.r_bo_i %}
+  | %g g_bo_i {% pP.g_bo_i %}
+  | %b b_bo_i {% pP.b_bo_i %}
+  | %i bo {% pP.bo_i %}
+  | %bo i {% pP.bo_i %}
+  | %bo_i s {% pP.bo_i %}
+  | %char bo_i {% pP.bo_i_ %}
+  | %noTag bo_i {% pP.bo_i_ %}
+  | null
+
+r_i -> %r i {% pP.r_i %}
+  | %g g_i {% pP.g_i %}
+  | %b b_i {% pP.b_i %}
+  | %i r {% pP.r_i %}
+  | %bo r_bo_i {% pP.r_bo_i %}
+  | %bo_i r_bo {% pP.r_bo %}
+  | %char r_i {% pP.r_i_ %}
+  | %noTag r_i {% pP.r_i_ %}
+  | null
+
+r_bo -> %r bo {% pP.r_bo %}
+  | %g g_bo {% pP.g_bo %}
+  | %b b_bo {% pP.b_bo %}
+  | %i r_bo_i {% pP.r_bo_i %}
+  | %bo r {% pP.r_bo %}
+  | %bo_i r_i {% pP.r_bo_i %}
+  | %char r_bo {% pP.r_bo_ %}
+  | %noTag r_bo {% pP.r_bo_ %}
+  | null
+
+r_bo_i -> %r bo_i {% pP.r_bo_i %}
+  | %g g_bo_i {% pP.g_bo_i %}
+  | %b b_bo_i {% pP.b_bo_i %}
+  | %i r_bo {% pP.r_bo %}
+  | %bo r_i {% pP.r_bo_i %}
+  | %bo_i r {% pP.r_bo_i %}
+  | %char r_bo_i {% pP.r_bo_i_ %}
+  | %noTag r_bo_i {% pP.r_bo_i_ %}
+  | null
+
+g_i -> %r r_i {% pP.r_i %}
+  | %g i {% pP.g_i %}
+  | %b b_i {% pP.b_i %}
+  | %i g {% pP.g_i %}
+  | %bo g_bo_i {% pP.g_bo_i %}
+  | %bo_i g_bo {% pP.g_bo %}
+  | %char g_i {% pP.g_i_ %}
+  | %noTag g_i {% pP.g_i_ %}
+  | null
+
+g_bo -> %r r_bo {% pP.r_bo %}
+  | %g bo {% pP.g_bo %}
+  | %b b_bo {% pP.b_bo %}
+  | %i g_bo_i {% pP.g_bo_i %}
+  | %bo g {% pP.g_bo %}
+  | %bo_i g_i {% pP.g_bo_i %}
+  | %char g_bo {% pP.g_bo_ %}
+  | %noTag g_bo {% pP.g_bo_ %}
+  | null
+
+g_bo_i -> %r bo_i {% pP.r_bo_i %}
+  | %g bo_i {% pP.g_bo_i %}
+  | %b b_bo_i {% pP.b_bo_i %}
+  | %i g_bo {% pP.g_bo %}
+  | %bo g_i {% pP.g_bo_i %}
+  | %bo_i g {% pP.g_bo_i %}
+  | %char g_bo_i {% pP.g_bo_i_ %}
+  | %noTag g_bo_i {% pP.g_bo_i_ %}
+  | null
+
+b_i -> %r r_i {% pP.r_i %}
+  | %g g_i {% pP.g_i %}
+  | %b i {% pP.b_i %}
+  | %i b {% pP.b_i %}
+  | %bo b_bo_i {% pP.b_bo_i %}
+  | %bo_i b_bo {% pP.b_bo %}
+  | %char b_i {% pP.b_i_ %}
+  | %noTag b_i {% pP.b_i_ %}
+  | null
+
+b_bo -> %r r_bo {% pP.r_bo %}
+  | %g g_bo {% pP.g_bo %}
+  | %b bo {% pP.b_bo %}
+  | %i b_bo_i {% pP.b_bo_i %}
+  | %bo b {% pP.b_bo %}
+  | %bo_i b_i {% pP.b_bo_i %}
+  | %char b_bo {% pP.b_bo_ %}
+  | %noTag b_bo {% pP.b_bo_ %}
+  | null
+
+b_bo_i -> %r r_bo_i {% pP.r_bo_i %}
+  | %g g_bo_i {% pP.g_bo_i %}
+  | %b bo_i {% pP.b_bo_i %}
+  | %i b_bo {% pP.b_bo %}
+  | %bo b_i {% pP.b_bo_i %}
+  | %bo_i b {% pP.b_bo_i %}
+  | %char b_bo_i {% pP.b_bo_i_ %}
+  | %noTag b_bo_i {% pP.b_bo_i_ %}
+  | null
 
 @{%
 const cssObj = function(css, data, isTerminal = true) {

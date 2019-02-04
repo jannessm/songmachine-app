@@ -13,7 +13,7 @@ function prepareTestFile(testFile) {
   if(testFile.results.stack){
     return `
     <div class="res-card">
-      <h1 onclick="toggleFile(event)">${testFile.name}</h1>
+      <h1 onclick="toggleFile(event)" class="${testFile.correct === undefined ? '': testFile.correct ? 'correct' : 'not-correct'}">${testFile.name}</h1>
       <div class="res-file">
         <h3 onclick="toggleClass(event)">Editor</h3>
         <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
@@ -37,10 +37,12 @@ function prepareTestFile(testFile) {
 
 function prepareClass(testClass) {
   return `
-  <h3 onclick="toggleClass(event)">${testClass.name}</h3>
   <div class="res-class">
-    <div class="flex">
-    ${testClass.results.map(query => prepareQuery(query)).join('')}
+  <h3 onclick="toggleClass(event)" class="${testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct'}">${testClass.name}</h3>
+    <div class="flex-wrapper ${testClass.correct ? 'dont-show' : ''}">
+      <div class="flex">
+      ${testClass.results.map(query => prepareQuery(query)).join('')}
+      </div>
     </div>
   </div>`;
 }
