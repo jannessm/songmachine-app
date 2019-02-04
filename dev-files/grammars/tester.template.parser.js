@@ -10,15 +10,29 @@ function prepareTemplate(results) {
 }
 
 function prepareTestFile(testFile) {
-  return `
-  <div class="res-card">
-    <h1 onclick="toggleFile(event)">${testFile.name}</h1>
-    <div class="res-file">
-      <h3 onclick="toggleClass(event)">Editor</h3>
-      <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
-      ${testFile.results.map(testClass => prepareClass(testClass)).join('<hr>')}
-    </div>
-  </div>`;
+  if(testFile.results.stack){
+    return `
+    <div class="res-card">
+      <h1 onclick="toggleFile(event)">${testFile.name}</h1>
+      <div class="res-file">
+        <h3 onclick="toggleClass(event)">Editor</h3>
+        <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
+        <div class="res-wrapper error-wide">
+          <div class="res-query-wrapper"><pre class="res">${testFile.results.stack}</pre></div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    return `
+    <div class="res-card">
+      <h1 onclick="toggleFile(event)">${testFile.name}</h1>
+      <div class="res-file">
+        <h3 onclick="toggleClass(event)">Editor</h3>
+        <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
+        ${testFile.results.map(testClass => prepareClass(testClass)).join('<hr>')}
+      </div>
+    </div>`;
+  }
 }
 
 function prepareClass(testClass) {
@@ -35,7 +49,7 @@ function prepareQuery(query) {
   if(query.results.stack){
     return `
   <div class="res-wrapper error">
-    <h3 class="${query.correct === undefined ? '' : query.correct ? 'correct' : 'not-correct'}">${escapeHTML(query.query)}</h3>
+    <h3 class="not-correct">${escapeHTML(query.query)}</h3>
     <div class="res-query-wrapper"><pre class="res">${query.results.stack}</pre></div>
   </div>`;
   } else {
@@ -62,7 +76,7 @@ function prepareChar(char) {
   }
 
   if(typeof char === 'string'){
-    return '<pre class="res-char">' + char + '</pre>';
+    return '<pre class="res-char">' + escapeHTML(char) + '</pre>';
   } else {
     return `<pre class="res-char ${char.css} dont-show" onclick="toggleChar(event.target, event.target.nextElementSibling)">${
       escapeHTML(JSON.stringify(char, null, 2))

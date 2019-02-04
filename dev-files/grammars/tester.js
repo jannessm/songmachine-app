@@ -57,67 +57,73 @@ const tests = {
   }
 };
 
+function compileGrammar(input){
+  // Parse the grammar source into an AST
+  let grammarParser = new nearley.Parser(nearleyGrammar);
+  grammarParser.feed(input);
+  grammarParser = grammarParser.results[0];
+
+  // Compile the AST into a set of rules
+  grammarParser = compile(grammarParser, {});
+  // Generate JavaScript code from the rules
+  grammarParser = generate(grammarParser, "grammar");
+
+  // Pretend this is a CommonJS environment to catch exports from the grammar.
+  let module = { exports: {} };
+  fs.writeFileSync(__dirname + '/testOUt.js', grammarParser);
+  eval(grammarParser);
+  return module.exports;
+}
+
+function execParsing(test, results, compiled) {
+  let solution = [];
+  if(typeof test !== 'string') {
+    solution = test[1];
+    test = test[0];
+  }
+  try {
+    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(compiled));
+    parser.feed(test);
+
+    let correct;
+    if(solution.length > 0){
+      try {
+        assert.equal(parser.results.length, 1);
+        assert.deepEqual(parser.results[0], solution);
+        correct = true;
+      } catch(assertErr) {
+        correct = false;
+      }
+    }
+
+    results.push({query: test, results: parser.results, correct});
+  } catch(err) {
+    results.push({query: test, results: err, correct: undefined});
+  }
+}
+
 app.get('/', (req, res) => {
 
   const results = [];
 
   Object.keys(tests).forEach(testFile => {
     const grammarInput = fs.readFileSync(__dirname + '/'+testFile+'.ne');
-    const fileResults = [];
-    let parser;
+    let fileResults = [];
     let compiled;
 
     try {
-      // Parse the grammar source into an AST
-      let grammarParser = new nearley.Parser(nearleyGrammar);
-      grammarParser.feed(grammarInput);
-      grammarParser = grammarParser.results[0];
+      compiled = compileGrammar(grammarInput);
 
-      // Compile the AST into a set of rules
-      grammarParser = compile(grammarParser, {});
-      // Generate JavaScript code from the rules
-      grammarParser = generate(grammarParser, "grammar");
-
-      // Pretend this is a CommonJS environment to catch exports from the grammar.
-      let module = { exports: {} };
-      fs.writeFileSync(__dirname + '/testOUt.js', grammarParser);
-      eval(grammarParser);
-      compiled = module.exports;
-    } catch(err) {
-      fileResults.push(err);
-      return;
-    }
-    
-    Object.keys(tests[testFile]).forEach(testClass => {
-      const resultsClass = [];
-      tests[testFile][testClass].forEach(test => {
-        let solution = [];
-        if(typeof test !== 'string') {
-          solution = test[1];
-          test = test[0];
-        }
-        try {
-          parser = new nearley.Parser(nearley.Grammar.fromCompiled(compiled));
-          parser.feed(test);
-
-          let correct;
-          if(solution.length > 0){
-            try {
-              assert.equal(parser.results.length, 1);
-              assert.deepEqual(parser.results[0], solution);
-              correct = true;
-            } catch(assertErr) {
-              correct = false;
-            }
-          }
-
-          resultsClass.push({query: test, results: parser.results, correct});
-        } catch(err) {
-          resultsClass.push({query: test, results: err, correct: undefined});
-        }
+      Object.keys(tests[testFile]).forEach(testClass => {
+        let resultsClass = [];
+        tests[testFile][testClass].forEach(test => {
+          execParsing(test, resultsClass, compiled);
+        });
+        fileResults.push({name: testClass, results: resultsClass});
       });
-      fileResults.push({name: testClass, results: resultsClass});
-    });
+    } catch(err) {
+      fileResults = err;
+    }
     results.push({name: testFile, results: fileResults, file: grammarInput});
   });
   res.send(prepareTemplate(results))

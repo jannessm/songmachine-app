@@ -1,4 +1,8 @@
-@{%
+// Generated automatically by nearley, version unknown
+// http://github.com/Hardmath123/nearley
+(function () {
+function id(x) { return x[0]; }
+
 const moo = require("moo");
 
 const lexer = moo.compile({
@@ -12,23 +16,8 @@ const lexer = moo.compile({
   i: /(?!\*)\*(?!\*)/,
   bo_i: /(?!\*)\*\*\*(?!\*)/,
 });
-%}
-@lexer lexer
-
-s -> %r r {% pP.r %}
-  | %g s {% pP.g %}
-  | %b s {% pP.b %}
-  | %char s {% pP.s %}
-  | null
-
-r -> %r s {% pP.r %}
-  | %g r {% pP.r %}
-  | %b r {% pP.r %}
-  | %char r {% pP.r_ %}
-  | null
 
 
-@{%
 const cssObj = function(css, data, isTerminal = true) {
 	return {
         css,
@@ -108,4 +97,25 @@ const pP = {
   b_bo_3: ([fst, snd, s]) => [cssObj("blue bold", fst, false)].concat(pP.b_bo_([snd,s])),
   b_bo_i_3: ([fst, snd, s]) => [cssObj("blue bold italic", fst, false)].concat(pP.b_bo_i_([snd,s])),
 }
-%}
+var grammar = {
+    Lexer: lexer,
+    ParserRules: [
+    {"name": "s", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r"], "postprocess": pP.r},
+    {"name": "s", "symbols": [(lexer.has("g") ? {type: "g"} : g), "s"], "postprocess": pP.g},
+    {"name": "s", "symbols": [(lexer.has("b") ? {type: "b"} : b), "s"], "postprocess": pP.b},
+    {"name": "s", "symbols": [(lexer.has("char") ? {type: "char"} : char), "s"], "postprocess": pP.s},
+    {"name": "s", "symbols": []},
+    {"name": "r", "symbols": [(lexer.has("r") ? {type: "r"} : r), "s"], "postprocess": pP.r},
+    {"name": "r", "symbols": [(lexer.has("g") ? {type: "g"} : g), "r"], "postprocess": pP.r},
+    {"name": "r", "symbols": [(lexer.has("b") ? {type: "b"} : b), "r"], "postprocess": pP.r},
+    {"name": "r", "symbols": [(lexer.has("char") ? {type: "char"} : char), "r"], "postprocess": pP.r_},
+    {"name": "r", "symbols": []}
+]
+  , ParserStart: "s"
+}
+if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
+   module.exports = grammar;
+} else {
+   window.grammar = grammar;
+}
+})();
