@@ -1,131 +1,204 @@
-s -> "<r>"i r {% pP.r %}
+
+s -> "<" {% pP.s %}
+  | "<r>"i r {% pP.r %}
   | "<g>"i g {% pP.g %}
   | "<b>"i b {% pP.b %}
+  | "<" [^rgbRGB>] s {% pP.s3 %}
+  | "<" [rgbRGB] s {% pP.s3 %}
+  | [^rgbRGB] ">" s {% pP.s3 %}
+  | [rgbRGB] ">" s {% pP.s3 %}
   | "***" bo_i {% pP.bo_i %}
-  | "**" bo {% pP.bo %}
-  | "*" i {% pP.i %}
+  | "**" [^*] bo {% pP.bo3 %}
+  | "*" [^*] i {% pP.i3 %}
+  | [^*] "**" bo {% pP.bo3 %}
+  | [^*] "*" i {% pP.i3 %}
   | char s {% pP.s %}
-  | error s {% ([err, s]) => err.concat(s) %}
   | null
 
-r -> "<r>"i s {% pP.r %}
+r -> "<" {% ([fst]) => [cssObj("red", fst, false)] %}
+  | "<r>"i s {% pP.r %}
   | "<g>"i g {% pP.g %}
   | "<b>"i b {% pP.b %}
+  | "<" [^rgbRGB>] r {% pP.r_3 %}
+  | "<" [rgbRGB] r {% pP.r_3 %}
+  | [^rgbRGB] ">" r {% pP.r_3 %}
+  | [rgbRGB] ">" r {% pP.r_3 %}
   | "***" r_bo_i {% pP.r_bo_i %}
-  | "**" r_bo {% pP.r_bo %}
-  | "*" r_i {% pP.r_i %}
+  | "**" [^*] r_bo {% pP.r_bo3 %}
+  | "*" [^*] r_i {% pP.r_i3 %}
+  | [^*] "**" r_bo {% pP.r_bo3 %}
+  | [^*] "*" r_i {% pP.r_i3 %}
   | char r {% pP.r_ %}
-  | error r {% ([err, s]) => err.concat(s) %}
   | null
 
-g -> "<r>"i r {% pP.r %}
+g -> "<" {% ([fst]) => [cssObj("green", fst, false)] %}
+  | "<r>"i r {% pP.r %}
   | "<g>"i s {% pP.g %}
   | "<b>"i b {% pP.b %}
+  | "<" [^rgbRGB>] g {% pP.g_3 %}
+  | "<" [rgbRGB] g {% pP.g_3 %}
+  | [^rgbRGB] ">" g {% pP.g_3 %}
+  | [rgbRGB] ">" g {% pP.g_3 %}
   | "***" g_bo_i {% pP.g_bo_i %}
-  | "**" g_bo {% pP.g_bo %}
-  | "*" g_i {% pP.g_i %}
+  | "**" [^*] g_bo {% pP.g_bo3 %}
+  | "*" [^*] g_i {% pP.g_i3 %}
+  | [^*] "**" g_bo {% pP.g_bo3 %}
+  | [^*] "*" g_i {% pP.g_i3 %}
   | char g {% pP.g_ %}
-  | error g {% ([err, s]) => err.concat(s) %}
   | null
 
-b -> "<r>"i r {% pP.r %}
+b -> "<" {% ([fst]) => [cssObj("blue", fst, false)] %}
+  | "<r>"i r {% pP.r %}
   | "<g>"i g {% pP.g %}
   | "<b>"i s {% pP.b %}
+  | "<" [^rgbRGB>] b {% pP.b_3 %}
+  | "<" [rgbRGB] b {% pP.b_3 %}
+  | [^rgbRGB] ">" b {% pP.b_3 %}
+  | [rgbRGB] ">" b {% pP.b_3 %}
   | "***" b_bo_i {% pP.b_bo_i %}
-  | "**" b_bo {% pP.b_bo %}
-  | "*" b_i {% pP.b_i %}
+  | "**" [^*] b_bo {% pP.b_bo3 %}
+  | "*" [^*] b_i {% pP.b_i3 %}
+  | [^*] "**" b_bo {% pP.b_bo3 %}
+  | [^*] "*" b_i {% pP.b_i3 %}
   | char b {% pP.b_ %}
-  | error b {% ([err, s]) => err.concat(s) %}
   | null
 
-i -> "<r>"i r {% pP.r %}
+i -> "<" {% ([fst]) => [cssObj("italic", fst, false)] %}
+  | "<r>"i r {% pP.r %}
   | "<g>"i g {% pP.g %}
   | "<b>"i b {% pP.b %}
+  | "<" [^rgbRGB>] i {% pP.i_3 %}
+  | "<" [rgbRGB] i {% pP.i_3 %}
+  | [^rgbRGB] ">" i {% pP.i_3 %}
+  | [rgbRGB] ">" i {% pP.i_3 %}
   | "***" bo {% pP.bo_i %}
-  | "**" bo_i {% pP.bo_i %}
-  | "*" s {% pP.i %}
+  | "**" [^*] bo_i {% pP.bo_i3 %}
+  | "*" [^*] s {% pP.s3 %}
+  | [^*] "**" bo_i {% pP.bo_i3 %}
+  | [^*] "*" s {% pP.s3 %}
   | char i {% pP.i_ %}
-  | error i {% ([err, s]) => err.concat(s) %}
   | null
 
-bo -> "<r>"i r {% pP.r %}
-  | "<g>"i g {% pP.g %}
-  | "<b>"i b {% pP.b %}
-  | "***" i {% pP.bo_i %}
-  | "**" s {% pP.bo %}
-  | "*" i {% pP.i %}
-  | char bo {% pP.bo_ %}
-  | error bo {% ([err, s]) => err.concat(s) %}
-  | null
-
-bo_i -> "<r>"i r {% pP.r %}
-  | "<g>"i g {% pP.g %}
-  | "<b>"i b {% pP.b %}
-  | "***" s {% pP.bo_i %}
-  | "**" i {% pP.bo_i %}
-  | "*" bo {% pP.bo_i %}
-  | char bo_i {% pP.bo_i_ %}
-  | error bo_i {% ([err, s]) => err.concat(s) %}
-  | null
-
-r_bo -> "<r>"i bo {% pP.r_bo %}
-  | "<g>"i g_bo {% pP.g_bo %}
-  | "<b>"i b_bo {% pP.b_bo %}
-  | "***" r_i {% pP.r_i %}
-  | "**" r {% pP.r_bo %}
-  | "*" r_bo_i {% pP.r_bo_i %}
-  | char r_bo {% pP.r_bo_ %}
-  | error r_bo {% ([err, s]) => err.concat(s) %}
-  | null
-
-r_i -> "<r>"i i {% pP.r_i %}
+bo -> "<" {% ([fst]) => [cssObj("bold", fst, false)] %}
+  | "<r>"i r_i {% pP.r_i %}
   | "<g>"i g_i {% pP.g_i %}
   | "<b>"i b_i {% pP.b_i %}
-  | "***" r_bo {% pP.r_bo %}
-  | "**" r_bo_i {% pP.r_bo_i %}
-  | "*" r {% pP.r_i %}
-  | char r_i {% pP.r_i_ %}
-  | error r_i {% ([err, s]) => err.concat(s) %}
+  | "<" [^rgbRGB>] bo {% pP.bo_3 %}
+  | "<" [rgbRGB] bo {% pP.bo_3 %}
+  | [^rgbRGB] ">" bo {% pP.bo_3 %}
+  | [rgbRGB] ">" bo {% pP.bo_3 %}
+  | "***" i {% pP.bo_i %}
+  | "**" [^*] s {% pP.bo3 %}
+  | "*" [^*] bo_i {% pP.bo_i3 %}
+  | [^*] "**" s {% pP.bo3 %}
+  | [^*] "*" bo_i {% pP.bo_i3 %}
+  | char bo {% pP.bo_ %}
   | null
 
-r_bo_i -> "<r>"i bo_i {% pP.r_bo_i %}
+bo_i -> "<" {% ([fst]) => [cssObj("bold italic", fst, false)] %}
+  | "<r>"i r_bo_i {% pP.r_bo_i %}
   | "<g>"i g_bo_i {% pP.g_bo_i %}
   | "<b>"i b_bo_i {% pP.b_bo_i %}
-  | "***" r {% pP.r_bo_i %}
-  | "**" r_i {% pP.r_bo_i %}
-  | "*" r_bo {% pP.r_bo_i %}
-  | char r_bo_i {% pP.r_bo_i_ %}
-  | error r_bo_i {% ([err, s]) => err.concat(s) %}
+  | "<" [^rgbRGB>] bo_i {% pP.bo_i_3 %}
+  | "<" [rgbRGB] bo_i {% pP.bo_i_3 %}
+  | [^rgbRGB] ">" bo_i {% pP.bo_i_3 %}
+  | [rgbRGB] ">" bo_i {% pP.bo_i_3 %}
+  | "***" s {% pP.bo_i %}
+  | "**" [^*] i {% pP.bo_i3 %}
+  | "*" [^*] bo {% pP.bo_i3 %}
+  | [^*] "**" i {% pP.i3 %}
+  | [^*] "*" bo {% pP.bo3 %}
+  | char bo_i {% pP.bo_i_ %}
   | null
 
-g_bo -> "<r>"i r_bo {% pP.r_bo %}
+r_bo -> "<" {% ([fst]) => [cssObj("red bold", fst, false)] %}
+  | "<r>"i bo {% pP.r_bo %}
+  | "<g>"i g_bo {% pP.g_bo %}
+  | "<b>"i b_bo {% pP.b_bo %}
+  | "<" [^rgbRGB>] r_bo {% pP.r_bo_3 %}
+  | "<" [rgbRGB] r_bo {% pP.r_bo_3 %}
+  | [^rgbRGB] ">" r_bo {% pP.r_bo_3 %}
+  | [rgbRGB] ">" r_bo {% pP.r_bo_3 %}
+  | "***" r_i {% pP.r_i %}
+  | "**" [^*] r {% pP.r_bo3 %}
+  | "*" [^*] r_i {% pP.r_i3 %}
+  | [^*] "**" r {% pP.r_bo3 %}
+  | [^*] "*" r_i {% pP.r_i3 %}
+  | char r_bo {% pP.r_bo_ %}
+  | null
+
+r_i -> "<" {% ([fst]) => [cssObj("red italic", fst, false)] %}
+  | "<r>"i i {% pP.r_i %}
+  | "<g>"i g_i {% pP.g_i %}
+  | "<b>"i b_i {% pP.b_i %}
+  | "<" [^rgbRGB>] r_i {% pP.r_i_3 %}
+  | "<" [rgbRGB] r_i {% pP.r_i_3 %}
+  | [^rgbRGB] ">" r_i {% pP.r_i_3 %}
+  | [rgbRGB] ">" r_i {% pP.r_i_3 %}
+  | "***" r_bo {% pP.r_bo %}
+  | "**" [^*] r_bo_i {% pP.r_bo_i3 %}
+  | "*" [^*] r_bo_i {% pP.r_bo_i3 %}
+  | [^*] "**" r_bo_i {% pP.r_bo_i3 %}
+  | [^*] "*" r_bo_i {% pP.r_bo_i3 %}
+  | char r_i {% pP.r_i_ %}
+  | null
+
+r_bo_i -> "<" {% ([fst]) => [cssObj("red bold italic", fst, false)] %}
+  | "<r>"i bo_i {% pP.r_bo_i %}
+  | "<g>"i g_bo_i {% pP.g_bo_i %}
+  | "<b>"i b_bo_i {% pP.b_bo_i %}
+  | "<" [^rgbRGB>] r_bo_i {% pP.r_bo_i_3 %}
+  | "<" [rgbRGB] r_bo_i {% pP.r_bo_i_3 %}
+  | [^rgbRGB] ">" r_bo_i {% pP.r_bo_i_3 %}
+  | [rgbRGB] ">" r_bo_i {% pP.r_bo_i_3 %}
+  | "***" r {% pP.r_bo_i %}
+  | "**" [^*] r_i {% pP.r_i3 %}
+  | "*" [^*] r_bo {% pP.r_bo3 %}
+  | [^*] "**" r_i {% pP.r_i3 %}
+  | [^*] "*" r_bo {% pP.r_bo3 %}
+  | char r_bo_i {% pP.r_bo_i_ %}
+  | null
+
+g_bo -> "<" {% ([fst]) => [cssObj("green bold", fst, false)] %}
+  | "<r>"i r_bo {% pP.r_bo %}
   | "<g>"i bo {% pP.g_bo %}
   | "<b>"i b_bo {% pP.b_bo %}
+  | "<" [^rgbRGB>] g_bo {% pP.g_bo_3 %}
+  | "<" [rgbRGB] g_bo {% pP.g_bo_3 %}
+  | [^rgbRGB] ">" g_bo {% pP.g_bo_3 %}
+  | [rgbRGB] ">" g_bo {% pP.g_bo_3 %}
   | "***" g_i {% pP.g_i %}
   | "**" g {% pP.g_bo %}
   | "*" g_bo_i {% pP.g_bo_i %}
   | char g_bo {% pP.g_bo_ %}
-  | error g_bo {% ([err, s]) => err.concat(s) %}
   | null
 
-g_i -> "<r>"i r_i {% pP.r_i %}
+g_i -> "<" {% ([fst]) => [cssObj("green italic", fst, false)] %}
+  | "<r>"i r_i {% pP.r_i %}
   | "<g>"i i {% pP.g_i %}
   | "<b>"i b_i {% pP.b_i %}
+  | "<" [^rgbRGB>] g_i {% pP.g_i_3 %}
+  | "<" [rgbRGB] g_i {% pP.g_i_3 %}
+  | [^rgbRGB] ">" g_i {% pP.g_i_3 %}
+  | [rgbRGB] ">" g_i {% pP.g_i_3 %}
   | "***" g_bo {% pP.g_bo %}
   | "**" g_bo_i {% pP.g_bo_i %}
   | "*" g {% pP.g_i %}
   | char g_i {% pP.g_i_ %}
-  | error g_i {% ([err, s]) => err.concat(s) %}
   | null
 
-g_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
-  | "<g>"i bo_i {% pP.g_bo_i %}
+g_bo_i -> "<" {% ([fst]) => [cssObj("green bold italic", fst, false)] %}
+  | "<r>"i r_bo_i {% pP.r_bo_i %}
+  | "<g>"i bo_i {% pP.bo_i %}
   | "<b>"i b_bo_i {% pP.b_bo_i %}
+  | "<" [^rgbRGB>] g_bo_i {% pP.g_bo_i_3 %}
+  | "<" [rgbRGB] g_bo_i {% pP.g_bo_i_3 %}
+  | [^rgbRGB] ">" g_bo_i {% pP.g_bo_i_3 %}
+  | [rgbRGB] ">" g_bo_i {% pP.g_bo_i_3 %}
   | "***" g {% pP.g_bo_i %}
   | "**" g_i {% pP.g_bo_i %}
   | "*" g_bo {% pP.g_bo_i %}
   | char g_bo_i {% pP.g_bo_i_ %}
-  | error g_bo_i {% ([err, s]) => err.concat(s) %}
   | null
 
 b_bo -> "<r>"i r_bo {% pP.r_bo %}
@@ -135,7 +208,6 @@ b_bo -> "<r>"i r_bo {% pP.r_bo %}
   | "**" b {% pP.b_bo %}
   | "*" b_bo_i {% pP.b_bo_i %}
   | char b_bo {% pP.b_bo_ %}
-  | error b_bo {% ([err, s]) => err.concat(s) %}
   | null
 
 b_i -> "<r>"i r_i {% pP.r_i %}
@@ -145,46 +217,41 @@ b_i -> "<r>"i r_i {% pP.r_i %}
   | "**" b_bo_i {% pP.b_bo_i %}
   | "*" b {% pP.b_i %}
   | char b_i {% pP.b_i_ %}
-  | error b_i {% ([err, s]) => err.concat(s) %}
   | null
 
-b_bo_i -> "<r>"i r_bo_i {% pP.r_bo_i %}
+b_bo_i -> "<" {% ([fst]) => [cssObj("blue bold italic", fst, false)] %}
+  | "<r>"i r_bo_i {% pP.r_bo_i %}
   | "<g>"i g_bo_i {% pP.g_bo_i %}
   | "<b>"i bo_i {% pP.b_bo_i %}
+  | "<" [^rgbRGB>] b_bo_i {% pP.b_bo_i_3 %}
+  | "<" [rgbRGB] b_bo_i {% pP.b_bo_i_3 %}
+  | [^rgbRGB] ">" b_bo_i {% pP.b_bo_i_3 %}
+  | [rgbRGB] ">" b_bo_i {% pP.b_bo_i_3 %}
   | "***" b {% pP.b_bo_i %}
   | "**" b_i {% pP.b_bo_i %}
   | "*" b_bo {% pP.b_bo_i %}
   | char b_bo_i {% pP.b_bo_i_ %}
-  | error b_bo_i {% ([err, s]) => err.concat(s) %}
   | null
-  
-error -> "<" notColor {% pP.error %}
-  | "<r" [^>] {% pP.error %}
-  | "<g" [^>] {% pP.error %}
-  | "<b" [^>] {% pP.error %}
-  | [^<] "r>" {% pP.invError %}
-  | [^<] "g>" {% pP.invError %}
-  | [^<] "b>" {% pP.invError %}
-  | notColor ">" {% pP.invError %}
 
-notColor -> [^rgb]
-char -> [^\[\]<>\*)] {% data => data[0] %}
+char -> [^\[\]<>\*] {% data => data[0] %}
 
 
 @{%
-const post = function (css, data, rest, isTerminal = true){
-  return [
-      {
+const cssObj = function(css, data, isTerminal = true) {
+	return {
         css,
         content: data,
         isTerminal
       }
-    ].concat(rest);
+}
+
+const post = function (css, data, rest, isTerminal = true){
+  return [cssObj(css, data, isTerminal)].concat(rest);
 }
 
 const pP = {
   error: ([fst, d]) => post("error", fst, d),
-  invError: ([fst, d]) => post("error", d, fst),
+  invError: ([fst, d]) => post("error", d, fst).reverse(),
 
   s: ([fst, d]) => [fst].concat(d),
   r: ([fst, d])  => post("red", fst, d),
@@ -218,5 +285,35 @@ const pP = {
   b_i_: ([fst, d]) => post("blue italic", fst, d, false),
   b_bo_: ([fst, d]) => post("blue bold", fst, d, false),
   b_bo_i_: ([fst, d]) => post("blue bold italic", fst, d, false),
+	
+  s3: ([fst, snd, s]) => [fst].concat(pP.s([snd,s])),
+  i3: ([fst, snd, s]) => [cssObj('italic', fst)].concat(pP.i([snd,s])),
+  bo3: ([fst, snd, s]) => post("bold", fst, s),
+  bo_i3: ([fst, snd, s]) => post("bold italic", fst, d),
+  r_i3: ([fst, snd, s]) => [cssObj('red italic', fst)].concat(pP.r_i([snd,s])),
+  r_bo3: ([fst, snd, s]) => [cssObj('red bold', fst)].concat(pP.r_bo([snd,s])),
+  r_bo_i3: ([fst, snd, s]) => post("red bold italic", fst, d),
+  g_i3: ([fst, snd, s]) => post("green italic", fst, d),
+  g_bo3: ([fst, snd, s]) => post("green bold", fst, d),
+  g_bo_i3: ([fst, snd, s]) => post("green bold italic", fst, d),
+  b_i3: ([fst, snd, s]) => post("blue italic", fst, d),
+  b_bo3: ([fst, snd, s]) => post("blue bold", fst, d),
+  b_bo_i3: ([fst, snd, s]) => post("blue bold italic", fst, d),
+
+  r_3: ([fst, snd, s]) => [cssObj("red", fst, false)].concat(pP.r_([snd,s])),
+  g_3: ([fst, snd, s]) => [cssObj("green", fst, false)].concat(pP.g_([snd,s])),
+  b_3: ([fst, snd, s]) => [cssObj("blue", fst, false)].concat(pP.b_([snd,s])),
+  i_3: ([fst, snd, s]) => [cssObj("italic", fst, false)].concat(pP.i_([snd,s])),
+  bo_3: ([fst, snd, s]) => [cssObj("bold", fst, false)].concat(pP.bo_([snd,s])),
+  bo_i_3: ([fst, snd, s]) => [cssObj("bold italic", fst, false)].concat(pP.bo_i_([snd,s])),
+  r_i_3: ([fst, snd, s]) => [cssObj("red italic", fst, false)].concat(pP.r_i_([snd,s])),
+  r_bo_3: ([fst, snd, s]) => [cssObj("red bold", fst, false)].concat(pP.r_bo_([snd,s])),
+  r_bo_i_3: ([fst, snd, s]) => [cssObj("red italic bold", fst, false)].concat(pP.r_bo_i_([snd,s])),
+  g_i_3: ([fst, snd, s]) => [cssObj("green italic", fst, false)].concat(pP.g_i_([snd,s])),
+  g_bo_3: ([fst, snd, s]) => [cssObj("green bold", fst, false)].concat(pP.g_bo_([snd,s])),
+  g_bo_i_3: ([fst, snd, s]) => [cssObj("green bold italic", fst, false)].concat(pP.g_bo_i([snd,s])),
+  b_i_3: ([fst, snd, s]) => [cssObj("blue italic", fst, false)].concat(pP.b_i_([snd,s])),
+  b_bo_3: ([fst, snd, s]) => [cssObj("blue bold", fst, false)].concat(pP.b_bo_([snd,s])),
+  b_bo_i_3: ([fst, snd, s]) => [cssObj("blue bold italic", fst, false)].concat(pP.b_bo_i_([snd,s])),
 }
 %}

@@ -1,0 +1,134 @@
+<html>
+  <body>
+    {{body}}
+  <script>
+    function toggleFile(e){
+      if(e.target.nextElementSibling.style.display === 'none'){
+        e.target.nextElementSibling.style.display = 'block';
+      } else {
+        e.target.nextElementSibling.style.display = 'none';
+      }
+    }
+    function toggleClass(e){
+      if(e.target.nextElementSibling.style.display === 'none'){
+        e.target.nextElementSibling.style.display = 'inline-flex';
+      } else {
+        e.target.nextElementSibling.style.display = 'none';
+      }
+    }
+    function toggleChar(target, sibling){
+      if(target.style.display === 'none'){
+        target.style.display = 'block';
+        sibling.style.display = 'none';
+      } else {
+        target.style.display = 'none';
+        sibling.style.display = 'block';
+      }
+    }
+    function refresh(e, fileName){
+      post('/save', {content: e.target.previousElementSibling.value, fileName})
+        .then(() => {
+          location.reload();
+        });
+    }
+    function post(url = ``, data = {}) {
+      // Default options are marked with *
+        return fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        }); // parses response to JSON
+    }
+  </script>
+  <style>
+    body{
+      padding: 50px;
+      font-family: monospace;
+    }
+    h1, h2, h3{
+      margin: 10px 0;
+      padding-left: 10px;
+    }
+    .res-card{
+      box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+      padding: 20px;
+    }
+    .res-wrapper {
+      width: 300px;
+      overflow: auto;
+      display: inline-block;
+      position: relative;
+    }
+    .res-wrapper h3.correct::after, .res-wrapper h3.not-correct::after{
+      margin-left: 10px;
+      content: "✓";
+      color: white;
+      background: green;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 5px;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+    .res-wrapper h3.not-correct::after{
+      content: "x";
+      background: red;
+    }
+    .res-wrapper.error{
+      width: 500px;
+    }
+    .editor{
+      width: 100%;
+      height: 300px;
+    }
+    .res-class{
+      overflow: auto;
+      width: 100%;
+    }
+    .flex{
+      display: inline-flex;
+    }
+    .res-query-wrapper {
+      margin: 10px;
+      height: 85%;
+      overflow: auto;
+      color: white;
+      background: grey;
+    }
+    .res{
+      margin: 10px;
+    }
+    .res-char{
+      padding: 5px;
+      margin: 0;
+    }
+    .dont-show{
+      display: none;
+    }
+
+    .red{
+      color: lightpink;
+    }
+    .green{
+      color: lightgreen;
+    }
+    .blue{
+      color: lightblue;
+    }
+    .bold{
+      font-weight: bold;
+    }
+    .italic{
+      font-style: italic;
+    }
+    .isTerminal::after{
+      content: ' (terminal)';
+      color: lightgrey;
+    }
+  </style>
+  </body>
+</html>

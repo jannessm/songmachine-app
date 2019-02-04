@@ -292,7 +292,7 @@ var grammar = {
     {"name": "error", "symbols": [/[^<]/, "error$string$6"], "postprocess": pP.invError},
     {"name": "error", "symbols": ["notColor", {"literal":">"}], "postprocess": pP.invError},
     {"name": "notColor", "symbols": [/[^rgb]/]},
-    {"name": "char", "symbols": [/[^\[\]<>\*)]/], "postprocess": data => data[0]}
+    {"name": "char", "symbols": [/[^\[\]<>\*]/], "postprocess": data => data[0]}
 ]
   , ParserStart: "s"
 }

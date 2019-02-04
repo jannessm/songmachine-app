@@ -54,7 +54,7 @@ export class GrammarParser {
       console.log(err);
     }
     if (!parser.results || (parser.results && parser.results.length === 0)) {
-      return '';
+      return GrammarParser.escapeHTML(input);
     }
 
     const results = parser.results[0];
@@ -70,7 +70,7 @@ export class GrammarParser {
         id !== 0 && typeof currVal !== 'string' && typeof arr[id - 1] !== 'string' &&
         (<NearleyResultObj>currVal).css === (<NearleyResultObj>arr[id - 1]).css
       ) {
-        html += GrammarParser.escapeHTML((<NearleyResultObj>currVal).content);
+        html += keepChars || !(<NearleyResultObj>currVal).isTerminal ? GrammarParser.escapeHTML(currVal.content) : '';
       } else if (
         (id !== 0 && typeof currVal === 'string' && typeof arr[id - 1] !== 'string')
       ) {
