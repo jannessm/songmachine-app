@@ -25,8 +25,8 @@ function prepareTestFile(testFile) {
   } else {
     return `
     <div class="res-card">
-      <h1 onclick="toggleFile(event)">${testFile.name}</h1>
-      <div class="res-file">
+      <h1 onclick="toggleFile(event)" class="${testFile.correct === undefined ? '': testFile.correct ? 'correct' : 'not-correct'}">${testFile.name}</h1>
+      <div class="res-file ${testFile.correct === undefined ? '': testFile.correct ? 'dont-show' : ''}">
         <h3 onclick="toggleClass(event)">Editor</h3>
         <textarea class="editor">${testFile.file}</textarea><button onclick="refresh(event, '${testFile.name}')">Refresh</button><hr>
         ${testFile.results.map(testClass => prepareClass(testClass)).join('<hr>')}
