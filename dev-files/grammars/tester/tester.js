@@ -91,7 +91,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/save', (req, res) => {
-  fs.writeFileSync(__dirname + '/' + req.body.fileName + '.ne', req.body.content);
+  fs.writeFileSync(__dirname + '/../' + req.body.fileName + '.ne', req.body.content);
   res.send();
 })
 
