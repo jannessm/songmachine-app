@@ -129,3 +129,6 @@ st:
       - b, d
       - b, <b>, true
       - f
+editor:
+  brackets:
+    [test]:

@@ -30,8 +30,7 @@ function cssObj(cssAbbrev, content, isTerminal = false){
   }
 }
 
-module.exports = function(){
-  const content = fs.readFileSync(__dirname + '/tests.yml').toString();
+module.exports = function(content){
   let lastPath = [];
   let lastDepth = -1;
   const tests = {};
