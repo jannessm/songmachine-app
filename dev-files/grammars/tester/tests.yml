@@ -130,6 +130,136 @@ st:
       - b, <b>, true
       - f
 editor:
+  colors: 
+    <r>as<r>d: # correct start and ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <r>, true
+      - d
+    r>asdf: # wrong start
+      - r
+      - >
+      - a
+      - s
+      - d
+      - f
+    >asdf: # wrong start
+      - >
+      - a
+      - s
+      - d
+      - f
+    <rasdf: # wrong start
+      - <r
+      - a
+      - s
+      - d
+      - f
+    <asdf: # wrong start
+      - <a
+      - s
+      - d
+      - f
+    <r>asr>: # wrong ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, r
+      - r, >
+    <r>as>: # wrong ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, >
+    <r>as<r: # wrong ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <r
+    <r>as<: # wrong ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <
+    <r><r>a:  # directly starting and ending
+      - r, <r>, true
+      - r, <r>, true
+      - a
+    d<r>a<g>b<b>c: # transition btw colors
+      - d
+      - r, <r>, true
+      - r, a
+      - g, <g>, true
+      - g, b
+      - b, <b>, true
+      - b, c
+  styles: 
+    a***b***c: # start and closing
+      - a
+      - oi, ***, true
+      - oi, b
+      - oi, ***, true
+      - c
+    a**bc: # start without ending
+      - a
+      - o, **, true
+      - o, b
+      - o, c
+    *a: # start without ending at beginning
+      - i, *, true
+      - i, a
+    a**: # start without ending at end
+      - a
+      - o, **, true
+    a*b**c***d: # transitions
+      -a
+      - i, *, true
+      - i, b
+      - io, **, true
+      - oi, c
+      - oi, ***, true
+      - d
+  styles and colors:
+    d<r>a***b***c: # bo_i for red
+      - d
+      - r, <r>, true
+      - r, a
+      - roi, ***, true
+      - roi, b
+      - roi, ***, true
+      - r, c
+    <g>a**bc: # bo for green
+      - g, <g>, true
+      - g, a
+      - go, **, true
+      - go, b
+      - go, c
+    <*a: # wrong start with italic
+      - <
+      - i, *, true
+      - i, a
+    <b>*a: # italic blue
+      - b, <b>, true
+      - bi, *, true
+      - bi, a
+    a**r>: # wrong color ending with bold
+      - a
+      - o, **, true
+      - o, r
+      - o, >
+    <r>a*b<b>**c***d<b>f: # transitions with colors and styles
+      - r, <r>, true
+      - r, a
+      - ri, *, true
+      - ri, b
+      - bi, <b>, true
+      - bio, **, true
+      - boi, c
+      - boi, ***, true
+      - b, d
+      - b, <b>, true
+      - f
   brackets:
     a[test]b: # correct start and end inline
       - a
@@ -153,6 +283,12 @@ editor:
     b]: # non starting brackets
       - b
       - e, ]
+    [a: # non closing brackets
+      - e, [
+      - a
+    ]a: # non starting brackets
+      - e, ]
+      - a
     a[bc[de]f: # non closing and closing
       - a
       - e, [
@@ -168,8 +304,182 @@ editor:
       - [, [
       - n, b
       - n, c
+      - [, ]
+      - d
+      - e
       - e, ]
+      - f
+  red brackets:
+    <r>a[test]b: # correct start and end inline
+      - r, <r>, true
+      - r, a
+      - [, [
+      - n, t
+      - n, e
+      - n, s
+      - n, t
+      - [, ]
+      - r, b
+    <r>[a]: # correct start and end starting
+      - r, <r>, true
+      - [, [
+      - n, a
+      - [, ]
+    <r>[]: # correct start and end without content
+      - r, <r>, true
+      - [, [
+      - [, ]
+    <r>a[: # non closing brackets
+      - r, <r>, true
+      - r, a
+      - e, [
+    <r>b]: # non starting brackets
+      - r, <r>, true
+      - r, b
+      - e, ]
+    <r>[a: # non closing brackets
+      - r, <r>, true
+      - e, [
+      - r, a
+    <r>]a: # non starting brackets
+      - r, <r>, true
+      - e, ]
+      - r, a
+    <r>a[bc[de]f: # non closing and closing
+      - r, <r>, true
+      - r, a
+      - e, [
+      - r, b
+      - r, c
+      - [, [
       - n, d
       - n, e
       - [, ]
-      - f
+      - r, f
+    <r>a[bc]de]f: # non starting and closing
+      - r, <r>, true
+      - r, a
+      - [, [
+      - n, b
+      - n, c
+      - [, ]
+      - r, d
+      - r, e
+      - e, ]
+      - r, f
+  blue brackets:
+    <b>a[test]b: # correct start and end inline
+      - b, <b>, true
+      - b, a
+      - [, [
+      - n, t
+      - n, e
+      - n, s
+      - n, t
+      - [, ]
+      - b, b
+    <b>[a]: # correct start and end starting
+      - b, <b>, true
+      - [, [
+      - n, a
+      - [, ]
+    <b>[]: # correct start and end without content
+      - b, <b>, true
+      - [, [
+      - [, ]
+    <b>a[: # non closing brackets
+      - b, <b>, true
+      - b, a
+      - e, [
+    <b>b]: # non starting brackets
+      - b, <b>, true
+      - b, b
+      - e, ]
+    <b>[a: # non closing brackets
+      - b, <b>, true
+      - e, [
+      - b, a
+    <b>]a: # non starting brackets
+      - b, <b>, true
+      - e, ]
+      - b, a
+    <b>a[bc[de]f: # non closing and closing
+      - b, <b>, true
+      - b, a
+      - e, [
+      - b, b
+      - b, c
+      - [, [
+      - n, d
+      - n, e
+      - [, ]
+      - b, f
+    <b>a[bc]de]f: # non starting and closing
+      - b, <b>, true
+      - b, a
+      - [, [
+      - n, b
+      - n, c
+      - [, ]
+      - b, d
+      - b, e
+      - e, ]
+      - b, f
+  green brackets:
+    <g>a[test]b: # correct start and end inline
+      - g, <g>, true
+      - g, a
+      - [, [
+      - n, t
+      - n, e
+      - n, s
+      - n, t
+      - [, ]
+      - g, b
+    <g>[a]: # correct start and end starting
+      - g, <g>, true
+      - [, [
+      - n, a
+      - [, ]
+    <g>[]: # correct start and end without content
+      - g, <g>, true
+      - [, [
+      - [, ]
+    <g>a[: # non closing brackets
+      - g, <g>, true
+      - g, a
+      - e, [
+    <g>b]: # non starting brackets
+      - g, <g>, true
+      - g, b
+      - e, ]
+    <g>[a: # non closing brackets
+      - g, <g>, true
+      - e, [
+      - g, a
+    <g>]a: # non starting brackets
+      - g, <g>, true
+      - e, ]
+      - g, a
+    <g>a[bc[de]f: # non closing and closing
+      - g, <g>, true
+      - g, a
+      - e, [
+      - g, b
+      - g, c
+      - [, [
+      - n, d
+      - n, e
+      - [, ]
+      - g, f
+    <g>a[bc]de]f: # non starting and closing
+      - g, <g>, true
+      - g, a
+      - [, [
+      - n, b
+      - n, c
+      - [, ]
+      - g, d
+      - g, e
+      - e, ]
+      - g, f

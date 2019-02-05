@@ -10,10 +10,10 @@ const lexer = moo.compile({
   bo: /\*\*/,
   i: /\*/,
   noTag: /(?:(?!<)[^\*]?>)|(?:<[^\*]?(?!>))/,
-  closingBr: {match: /\](?:(?!.*\])|\n|$)/, value: m => m.split('').reverse().join('')},
-  openingBr: /\[(?:(?!.*\[)|\n|$)/,
+  closingBr: "]",
+  openingBr: /\[(?=[^\[]*?\])/,
   errorClosingBr: {match: /\](?:(?=.*\])|\n|$)/, value: m => m.split('').reverse().join('')},
-  errorOpeningBr: /\[(?:(?=.*\[)|\n|$)/,
+  errorOpeningBr: /\[(?:(?!.*\])|(?=.*\[)|\n|$)/,
   NL: {match: /\n/, lineBreaks: true}
 });
 %}

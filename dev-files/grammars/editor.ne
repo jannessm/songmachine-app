@@ -1,24 +1,21 @@
 @include "./dev-files/grammars/st.ne"
 
-s -> %openingBr br %closingBr s {% brackets %}
-  | %errorOpeningBr s {% singleBr %}
-  | %errorClosingBr s {% singleBr %}
-r -> %openingBr br %closingBr r {% brackets %}
-g -> %openingBr br %closingBr g {% brackets %}
-b -> %openingBr br %closingBr b {% brackets %}
-i -> %openingBr br %closingBr i {% brackets %}
-bo -> %openingBr br %closingBr bo {% brackets %}
-
-bo_i -> %openingBr br %closingBr bo_i {% brackets %}
-r_bo -> %openingBr br %closingBr r_bo {% brackets %}
-r_i -> %openingBr br %closingBr r_i {% brackets %}
-r_bo_i -> %openingBr br %closingBr r_bo_i {% brackets %}
-g_bo -> %openingBr br %closingBr g_bo {% brackets %}
-g_i -> %openingBr br %closingBr g_i {% brackets %}
-g_bo_i -> %openingBr br %closingBr g_bo_i {% brackets %}
-b_bo -> %openingBr br %closingBr b_bo {% brackets %}
-b_i -> %openingBr br %closingBr b_i {% brackets %}
-b_bo_i -> %openingBr br %closingBr b_bo_i {% brackets %}
+s -> %openingBr br s {% br %} | %closingBr s {% singleBr %} | %errorOpeningBr s {% singleBr %}
+r -> %openingBr br r {% br %} | %closingBr r {% singleBr %} | %errorOpeningBr r {% singleBr %}
+g -> %openingBr br g {% br %} | %closingBr g {% singleBr %} | %errorOpeningBr g {% singleBr %}
+b -> %openingBr br b {% br %} | %closingBr b {% singleBr %} | %errorOpeningBr b {% singleBr %}
+i -> %openingBr br i {% br %} | %closingBr i {% singleBr %} | %errorOpeningBr i {% singleBr %}
+bo -> %openingBr br bo {% br %} | %closingBr bo {% singleBr %} | %errorOpeningBr bo {% singleBr %}
+bo_i -> %openingBr br bo_i {% br %} | %closingBr bo_i {% singleBr %} | %errorOpeningBr bo_i {% singleBr %}
+r_bo -> %openingBr br r_bo {% br %} | %closingBr r_bo {% singleBr %} | %errorOpeningBr r_bo {% singleBr %}
+r_i -> %openingBr br r_i {% br %} | %closingBr r_i {% singleBr %} | %errorOpeningBr r_i {% singleBr %}
+r_bo_i -> %openingBr br r_bo_i {% br %} | %closingBr r_bo_i {% singleBr %} | %errorOpeningBr r_bo_i {% singleBr %}
+g_bo -> %openingBr br g_bo {% br %} | %closingBr g_bo {% singleBr %} | %errorOpeningBr g_bo {% singleBr %}
+g_i -> %openingBr br g_i {% br %} | %closingBr g_i {% singleBr %} | %errorOpeningBr g_i {% singleBr %}
+g_bo_i -> %openingBr br g_bo_i {% br %} | %closingBr g_bo_i {% singleBr %} | %errorOpeningBr g_bo_i {% singleBr %}
+b_bo -> %openingBr br b_bo {% br %} | %closingBr b_bo {% singleBr %} | %errorOpeningBr b_bo {% singleBr %}
+b_i -> %openingBr br b_i {% br %} | %closingBr b_i {% singleBr %} | %errorOpeningBr b_i {% singleBr %}
+b_bo_i -> %openingBr br b_bo_i {% br %} | %closingBr b_bo_i {% singleBr %} | %errorOpeningBr b_bo_i {% singleBr %}
 
 br -> %r br_r {% pP.r %}
   | %g br_g {% pP.g %}
@@ -27,8 +24,7 @@ br -> %r br_r {% pP.r %}
   | %bo br_bo {% pP.bo %}
   | %i br_i {% pP.i %}
   | %char br {% inBrackets %}
-  | %errorClosingBr br {% singleBr %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_r -> %r br {% pP.r %}
   | %b br_b {% pP.b %}
@@ -36,8 +32,7 @@ br_r -> %r br {% pP.r %}
   | %bo br_r_bo {% pP.r_bo %}
   | %i br_r_i {% pP.r_i %}
   | %char br_r {% pP.r_ %}
-  | error br_r {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_g -> %r br_r {% pP.r %}
   | %g br {% pP.g %}
@@ -46,8 +41,7 @@ br_g -> %r br_r {% pP.r %}
   | %bo br_g_bo {% pP.g_bo %}
   | %i br_g_i {% pP.g_i %}
   | %char br_g {% pP.g_ %}
-  | error br_g {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_b -> %r br_r {% pP.r %}
   | %g br_g {% pP.g %}
@@ -56,8 +50,7 @@ br_b -> %r br_r {% pP.r %}
   | %bo br_b_bo {% pP.b_bo %}
   | %i br_b_i {% pP.b_i %}
   | %char br_b {% pP.b_ %}
-  | error br_b {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_i -> %r br_r {% pP.r %}
   | %g br_g {% pP.g %}
@@ -66,8 +59,7 @@ br_i -> %r br_r {% pP.r %}
   | %bo br_bo_i {% pP.bo_i %}
   | %i br {% pP.i %}
   | %char br_i {% pP.i_ %}
-  | error br_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_bo -> %r br_r {% pP.r %}
   | %g br_g {% pP.g %}
@@ -76,8 +68,7 @@ br_bo -> %r br_r {% pP.r %}
   | %bo br {% pP.bo %}
   | %i br_i {% pP.i %}
   | %char br_bo {% pP.bo_ %}
-  | error br_bo {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_bo_i -> %r br_r {% pP.r %}
   | %g br_g {% pP.g %}
@@ -86,8 +77,7 @@ br_bo_i -> %r br_r {% pP.r %}
   | %bo br_i {% pP.bo_i %}
   | %i br_bo {% pP.bo_i %}
   | %char br_bo_i {% pP.bo_i_ %}
-  | error br_bo_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_r_bo -> %r br_bo {% pP.r_bo %}
   | %g br_g_bo {% pP.g_bo %}
@@ -96,8 +86,7 @@ br_r_bo -> %r br_bo {% pP.r_bo %}
   | %bo br_r {% pP.r_bo %}
   | %i br_r_bo_i {% pP.r_bo_i %}
   | %char br_r_bo {% pP.r_bo_ %}
-  | error br_r_bo {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_r_i -> %r br_i {% pP.r_i %}
   | %g br_g_i {% pP.g_i %}
@@ -106,8 +95,7 @@ br_r_i -> %r br_i {% pP.r_i %}
   | %bo br_r_bo_i {% pP.r_bo_i %}
   | %i br_r {% pP.r_i %}
   | %char br_r_i {% pP.r_i_ %}
-  | error br_r_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_r_bo_i -> %r br_bo_i {% pP.r_bo_i %}
   | %g br_g_bo_i {% pP.g_bo_i %}
@@ -116,8 +104,7 @@ br_r_bo_i -> %r br_bo_i {% pP.r_bo_i %}
   | %bo br_r_i {% pP.r_bo_i %}
   | %i br_r_bo {% pP.r_bo_i %}
   | %char br_r_bo_i {% pP.r_bo_i_ %}
-  | error br_r_bo_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_g_bo -> %r br_r_bo {% pP.r_bo %}
   | %g br_bo {% pP.g_bo %}
@@ -126,8 +113,7 @@ br_g_bo -> %r br_r_bo {% pP.r_bo %}
   | %bo br_g {% pP.g_bo %}
   | %i br_g_bo_i {% pP.g_bo_i %}
   | %char br_g_bo {% pP.g_bo_ %}
-  | error br_g_bo {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_g_i -> %r br_r_i {% pP.r_i %}
   | %g br_i {% pP.g_i %}
@@ -136,8 +122,7 @@ br_g_i -> %r br_r_i {% pP.r_i %}
   | %bo br_g_bo_i {% pP.g_bo_i %}
   | %i br_g {% pP.g_i %}
   | %char br_g_i {% pP.g_i_ %}
-  | error br_g_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_g_bo_i -> %r br_r_bo_i {% pP.r_bo_i %}
   | %g br_bo_i {% pP.g_bo_i %}
@@ -146,8 +131,7 @@ br_g_bo_i -> %r br_r_bo_i {% pP.r_bo_i %}
   | %bo br_g_i {% pP.g_bo_i %}
   | %i br_g_bo {% pP.g_bo_i %}
   | %char br_g_bo_i {% pP.g_bo_i_ %}
-  | error br_g_bo_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_b_bo -> %r br_r_bo {% pP.r_bo %}
   | %g br_g_bo {% pP.g_bo %}
@@ -156,8 +140,7 @@ br_b_bo -> %r br_r_bo {% pP.r_bo %}
   | %bo br_b {% pP.b_bo %}
   | %i br_b_bo_i {% pP.b_bo_i %}
   | %char br_b_bo {% pP.b_bo_ %}
-  | error br_b_bo {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_b_i -> %r br_r_i {% pP.r_i %}
   | %g br_g_i {% pP.g_i %}
@@ -166,8 +149,7 @@ br_b_i -> %r br_r_i {% pP.r_i %}
   | %bo br_b_bo_i {% pP.b_bo_i %}
   | %i br_b {% pP.b_i %}
   | %char br_b_i {% pP.b_i_ %}
-  | error br_b_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 br_b_bo_i -> %r br_r_bo_i {% pP.r_bo_i %}
   | %g br_g_bo_i {% pP.g_bo_i %}
@@ -176,8 +158,7 @@ br_b_bo_i -> %r br_r_bo_i {% pP.r_bo_i %}
   | %bo br_b_i {% pP.b_bo_i %}
   | %i br_b_bo {% pP.b_bo_i %}
   | %char br_b_bo_i {% pP.b_bo_i_ %}
-  | error br_b_bo_i {% ([err, s]) => err.concat(s) %}
-  | null
+  | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
 
 @{%
   const inBrackets = ([fst, rest]) => [
@@ -187,6 +168,19 @@ br_b_bo_i -> %r br_r_bo_i {% pP.r_bo_i %}
       isTerminal: false
     }
   ].concat(rest);
+
+  const br = function([fst, br, s]) {
+    const openBr = fst.value;
+    return [
+        {
+          css: 'grey',
+          content: openBr,
+          isTerminal: false
+        }
+      ]
+      .concat(br)
+      .concat(s)
+  }
 
   const brackets = function(data) {
     const openBr = data[0].value;

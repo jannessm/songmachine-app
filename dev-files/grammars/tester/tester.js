@@ -46,10 +46,15 @@ function execParsing(test, results, compiled) {
     if(solution.length > 0){
       try {
         assert.equal(parser.results.length, 1);
-        assert.deepEqual(parser.results[0], solution);
         correct = true;
       } catch(assertErr) {
         parser.results = assertErr;
+        correct = false;
+      }
+      try {
+        assert.deepEqual(parser.results[0], solution);
+        correct = true;
+      } catch(assertErr) {
         correct = false;
       }
     }
