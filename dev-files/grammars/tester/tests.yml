@@ -1,0 +1,131 @@
+st: 
+  colors: 
+    <r>as<r>d: 
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <r>, true
+      - d
+    r>asdf: 
+      - r
+      - >
+      - a
+      - s
+      - d
+      - f
+    >asdf: 
+      - >
+      - a
+      - s
+      - d
+      - f
+    <rasdf:
+      - <r
+      - a
+      - s
+      - d
+      - f
+    <asdf:
+      - <a
+      - s
+      - d
+      - f
+    <r>asr>:
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, r
+      - r, >
+    <r>as>:
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, >
+    <r>as<r:
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <r
+    <r>as<:
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <
+    <r><r>a:
+      - r, <r>, true
+      - r, <r>, true
+      - a
+    d<r>a<g>b<b>c:
+      - d
+      - r, <r>, true
+      - r, a
+      - g, <g>, true
+      - g, b
+      - b, <b>, true
+      - b, c
+  styles: 
+    a***b***c:
+      - a
+      - oi, ***, true
+      - oi, b
+      - oi, ***, true
+      - c
+    a**bc:
+      - a
+      - o, **, true
+      - o, b
+      - o, c
+    *a:
+      - i, *, true
+      - i, a
+    a**:
+      - a
+      - o, **, true
+    a*b**c***d:
+      -a
+      - i, *, true
+      - i, b
+      - io, **, true
+      - oi, c
+      - oi, ***, true
+      - d
+  styles and colors:
+    d<r>a***b***c:
+      - d
+      - r, <r>, true
+      - r, a
+      - roi, ***, true
+      - roi, b
+      - roi, ***, true
+      - r, c
+    <g>a**bc:
+      - g, <g>, true
+      - g, a
+      - go, **, true
+      - go, b
+      - go, c
+    <*a:
+      - <
+      - i, *, true
+      - i, a
+    <b>*a:
+      - b, <b>, true
+      - bi, *, true
+      - bi, a
+    a**r>:
+      - a
+      - o, **, true
+      - o, r
+      - o, >
+    <r>a*b<b>**c***d<b>f:
+      - r, <r>, true
+      - r, a
+      - ri, *, true
+      - ri, b
+      - bi, <b>, true
+      - bio, **, true
+      - boi, c
+      - boi, ***, true
+      - b, d
+      - b, <b>, true
+      - f
