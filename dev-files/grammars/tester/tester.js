@@ -49,7 +49,7 @@ function execParsing(test, results, compiled) {
         assert.deepEqual(parser.results[0], solution);
         correct = true;
       } catch(assertErr) {
-        console.log(assertErr);
+        parser.results = assertErr;
         correct = false;
       }
     }
