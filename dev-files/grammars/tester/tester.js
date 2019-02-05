@@ -62,9 +62,9 @@ function execParsing(test, results, compiled) {
 
 app.get('/', (req, res) => {
   const results = [];
-  const tests = prepareTests(fs.readFileSync(__dirname + '/tests.yml').toString());
+  const tests = prepareTests(fs.readFileSync(__dirname + '/tests.yml').toString().replace(/#.*/g, ''));
   Object.keys(tests).forEach(testFile => {
-    const grammarInput = fs.readFileSync(__dirname + '/../'+testFile+'.ne');
+    let grammarInput = fs.readFileSync(__dirname + '/../'+testFile+'.ne');
     let fileResults = [];
     let compiled;
 
@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
       Object.keys(tests[testFile]).forEach(testClass => {
         let resultsClass = [];
         Object.keys(tests[testFile][testClass]).forEach(test => {
-          const testInput = tests[testFile][testClass][test].length ? [test, tests[testFile][testClass][test]] : tests[testFile][testClass][test];
+          const testInput = tests[testFile][testClass][test].length ? [test, tests[testFile][testClass][test]] : test;
           execParsing(testInput, resultsClass, compiled);
         });
         fileResults.push({

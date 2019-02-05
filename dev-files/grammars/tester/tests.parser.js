@@ -22,6 +22,9 @@ function cssObj(cssAbbrev, content, isTerminal = false){
   css.push(/b/.test(cssAbbrev) ? 'blue' : '');
   css.push(/o/.test(cssAbbrev) ? 'bold' : '');
   css.push(/i/.test(cssAbbrev) ? 'italic' : '');
+  css.push(/\[|\]/.test(cssAbbrev) ? 'grey' : '');
+  css.push(/n/.test(cssAbbrev) ? 'orange' : '');
+  css.push(/e/.test(cssAbbrev) ? 'error' : '');
 
   return {
     css: css.filter(val => !!val).join(' '),

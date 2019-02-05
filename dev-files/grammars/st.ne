@@ -2,7 +2,7 @@
 const moo = require("moo");
 
 const lexer = moo.compile({
-  char: {match: /[^\[\]<>\*]/, lineBreaks: true},
+  char: {match: /[^\[\]<>\*\n]/},
   r: /<(?:r|R)>/,
   g: /<(?:g|G)>/,
   b: /<(?:b|B)>/,
@@ -10,6 +10,11 @@ const lexer = moo.compile({
   bo: /\*\*/,
   i: /\*/,
   noTag: /(?:(?!<)[^\*]?>)|(?:<[^\*]?(?!>))/,
+  closingBr: {match: /\](?:(?!.*\])|\n|$)/, value: m => m.split('').reverse().join('')},
+  openingBr: /\[(?:(?!.*\[)|\n|$)/,
+  errorClosingBr: {match: /\](?:(?=.*\])|\n|$)/, value: m => m.split('').reverse().join('')},
+  errorOpeningBr: /\[(?:(?=.*\[)|\n|$)/,
+  NL: {match: /\n/, lineBreaks: true}
 });
 %}
 @lexer lexer
@@ -222,36 +227,6 @@ const pP = {
   g_bo_i_: ([fst, d]) => post("green bold italic", fst.value, d, false),
   b_i_: ([fst, d]) => post("blue italic", fst.value, d, false),
   b_bo_: ([fst, d]) => post("blue bold", fst.value, d, false),
-  b_bo_i_: ([fst, d]) => post("blue bold italic", fst.value, d, false),
-	
-  s3: ([fst, snd, s]) => [fst.value].concat(pP.s([snd.value, s])),
-  i3: ([fst, snd, s]) => [cssObj('italic', fst)].concat(pP.i([snd.value, s])),
-  bo3: ([fst, snd, s]) => post("bold", fst, s),
-  bo_i3: ([fst, snd, s]) => post("bold italic", fst, d),
-  r_i3: ([fst, snd, s]) => [cssObj('red italic', fst)].concat(pP.r_i([snd,s])),
-  r_bo3: ([fst, snd, s]) => [cssObj('red bold', fst)].concat(pP.r_bo([snd,s])),
-  r_bo_i3: ([fst, snd, s]) => post("red bold italic", fst, d),
-  g_i3: ([fst, snd, s]) => post("green italic", fst, d),
-  g_bo3: ([fst, snd, s]) => post("green bold", fst, d),
-  g_bo_i3: ([fst, snd, s]) => post("green bold italic", fst, d),
-  b_i3: ([fst, snd, s]) => post("blue italic", fst, d),
-  b_bo3: ([fst, snd, s]) => post("blue bold", fst, d),
-  b_bo_i3: ([fst, snd, s]) => post("blue bold italic", fst, d),
-
-  r_3: ([fst, snd, s]) => [cssObj("red", fst, false)].concat(pP.r_([snd,s])),
-  g_3: ([fst, snd, s]) => [cssObj("green", fst, false)].concat(pP.g_([snd,s])),
-  b_3: ([fst, snd, s]) => [cssObj("blue", fst, false)].concat(pP.b_([snd,s])),
-  i_3: ([fst, snd, s]) => [cssObj("italic", fst, false)].concat(pP.i_([snd,s])),
-  bo_3: ([fst, snd, s]) => [cssObj("bold", fst, false)].concat(pP.bo_([snd,s])),
-  bo_i_3: ([fst, snd, s]) => [cssObj("bold italic", fst, false)].concat(pP.bo_i_([snd,s])),
-  r_i_3: ([fst, snd, s]) => [cssObj("red italic", fst, false)].concat(pP.r_i_([snd,s])),
-  r_bo_3: ([fst, snd, s]) => [cssObj("red bold", fst, false)].concat(pP.r_bo_([snd,s])),
-  r_bo_i_3: ([fst, snd, s]) => [cssObj("red italic bold", fst, false)].concat(pP.r_bo_i_([snd,s])),
-  g_i_3: ([fst, snd, s]) => [cssObj("green italic", fst, false)].concat(pP.g_i_([snd,s])),
-  g_bo_3: ([fst, snd, s]) => [cssObj("green bold", fst, false)].concat(pP.g_bo_([snd,s])),
-  g_bo_i_3: ([fst, snd, s]) => [cssObj("green bold italic", fst, false)].concat(pP.g_bo_i([snd,s])),
-  b_i_3: ([fst, snd, s]) => [cssObj("blue italic", fst, false)].concat(pP.b_i_([snd,s])),
-  b_bo_3: ([fst, snd, s]) => [cssObj("blue bold", fst, false)].concat(pP.b_bo_([snd,s])),
-  b_bo_i_3: ([fst, snd, s]) => [cssObj("blue bold italic", fst, false)].concat(pP.b_bo_i_([snd,s])),
+  b_bo_i_: ([fst, d]) => post("blue bold italic", fst.value, d, false)
 }
 %}
