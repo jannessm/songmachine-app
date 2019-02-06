@@ -104,7 +104,7 @@ r_bo -> %r bo {% pP.r_bo %}
   | %b b_bo {% pP.b_bo %}
   | %i r_bo_i {% pP.r_bo_i %}
   | %bo r {% pP.r_bo %}
-  | %bo_i r_i {% pP.r_bo_i %}
+  | %bo_i r_i {% pP.r_i %}
   | %char r_bo {% pP.r_bo_ %}
   | %noTag r_bo {% pP.r_bo_ %}
   | null
@@ -112,7 +112,7 @@ r_bo -> %r bo {% pP.r_bo %}
 r_bo_i -> %r bo_i {% pP.r_bo_i %}
   | %g g_bo_i {% pP.g_bo_i %}
   | %b b_bo_i {% pP.b_bo_i %}
-  | %i r_bo {% pP.r_bo %}
+  | %i r_bo {% pP.r_bo_i %}
   | %bo r_i {% pP.r_bo_i %}
   | %bo_i r {% pP.r_bo_i %}
   | %char r_bo_i {% pP.r_bo_i_ %}
@@ -134,7 +134,7 @@ g_bo -> %r r_bo {% pP.r_bo %}
   | %b b_bo {% pP.b_bo %}
   | %i g_bo_i {% pP.g_bo_i %}
   | %bo g {% pP.g_bo %}
-  | %bo_i g_i {% pP.g_bo_i %}
+  | %bo_i g_i {% pP.g_i %}
   | %char g_bo {% pP.g_bo_ %}
   | %noTag g_bo {% pP.g_bo_ %}
   | null
@@ -142,7 +142,7 @@ g_bo -> %r r_bo {% pP.r_bo %}
 g_bo_i -> %r bo_i {% pP.r_bo_i %}
   | %g bo_i {% pP.g_bo_i %}
   | %b b_bo_i {% pP.b_bo_i %}
-  | %i g_bo {% pP.g_bo %}
+  | %i g_bo {% pP.g_bo_i %}
   | %bo g_i {% pP.g_bo_i %}
   | %bo_i g {% pP.g_bo_i %}
   | %char g_bo_i {% pP.g_bo_i_ %}
@@ -164,7 +164,7 @@ b_bo -> %r r_bo {% pP.r_bo %}
   | %b bo {% pP.b_bo %}
   | %i b_bo_i {% pP.b_bo_i %}
   | %bo b {% pP.b_bo %}
-  | %bo_i b_i {% pP.b_bo_i %}
+  | %bo_i b_i {% pP.b_i %}
   | %char b_bo {% pP.b_bo_ %}
   | %noTag b_bo {% pP.b_bo_ %}
   | null
@@ -172,7 +172,7 @@ b_bo -> %r r_bo {% pP.r_bo %}
 b_bo_i -> %r r_bo_i {% pP.r_bo_i %}
   | %g g_bo_i {% pP.g_bo_i %}
   | %b bo_i {% pP.b_bo_i %}
-  | %i b_bo {% pP.b_bo %}
+  | %i b_bo {% pP.b_bo_i %}
   | %bo b_i {% pP.b_bo_i %}
   | %bo_i b {% pP.b_bo_i %}
   | %char b_bo_i {% pP.b_bo_i_ %}

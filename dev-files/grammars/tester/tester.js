@@ -56,6 +56,7 @@ function execParsing(test, results, compiled) {
         correct = true;
       } catch(assertErr) {
         correct = false;
+        parser.results.push(["solution:"].concat(solution));
       }
     }
 
