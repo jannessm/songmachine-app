@@ -13,7 +13,8 @@ const fs = require('fs');
 const assert = require('assert');
 
 const prepareTemplate = require(__dirname + '/tester.template.parser.js');
-const prepareTests = require(__dirname + '/tests.parser.js');
+const prepareTests = require(__dirname + '/tests.parser.js').prepareTests;
+const parseYml = require(__dirname + '/tests.parser.js').parseYml;
 
 function compileGrammar(input){
   // Parse the grammar source into an AST
@@ -89,10 +90,10 @@ function processTestClass(testClasses, compiledGrammar) {
 
 app.get('/', (req, res) => {
   const results = [];
-  const testsConfig = prepareTests(fs.readFileSync(__dirname + '/tests.yml').toString().replace(/#.*/g, ''));
+  const testsConfig = parseYml(__dirname + '/tests.yml');
   testsConfig.grammars.forEach(testFile => {
     let grammarInput = fs.readFileSync(__dirname + '/../'+testFile+'.ne');
-    const tests = prepareTests(fs.readFileSync(__dirname + '/../'+testFile+'.tests.yml').toString().replace(/#.*/g, ''));
+    const tests = prepareTests(testFile);
     let fileResults = [];
     let compiled;
 

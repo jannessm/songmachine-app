@@ -8,8 +8,14 @@
     function toggleFile(e){
       if(e.target.nextElementSibling.style.display === 'none'){
         e.target.nextElementSibling.style.display = 'block';
+        if (e.target.tagName === 'H2') {
+          e.target.className += e.target.className.replace('collapsed', '') + ' expanded';
+        }
       } else {
         e.target.nextElementSibling.style.display = 'none';
+        if (e.target.tagName === 'H2') {
+          e.target.className += e.target.className.replace('expanded', '') + ' collapsed';
+        }
       }
     }
     function toggleClassWrapper(e){
@@ -78,6 +84,14 @@
       padding: 0 3px;
       box-sizing: border-box;
       font-size: 25px;
+    }
+    .expanded::before, .collapsed::before{
+      margin-right: 10px;
+      content: "▶";
+      font-size: 10px;
+    }
+    .expanded::before{
+      content: "▼";
     }
     h1.correct::after, h1.not-correct::after, h2.correct::after, h2.not-correct::after{
       top: unset;

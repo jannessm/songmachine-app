@@ -1,618 +1,621 @@
-colors:
-  wrong colors:
-    "r>asdf": # wrong start
-      - r
-      - >
-      - a
-      - s
-      - d
-      - f
-    ">asdf": # wrong start
-      - >
-      - a
-      - s
-      - d
-      - f
-    <rasdf: # wrong start
-      - <r
-      - a
-      - s
-      - d
-      - f
-    <asdf: # wrong start
-      - <a
-      - s
-      - d
-      - f
-    ar>asdf: # wrong start with offset
-      - a
-      - r
-      - >
-      - a
-      - s
-      - d
-      - f
-    a>asdf: # wrong start with offset
-      - a
-      - >
-      - a
-      - s
-      - d
-      - f
-    a<rasdf: # wrong start with offset
-      - a
-      - <r
-      - a
-      - s
-      - d
-      - f
-    a<asdf: # wrong start with offset
-      - a
-      - <a
-      - s
-      - d
-      - f
-  red:  
-    <r>as<r>d: # correct start and ending
-      - r, <r>, true
-      - r, a
-      - r, s
-      - r, <r>, true
-      - d
-    <r>as<r>: # correct start and ending
-      - r, <r>, true
-      - r, a
-      - r, s
-      - r, <r>, true
-    <r><r>:  # directly starting and ending
-      - r, <r>, true
-      - r, <r>, true
-    <r><r>a:  # directly starting and ending
-      - r, <r>, true
-      - r, <r>, true
-      - a
-    a<r>d: #correct without end
-      - a
-      - r, <r>, true
-      - r, d
-    a<r>: #correct at end
-      - a
-      - r, <r>, true
-    <r>d: #correct without end
-      - r, <r>, true
-      - r, d
-    <r>: #correct at end
-      - r, <r>, true
-    <r>a*b: # italic
-      - r, <r>, true
-      - r, a
-      - ri, *, true
-      - ri, b
-    <r>a**b: # bold
-      - r, <r>, true
-      - r, a
-      - ro, **, true
-      - ro, b
-    <r>a***b: # bo_i
-      - r, <r>, true
-      - r, a
-      - rio, ***, true
-      - rio, b
-  green: 
-    <g>as<g>d: # correct start and ending
-      - g, <g>, true
-      - g, a
-      - g, s
-      - g, <g>, true
-      - d
-    <g>as<g>: # correct start and ending
-      - g, <g>, true
-      - g, a
-      - g, s
-      - g, <g>, true
-    <g><g>:  # directly starting and ending
-      - g, <g>, true
-      - g, <g>, true
-    <g><g>a:  # directly starting and ending
-      - g, <g>, true
-      - g, <g>, true
-      - a
-    a<g>d: #correct without end
-      - a
-      - g, <g>, true
-      - g, d
-    a<g>: #correct at end
-      - a
-      - g, <g>, true
-    <g>d: #correct without end
-      - g, <g>, true
-      - g, d
-    <g>: #correct at end
-      - g, <g>, true
-    <g>a*b: # italic
-      - g, <g>, true
-      - g, a
-      - gi, *, true
-      - gi, b
-    <g>a**b: # bold
-      - g, <g>, true
-      - g, a
-      - go, **, true
-      - go, b
-    <g>a***b: # bo_i
-      - g, <g>, true
-      - g, a
-      - gio, ***, true
-      - gio, b
-  blue: 
-    <b>as<b>d: # correct start and ending
-      - b, <b>, true
-      - b, a
-      - b, s
-      - b, <b>, true
-      - d
-    <b>as<b>: # correct start and ending
-      - b, <b>, true
-      - b, a
-      - b, s
-      - b, <b>, true
-    <b><b>:  # directly starting and ending
-      - b, <b>, true
-      - b, <b>, true
-    <b><b>a:  # directly starting and ending
-      - b, <b>, true
-      - b, <b>, true
-      - a
-    a<b>d: #correct without end
-      - a
-      - b, <b>, true
-      - b, d
-    a<b>: #correct at end
-      - a
-      - b, <b>, true
-    <b>d: #correct without end
-      - b, <b>, true
-      - b, d
-    <b>: #correct at end
-      - b, <b>, true
-    <b>a*b: # italic
-      - b, <b>, true
-      - b, a
-      - bi, *, true
-      - bi, b
-    <b>a**b: # bold
-      - b, <b>, true
-      - b, a
-      - bo, **, true
-      - bo, b
-    <b>a***b: # bo_i
-      - b, <b>, true
-      - b, a
-      - bio, ***, true
-      - bio, b
-  transitions between colors:
-    d<r>a<g>b<b>c: # transition btw colors
-      - d
-      - r, <r>, true
-      - r, a
-      - g, <g>, true
-      - g, b
-      - b, <b>, true
-      - b, c
-    d<g>a<r>b<b>c: # transition btw colors
-      - d
-      - g, <g>, true
-      - g, a
-      - r, <r>, true
-      - r, b
-      - b, <b>, true
-      - b, c
-    d<b>a<r>b<b>c<g>f: # transition btw colors
-      - d
-      - b, <b>, true
-      - b, a
-      - r, <r>, true
-      - r, b
-      - b, <b>, true
-      - b, c
-      - g, <g>, true
-      - g, f
-italic:
-  a*b*c: # start and closing
-    - a
-    - i, *, true
-    - i, b
-    - i, *, true
-    - c
-  a*bc: # start without ending
-    - a
-    - i, *, true
-    - i, b
-    - i, c
-  "*a": # start without ending at beginning
-    - i, *, true
-    - i, a
-  a*: # start without ending at end
-    - a
-    - i, *, true
-  a*b**c**d***e: # transitions
-    - a
-    - i, *, true
-    - i, b
-    - io, **, true
-    - oi, c
-    - oi, **, true
-    - i, d
-    - o, ***, true
-    - o, e
-bold: 
-  a**b**c: # start and closing
-    - a
-    - o, **, true
-    - o, b
-    - o, **, true
-    - c
-  a**bc: # start without ending
-    - a
-    - o, **, true
-    - o, b
-    - o, c
-  "**a": # start without ending at beginning
-    - o, **, true
-    - o, a
-  a**: # start without ending at end
-    - a
-    - o, **, true
-  a**b*c*d***e: # transitions
-    - a
-    - o, **, true
-    - o, b
-    - io, *, true
-    - oi, c
-    - oi, *, true
-    - o, d
-    - i, ***, true
-    - i, e
-bo_i: 
-  a***b***c: # start and closing
-    - a
-    - oi, ***, true
-    - oi, b
-    - oi, ***, true
-    - c
-  a***bc: # start without ending
-    - a
-    - oi, ***, true
-    - oi, b
-    - oi, c
-  "***a": # start without ending at beginning
-    - io, ***, true
-    - io, a
-  a***: # start without ending at end
-    - a
-    - oi, ***, true
-  a***b**c**d*e: # transitions
-    - a
-    - io, ***, true
-    - io, b
-    - io, **, true
-    - i, c
-    - oi, **, true
-    - oi, d
-    - oi, *, true
-    - o, e
-red italic:
-  <r>a*b*c: # start and closing
-    - r, <r>, true
-    - r, a
-    - ir, *, true
-    - ri, b
-    - ri, *, true
-    - r, c
-  <r>a*bc: # start without ending
-    - r, <r>, true
-    - r, a
-    - ri, *, true
-    - ri, b
-    - ri, c
-  a*b<r>c: # start without ending
-    - a
-    - i, *, true
-    - i, b
-    - ri, <r>, true
-    - ri, c
-  <r>*a: # start without ending at beginning
-    - r, <r>, true
-    - ri, *, true
-    - ri, a
-  <r>a*b**c**d***e: # transitions
-    - r, <r>, true
-    - r, a
-    - ri, *, true
-    - ri, b
-    - rio, **, true
-    - roi, c
-    - roi, **, true
-    - ri, d
-    - ro, ***, true
-    - ro, e
-green italic:
-  <g>a*b*c: # start and closing
-    - g, <g>, true
-    - g, a
-    - ig, *, true
-    - gi, b
-    - gi, *, true
-    - g, c
-  <g>a*bc: # start without ending
-    - g, <g>, true
-    - g, a
-    - gi, *, true
-    - gi, b
-    - gi, c
-  a*b<g>c: # start without ending
-    - a
-    - i, *, true
-    - i, b
-    - gi, <g>, true
-    - gi, c
-  <g>*a: # start without ending at beginning
-    - g, <g>, true
-    - gi, *, true
-    - gi, a
-  <g>a*b**c**d***e: # transitions
-    - g, <g>, true
-    - g, a
-    - gi, *, true
-    - gi, b
-    - gio, **, true
-    - goi, c
-    - goi, **, true
-    - gi, d
-    - go, ***, true
-    - go, e
-blue italic:
-  <b>a*b*c: # start and closing
-    - b, <b>, true
-    - b, a
-    - ib, *, true
-    - bi, b
-    - bi, *, true
-    - b, c
-  <b>a*bc: # start without ending
-    - b, <b>, true
-    - b, a
-    - bi, *, true
-    - bi, b
-    - bi, c
-  a*b<b>c: # start without ending
-    - a
-    - i, *, true
-    - i, b
-    - bi, <b>, true
-    - bi, c
-  <b>*a: # start without ending at beginning
-    - b, <b>, true
-    - bi, *, true
-    - bi, a
-  <b>a*b**c**d***e: # transitions
-    - b, <b>, true
-    - b, a
-    - bi, *, true
-    - bi, b
-    - bio, **, true
-    - boi, c
-    - boi, **, true
-    - bi, d
-    - bo, ***, true
-    - bo, e
-red bold:
-  <r>a**b**c: # start and closing
-    - r, <r>, true
-    - r, a
-    - ro, **, true
-    - ro, b
-    - ro, **, true
-    - r, c
-  <r>a**bc: # start without ending
-    - r, <r>, true
-    - r, a
-    - ro, **, true
-    - ro, b
-    - ro, c
-  a**b<r>c: # start without ending
-    - a
-    - o, **, true
-    - o, b
-    - ro, <r>, true
-    - ro, c
-  <r>**a: # start without ending at beginning
-    - r, <r>, true
-    - ro, **, true
-    - ro, a
-  <r>a**b*c*d***e: # transitions
-    - r, <r>, true
-    - r, a
-    - ro, **, true
-    - ro, b
-    - rio, *, true
-    - roi, c
-    - roi, *, true
-    - ro, d
-    - ri, ***, true
-    - ri, e
-green bold:
-  <g>a**b**c: # start and closing
-    - g, <g>, true
-    - g, a
-    - go, **, true
-    - go, b
-    - go, **, true
-    - g, c
-  <g>a**bc: # start without ending
-    - g, <g>, true
-    - g, a
-    - go, **, true
-    - go, b
-    - go, c
-  a**b<g>c: # start without ending
-    - a
-    - o, **, true
-    - o, b
-    - go, <g>, true
-    - go, c
-  <g>**a: # start without ending at beginning
-    - g, <g>, true
-    - go, **, true
-    - go, a
-  <g>a**b*c*d***e: # transitions
-    - g, <g>, true
-    - g, a
-    - go, **, true
-    - go, b
-    - gio, *, true
-    - goi, c
-    - goi, *, true
-    - go, d
-    - gi, ***, true
-    - gi, e
-blue bold:
-  <b>a**b**c: # start and closing
-    - b, <b>, true
-    - b, a
-    - bo, **, true
-    - bo, b
-    - bo, **, true
-    - b, c
-  <b>a**bc: # start without ending
-    - b, <b>, true
-    - b, a
-    - bo, **, true
-    - bo, b
-    - bo, c
-  a**b<b>c: # start without ending
-    - a
-    - o, **, true
-    - o, b
-    - bo, <b>, true
-    - bo, c
-  <b>**a: # start without ending at beginning
-    - b, <b>, true
-    - bo, **, true
-    - bo, a
-  <b>a**b*c*d***e: # transitions
-    - b, <b>, true
-    - b, a
-    - bo, **, true
-    - bo, b
-    - boi, *, true
-    - boi, c
-    - boi, *, true
-    - bo, d
-    - bi, ***, true
-    - bi, e
-red bo_i:
-  <r>a***b***c: # start and closing
-    - r, <r>, true
-    - r, a
-    - roi, ***, true
-    - roi, b
-    - roi, ***, true
-    - r, c
-  <r>a***bc: # start without ending
-    - r, <r>, true
-    - r, a
-    - roi, ***, true
-    - roi, b
-    - roi, c
-  a***b<r>c: # start without ending
-    - a
-    - oi, ***, true
-    - oi, b
-    - roi, <r>, true
-    - roi, c
-  <r>***a: # start without ending at beginning
-    - r, <r>, true
-    - roi, ***, true
-    - roi, a
-  <r>a***b**c**d*e: # transitions
-    - r, <r>, true
-    - r, a
-    - roi, ***, true
-    - roi, b
-    - roi, **, true
-    - ri, c
-    - roi, **, true
-    - roi, d
-    - roi, *, true
-    - ro, e
-green bo_i:
-  <g>a***b***c: # start and closing
-    - g, <g>, true
-    - g, a
-    - goi, ***, true
-    - goi, b
-    - goi, ***, true
-    - g, c
-  <g>a***bc: # start without ending
-    - g, <g>, true
-    - g, a
-    - goi, ***, true
-    - goi, b
-    - goi, c
-  a***b<g>c: # start without ending
-    - a
-    - oi, ***, true
-    - oi, b
-    - goi, <g>, true
-    - goi, c
-  <g>***a: # start without ending at beginning
-    - g, <g>, true
-    - goi, ***, true
-    - goi, a
-  <g>a***b**c**d*e: # transitions
-    - g, <g>, true
-    - g, a
-    - goi, ***, true
-    - goi, b
-    - goi, **, true
-    - gi, c
-    - goi, **, true
-    - goi, d
-    - goi, *, true
-    - go, e
-blue bo_i:
-  <b>a***b***c: # start and closing
-    - b, <b>, true
-    - b, a
-    - boi, ***, true
-    - boi, b
-    - boi, ***, true
-    - b, c
-  <b>a***bc: # start without ending
-    - b, <b>, true
-    - b, a
-    - boi, ***, true
-    - boi, b
-    - boi, c
-  a***b<b>c: # start without ending
-    - a
-    - oi, ***, true
-    - oi, b
-    - boi, <b>, true
-    - boi, c
-  <b>***a: # start without ending at beginning
-    - b, <b>, true
-    - boi, ***, true
-    - boi, a
-  <b>a***b**c**d*e: # transitions
-    - b, <b>, true
-    - b, a
-    - boi, ***, true
-    - boi, b
-    - boi, **, true
-    - bi, c
-    - boi, **, true
-    - boi, d
-    - boi, *, true
-    - bo, e
+tests:
+  colors:
+    wrong colors:
+      "r>asdf": # wrong start
+        - r
+        - >
+        - a
+        - s
+        - d
+        - f
+      ">asdf": # wrong start
+        - >
+        - a
+        - s
+        - d
+        - f
+      <rasdf: # wrong start
+        - <r
+        - a
+        - s
+        - d
+        - f
+      <asdf: # wrong start
+        - <a
+        - s
+        - d
+        - f
+      ar>asdf: # wrong start with offset
+        - a
+        - r
+        - >
+        - a
+        - s
+        - d
+        - f
+      a>asdf: # wrong start with offset
+        - a
+        - >
+        - a
+        - s
+        - d
+        - f
+      a<rasdf: # wrong start with offset
+        - a
+        - <r
+        - a
+        - s
+        - d
+        - f
+      a<asdf: # wrong start with offset
+        - a
+        - <a
+        - s
+        - d
+        - f
+    red:  
+      <r>as<r>d: # correct start and ending
+        - r, <r>, true
+        - r, a
+        - r, s
+        - r, <r>, true
+        - d
+      <r>as<r>: # correct start and ending
+        - r, <r>, true
+        - r, a
+        - r, s
+        - r, <r>, true
+      <r><r>:  # directly starting and ending
+        - r, <r>, true
+        - r, <r>, true
+      <r><r>a:  # directly starting and ending
+        - r, <r>, true
+        - r, <r>, true
+        - a
+      a<r>d: #correct without end
+        - a
+        - r, <r>, true
+        - r, d
+      a<r>: #correct at end
+        - a
+        - r, <r>, true
+      <r>d: #correct without end
+        - r, <r>, true
+        - r, d
+      <r>: #correct at end
+        - r, <r>, true
+      <r>a*b: # italic
+        - r, <r>, true
+        - r, a
+        - ri, *, true
+        - ri, b
+      <r>a**b: # bold
+        - r, <r>, true
+        - r, a
+        - ro, **, true
+        - ro, b
+      <r>a***b: # bo_i
+        - r, <r>, true
+        - r, a
+        - rio, ***, true
+        - rio, b
+    green: 
+      <g>as<g>d: # correct start and ending
+        - g, <g>, true
+        - g, a
+        - g, s
+        - g, <g>, true
+        - d
+      <g>as<g>: # correct start and ending
+        - g, <g>, true
+        - g, a
+        - g, s
+        - g, <g>, true
+      <g><g>:  # directly starting and ending
+        - g, <g>, true
+        - g, <g>, true
+      <g><g>a:  # directly starting and ending
+        - g, <g>, true
+        - g, <g>, true
+        - a
+      a<g>d: #correct without end
+        - a
+        - g, <g>, true
+        - g, d
+      a<g>: #correct at end
+        - a
+        - g, <g>, true
+      <g>d: #correct without end
+        - g, <g>, true
+        - g, d
+      <g>: #correct at end
+        - g, <g>, true
+      <g>a*b: # italic
+        - g, <g>, true
+        - g, a
+        - gi, *, true
+        - gi, b
+      <g>a**b: # bold
+        - g, <g>, true
+        - g, a
+        - go, **, true
+        - go, b
+      <g>a***b: # bo_i
+        - g, <g>, true
+        - g, a
+        - gio, ***, true
+        - gio, b
+    blue: 
+      <b>as<b>d: # correct start and ending
+        - b, <b>, true
+        - b, a
+        - b, s
+        - b, <b>, true
+        - d
+      <b>as<b>: # correct start and ending
+        - b, <b>, true
+        - b, a
+        - b, s
+        - b, <b>, true
+      <b><b>:  # directly starting and ending
+        - b, <b>, true
+        - b, <b>, true
+      <b><b>a:  # directly starting and ending
+        - b, <b>, true
+        - b, <b>, true
+        - a
+      a<b>d: #correct without end
+        - a
+        - b, <b>, true
+        - b, d
+      a<b>: #correct at end
+        - a
+        - b, <b>, true
+      <b>d: #correct without end
+        - b, <b>, true
+        - b, d
+      <b>: #correct at end
+        - b, <b>, true
+      <b>a*b: # italic
+        - b, <b>, true
+        - b, a
+        - bi, *, true
+        - bi, b
+      <b>a**b: # bold
+        - b, <b>, true
+        - b, a
+        - bo, **, true
+        - bo, b
+      <b>a***b: # bo_i
+        - b, <b>, true
+        - b, a
+        - bio, ***, true
+        - bio, b
+    transitions between colors:
+      d<r>a<g>b<b>c: # transition btw colors
+        - d
+        - r, <r>, true
+        - r, a
+        - g, <g>, true
+        - g, b
+        - b, <b>, true
+        - b, c
+      d<g>a<r>b<b>c: # transition btw colors
+        - d
+        - g, <g>, true
+        - g, a
+        - r, <r>, true
+        - r, b
+        - b, <b>, true
+        - b, c
+      d<b>a<r>b<b>c<g>f: # transition btw colors
+        - d
+        - b, <b>, true
+        - b, a
+        - r, <r>, true
+        - r, b
+        - b, <b>, true
+        - b, c
+        - g, <g>, true
+        - g, f
+  styles:
+    italic:
+      a*b*c: # start and closing
+        - a
+        - i, *, true
+        - i, b
+        - i, *, true
+        - c
+      a*bc: # start without ending
+        - a
+        - i, *, true
+        - i, b
+        - i, c
+      "*a": # start without ending at beginning
+        - i, *, true
+        - i, a
+      a*: # start without ending at end
+        - a
+        - i, *, true
+      a*b**c**d***e: # transitions
+        - a
+        - i, *, true
+        - i, b
+        - io, **, true
+        - oi, c
+        - oi, **, true
+        - i, d
+        - o, ***, true
+        - o, e
+    bold: 
+      a**b**c: # start and closing
+        - a
+        - o, **, true
+        - o, b
+        - o, **, true
+        - c
+      a**bc: # start without ending
+        - a
+        - o, **, true
+        - o, b
+        - o, c
+      "**a": # start without ending at beginning
+        - o, **, true
+        - o, a
+      a**: # start without ending at end
+        - a
+        - o, **, true
+      a**b*c*d***e: # transitions
+        - a
+        - o, **, true
+        - o, b
+        - io, *, true
+        - oi, c
+        - oi, *, true
+        - o, d
+        - i, ***, true
+        - i, e
+    bo_i: 
+      a***b***c: # start and closing
+        - a
+        - oi, ***, true
+        - oi, b
+        - oi, ***, true
+        - c
+      a***bc: # start without ending
+        - a
+        - oi, ***, true
+        - oi, b
+        - oi, c
+      "***a": # start without ending at beginning
+        - io, ***, true
+        - io, a
+      a***: # start without ending at end
+        - a
+        - oi, ***, true
+      a***b**c**d*e: # transitions
+        - a
+        - io, ***, true
+        - io, b
+        - io, **, true
+        - i, c
+        - oi, **, true
+        - oi, d
+        - oi, *, true
+        - o, e
+  styles and colors:
+    red italic:
+      <r>a*b*c: # start and closing
+        - r, <r>, true
+        - r, a
+        - ir, *, true
+        - ri, b
+        - ri, *, true
+        - r, c
+      <r>a*bc: # start without ending
+        - r, <r>, true
+        - r, a
+        - ri, *, true
+        - ri, b
+        - ri, c
+      a*b<r>c: # start without ending
+        - a
+        - i, *, true
+        - i, b
+        - ri, <r>, true
+        - ri, c
+      <r>*a: # start without ending at beginning
+        - r, <r>, true
+        - ri, *, true
+        - ri, a
+      <r>a*b**c**d***e: # transitions
+        - r, <r>, true
+        - r, a
+        - ri, *, true
+        - ri, b
+        - rio, **, true
+        - roi, c
+        - roi, **, true
+        - ri, d
+        - ro, ***, true
+        - ro, e
+    green italic:
+      <g>a*b*c: # start and closing
+        - g, <g>, true
+        - g, a
+        - ig, *, true
+        - gi, b
+        - gi, *, true
+        - g, c
+      <g>a*bc: # start without ending
+        - g, <g>, true
+        - g, a
+        - gi, *, true
+        - gi, b
+        - gi, c
+      a*b<g>c: # start without ending
+        - a
+        - i, *, true
+        - i, b
+        - gi, <g>, true
+        - gi, c
+      <g>*a: # start without ending at beginning
+        - g, <g>, true
+        - gi, *, true
+        - gi, a
+      <g>a*b**c**d***e: # transitions
+        - g, <g>, true
+        - g, a
+        - gi, *, true
+        - gi, b
+        - gio, **, true
+        - goi, c
+        - goi, **, true
+        - gi, d
+        - go, ***, true
+        - go, e
+    blue italic:
+      <b>a*b*c: # start and closing
+        - b, <b>, true
+        - b, a
+        - ib, *, true
+        - bi, b
+        - bi, *, true
+        - b, c
+      <b>a*bc: # start without ending
+        - b, <b>, true
+        - b, a
+        - bi, *, true
+        - bi, b
+        - bi, c
+      a*b<b>c: # start without ending
+        - a
+        - i, *, true
+        - i, b
+        - bi, <b>, true
+        - bi, c
+      <b>*a: # start without ending at beginning
+        - b, <b>, true
+        - bi, *, true
+        - bi, a
+      <b>a*b**c**d***e: # transitions
+        - b, <b>, true
+        - b, a
+        - bi, *, true
+        - bi, b
+        - bio, **, true
+        - boi, c
+        - boi, **, true
+        - bi, d
+        - bo, ***, true
+        - bo, e
+    red bold:
+      <r>a**b**c: # start and closing
+        - r, <r>, true
+        - r, a
+        - ro, **, true
+        - ro, b
+        - ro, **, true
+        - r, c
+      <r>a**bc: # start without ending
+        - r, <r>, true
+        - r, a
+        - ro, **, true
+        - ro, b
+        - ro, c
+      a**b<r>c: # start without ending
+        - a
+        - o, **, true
+        - o, b
+        - ro, <r>, true
+        - ro, c
+      <r>**a: # start without ending at beginning
+        - r, <r>, true
+        - ro, **, true
+        - ro, a
+      <r>a**b*c*d***e: # transitions
+        - r, <r>, true
+        - r, a
+        - ro, **, true
+        - ro, b
+        - rio, *, true
+        - roi, c
+        - roi, *, true
+        - ro, d
+        - ri, ***, true
+        - ri, e
+    green bold:
+      <g>a**b**c: # start and closing
+        - g, <g>, true
+        - g, a
+        - go, **, true
+        - go, b
+        - go, **, true
+        - g, c
+      <g>a**bc: # start without ending
+        - g, <g>, true
+        - g, a
+        - go, **, true
+        - go, b
+        - go, c
+      a**b<g>c: # start without ending
+        - a
+        - o, **, true
+        - o, b
+        - go, <g>, true
+        - go, c
+      <g>**a: # start without ending at beginning
+        - g, <g>, true
+        - go, **, true
+        - go, a
+      <g>a**b*c*d***e: # transitions
+        - g, <g>, true
+        - g, a
+        - go, **, true
+        - go, b
+        - gio, *, true
+        - goi, c
+        - goi, *, true
+        - go, d
+        - gi, ***, true
+        - gi, e
+    blue bold:
+      <b>a**b**c: # start and closing
+        - b, <b>, true
+        - b, a
+        - bo, **, true
+        - bo, b
+        - bo, **, true
+        - b, c
+      <b>a**bc: # start without ending
+        - b, <b>, true
+        - b, a
+        - bo, **, true
+        - bo, b
+        - bo, c
+      a**b<b>c: # start without ending
+        - a
+        - o, **, true
+        - o, b
+        - bo, <b>, true
+        - bo, c
+      <b>**a: # start without ending at beginning
+        - b, <b>, true
+        - bo, **, true
+        - bo, a
+      <b>a**b*c*d***e: # transitions
+        - b, <b>, true
+        - b, a
+        - bo, **, true
+        - bo, b
+        - boi, *, true
+        - boi, c
+        - boi, *, true
+        - bo, d
+        - bi, ***, true
+        - bi, e
+    red bo_i:
+      <r>a***b***c: # start and closing
+        - r, <r>, true
+        - r, a
+        - roi, ***, true
+        - roi, b
+        - roi, ***, true
+        - r, c
+      <r>a***bc: # start without ending
+        - r, <r>, true
+        - r, a
+        - roi, ***, true
+        - roi, b
+        - roi, c
+      a***b<r>c: # start without ending
+        - a
+        - oi, ***, true
+        - oi, b
+        - roi, <r>, true
+        - roi, c
+      <r>***a: # start without ending at beginning
+        - r, <r>, true
+        - roi, ***, true
+        - roi, a
+      <r>a***b**c**d*e: # transitions
+        - r, <r>, true
+        - r, a
+        - roi, ***, true
+        - roi, b
+        - roi, **, true
+        - ri, c
+        - roi, **, true
+        - roi, d
+        - roi, *, true
+        - ro, e
+    green bo_i:
+      <g>a***b***c: # start and closing
+        - g, <g>, true
+        - g, a
+        - goi, ***, true
+        - goi, b
+        - goi, ***, true
+        - g, c
+      <g>a***bc: # start without ending
+        - g, <g>, true
+        - g, a
+        - goi, ***, true
+        - goi, b
+        - goi, c
+      a***b<g>c: # start without ending
+        - a
+        - oi, ***, true
+        - oi, b
+        - goi, <g>, true
+        - goi, c
+      <g>***a: # start without ending at beginning
+        - g, <g>, true
+        - goi, ***, true
+        - goi, a
+      <g>a***b**c**d*e: # transitions
+        - g, <g>, true
+        - g, a
+        - goi, ***, true
+        - goi, b
+        - goi, **, true
+        - gi, c
+        - goi, **, true
+        - goi, d
+        - goi, *, true
+        - go, e
+    blue bo_i:
+      <b>a***b***c: # start and closing
+        - b, <b>, true
+        - b, a
+        - boi, ***, true
+        - boi, b
+        - boi, ***, true
+        - b, c
+      <b>a***bc: # start without ending
+        - b, <b>, true
+        - b, a
+        - boi, ***, true
+        - boi, b
+        - boi, c
+      a***b<b>c: # start without ending
+        - a
+        - oi, ***, true
+        - oi, b
+        - boi, <b>, true
+        - boi, c
+      <b>***a: # start without ending at beginning
+        - b, <b>, true
+        - boi, ***, true
+        - boi, a
+      <b>a***b**c**d*e: # transitions
+        - b, <b>, true
+        - b, a
+        - boi, ***, true
+        - boi, b
+        - boi, **, true
+        - bi, c
+        - boi, **, true
+        - boi, d
+        - boi, *, true
+        - bo, e

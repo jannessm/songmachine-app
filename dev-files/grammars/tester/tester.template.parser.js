@@ -38,6 +38,7 @@ function prepareTestFile(testFile) {
 function prepareClass(testClass) {
   let func;
   let content;
+  let css = testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct';
   // is query
   if (testClass.results[0].results[0].length) {
     func = 'toggleClassWrapper';
@@ -47,6 +48,7 @@ function prepareClass(testClass) {
         </div>`;
   } else {
     func = 'toggleFile';
+    css += testClass.correct ? ' collapsed' : ' expended'
     content = `<div class="subclass" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
       ${testClass.results.map(nextClass => `  
           <div class="res-file">
@@ -57,7 +59,7 @@ function prepareClass(testClass) {
 
   return `
     <div class="res-class">
-    <h2 onclick="${func}(event)" class="${testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct'}">${testClass.name}</h2>
+    <h2 onclick="${func}(event)" class="${css}">${testClass.name}</h2>
       ${content}
     </div>`;
 }

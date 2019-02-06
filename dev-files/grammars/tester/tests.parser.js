@@ -33,7 +33,20 @@ function cssObj(cssAbbrev, content, isTerminal = false){
   }
 }
 
-module.exports = function(content){
+function prepareTests(fileName){
+  const tests = parseYml(__dirname + '/../' + fileName + '.tests.yml');
+
+  if (tests.include) {
+    const reduced = {};
+    tests.include.forEach(file => reduced[file] = prepareTests(file));
+    return Object.assign(reduced, tests.tests);
+  } else {
+    return tests.tests;
+  }
+}
+
+function parseYml(fileName){
+  const content = removeComments(fs.readFileSync(fileName));
   let lastPath = [];
   let lastDepth = -1;
   const tests = {};
@@ -77,5 +90,17 @@ module.exports = function(content){
       trav.push(cssObj(...line.replace('-', '').split(',').map(val => val.trim())));
     }
   });
+
   return tests;
 }
+
+function removeComments(content) {
+  if (content.replace) {
+    return content.replace(/#.*/g, '');
+  } else {
+    return content.toString().replace(/#.*/g, '');
+  }
+}
+
+module.exports.prepareTests = prepareTests;
+module.exports.parseYml = parseYml;
