@@ -1,13 +1,13 @@
 st:
   wrong colors:
-    r>asdf: # wrong start
+    "r>asdf": # wrong start
       - r
       - >
       - a
       - s
       - d
       - f
-    >asdf: # wrong start
+    ">asdf": # wrong start
       - >
       - a
       - s
@@ -52,7 +52,7 @@ st:
       - s
       - d
       - f
-  red: 
+  red:  
     <r>as<r>d: # correct start and ending
       - r, <r>, true
       - r, a
@@ -229,7 +229,7 @@ st:
       - i, *, true
       - i, b
       - i, c
-    *a: # start without ending at beginning
+    "*a": # start without ending at beginning
       - i, *, true
       - i, a
     a*: # start without ending at end
@@ -257,7 +257,7 @@ st:
       - o, **, true
       - o, b
       - o, c
-    **a: # start without ending at beginning
+    "**a": # start without ending at beginning
       - o, **, true
       - o, a
     a**: # start without ending at end
@@ -285,7 +285,7 @@ st:
       - oi, ***, true
       - oi, b
       - oi, c
-    ***a: # start without ending at beginning
+    "***a": # start without ending at beginning
       - io, ***, true
       - io, a
     a***: # start without ending at end
@@ -313,7 +313,7 @@ st:
       - i, *, true
       - i, b
       - i, c
-    *a: # start without ending at beginning
+    "*a": # start without ending at beginning
       - i, *, true
       - i, a
     a*: # start without ending at end
@@ -328,62 +328,6 @@ st:
       - oi, **, true
       - i, d
       - o, ***, true
-      - o, e
-  bold: 
-    a**b**c: # start and closing
-      - a
-      - o, **, true
-      - o, b
-      - o, **, true
-      - c
-    a**bc: # start without ending
-      - a
-      - o, **, true
-      - o, b
-      - o, c
-    **a: # start without ending at beginning
-      - o, **, true
-      - o, a
-    a**: # start without ending at end
-      - a
-      - o, **, true
-    a**b*c*d***e: # transitions
-      - a
-      - o, **, true
-      - o, b
-      - io, *, true
-      - oi, c
-      - oi, *, true
-      - o, d
-      - i, ***, true
-      - i, e
-  bo_i: 
-    a***b***c: # start and closing
-      - a
-      - oi, ***, true
-      - oi, b
-      - oi, ***, true
-      - c
-    a***bc: # start without ending
-      - a
-      - oi, ***, true
-      - oi, b
-      - oi, c
-    ***a: # start without ending at beginning
-      - io, ***, true
-      - io, a
-    a***: # start without ending at end
-      - a
-      - oi, ***, true
-    a***b**c**d*e: # transitions
-      - a
-      - io, ***, true
-      - io, b
-      - io, **, true
-      - i, c
-      - oi, **, true
-      - oi, d
-      - oi, *, true
       - o, e
 editor:
   colors: 
@@ -400,7 +344,7 @@ editor:
       - s
       - d
       - f
-    >asdf: # wrong start
+    ">asdf": # wrong start
       - >
       - a
       - s
@@ -462,7 +406,7 @@ editor:
       - o, **, true
       - o, b
       - o, c
-    *a: # start without ending at beginning
+    "*a": # start without ending at beginning
       - i, *, true
       - i, a
     a**: # start without ending at end

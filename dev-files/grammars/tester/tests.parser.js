@@ -45,7 +45,12 @@ module.exports = function(content){
 
     if(/:/.test(line)){
       const depth = /\S/.exec(line).index / 2;
-      const key = line.replace(':', '').trim();
+      let key = line.replace(':', '').trim();
+
+      if (/^["']/.test(key)) {
+        key = key.slice(1, -1);
+      }
+
       if (depth > lastDepth) {
         traverse(tests, lastPath)[key] = {};
         lastDepth = depth;
