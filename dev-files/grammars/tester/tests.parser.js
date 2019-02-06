@@ -76,6 +76,6 @@ module.exports = function(content){
 
       trav.push(cssObj(...line.replace('-', '').split(',').map(val => val.trim())));
     }
-  })
+  });
   return tests;
 }

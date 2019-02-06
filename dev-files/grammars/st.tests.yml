@@ -1,221 +1,222 @@
-wrong colors:
-  "r>asdf": # wrong start
-    - r
-    - >
-    - a
-    - s
-    - d
-    - f
-  ">asdf": # wrong start
-    - >
-    - a
-    - s
-    - d
-    - f
-  <rasdf: # wrong start
-    - <r
-    - a
-    - s
-    - d
-    - f
-  <asdf: # wrong start
-    - <a
-    - s
-    - d
-    - f
-  ar>asdf: # wrong start with offset
-    - a
-    - r
-    - >
-    - a
-    - s
-    - d
-    - f
-  a>asdf: # wrong start with offset
-    - a
-    - >
-    - a
-    - s
-    - d
-    - f
-  a<rasdf: # wrong start with offset
-    - a
-    - <r
-    - a
-    - s
-    - d
-    - f
-  a<asdf: # wrong start with offset
-    - a
-    - <a
-    - s
-    - d
-    - f
-red:  
-  <r>as<r>d: # correct start and ending
-    - r, <r>, true
-    - r, a
-    - r, s
-    - r, <r>, true
-    - d
-  <r>as<r>: # correct start and ending
-    - r, <r>, true
-    - r, a
-    - r, s
-    - r, <r>, true
-  <r><r>:  # directly starting and ending
-    - r, <r>, true
-    - r, <r>, true
-  <r><r>a:  # directly starting and ending
-    - r, <r>, true
-    - r, <r>, true
-    - a
-  a<r>d: #correct without end
-    - a
-    - r, <r>, true
-    - r, d
-  a<r>: #correct at end
-    - a
-    - r, <r>, true
-  <r>d: #correct without end
-    - r, <r>, true
-    - r, d
-  <r>: #correct at end
-    - r, <r>, true
-  <r>a*b: # italic
-    - r, <r>, true
-    - r, a
-    - ri, *, true
-    - ri, b
-  <r>a**b: # bold
-    - r, <r>, true
-    - r, a
-    - ro, **, true
-    - ro, b
-  <r>a***b: # bo_i
-    - r, <r>, true
-    - r, a
-    - rio, ***, true
-    - rio, b
-green: 
-  <g>as<g>d: # correct start and ending
-    - g, <g>, true
-    - g, a
-    - g, s
-    - g, <g>, true
-    - d
-  <g>as<g>: # correct start and ending
-    - g, <g>, true
-    - g, a
-    - g, s
-    - g, <g>, true
-  <g><g>:  # directly starting and ending
-    - g, <g>, true
-    - g, <g>, true
-  <g><g>a:  # directly starting and ending
-    - g, <g>, true
-    - g, <g>, true
-    - a
-  a<g>d: #correct without end
-    - a
-    - g, <g>, true
-    - g, d
-  a<g>: #correct at end
-    - a
-    - g, <g>, true
-  <g>d: #correct without end
-    - g, <g>, true
-    - g, d
-  <g>: #correct at end
-    - g, <g>, true
-  <g>a*b: # italic
-    - g, <g>, true
-    - g, a
-    - gi, *, true
-    - gi, b
-  <g>a**b: # bold
-    - g, <g>, true
-    - g, a
-    - go, **, true
-    - go, b
-  <g>a***b: # bo_i
-    - g, <g>, true
-    - g, a
-    - gio, ***, true
-    - gio, b
-blue: 
-  <b>as<b>d: # correct start and ending
-    - b, <b>, true
-    - b, a
-    - b, s
-    - b, <b>, true
-    - d
-  <b>as<b>: # correct start and ending
-    - b, <b>, true
-    - b, a
-    - b, s
-    - b, <b>, true
-  <b><b>:  # directly starting and ending
-    - b, <b>, true
-    - b, <b>, true
-  <b><b>a:  # directly starting and ending
-    - b, <b>, true
-    - b, <b>, true
-    - a
-  a<b>d: #correct without end
-    - a
-    - b, <b>, true
-    - b, d
-  a<b>: #correct at end
-    - a
-    - b, <b>, true
-  <b>d: #correct without end
-    - b, <b>, true
-    - b, d
-  <b>: #correct at end
-    - b, <b>, true
-  <b>a*b: # italic
-    - b, <b>, true
-    - b, a
-    - bi, *, true
-    - bi, b
-  <b>a**b: # bold
-    - b, <b>, true
-    - b, a
-    - bo, **, true
-    - bo, b
-  <b>a***b: # bo_i
-    - b, <b>, true
-    - b, a
-    - bio, ***, true
-    - bio, b
-transitions between colors:
-  d<r>a<g>b<b>c: # transition btw colors
-    - d
-    - r, <r>, true
-    - r, a
-    - g, <g>, true
-    - g, b
-    - b, <b>, true
-    - b, c
-  d<g>a<r>b<b>c: # transition btw colors
-    - d
-    - g, <g>, true
-    - g, a
-    - r, <r>, true
-    - r, b
-    - b, <b>, true
-    - b, c
-  d<b>a<r>b<b>c<g>f: # transition btw colors
-    - d
-    - b, <b>, true
-    - b, a
-    - r, <r>, true
-    - r, b
-    - b, <b>, true
-    - b, c
-    - g, <g>, true
-    - g, f
+colors:
+  wrong colors:
+    "r>asdf": # wrong start
+      - r
+      - >
+      - a
+      - s
+      - d
+      - f
+    ">asdf": # wrong start
+      - >
+      - a
+      - s
+      - d
+      - f
+    <rasdf: # wrong start
+      - <r
+      - a
+      - s
+      - d
+      - f
+    <asdf: # wrong start
+      - <a
+      - s
+      - d
+      - f
+    ar>asdf: # wrong start with offset
+      - a
+      - r
+      - >
+      - a
+      - s
+      - d
+      - f
+    a>asdf: # wrong start with offset
+      - a
+      - >
+      - a
+      - s
+      - d
+      - f
+    a<rasdf: # wrong start with offset
+      - a
+      - <r
+      - a
+      - s
+      - d
+      - f
+    a<asdf: # wrong start with offset
+      - a
+      - <a
+      - s
+      - d
+      - f
+  red:  
+    <r>as<r>d: # correct start and ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <r>, true
+      - d
+    <r>as<r>: # correct start and ending
+      - r, <r>, true
+      - r, a
+      - r, s
+      - r, <r>, true
+    <r><r>:  # directly starting and ending
+      - r, <r>, true
+      - r, <r>, true
+    <r><r>a:  # directly starting and ending
+      - r, <r>, true
+      - r, <r>, true
+      - a
+    a<r>d: #correct without end
+      - a
+      - r, <r>, true
+      - r, d
+    a<r>: #correct at end
+      - a
+      - r, <r>, true
+    <r>d: #correct without end
+      - r, <r>, true
+      - r, d
+    <r>: #correct at end
+      - r, <r>, true
+    <r>a*b: # italic
+      - r, <r>, true
+      - r, a
+      - ri, *, true
+      - ri, b
+    <r>a**b: # bold
+      - r, <r>, true
+      - r, a
+      - ro, **, true
+      - ro, b
+    <r>a***b: # bo_i
+      - r, <r>, true
+      - r, a
+      - rio, ***, true
+      - rio, b
+  green: 
+    <g>as<g>d: # correct start and ending
+      - g, <g>, true
+      - g, a
+      - g, s
+      - g, <g>, true
+      - d
+    <g>as<g>: # correct start and ending
+      - g, <g>, true
+      - g, a
+      - g, s
+      - g, <g>, true
+    <g><g>:  # directly starting and ending
+      - g, <g>, true
+      - g, <g>, true
+    <g><g>a:  # directly starting and ending
+      - g, <g>, true
+      - g, <g>, true
+      - a
+    a<g>d: #correct without end
+      - a
+      - g, <g>, true
+      - g, d
+    a<g>: #correct at end
+      - a
+      - g, <g>, true
+    <g>d: #correct without end
+      - g, <g>, true
+      - g, d
+    <g>: #correct at end
+      - g, <g>, true
+    <g>a*b: # italic
+      - g, <g>, true
+      - g, a
+      - gi, *, true
+      - gi, b
+    <g>a**b: # bold
+      - g, <g>, true
+      - g, a
+      - go, **, true
+      - go, b
+    <g>a***b: # bo_i
+      - g, <g>, true
+      - g, a
+      - gio, ***, true
+      - gio, b
+  blue: 
+    <b>as<b>d: # correct start and ending
+      - b, <b>, true
+      - b, a
+      - b, s
+      - b, <b>, true
+      - d
+    <b>as<b>: # correct start and ending
+      - b, <b>, true
+      - b, a
+      - b, s
+      - b, <b>, true
+    <b><b>:  # directly starting and ending
+      - b, <b>, true
+      - b, <b>, true
+    <b><b>a:  # directly starting and ending
+      - b, <b>, true
+      - b, <b>, true
+      - a
+    a<b>d: #correct without end
+      - a
+      - b, <b>, true
+      - b, d
+    a<b>: #correct at end
+      - a
+      - b, <b>, true
+    <b>d: #correct without end
+      - b, <b>, true
+      - b, d
+    <b>: #correct at end
+      - b, <b>, true
+    <b>a*b: # italic
+      - b, <b>, true
+      - b, a
+      - bi, *, true
+      - bi, b
+    <b>a**b: # bold
+      - b, <b>, true
+      - b, a
+      - bo, **, true
+      - bo, b
+    <b>a***b: # bo_i
+      - b, <b>, true
+      - b, a
+      - bio, ***, true
+      - bio, b
+  transitions between colors:
+    d<r>a<g>b<b>c: # transition btw colors
+      - d
+      - r, <r>, true
+      - r, a
+      - g, <g>, true
+      - g, b
+      - b, <b>, true
+      - b, c
+    d<g>a<r>b<b>c: # transition btw colors
+      - d
+      - g, <g>, true
+      - g, a
+      - r, <r>, true
+      - r, b
+      - b, <b>, true
+      - b, c
+    d<b>a<r>b<b>c<g>f: # transition btw colors
+      - d
+      - b, <b>, true
+      - b, a
+      - r, <r>, true
+      - r, b
+      - b, <b>, true
+      - b, c
+      - g, <g>, true
+      - g, f
 italic:
   a*b*c: # start and closing
     - a

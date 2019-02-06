@@ -66,6 +66,27 @@ function execParsing(test, results, compiled) {
   }
 }
 
+function processTestClass(testClasses, compiledGrammar) {
+  const results = [];
+
+  Object.keys(testClasses).forEach(testClass => {
+    if (!testClasses[testClass].length && typeof testClasses[testClass] === 'object') {
+      const res = processTestClass(testClasses[testClass], compiledGrammar);
+      results.push({name: testClass, results: res, correct: res.reduce((red, val) => val.correct && red, true)});
+    } else {
+      const solution = testClasses[testClass];
+      const testInput = solution.length ? [testClass, solution] : testClass;
+      execParsing(testInput, results, compiledGrammar);
+      return {
+        name: testClass,
+        results,
+        correct: results.reduce((reduced, val) => val.correct && reduced, true)
+      };
+    }
+  });
+  return results;
+}
+
 app.get('/', (req, res) => {
   const results = [];
   const testsConfig = prepareTests(fs.readFileSync(__dirname + '/tests.yml').toString().replace(/#.*/g, ''));
@@ -78,18 +99,7 @@ app.get('/', (req, res) => {
     try {
       compiled = compileGrammar(grammarInput);
 
-      Object.keys(tests).forEach(testClass => {
-        let resultsClass = [];
-        Object.keys(tests[testClass]).forEach(test => {
-          const testInput = tests[testClass][test].length ? [test, tests[testClass][test]] : test;
-          execParsing(testInput, resultsClass, compiled);
-        });
-        fileResults.push({
-          name: testClass,
-          results: resultsClass,
-          correct: resultsClass.reduce((reduced, val) => val.correct && reduced, true)
-        });
-      });
+      fileResults = processTestClass(tests, compiled);
     } catch(err) {
       fileResults = err;
     }

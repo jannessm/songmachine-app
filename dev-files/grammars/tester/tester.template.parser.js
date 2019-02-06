@@ -36,15 +36,30 @@ function prepareTestFile(testFile) {
 }
 
 function prepareClass(testClass) {
+  let func;
+  let content;
+  // is query
+  if (testClass.results[0].results[0].length) {
+    func = 'toggleClassWrapper';
+    content = `
+        <div class="flex-wrapper" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
+          <div class="flex">${testClass.results.map(query => prepareQuery(query)).join('')}</div>
+        </div>`;
+  } else {
+    func = 'toggleFile';
+    content = `<div class="subclass" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
+      ${testClass.results.map(nextClass => `  
+          <div class="res-file">
+          ${prepareClass(nextClass)}
+          </div>`).join('<hr>')}
+      </div>`;
+  }
+
   return `
-  <div class="res-class">
-  <h2 onclick="toggleClassWrapper(event)" class="${testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct'}">${testClass.name}</h2>
-    <div class="flex-wrapper" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
-      <div class="flex">
-      ${testClass.results.map(query => prepareQuery(query)).join('')}
-      </div>
-    </div>
-  </div>`;
+    <div class="res-class">
+    <h2 onclick="${func}(event)" class="${testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct'}">${testClass.name}</h2>
+      ${content}
+    </div>`;
 }
 
 function prepareQuery(query) {
