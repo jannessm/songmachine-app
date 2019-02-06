@@ -64,7 +64,7 @@ i -> %r r_i {% pP.r_i %}
   | %b b_i {% pP.b_i %}
   | %i s {% pP.i %}
   | %bo bo_i {% pP.bo_i %}
-  | %bo_i bo {% pP.bo_i %}
+  | %bo_i bo {% pP.bo %}
   | %char i {% pP.i_ %}
   | %noTag i {% pP.i_ %}
   | null
@@ -74,7 +74,7 @@ bo -> %r r_bo {% pP.r_bo %}
   | %b b_bo {% pP.b_bo %}
   | %i bo_i {% pP.bo_i %}
   | %bo s {% pP.bo %}
-  | %bo_i i {% pP.bo_i %}
+  | %bo_i i {% pP.i %}
   | %char bo {% pP.bo_ %}
   | %noTag bo {% pP.bo_ %}
   | null
