@@ -34,7 +34,7 @@ function cssObj(cssAbbrev, content, isTerminal = false){
 }
 
 function prepareTests(fileName){
-  const tests = parseYml(__dirname + '/../' + fileName + '.tests.yml');
+  const tests = parseYml(__dirname + '/../' + fileName + '.tests.yml', true);
 
   if (tests.include) {
     const reduced = {};
@@ -45,7 +45,7 @@ function prepareTests(fileName){
   }
 }
 
-function parseYml(fileName){
+function parseYml(fileName, testContent = false){
   const content = removeComments(fs.readFileSync(fileName));
   let lastPath = [];
   let lastDepth = -1;
@@ -58,11 +58,7 @@ function parseYml(fileName){
 
     if(/:/.test(line)){
       const depth = /\S/.exec(line).index / 2;
-      let key = line.replace(':', '').trim();
-
-      if (/^["']/.test(key)) {
-        key = key.slice(1, -1);
-      }
+      const key = removeQuotes(line.replace(':', '').trim());
 
       if (depth > lastDepth) {
         traverse(tests, lastPath)[key] = {};
@@ -73,6 +69,30 @@ function parseYml(fileName){
         traverse(tests, lastPath)[key] = {};
         lastPath.push(key);
       } else if (depth < lastDepth) {
+        // check last
+        const lastKey = lastPath[lastPath.length - 1];
+        const traversed = traverse(tests, lastPath);
+        let offset = 0;
+
+        if (
+          testContent &&
+          traversed.length && 
+          !traversed.reduce((isCorrect, elem, id) => {
+            let val;
+            if (typeof elem === 'string') {
+              val = lastKey.substr(id + offset, elem.length);
+              offset += elem.length - 1;
+              return isCorrect && val === elem;
+            } else {
+              val = lastKey.substr(id + offset, elem.content.length);
+              offset += elem.content.length - 1;
+              return isCorrect && val === elem.content;
+            }
+          }, true)
+        ){
+          throw new Error(`tests are not correct:\n\n    file: ${fileName}\n    test: ${lastKey}\n`);
+        }
+
         lastPath = lastPath.slice(0, depth);
         traverse(tests, lastPath)[key] = {};
         lastPath.push(key);
@@ -87,7 +107,7 @@ function parseYml(fileName){
         trav = traverse(tests, lastPath);
       }
 
-      trav.push(cssObj(...line.replace('-', '').split(',').map(val => val.trim())));
+      trav.push(cssObj(...line.replace('-', '').split(',').map(val => removeQuotes(val.trim()))));
     }
   });
 
@@ -100,6 +120,13 @@ function removeComments(content) {
   } else {
     return content.toString().replace(/#.*/g, '');
   }
+}
+
+function removeQuotes(str){
+  if (/^["']/.test(str)) {
+    str = str.slice(1, -1);
+  }
+  return str;
 }
 
 module.exports.prepareTests = prepareTests;

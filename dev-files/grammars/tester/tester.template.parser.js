@@ -6,7 +6,7 @@ const template = fs.readFileSync(__dirname + '/tester.template.html');
 function prepareTemplate(results) {
   return template
     .toString()
-    .replace('{{body}}', results.map(testFile => prepareTestFile(testFile)).join('<hr>'));
+    .replace('{{body}}', results.map(testFile => prepareTestFile(testFile)).join(''));
 }
 
 function prepareTestFile(testFile) {
@@ -40,13 +40,13 @@ function prepareClass(testClass) {
   let content;
   let css = testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct';
   // is query
-  if (testClass.results[0].results[0].length) {
+  if (testClass.results[0] && testClass.results[0].results[0].length) {
     func = 'toggleClassWrapper';
     content = `
         <div class="flex-wrapper" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
           <div class="flex">${testClass.results.map(query => prepareQuery(query)).join('')}</div>
         </div>`;
-  } else {
+  } else if(testClass.results[0]) {
     func = 'toggleFile';
     css += testClass.correct ? ' collapsed' : ' expended'
     content = `<div class="subclass" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
@@ -55,6 +55,10 @@ function prepareClass(testClass) {
           ${prepareClass(nextClass)}
           </div>`).join('<hr>')}
       </div>`;
+  }
+
+  if (!content) {
+    css = '';
   }
 
   return `
