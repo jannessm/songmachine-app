@@ -1441,30 +1441,39 @@ tests:
           - [, ]
     styles and colors in brackets:
       red italic:
-        <r>a*b*c: # start and closing
+        "[<r>a*b*c]": # start and closing
+          - [, [
           - r, <r>, true
           - r, a
           - ir, *, true
           - ri, b
           - ri, *, true
           - r, c
-        <r>a*bc: # start without ending
+          - [, ]
+        "[<r>a*bc]": # start without ending
+          - [, [
           - r, <r>, true
           - r, a
           - ri, *, true
           - ri, b
           - ri, c
-        a*b<r>c: # start without ending
-          - a
-          - i, *, true
-          - i, b
+          - [, ]
+        "[a*b<r>c]": # start without ending
+          - [, [
+          - n, a
+          - ni, *, true
+          - ni, b
           - ri, <r>, true
           - ri, c
-        <r>*a: # start without ending at beginning
+          - [, ]
+        "[<r>*a]": # start without ending at beginning
+          - [, [
           - r, <r>, true
           - ri, *, true
           - ri, a
-        <r>a*b**c**d***e: # transitions
+          - [, ]
+        "[<r>a*b**c**d***e]": # transitions
+          - [, [
           - r, <r>, true
           - r, a
           - ri, *, true
@@ -1475,31 +1484,41 @@ tests:
           - ri, d
           - ro, ***, true
           - ro, e
+          - [, ]
       green italic:
-        <g>a*b*c: # start and closing
+        "[<g>a*b*c]": # start and closing
+          - [, [
           - g, <g>, true
           - g, a
           - ig, *, true
           - gi, b
           - gi, *, true
           - g, c
-        <g>a*bc: # start without ending
+          - [, ]
+        "[<g>a*bc]": # start without ending
+          - [, [
           - g, <g>, true
           - g, a
           - gi, *, true
           - gi, b
           - gi, c
-        a*b<g>c: # start without ending
-          - a
-          - i, *, true
-          - i, b
+          - [, ]
+        "[a*b<g>c]": # start without ending
+          - [, [
+          - n, a
+          - ni, *, true
+          - ni, b
           - gi, <g>, true
           - gi, c
-        <g>*a: # start without ending at beginning
+          - [, ]
+        "[<g>*a]": # start without ending at beginning
+          - [, [
           - g, <g>, true
           - gi, *, true
           - gi, a
-        <g>a*b**c**d***e: # transitions
+          - [, ]
+        "[<g>a*b**c**d***e]": # transitions
+          - [, [
           - g, <g>, true
           - g, a
           - gi, *, true
@@ -1510,31 +1529,41 @@ tests:
           - gi, d
           - go, ***, true
           - go, e
+          - [, ]
       blue italic:
-        <b>a*b*c: # start and closing
+        "[<b>a*b*c]": # start and closing
+          - [, [
           - b, <b>, true
           - b, a
           - ib, *, true
           - bi, b
           - bi, *, true
           - b, c
-        <b>a*bc: # start without ending
+          - [, ]
+        "[<b>a*bc]": # start without ending
+          - [, [
           - b, <b>, true
           - b, a
           - bi, *, true
           - bi, b
           - bi, c
-        a*b<b>c: # start without ending
-          - a
-          - i, *, true
-          - i, b
+          - [, ]
+        "[a*b<b>c]": # start without ending
+          - [, [
+          - n, a
+          - ni, *, true
+          - ni, b
           - bi, <b>, true
           - bi, c
-        <b>*a: # start without ending at beginning
+          - [, ]
+        "[<b>*a]": # start without ending at beginning
+          - [, [
           - b, <b>, true
           - bi, *, true
           - bi, a
-        <b>a*b**c**d***e: # transitions
+          - [, ]
+        "[<b>a*b**c**d***e]": # transitions
+          - [, [
           - b, <b>, true
           - b, a
           - bi, *, true
@@ -1545,31 +1574,41 @@ tests:
           - bi, d
           - bo, ***, true
           - bo, e
+          - [, ]
       red bold:
-        <r>a**b**c: # start and closing
+        "[<r>a**b**c]": # start and closing
+          - [, [
           - r, <r>, true
           - r, a
           - ro, **, true
           - ro, b
           - ro, **, true
           - r, c
-        <r>a**bc: # start without ending
+          - [, ]
+        "[<r>a**bc]": # start without ending
+          - [, [
           - r, <r>, true
           - r, a
           - ro, **, true
           - ro, b
           - ro, c
-        a**b<r>c: # start without ending
-          - a
-          - o, **, true
-          - o, b
+          - [, ]
+        "[a**b<r>c]": # start without ending
+          - [, [
+          - n, a
+          - no, **, true
+          - no, b
           - ro, <r>, true
           - ro, c
-        <r>**a: # start without ending at beginning
+          - [, ]
+        "[<r>**a]": # start without ending at beginning
+          - [, [
           - r, <r>, true
           - ro, **, true
           - ro, a
-        <r>a**b*c*d***e: # transitions
+          - [, ]
+        "[<r>a**b*c*d***e]": # transitions
+          - [, [
           - r, <r>, true
           - r, a
           - ro, **, true
@@ -1580,31 +1619,41 @@ tests:
           - ro, d
           - ri, ***, true
           - ri, e
+          - [, ]
       green bold:
-        <g>a**b**c: # start and closing
+        "[<g>a**b**c]": # start and closing
+          - [, [
           - g, <g>, true
           - g, a
           - go, **, true
           - go, b
           - go, **, true
           - g, c
-        <g>a**bc: # start without ending
+          - [, ]
+        "[<g>a**bc]": # start without ending
+          - [, [
           - g, <g>, true
           - g, a
           - go, **, true
           - go, b
           - go, c
-        a**b<g>c: # start without ending
-          - a
-          - o, **, true
-          - o, b
+          - [, ]
+        "[a**b<g>c]": # start without ending
+          - [, [
+          - n, a
+          - no, **, true
+          - no, b
           - go, <g>, true
           - go, c
-        <g>**a: # start without ending at beginning
+          - [, ]
+        "[<g>**a]": # start without ending at beginning
+          - [, [
           - g, <g>, true
           - go, **, true
           - go, a
-        <g>a**b*c*d***e: # transitions
+          - [, ]
+        "[<g>a**b*c*d***e]": # transitions
+          - [, [
           - g, <g>, true
           - g, a
           - go, **, true
@@ -1615,31 +1664,41 @@ tests:
           - go, d
           - gi, ***, true
           - gi, e
+          - [, ]
       blue bold:
-        <b>a**b**c: # start and closing
+        "[<b>a**b**c]": # start and closing
+          - [, [
           - b, <b>, true
           - b, a
           - bo, **, true
           - bo, b
           - bo, **, true
           - b, c
-        <b>a**bc: # start without ending
+          - [, ]
+        "[<b>a**bc]": # start without ending
+          - [, [
           - b, <b>, true
           - b, a
           - bo, **, true
           - bo, b
           - bo, c
-        a**b<b>c: # start without ending
-          - a
-          - o, **, true
-          - o, b
+          - [, ]
+        "[a**b<b>c]": # start without ending
+          - [, [
+          - n, a
+          - no, **, true
+          - no, b
           - bo, <b>, true
           - bo, c
-        <b>**a: # start without ending at beginning
+          - [, ]
+        "[<b>**a]": # start without ending at beginning
+          - [, [
           - b, <b>, true
           - bo, **, true
           - bo, a
-        <b>a**b*c*d***e: # transitions
+          - [, ]
+        "[<b>a**b*c*d***e]": # transitions
+          - [, [
           - b, <b>, true
           - b, a
           - bo, **, true
@@ -1650,31 +1709,41 @@ tests:
           - bo, d
           - bi, ***, true
           - bi, e
+          - [, ]
       red bo_i:
-        <r>a***b***c: # start and closing
+        "[<r>a***b***c]": # start and closing
+          - [, [
           - r, <r>, true
           - r, a
           - roi, ***, true
           - roi, b
           - roi, ***, true
           - r, c
-        <r>a***bc: # start without ending
+          - [, ]
+        "[<r>a***bc]": # start without ending
+          - [, [
           - r, <r>, true
           - r, a
           - roi, ***, true
           - roi, b
           - roi, c
-        a***b<r>c: # start without ending
-          - a
-          - oi, ***, true
-          - oi, b
+          - [, ]
+        "[a***b<r>c]": # start without ending
+          - [, [
+          - n, a
+          - noi, ***, true
+          - noi, b
           - roi, <r>, true
           - roi, c
-        <r>***a: # start without ending at beginning
+          - [, ]
+        "[<r>***a]": # start without ending at beginning
+          - [, [
           - r, <r>, true
           - roi, ***, true
           - roi, a
-        <r>a***b**c**d*e: # transitions
+          - [, ]
+        "[<r>a***b**c**d*e]": # transitions
+          - [, [
           - r, <r>, true
           - r, a
           - roi, ***, true
@@ -1685,31 +1754,41 @@ tests:
           - roi, d
           - roi, *, true
           - ro, e
+          - [, ]
       green bo_i:
-        <g>a***b***c: # start and closing
+        "[<g>a***b***c]": # start and closing
+          - [, [
           - g, <g>, true
           - g, a
           - goi, ***, true
           - goi, b
           - goi, ***, true
           - g, c
-        <g>a***bc: # start without ending
+          - [, ]
+        "[<g>a***bc]": # start without ending
+          - [, [
           - g, <g>, true
           - g, a
           - goi, ***, true
           - goi, b
           - goi, c
-        a***b<g>c: # start without ending
-          - a
-          - oi, ***, true
-          - oi, b
+          - [, ]
+        "[a***b<g>c]": # start without ending
+          - [, [
+          - n, a
+          - noi, ***, true
+          - noi, b
           - goi, <g>, true
           - goi, c
-        <g>***a: # start without ending at beginning
+          - [, ]
+        "[<g>***a]": # start without ending at beginning
+          - [, [
           - g, <g>, true
           - goi, ***, true
           - goi, a
-        <g>a***b**c**d*e: # transitions
+          - [, ]
+        "[<g>a***b**c**d*e]": # transitions
+          - [, [
           - g, <g>, true
           - g, a
           - goi, ***, true
@@ -1720,31 +1799,41 @@ tests:
           - goi, d
           - goi, *, true
           - go, e
+          - [, ]
       blue bo_i:
-        <b>a***b***c: # start and closing
+        "[<b>a***b***c]": # start and closing
+          - [, [
           - b, <b>, true
           - b, a
           - boi, ***, true
           - boi, b
           - boi, ***, true
           - b, c
-        <b>a***bc: # start without ending
+          - [, ]
+        "[<b>a***bc]": # start without ending
+          - [, [
           - b, <b>, true
           - b, a
           - boi, ***, true
           - boi, b
           - boi, c
-        a***b<b>c: # start without ending
-          - a
-          - oi, ***, true
-          - oi, b
+          - [, ]
+        "[a***b<b>c]": # start without ending
+          - [, [
+          - n, a
+          - noi, ***, true
+          - noi, b
           - boi, <b>, true
           - boi, c
-        <b>***a: # start without ending at beginning
+          - [, ]
+        "[<b>***a]": # start without ending at beginning
+          - [, [
           - b, <b>, true
           - boi, ***, true
           - boi, a
-        <b>a***b**c**d*e: # transitions
+          - [, ]
+        "[<b>a***b**c**d*e]": # transitions
+          - [, [
           - b, <b>, true
           - b, a
           - boi, ***, true
@@ -1755,3 +1844,4 @@ tests:
           - boi, d
           - boi, *, true
           - bo, e
+          - [, ]

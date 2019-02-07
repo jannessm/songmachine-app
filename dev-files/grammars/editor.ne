@@ -57,9 +57,9 @@ br_b -> %r br_r {% pP.r %}
   | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
   | %noTag br_b {% pP.b_ %}
 
-br_i -> %r br_r {% pP.r %}
-  | %g br_g {% pP.g %}
-  | %b br_b {% pP.b %}
+br_i -> %r br_r_i {% pP.r_i %}
+  | %g br_g_i {% pP.g_i %}
+  | %b br_b_i {% pP.b_i %}
   | %bo_i br_bo {% pP.br_bo %}
   | %bo br_bo_i {% pP.br_bo_i %}
   | %i br {% pP.br_i %}
@@ -67,9 +67,9 @@ br_i -> %r br_r {% pP.r %}
   | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
   | %noTag br_i {% pP.br_i_ %}
 
-br_bo -> %r br_r {% pP.r %}
-  | %g br_g {% pP.g %}
-  | %b br_b {% pP.b %}
+br_bo -> %r br_r_bo {% pP.r_bo %}
+  | %g br_g_bo {% pP.g_bo %}
+  | %b br_b_bo {% pP.b_bo %}
   | %bo_i br_i {% pP.br_i %}
   | %bo br {% pP.br_bo %}
   | %i br_bo_i {% pP.br_bo_i %}
@@ -77,9 +77,9 @@ br_bo -> %r br_r {% pP.r %}
   | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
   | %noTag br_bo {% pP.br_bo_ %}
 
-br_bo_i -> %r br_r {% pP.r %}
-  | %g br_g {% pP.g %}
-  | %b br_b {% pP.b %}
+br_bo_i -> %r br_r_bo_i {% pP.r_bo_i %}
+  | %g br_g_bo_i {% pP.g_bo_i %}
+  | %b br_b_bo_i {% pP.b_bo_i %}
   | %bo_i br {% pP.br_bo_i %}
   | %bo br_i {% pP.br_bo_i %}
   | %i br_bo {% pP.br_bo_i %}
