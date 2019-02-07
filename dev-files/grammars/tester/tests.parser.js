@@ -17,13 +17,13 @@ function cssObj(cssAbbrev, content, isTerminal = false){
     return cssAbbrev;
   }
   let css = [];
+  css.push(/n/.test(cssAbbrev) ? 'orange' : '');
   css.push(/r/.test(cssAbbrev) ? 'red' : '');
   css.push(/g/.test(cssAbbrev) ? 'green' : '');
   css.push(/b/.test(cssAbbrev) ? 'blue' : '');
   css.push(/o/.test(cssAbbrev) ? 'bold' : '');
   css.push(/i/.test(cssAbbrev) ? 'italic' : '');
   css.push(/\[|\]/.test(cssAbbrev) ? 'grey' : '');
-  css.push(/n/.test(cssAbbrev) ? 'orange' : '');
   css.push(/e/.test(cssAbbrev) ? 'error' : '');
 
   return {

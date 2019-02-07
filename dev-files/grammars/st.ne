@@ -9,7 +9,7 @@ const lexer = moo.compile({
   bo_i: /\*\*\*/,
   bo: /\*\*/,
   i: /\*/,
-  noTag: /(?:(?!<)[^\*]?>)|(?:<[^\*]?(?!>))/,
+  noTag: /(?:(?!<)[^\*\[\]]?>)|(?:<[^\*\[\]]?(?!>))/,
   closingBr: "]",
   openingBr: /\[(?=[^\[]*?\])/,
   errorClosingBr: {match: /\](?:(?=.*\])|\n|$)/, value: m => m.split('').reverse().join('')},

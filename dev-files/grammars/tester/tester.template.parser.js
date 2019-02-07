@@ -40,7 +40,14 @@ function prepareClass(testClass) {
   let content;
   let css = testClass.correct === undefined ? '': testClass.correct ? 'correct' : 'not-correct';
   // is query
-  if (testClass.results[0] && testClass.results[0].results[0].length) {
+  if (
+    testClass.results[0] &&
+    testClass.results[0].results &&
+    (
+      (testClass.results[0].results[0] && testClass.results[0].results[0].length) || 
+      testClass.results[0].results.stack
+    )
+  ) {
     func = 'toggleClassWrapper';
     content = `
         <div class="flex-wrapper" ${testClass.correct === undefined ? '': testClass.correct ? 'style="display: none;"' : ''}>
