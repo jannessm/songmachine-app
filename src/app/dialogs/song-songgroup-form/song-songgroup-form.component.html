@@ -72,12 +72,23 @@
                     >
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput 
-                        type="datetime-local" 
-                        name="date" 
-                        id="date" 
+                    <input 
+                        matInput
+                        [matDatepicker]="dp"
                         placeholder="{{ 'form.new.songgroup.date' | translate }}"
-                        [(ngModel)]="songgroup.date"
+                        (dateChange)="songgroupDate = $event.target.value"
+                        [value]="songgroupDate"
+                    >
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        type="time" 
+                        name="time" 
+                        id="time" 
+                        placeholder="{{ 'form.new.songgroup.time' | translate }}"
+                        [(ngModel)]="songgroupTime"
                     >
                 </mat-form-field>
                 <form [formGroup]="songsForm">
@@ -93,7 +104,7 @@
                                     placeholder="{{ 'form.new.songgroup.selectASong' | translate }}"
                                     [attr.disabled]="songs.length === 0">
                                 <mat-autocomplete #songselection="matAutocomplete" [displayWith]="showSong">
-                                    <mat-option *ngFor="let s of songs" [value]="s">{{ s.title }}</mat-option>
+                                    <mat-option *ngFor="let s of filteredSongs[i] | async" [value]="s">{{ s.title }}</mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
                         </div>

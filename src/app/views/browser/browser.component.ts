@@ -157,7 +157,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
   }
 
   private sort(a: Song | Songgroup, b: Song | Songgroup): number {
-    if (a instanceof Song && b instanceof Song) {
+    if (a && b && a instanceof Song && b instanceof Song) {
       if (a.title.toLowerCase() < b.title.toLowerCase()) {
         return -1;
       } else if (a.title.toLowerCase() > b.title.toLowerCase()) {
@@ -165,7 +165,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
       } else {
         return 0;
       }
-    } else if (a instanceof Songgroup && b instanceof Songgroup) {
+    } else if (a && b && a instanceof Songgroup && b instanceof Songgroup) {
       if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
       } else if (a.name.toLowerCase() > b.name.toLowerCase()) {

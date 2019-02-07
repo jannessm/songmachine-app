@@ -12,13 +12,15 @@ import {
   MatGridListModule,
   MatSnackBarModule,
   MatExpansionModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { AutosizeModule } from 'ngx-autosize';
 
 import { ConnectivityModule } from './services/connectivity/connectivity.module';
@@ -59,9 +61,20 @@ import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.compon
 import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
 import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
 
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
+import localeEs from '@angular/common/locales/es';
+import localeIt from '@angular/common/locales/it';
+
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
 }
+
+registerLocaleData(localeDe, 'de');
+registerLocaleData(localeEn, 'en');
+registerLocaleData(localeEs, 'es');
+registerLocaleData(localeIt, 'it');
 
 @NgModule({
   declarations: [
@@ -104,6 +117,8 @@ export function initConfigs(configService: ConfigService) {
     MatAutocompleteModule,
     MatExpansionModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     AutosizeModule,
     HttpClientModule
   ],
@@ -127,7 +142,8 @@ export function initConfigs(configService: ConfigService) {
       useFactory: initConfigs,
       deps: [ConfigService],
       multi: true
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'en' }
   ],
   entryComponents: [
     SongSonggroupFormComponent,

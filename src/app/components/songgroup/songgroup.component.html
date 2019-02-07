@@ -26,6 +26,12 @@
         <div class="songgroup_preview">{{ songgroup.description }}</div>
         <table class="songgroup_attr">
             <tr>
+                <th>{{ 'form.new.songgroup.date' | translate }}</th>
+                <td>
+                    <ul>{{ songgroup.date | date:'short':undefined:locale }}</ul>
+                </td>
+            </tr>
+            <tr>
                 <th>{{ 'Songs' | translate }}</th>
                 <td>
                     <ul>

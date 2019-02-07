@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { FormControl, FormGroup, FormArray } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
@@ -8,6 +8,8 @@ import { Songgroup } from '../../models/songgroup';
 
 import { DataService } from '../../services/data.service';
 import { TranslationService } from '../../services/translation.service';
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-song-songgroup-form',
@@ -22,11 +24,14 @@ export class SongSonggroupFormComponent implements OnInit {
   id: string;
   songscounter: number[] = [1];
   songs: Song[] = [];
+  filteredSongs: Observable<Song[]>[] = [];
 
   song: Song = new Song();
   songBooksStr = '';
 
   songgroup: Songgroup = new Songgroup();
+  songgroupDate: string;
+  songgroupTime: string;
   songUUID: string;
 
   @ViewChild('songTitle') songTitle: ElementRef;
@@ -77,7 +82,9 @@ export class SongSonggroupFormComponent implements OnInit {
         this.dialogRef.close(this.song);
         break;
       case DATABASES.songgroups:
+        console.log(this.songgroupDate);
         this.songgroup.songs = [];
+        this.songgroup.date = this.songgroupDate.replace('00:00', this.songgroupTime);
         for (const control of this.songsArray.controls) {
           if (control.value.songSelect) {
             this.songgroup.songs.push(control.value.songSelect.id);
@@ -93,9 +100,15 @@ export class SongSonggroupFormComponent implements OnInit {
   }
 
   addSongField(value?: Song) {
+    const control = new FormControl(value);
+
+    this.filteredSongs.push(control.valueChanges.pipe(
+      startWith(''),
+      map(song => this._filter(song))));
+
     (<FormArray>this.songsForm.get('songsArray')).push(
       new FormGroup({
-        songSelect: new FormControl(value)
+        songSelect: control
       })
     );
   }
@@ -110,7 +123,7 @@ export class SongSonggroupFormComponent implements OnInit {
 
   initValues() {
     this.dataService.getSongs().then( songs => {
-      this.songs = songs;
+      this.songs = songs.sort((a: Song, b: Song) => this._sortStrings(a.title, b.title));
 
       // init song/songgroup if editMeta is called
       switch (this.type) {
@@ -121,6 +134,12 @@ export class SongSonggroupFormComponent implements OnInit {
 
         case DATABASES.songgroups:
           this.songgroup = new Songgroup(this.data.object);
+          this.songgroupDate = this.songgroup.date;
+          console.log(this.songgroupDate);
+          if (this.songgroupDate.indexOf('T')) {
+            this.songgroupDate =  ;
+          }
+          this.songgroupTime = /\d\d:\d\d/.exec(this.songgroup.date)[0];
           for (const song of this.songgroup.songs) {
             this.addSongField(
               this.songs.find((val, id, obj) => {
@@ -131,6 +150,15 @@ export class SongSonggroupFormComponent implements OnInit {
           break;
       }
     });
+  }
 
+  private _sortStrings(a: string, b: string): number {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  }
+
+  private _filter(value: string): Song[] {
+    const filterValue = value.toLowerCase();
+
+    return this.songs.filter(option => option.title.toLowerCase().includes(filterValue));
   }
 }

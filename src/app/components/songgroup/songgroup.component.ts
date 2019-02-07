@@ -29,8 +29,10 @@ export class SonggroupComponent implements OnInit {
   ) { }
 
   songs: string[] = [];
+  locale: string;
 
   ngOnInit() {
+    this.locale = this.translationService.getCurrentLanguage();
     if (!this.songgroup.songs) {
       this.songgroup = new Songgroup();
     }
