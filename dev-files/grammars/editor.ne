@@ -1,4 +1,5 @@
-@include "./dev-files/grammars/st.ne"
+# @include "./dev-files/grammars/st.ne"
+@include "./st.ne"
 
 s -> %openingBr br s {% br %} | %closingBr s {% errorBr %} | %errorOpeningBr s {% errorBr %}
 r -> %openingBr br r {% br %} | %closingBr r {% errorBr %} | %errorOpeningBr r {% errorBr %}
@@ -125,7 +126,7 @@ br_g_bo -> %r br_r_bo {% pP.r_bo %}
   | %i br_g_bo_i {% pP.g_bo_i %}
   | %char br_g_bo {% pP.g_bo_ %}
   | %closingBr {% d => {return {css: 'grey', content:']', isTerminal: false}} %}
-  | %noTag br_g_bo_ {% pP.g_bo_ %}
+  | %noTag br_g_bo {% pP.g_bo_ %}
 
 br_g_i -> %r br_r_i {% pP.r_i %}
   | %g br_i {% pP.g_i %}
