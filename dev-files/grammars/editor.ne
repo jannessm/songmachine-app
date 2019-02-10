@@ -1,5 +1,5 @@
-# @include "./dev-files/grammars/st.ne"
-@include "./st.ne"
+@include "./dev-files/grammars/st.ne"
+# @include "./st.ne"
 
 s -> %openingBr br s {% br %} | %closingBr s {% errorBr %} | %errorOpeningBr s {% errorBr %}
 r -> %openingBr br r {% br %} | %closingBr r {% errorBr %} | %errorOpeningBr r {% errorBr %}

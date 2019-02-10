@@ -1,0 +1,3628 @@
+{
+  "rules": [
+    {
+      "id": 15310,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15311,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15312,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15313,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.i "
+    },
+    {
+      "id": 15314,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.bo "
+    },
+    {
+      "id": 15315,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.bo_i "
+    },
+    {
+      "id": 15316,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.s "
+    },
+    {
+      "id": 15317,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.s "
+    },
+    {
+      "id": 15318,
+      "name": "s",
+      "symbols": []
+    },
+    {
+      "id": 15319,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15320,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15321,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15322,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15323,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15324,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15325,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r_ "
+    },
+    {
+      "id": 15326,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r_ "
+    },
+    {
+      "id": 15327,
+      "name": "r",
+      "symbols": []
+    },
+    {
+      "id": 15328,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15329,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15330,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15331,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15332,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15333,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15334,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g_ "
+    },
+    {
+      "id": 15335,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g_ "
+    },
+    {
+      "id": 15336,
+      "name": "g",
+      "symbols": []
+    },
+    {
+      "id": 15337,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15338,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15339,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15340,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15341,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15342,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15343,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b_ "
+    },
+    {
+      "id": 15344,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b_ "
+    },
+    {
+      "id": 15345,
+      "name": "b",
+      "symbols": []
+    },
+    {
+      "id": 15346,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15347,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15348,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15349,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.i "
+    },
+    {
+      "id": 15350,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.bo_i "
+    },
+    {
+      "id": 15351,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.bo "
+    },
+    {
+      "id": 15352,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.i_ "
+    },
+    {
+      "id": 15353,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.i_ "
+    },
+    {
+      "id": 15354,
+      "name": "i",
+      "symbols": []
+    },
+    {
+      "id": 15355,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15356,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15357,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15358,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.bo_i "
+    },
+    {
+      "id": 15359,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.bo "
+    },
+    {
+      "id": 15360,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.i "
+    },
+    {
+      "id": 15361,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.bo_ "
+    },
+    {
+      "id": 15362,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.bo_ "
+    },
+    {
+      "id": 15363,
+      "name": "bo",
+      "symbols": []
+    },
+    {
+      "id": 15364,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15365,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15366,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15367,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.bo_i "
+    },
+    {
+      "id": 15368,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.bo_i "
+    },
+    {
+      "id": 15369,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "s"
+      ],
+      "postprocess": " pP.bo_i "
+    },
+    {
+      "id": 15370,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.bo_i_ "
+    },
+    {
+      "id": 15371,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.bo_i_ "
+    },
+    {
+      "id": 15372,
+      "name": "bo_i",
+      "symbols": []
+    },
+    {
+      "id": 15373,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15374,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15375,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15376,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15377,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15378,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15379,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i_ "
+    },
+    {
+      "id": 15380,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i_ "
+    },
+    {
+      "id": 15381,
+      "name": "r_i",
+      "symbols": []
+    },
+    {
+      "id": 15382,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15383,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15384,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15385,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15386,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15387,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15388,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo_ "
+    },
+    {
+      "id": 15389,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo_ "
+    },
+    {
+      "id": 15390,
+      "name": "r_bo",
+      "symbols": []
+    },
+    {
+      "id": 15391,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15392,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15393,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15394,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15395,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15396,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "r"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15397,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i_ "
+    },
+    {
+      "id": 15398,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i_ "
+    },
+    {
+      "id": 15399,
+      "name": "r_bo_i",
+      "symbols": []
+    },
+    {
+      "id": 15400,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15401,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15402,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15403,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15404,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15405,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15406,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i_ "
+    },
+    {
+      "id": 15407,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i_ "
+    },
+    {
+      "id": 15408,
+      "name": "g_i",
+      "symbols": []
+    },
+    {
+      "id": 15409,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15410,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15411,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15412,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15413,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15414,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15415,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo_ "
+    },
+    {
+      "id": 15416,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo_ "
+    },
+    {
+      "id": 15417,
+      "name": "g_bo",
+      "symbols": []
+    },
+    {
+      "id": 15418,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15419,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15420,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15421,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15422,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15423,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "g"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15424,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i_ "
+    },
+    {
+      "id": 15425,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i_ "
+    },
+    {
+      "id": 15426,
+      "name": "g_bo_i",
+      "symbols": []
+    },
+    {
+      "id": 15427,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15428,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15429,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15430,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15431,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15432,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15433,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i_ "
+    },
+    {
+      "id": 15434,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i_ "
+    },
+    {
+      "id": 15435,
+      "name": "b_i",
+      "symbols": []
+    },
+    {
+      "id": 15436,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15437,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15438,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15439,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15440,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15441,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15442,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo_ "
+    },
+    {
+      "id": 15443,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo_ "
+    },
+    {
+      "id": 15444,
+      "name": "b_bo",
+      "symbols": []
+    },
+    {
+      "id": 15445,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15446,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15447,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15448,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15449,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "b_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15450,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "b"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15451,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i_ "
+    },
+    {
+      "id": 15452,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i_ "
+    },
+    {
+      "id": 15453,
+      "name": "b_bo_i",
+      "symbols": []
+    },
+    {
+      "id": 15454,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "s"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15455,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "s"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15456,
+      "name": "s",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "s"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15457,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "r"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15458,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "r"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15459,
+      "name": "r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "r"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15460,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "g"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15461,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "g"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15462,
+      "name": "g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "g"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15463,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "b"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15464,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "b"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15465,
+      "name": "b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "b"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15466,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15467,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15468,
+      "name": "i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15469,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "bo"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15470,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15471,
+      "name": "bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15472,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "bo_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15473,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15474,
+      "name": "bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15475,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "r_bo"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15476,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15477,
+      "name": "r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "r_bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15478,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "r_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15479,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "r_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15480,
+      "name": "r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "r_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15481,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "r_bo_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15482,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15483,
+      "name": "r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "r_bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15484,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "g_bo"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15485,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15486,
+      "name": "g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "g_bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15487,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "g_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15488,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "g_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15489,
+      "name": "g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "g_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15490,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "g_bo_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15491,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15492,
+      "name": "g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "g_bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15493,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "b_bo"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15494,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15495,
+      "name": "b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "b_bo"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15496,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "b_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15497,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "b_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15498,
+      "name": "b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "b_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15499,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"openingBr\") ? {type: \"openingBr\"} : openingBr)"
+        },
+        "br",
+        "b_bo_i"
+      ],
+      "postprocess": " br "
+    },
+    {
+      "id": 15500,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15501,
+      "name": "b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"errorOpeningBr\") ? {type: \"errorOpeningBr\"} : errorOpeningBr)"
+        },
+        "b_bo_i"
+      ],
+      "postprocess": " errorBr "
+    },
+    {
+      "id": 15502,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15503,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15504,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15505,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.br_bo_i "
+    },
+    {
+      "id": 15506,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.br_bo "
+    },
+    {
+      "id": 15507,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.br_i "
+    },
+    {
+      "id": 15508,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br"
+      ],
+      "postprocess": " inBrackets "
+    },
+    {
+      "id": 15509,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15510,
+      "name": "br",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br"
+      ],
+      "postprocess": " inBrackets "
+    },
+    {
+      "id": 15511,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15512,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15513,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15514,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15515,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15516,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15517,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r_ "
+    },
+    {
+      "id": 15518,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15519,
+      "name": "br_r",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r_ "
+    },
+    {
+      "id": 15520,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15521,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15522,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15523,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15524,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15525,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15526,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g_ "
+    },
+    {
+      "id": 15527,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15528,
+      "name": "br_g",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g_ "
+    },
+    {
+      "id": 15529,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r "
+    },
+    {
+      "id": 15530,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g "
+    },
+    {
+      "id": 15531,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br"
+      ],
+      "postprocess": " pP.b "
+    },
+    {
+      "id": 15532,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15533,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15534,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15535,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b_ "
+    },
+    {
+      "id": 15536,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15537,
+      "name": "br_b",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b_ "
+    },
+    {
+      "id": 15538,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15539,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15540,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15541,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.br_bo "
+    },
+    {
+      "id": 15542,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.br_bo_i "
+    },
+    {
+      "id": 15543,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br"
+      ],
+      "postprocess": " pP.br_i "
+    },
+    {
+      "id": 15544,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.br_i_ "
+    },
+    {
+      "id": 15545,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15546,
+      "name": "br_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.br_i_ "
+    },
+    {
+      "id": 15547,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15548,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15549,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15550,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.br_i "
+    },
+    {
+      "id": 15551,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br"
+      ],
+      "postprocess": " pP.br_bo "
+    },
+    {
+      "id": 15552,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.br_bo_i "
+    },
+    {
+      "id": 15553,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.br_bo_ "
+    },
+    {
+      "id": 15554,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15555,
+      "name": "br_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.br_bo_ "
+    },
+    {
+      "id": 15556,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15557,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15558,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15559,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br"
+      ],
+      "postprocess": " pP.br_bo_i "
+    },
+    {
+      "id": 15560,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.br_bo_i "
+    },
+    {
+      "id": 15561,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.br_bo_i "
+    },
+    {
+      "id": 15562,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.br_bo_i_ "
+    },
+    {
+      "id": 15563,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15564,
+      "name": "br_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.br_bo_i_ "
+    },
+    {
+      "id": 15565,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15566,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15567,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15568,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15569,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15570,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15571,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo_ "
+    },
+    {
+      "id": 15572,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15573,
+      "name": "br_r_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo_ "
+    },
+    {
+      "id": 15574,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15575,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15576,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15577,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15578,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15579,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15580,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i_ "
+    },
+    {
+      "id": 15581,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15582,
+      "name": "br_r_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i_ "
+    },
+    {
+      "id": 15583,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15584,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15585,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15586,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_r"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15587,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15588,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15589,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i_ "
+    },
+    {
+      "id": 15590,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15591,
+      "name": "br_r_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i_ "
+    },
+    {
+      "id": 15592,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15593,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15594,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15595,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15596,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15597,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15598,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo_ "
+    },
+    {
+      "id": 15599,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15600,
+      "name": "br_g_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo_ "
+    },
+    {
+      "id": 15601,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15602,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15603,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15604,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15605,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15606,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15607,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i_ "
+    },
+    {
+      "id": 15608,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15609,
+      "name": "br_g_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i_ "
+    },
+    {
+      "id": 15610,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15611,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15612,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15613,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_g"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15614,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15615,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15616,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i_ "
+    },
+    {
+      "id": 15617,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15618,
+      "name": "br_g_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i_ "
+    },
+    {
+      "id": 15619,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_bo"
+      ],
+      "postprocess": " pP.r_bo "
+    },
+    {
+      "id": 15620,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_bo"
+      ],
+      "postprocess": " pP.g_bo "
+    },
+    {
+      "id": 15621,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15622,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15623,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15624,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15625,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo_ "
+    },
+    {
+      "id": 15626,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15627,
+      "name": "br_b_bo",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo_ "
+    },
+    {
+      "id": 15628,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_i"
+      ],
+      "postprocess": " pP.r_i "
+    },
+    {
+      "id": 15629,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_i"
+      ],
+      "postprocess": " pP.g_i "
+    },
+    {
+      "id": 15630,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_i"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15631,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo "
+    },
+    {
+      "id": 15632,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15633,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b_i "
+    },
+    {
+      "id": 15634,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i_ "
+    },
+    {
+      "id": 15635,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15636,
+      "name": "br_b_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_i_ "
+    },
+    {
+      "id": 15637,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"r\") ? {type: \"r\"} : r)"
+        },
+        "br_r_bo_i"
+      ],
+      "postprocess": " pP.r_bo_i "
+    },
+    {
+      "id": 15638,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"g\") ? {type: \"g\"} : g)"
+        },
+        "br_g_bo_i"
+      ],
+      "postprocess": " pP.g_bo_i "
+    },
+    {
+      "id": 15639,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"b\") ? {type: \"b\"} : b)"
+        },
+        "br_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15640,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo_i\") ? {type: \"bo_i\"} : bo_i)"
+        },
+        "br_b"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15641,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"bo\") ? {type: \"bo\"} : bo)"
+        },
+        "br_b_i"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15642,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"i\") ? {type: \"i\"} : i)"
+        },
+        "br_b_bo"
+      ],
+      "postprocess": " pP.b_bo_i "
+    },
+    {
+      "id": 15643,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"char\") ? {type: \"char\"} : char)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i_ "
+    },
+    {
+      "id": 15644,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"closingBr\") ? {type: \"closingBr\"} : closingBr)"
+        }
+      ],
+      "postprocess": " d => {return {css: 'grey', content:']', isTerminal: false}} "
+    },
+    {
+      "id": 15645,
+      "name": "br_b_bo_i",
+      "symbols": [
+        {
+          "token": "(lexer.has(\"noTag\") ? {type: \"noTag\"} : noTag)"
+        },
+        "br_b_bo_i"
+      ],
+      "postprocess": " pP.b_bo_i_ "
+    }
+  ],
+  "body": [
+    "\nconst moo = require(\"moo\");\n\nconst lexer = moo.compile({\n  char: {match: /[^\\[\\]<>\\*\\n]/},\n  r: /<(?:r|R)>/,\n  g: /<(?:g|G)>/,\n  b: /<(?:b|B)>/,\n  bo_i: /\\*\\*\\*/,\n  bo: /\\*\\*/,\n  i: /\\*/,\n  noTag: /(?:(?!<)[^\\*\\[\\]]?>)|(?:<[^\\*\\[\\]]?(?!>))/,\n  closingBr: \"]\",\n  openingBr: /\\[(?=[^\\[]*?\\])/,\n  errorClosingBr: {match: /\\](?:(?=.*\\])|\\n|$)/, value: m => m.split('').reverse().join('')},\n  errorOpeningBr: /\\[(?:(?!.*\\])|(?=.*\\[)|\\n|$)/,\n  NL: {match: /\\n/, lineBreaks: true}\n});\n",
+    "\nconst cssObj = function(css, data, isTerminal = true) {\n\treturn {\n        css,\n        content: data,\n        isTerminal\n      }\n}\n\nconst post = function (css, data, rest, isTerminal = true){\n  return [cssObj(css, data, isTerminal)].concat(rest);\n}\n\nconst pP = {\n  error: ([fst, d]) => post(\"error\", fst.value, d),\n  invError: ([fst, d]) => post(\"error\", d, fst.value).reverse(),\n\n  s: ([fst, d]) => [fst.value].concat(d),\n  r: ([fst, d])  => post(\"red\", fst.value, d),\n  g: ([fst, d]) => post(\"green\", fst.value, d),\n  b: ([fst, d]) => post(\"blue\", fst.value, d),\n  i: ([fst, d]) => post(\"italic\", fst.value, d),\n  bo: ([fst, d]) => post(\"bold\", fst.value, d),\n  bo_i: ([fst, d]) => post(\"bold italic\", fst.value, d),\n  r_i: ([fst, d]) => post(\"red italic\", fst.value, d),\n  r_bo: ([fst, d]) => post(\"red bold\", fst.value, d),\n  r_bo_i: ([fst, d]) => post(\"red bold italic\", fst.value, d),\n  g_i: ([fst, d]) => post(\"green italic\", fst.value, d),\n  g_bo: ([fst, d]) => post(\"green bold\", fst.value, d),\n  g_bo_i: ([fst, d]) => post(\"green bold italic\", fst.value, d),\n  b_i: ([fst, d]) => post(\"blue italic\", fst.value, d),\n  b_bo: ([fst, d]) => post(\"blue bold\", fst.value, d),\n  b_bo_i: ([fst, d]) => post(\"blue bold italic\", fst.value, d),\n\n  r_: ([fst, d])  => post(\"red\", fst.value, d, false),\n  g_: ([fst, d]) => post(\"green\", fst.value, d, false),\n  b_: ([fst, d]) => post(\"blue\", fst.value, d, false),\n  i_: ([fst, d]) => post(\"italic\", fst.value, d, false),\n  bo_: ([fst, d]) => post(\"bold\", fst.value, d, false),\n  bo_i_: ([fst, d]) => post(\"bold italic\", fst.value, d, false),\n  r_i_: ([fst, d]) => post(\"red italic\", fst.value, d, false),\n  r_bo_: ([fst, d]) => post(\"red bold\", fst.value, d, false),\n  r_bo_i_: ([fst, d]) => post(\"red bold italic\", fst.value, d, false),\n  g_i_: ([fst, d]) => post(\"green italic\", fst.value, d, false),\n  g_bo_: ([fst, d]) => post(\"green bold\", fst.value, d, false),\n  g_bo_i_: ([fst, d]) => post(\"green bold italic\", fst.value, d, false),\n  b_i_: ([fst, d]) => post(\"blue italic\", fst.value, d, false),\n  b_bo_: ([fst, d]) => post(\"blue bold\", fst.value, d, false),\n  b_bo_i_: ([fst, d]) => post(\"blue bold italic\", fst.value, d, false)\n}\n",
+    "\n  const inBrackets = ([fst, rest]) => [\n    {\n      css: 'orange',\n      content: fst.value,\n      isTerminal: false\n    }\n  ].concat(rest);\n\n  const br = function([fst, br, s]) {\n    const openBr = fst.value;\n    return [\n        {\n          css: 'grey',\n          content: openBr,\n          isTerminal: false\n        }\n      ]\n      .concat(br)\n      .concat(s)\n  }\n\n  const errorBr = function(data) {\n    const openBr = data[0].value;\n    const content = data[1];\n    return [\n        {\n          css: 'error',\n          content: openBr,\n          isTerminal: false\n        }\n      ]\n      .concat(content)\n  }\n\n  Object.assign(pP, {\n    br_bo: ([fst, d]) => post(\"orange bold\", fst.value, d),\n    br_i: ([fst, d]) => post(\"orange italic\", fst.value, d),\n    br_bo_i: ([fst, d]) => post(\"orange bold italic\", fst.value, d),\n\n    br_bo_: ([fst, d]) => post(\"orange bold\", fst.value, d, false),\n    br_i_: ([fst, d]) => post(\"orange italic\", fst.value, d, false),\n    br_bo_i_: ([fst, d]) => post(\"orange bold italic\", fst.value, d, false),\n  });\n"
+  ],
+  "customTokens": [
+    "r",
+    "g",
+    "b",
+    "i",
+    "bo",
+    "bo_i",
+    "char",
+    "noTag",
+    "openingBr",
+    "closingBr",
+    "errorOpeningBr"
+  ],
+  "config": {
+    "lexer": "lexer"
+  },
+  "macros": {},
+  "start": "s",
+  "version": "unknown"
+}

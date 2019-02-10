@@ -21,11 +21,12 @@ function compileGrammar(input){
   let grammarParser = new nearley.Parser(nearleyGrammar);
   grammarParser.feed(input);
   grammarParser = grammarParser.results[0];
-
+  
   // Compile the AST into a set of rules
   grammarParser = compile(grammarParser, {});
   // Generate JavaScript code from the rules
   grammarParser = generate(grammarParser, "grammar");
+  fs.writeFileSync('compiled2', grammarParser);
 
   // Pretend this is a CommonJS environment to catch exports from the grammar.
   let module = { exports: {} };
