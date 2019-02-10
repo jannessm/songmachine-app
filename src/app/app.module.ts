@@ -14,9 +14,11 @@ import {
   MatExpansionModule,
   MatSelectModule,
   MatDatepickerModule,
-  MAT_DATE_LOCALE
+  MAT_DATE_LOCALE,
+  DateAdapter,
+  MAT_DATE_FORMATS
 } from '@angular/material';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -145,7 +147,9 @@ registerLocaleData(localeIt, 'it');
       multi: true
     },
     { provide: LOCALE_ID, useValue: 'en' },
-    { provide: MAT_DATE_LOCALE, useValue: 'en' }
+    { provide: MAT_DATE_LOCALE, useValue: 'en' },
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
   entryComponents: [
     SongSonggroupFormComponent,

@@ -1,5 +1,6 @@
 import { Injectable, LOCALE_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DateAdapter } from '@angular/material';
 
 const xml = require('./xml');
 
@@ -9,12 +10,13 @@ export class TranslationService {
   private translations = {};
   private currLanguage = 'en';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private dateAdapter: DateAdapter<any>) {
     this.setLanguage(navigator.language);
   }
 
   public setLanguage(locale: string): Promise<void> {
     this.currLanguage = locale;
+    this.dateAdapter.setLocale(locale);
     return this.http
       .get('assets/i18n/' + locale + '.xlf', {responseType: 'text'})
       .toPromise()

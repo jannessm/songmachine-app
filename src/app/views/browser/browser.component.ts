@@ -166,6 +166,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
         return 0;
       }
     } else if (a && b && a instanceof Songgroup && b instanceof Songgroup) {
+      console.log(a, b);
       if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
       } else if (a.name.toLowerCase() > b.name.toLowerCase()) {

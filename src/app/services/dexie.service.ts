@@ -66,6 +66,9 @@ export class DexieService {
   }
 
   getByKey(database: DATABASES, key: string) {
+    if (!key || !database) {
+      return Promise.reject('getByKey: No Key or Database');
+    }
     return this.dbPromise.then(db => {
       return db.transaction(database, 'readonly').objectStore(database).get(key);
     });

@@ -17,13 +17,6 @@ import { Moment } from 'moment';
   selector: 'app-song-songgroup-form',
   templateUrl: './song-songgroup-form.component.html',
   styleUrls: ['./song-songgroup-form.component.scss'],
-  providers: [
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  ],
 })
 export class SongSonggroupFormComponent implements OnInit {
 
@@ -91,13 +84,11 @@ export class SongSonggroupFormComponent implements OnInit {
         this.dialogRef.close(this.song);
         break;
       case DATABASES.songgroups:
-        console.log(this.songgroupDate);
         this.songgroup.songs = [];
 
         if (this.songgroupDate) {
           this.songgroup.date = this.songgroupDate;
         }
-
         if (this.songgroupTime) {
           this.songgroup.time = this.songgroupTime;
         }
@@ -154,12 +145,6 @@ export class SongSonggroupFormComponent implements OnInit {
           this.songgroupDate = this.songgroup.date;
           this.songgroupTime = this.songgroup.time;
 
-          // old date format
-          if (this.songgroupDate && this.songgroupDate.length <= 16) {
-            const time = /T(\d\d:\d\d)/.exec(this.songgroupDate);
-            this.songgroupTime = time ? time[1] : '';
-            this.songgroupDate = this.songgroupDate.replace(/T\d\d:\d\d/, 'T00:00');
-          }
           for (const song of this.songgroup.songs) {
             this.addSongField(
               this.songs.find((val, id, obj) => {

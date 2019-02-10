@@ -74,7 +74,7 @@ export class SonggroupComponent implements OnInit {
         if (res) {
           this.songs.push(res.title);
         }
-      });
+      }).catch(() => {});
     });
   }
 
