@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
@@ -10,11 +10,20 @@ import { DataService } from '../../services/data.service';
 import { TranslationService } from '../../services/translation.service';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'app-song-songgroup-form',
   templateUrl: './song-songgroup-form.component.html',
-  styleUrls: ['./song-songgroup-form.component.scss']
+  styleUrls: ['./song-songgroup-form.component.scss'],
+  providers: [
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class SongSonggroupFormComponent implements OnInit {
 
@@ -84,7 +93,15 @@ export class SongSonggroupFormComponent implements OnInit {
       case DATABASES.songgroups:
         console.log(this.songgroupDate);
         this.songgroup.songs = [];
-        this.songgroup.date = this.songgroupDate.replace('00:00', this.songgroupTime);
+
+        if (this.songgroupDate) {
+          this.songgroup.date = this.songgroupDate;
+        }
+
+        if (this.songgroupTime) {
+          this.songgroup.time = this.songgroupTime;
+        }
+
         for (const control of this.songsArray.controls) {
           if (control.value.songSelect) {
             this.songgroup.songs.push(control.value.songSelect.id);
@@ -135,11 +152,14 @@ export class SongSonggroupFormComponent implements OnInit {
         case DATABASES.songgroups:
           this.songgroup = new Songgroup(this.data.object);
           this.songgroupDate = this.songgroup.date;
-          console.log(this.songgroupDate);
-          if (this.songgroupDate.indexOf('T')) {
-            this.songgroupDate =  ;
+          this.songgroupTime = this.songgroup.time;
+
+          // old date format
+          if (this.songgroupDate && this.songgroupDate.length <= 16) {
+            const time = /T(\d\d:\d\d)/.exec(this.songgroupDate);
+            this.songgroupTime = time ? time[1] : '';
+            this.songgroupDate = this.songgroupDate.replace(/T\d\d:\d\d/, 'T00:00');
           }
-          this.songgroupTime = /\d\d:\d\d/.exec(this.songgroup.date)[0];
           for (const song of this.songgroup.songs) {
             this.addSongField(
               this.songs.find((val, id, obj) => {

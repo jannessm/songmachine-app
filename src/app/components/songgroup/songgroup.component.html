@@ -28,7 +28,9 @@
             <tr>
                 <th>{{ 'form.new.songgroup.date' | translate }}</th>
                 <td>
-                    <ul>{{ songgroup.date | date:'short':undefined:locale }}</ul>
+                    <ul *ngIf="songgroup.date && !songgroup.time">{{ songgroup.date | date:'shortDate':undefined:locale }}</ul>
+                    <ul *ngIf="!songgroup.date && songgroup.time">{{ songgroup.time | date:'shortTime':undefined:locale }}</ul>
+                    <ul *ngIf="songgroup.date && songgroup.time">{{ songgroup.date.replace('00:00', songgroup.time) | date:'short':undefined:locale }}</ul>
                 </td>
             </tr>
             <tr>

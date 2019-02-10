@@ -14,8 +14,9 @@ import {
   MatExpansionModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MAT_DATE_LOCALE
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -118,7 +119,7 @@ registerLocaleData(localeIt, 'it');
     MatExpansionModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatMomentDateModule,
     AutosizeModule,
     HttpClientModule
   ],
@@ -143,7 +144,8 @@ registerLocaleData(localeIt, 'it');
       deps: [ConfigService],
       multi: true
     },
-    { provide: LOCALE_ID, useValue: 'en' }
+    { provide: LOCALE_ID, useValue: 'en' },
+    { provide: MAT_DATE_LOCALE, useValue: 'en' }
   ],
   entryComponents: [
     SongSonggroupFormComponent,

@@ -4,6 +4,7 @@ export class Songgroup {
   public name = '';
   public description = '';
   public date ? = null;
+  public time ? = null;
   public songs: string[] = []; // uuids of songs
 
   constructor(params?: string | any) {
