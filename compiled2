@@ -6,70 +6,123 @@ function id(x) { return x[0]; }
 const moo = require("moo");
 
 const lexer = moo.compile({
-  char: {match: /[^\[\]<>\*\n]/},
+  char: {match: /[^<>\*\n]/},
   r: /<(?:r|R)>/,
   g: /<(?:g|G)>/,
   b: /<(?:b|B)>/,
-  bo_i: /\*\*\*/,
-  bo: /\*\*/,
-  i: /\*/,
-  noTag: /(?:(?!<)[^\*\[\]]?>)|(?:<[^\*\[\]]?(?!>))/,
-  closingBr: "]",
-  openingBr: /\[(?=[^\[]*?\])/,
-  errorClosingBr: {match: /\](?:(?=.*\])|\n|$)/, value: m => m.split('').reverse().join('')},
-  errorOpeningBr: /\[(?:(?!.*\])|(?=.*\[)|\n|$)/,
-  NL: {match: /\n/, lineBreaks: true}
+  bo_i: /\*\*\*(?!\*)/,
+  bo: /\*\*(?!\*)/,
+  i: /\*(?!\*)/,
+  noTag: /(?:(?!<)[^\*]?>)|(?:<[^\*]?(?!>))/
 });
 
 
-const cssObj = function(css, data, isTerminal = true) {
-	return {
-        css,
-        content: data,
-        isTerminal
-      }
+
+let state = {
+  color: "",
+  italic: false,
+  bold: false,
+  resetColor: false,
+  resetItalic: false,
+  resetBold: false
 }
 
-const post = function (css, data, rest, isTerminal = true){
-  return [cssObj(css, data, isTerminal)].concat(rest);
+const resetStates = function() {
+  state = {
+    color: "",
+    italic: false,
+    bold: false,
+    resetColor: false,
+    resetItalic: false,
+    resetBold: false
+  };
+}
+
+const getClasses = function(){
+  let italic = state.italic ? "italic" : "";
+  let bold = state.bold ? "bold" : "";
+  
+  let color = (!!state.color || !!italic || !!bold) ? state.color : 'text';
+  if(state.resetColor){
+    state.color = "";
+  }
+  if(state.resetItalic){
+    state.italic = false;
+  }
+  if(state.resetBold){
+    state.bold = false;
+  }
+  return [color, italic, bold].filter(val => !!val).join(' ');
+}
+
+const setColor = function(color){
+  if (state.color === color) {
+    state.resetColor = true;
+  } else {
+    state.color = color;
+  }
+}
+
+const cssObj = function(css, data, isTerminal = true) {
+  if (css === 'text') {
+    return data;
+  }
+	return {
+    css: getClasses(),
+    content: data,
+    isTerminal
+  }
+}
+
+const postProcessor = function (data, rest, isTerminal = true){
+  return [cssObj(data, isTerminal)].concat(rest);
 }
 
 const pP = {
-  error: ([fst, d]) => post("error", fst.value, d),
-  invError: ([fst, d]) => post("error", d, fst.value).reverse(),
-
-  s: ([fst, d]) => [fst.value].concat(d),
-  r: ([fst, d])  => post("red", fst.value, d),
-  g: ([fst, d]) => post("green", fst.value, d),
-  b: ([fst, d]) => post("blue", fst.value, d),
-  i: ([fst, d]) => post("italic", fst.value, d),
-  bo: ([fst, d]) => post("bold", fst.value, d),
-  bo_i: ([fst, d]) => post("bold italic", fst.value, d),
-  r_i: ([fst, d]) => post("red italic", fst.value, d),
-  r_bo: ([fst, d]) => post("red bold", fst.value, d),
-  r_bo_i: ([fst, d]) => post("red bold italic", fst.value, d),
-  g_i: ([fst, d]) => post("green italic", fst.value, d),
-  g_bo: ([fst, d]) => post("green bold", fst.value, d),
-  g_bo_i: ([fst, d]) => post("green bold italic", fst.value, d),
-  b_i: ([fst, d]) => post("blue italic", fst.value, d),
-  b_bo: ([fst, d]) => post("blue bold", fst.value, d),
-  b_bo_i: ([fst, d]) => post("blue bold italic", fst.value, d),
-
-  r_: ([fst, d])  => post("red", fst.value, d, false),
-  g_: ([fst, d]) => post("green", fst.value, d, false),
-  b_: ([fst, d]) => post("blue", fst.value, d, false),
-  i_: ([fst, d]) => post("italic", fst.value, d, false),
-  bo_: ([fst, d]) => post("bold", fst.value, d, false),
-  bo_i_: ([fst, d]) => post("bold italic", fst.value, d, false),
-  r_i_: ([fst, d]) => post("red italic", fst.value, d, false),
-  r_bo_: ([fst, d]) => post("red bold", fst.value, d, false),
-  r_bo_i_: ([fst, d]) => post("red bold italic", fst.value, d, false),
-  g_i_: ([fst, d]) => post("green italic", fst.value, d, false),
-  g_bo_: ([fst, d]) => post("green bold", fst.value, d, false),
-  g_bo_i_: ([fst, d]) => post("green bold italic", fst.value, d, false),
-  b_i_: ([fst, d]) => post("blue italic", fst.value, d, false),
-  b_bo_: ([fst, d]) => post("blue bold", fst.value, d, false),
-  b_bo_i_: ([fst, d]) => post("blue bold italic", fst.value, d, false)
+  s: ([fst, d]) => {
+    postProcessor(fst.value, d, false);
+  },
+  r: ([fst, d])  => {
+    setColor("red");
+    postProcessor(fst.value, d);
+  },
+  g: ([fst, d])  => {
+    setColor("green");
+    postProcessor(fst.value, d);
+  },
+  b: ([fst, d])  => {
+    setColor("blue");
+    postProcessor(fst.value, d);
+  },
+  i: ([fst, d])  => {
+    if (state.italic) {
+      state.resetItalic = true;
+    } else {
+      state.italic = true;
+    }
+    postProcessor(fst.value, d);
+  },
+  bo: ([fst, d])  => {
+    if (state.bold) {
+      state.resetBold = true;
+    } else {
+      state.bold = true;
+    }
+    postProcessor(fst.value, d);
+  },
+  bo_i: ([fst, d])  => {
+    if (state.italic) {
+      state.resetItalic = true;
+    } else {
+      state.italic = true;
+    }
+    if (state.bold) {
+      state.resetBold = true;
+    } else {
+      state.bold = true;
+    }
+    postProcessor(fst.value, d);
+  }
 }
 
 
@@ -119,150 +172,15 @@ const pP = {
 var grammar = {
     Lexer: lexer,
     ParserRules: [
-    {"name": "s", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r"], "postprocess": pP.r},
-    {"name": "s", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g"], "postprocess": pP.g},
-    {"name": "s", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b"], "postprocess": pP.b},
-    {"name": "s", "symbols": [(lexer.has("i") ? {type: "i"} : i), "i"], "postprocess": pP.i},
-    {"name": "s", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "bo"], "postprocess": pP.bo},
-    {"name": "s", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "bo_i"], "postprocess": pP.bo_i},
+    {"name": "s", "symbols": [(lexer.has("r") ? {type: "r"} : r), "s"], "postprocess": pP.r},
+    {"name": "s", "symbols": [(lexer.has("g") ? {type: "g"} : g), "s"], "postprocess": pP.g},
+    {"name": "s", "symbols": [(lexer.has("b") ? {type: "b"} : b), "s"], "postprocess": pP.b},
+    {"name": "s", "symbols": [(lexer.has("i") ? {type: "i"} : i), "s"], "postprocess": pP.i},
+    {"name": "s", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "s"], "postprocess": pP.bo},
+    {"name": "s", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "s"], "postprocess": pP.bo_i},
     {"name": "s", "symbols": [(lexer.has("char") ? {type: "char"} : char), "s"], "postprocess": pP.s},
     {"name": "s", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "s"], "postprocess": pP.s},
     {"name": "s", "symbols": []},
-    {"name": "r", "symbols": [(lexer.has("r") ? {type: "r"} : r), "s"], "postprocess": pP.r},
-    {"name": "r", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g"], "postprocess": pP.g},
-    {"name": "r", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b"], "postprocess": pP.b},
-    {"name": "r", "symbols": [(lexer.has("i") ? {type: "i"} : i), "r_i"], "postprocess": pP.r_i},
-    {"name": "r", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "r_bo"], "postprocess": pP.r_bo},
-    {"name": "r", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "r_bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "r", "symbols": [(lexer.has("char") ? {type: "char"} : char), "r"], "postprocess": pP.r_},
-    {"name": "r", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "r"], "postprocess": pP.r_},
-    {"name": "r", "symbols": []},
-    {"name": "g", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r"], "postprocess": pP.r},
-    {"name": "g", "symbols": [(lexer.has("g") ? {type: "g"} : g), "s"], "postprocess": pP.g},
-    {"name": "g", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b"], "postprocess": pP.b},
-    {"name": "g", "symbols": [(lexer.has("i") ? {type: "i"} : i), "g_i"], "postprocess": pP.g_i},
-    {"name": "g", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "g_bo"], "postprocess": pP.g_bo},
-    {"name": "g", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "g_bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "g", "symbols": [(lexer.has("char") ? {type: "char"} : char), "g"], "postprocess": pP.g_},
-    {"name": "g", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "g"], "postprocess": pP.g_},
-    {"name": "g", "symbols": []},
-    {"name": "b", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r"], "postprocess": pP.r},
-    {"name": "b", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g"], "postprocess": pP.g},
-    {"name": "b", "symbols": [(lexer.has("b") ? {type: "b"} : b), "s"], "postprocess": pP.b},
-    {"name": "b", "symbols": [(lexer.has("i") ? {type: "i"} : i), "b_i"], "postprocess": pP.b_i},
-    {"name": "b", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "b_bo"], "postprocess": pP.b_bo},
-    {"name": "b", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "b_bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "b", "symbols": [(lexer.has("char") ? {type: "char"} : char), "b"], "postprocess": pP.b_},
-    {"name": "b", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "b"], "postprocess": pP.b_},
-    {"name": "b", "symbols": []},
-    {"name": "i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_i"], "postprocess": pP.r_i},
-    {"name": "i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_i"], "postprocess": pP.g_i},
-    {"name": "i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_i"], "postprocess": pP.b_i},
-    {"name": "i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "s"], "postprocess": pP.i},
-    {"name": "i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "bo_i"], "postprocess": pP.bo_i},
-    {"name": "i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "bo"], "postprocess": pP.bo},
-    {"name": "i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "i"], "postprocess": pP.i_},
-    {"name": "i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "i"], "postprocess": pP.i_},
-    {"name": "i", "symbols": []},
-    {"name": "bo", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_bo"], "postprocess": pP.r_bo},
-    {"name": "bo", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_bo"], "postprocess": pP.g_bo},
-    {"name": "bo", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_bo"], "postprocess": pP.b_bo},
-    {"name": "bo", "symbols": [(lexer.has("i") ? {type: "i"} : i), "bo_i"], "postprocess": pP.bo_i},
-    {"name": "bo", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "s"], "postprocess": pP.bo},
-    {"name": "bo", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "i"], "postprocess": pP.i},
-    {"name": "bo", "symbols": [(lexer.has("char") ? {type: "char"} : char), "bo"], "postprocess": pP.bo_},
-    {"name": "bo", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "bo"], "postprocess": pP.bo_},
-    {"name": "bo", "symbols": []},
-    {"name": "bo_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "bo_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "bo_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "bo_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "bo"], "postprocess": pP.bo_i},
-    {"name": "bo_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "i"], "postprocess": pP.bo_i},
-    {"name": "bo_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "s"], "postprocess": pP.bo_i},
-    {"name": "bo_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "bo_i"], "postprocess": pP.bo_i_},
-    {"name": "bo_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "bo_i"], "postprocess": pP.bo_i_},
-    {"name": "bo_i", "symbols": []},
-    {"name": "r_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "i"], "postprocess": pP.r_i},
-    {"name": "r_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_i"], "postprocess": pP.g_i},
-    {"name": "r_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_i"], "postprocess": pP.b_i},
-    {"name": "r_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "r"], "postprocess": pP.r_i},
-    {"name": "r_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "r_bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "r_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "r_bo"], "postprocess": pP.r_bo},
-    {"name": "r_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "r_i"], "postprocess": pP.r_i_},
-    {"name": "r_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "r_i"], "postprocess": pP.r_i_},
-    {"name": "r_i", "symbols": []},
-    {"name": "r_bo", "symbols": [(lexer.has("r") ? {type: "r"} : r), "bo"], "postprocess": pP.r_bo},
-    {"name": "r_bo", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_bo"], "postprocess": pP.g_bo},
-    {"name": "r_bo", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_bo"], "postprocess": pP.b_bo},
-    {"name": "r_bo", "symbols": [(lexer.has("i") ? {type: "i"} : i), "r_bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "r_bo", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "r"], "postprocess": pP.r_bo},
-    {"name": "r_bo", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "r_i"], "postprocess": pP.r_i},
-    {"name": "r_bo", "symbols": [(lexer.has("char") ? {type: "char"} : char), "r_bo"], "postprocess": pP.r_bo_},
-    {"name": "r_bo", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "r_bo"], "postprocess": pP.r_bo_},
-    {"name": "r_bo", "symbols": []},
-    {"name": "r_bo_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "r_bo_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "r_bo_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "r_bo_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "r_bo"], "postprocess": pP.r_bo_i},
-    {"name": "r_bo_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "r_i"], "postprocess": pP.r_bo_i},
-    {"name": "r_bo_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "r"], "postprocess": pP.r_bo_i},
-    {"name": "r_bo_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "r_bo_i"], "postprocess": pP.r_bo_i_},
-    {"name": "r_bo_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "r_bo_i"], "postprocess": pP.r_bo_i_},
-    {"name": "r_bo_i", "symbols": []},
-    {"name": "g_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_i"], "postprocess": pP.r_i},
-    {"name": "g_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "i"], "postprocess": pP.g_i},
-    {"name": "g_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_i"], "postprocess": pP.b_i},
-    {"name": "g_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "g"], "postprocess": pP.g_i},
-    {"name": "g_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "g_bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "g_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "g_bo"], "postprocess": pP.g_bo},
-    {"name": "g_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "g_i"], "postprocess": pP.g_i_},
-    {"name": "g_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "g_i"], "postprocess": pP.g_i_},
-    {"name": "g_i", "symbols": []},
-    {"name": "g_bo", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_bo"], "postprocess": pP.r_bo},
-    {"name": "g_bo", "symbols": [(lexer.has("g") ? {type: "g"} : g), "bo"], "postprocess": pP.g_bo},
-    {"name": "g_bo", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_bo"], "postprocess": pP.b_bo},
-    {"name": "g_bo", "symbols": [(lexer.has("i") ? {type: "i"} : i), "g_bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "g_bo", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "g"], "postprocess": pP.g_bo},
-    {"name": "g_bo", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "g_i"], "postprocess": pP.g_i},
-    {"name": "g_bo", "symbols": [(lexer.has("char") ? {type: "char"} : char), "g_bo"], "postprocess": pP.g_bo_},
-    {"name": "g_bo", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "g_bo"], "postprocess": pP.g_bo_},
-    {"name": "g_bo", "symbols": []},
-    {"name": "g_bo_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "g_bo_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "g_bo_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "b_bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "g_bo_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "g_bo"], "postprocess": pP.g_bo_i},
-    {"name": "g_bo_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "g_i"], "postprocess": pP.g_bo_i},
-    {"name": "g_bo_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "g"], "postprocess": pP.g_bo_i},
-    {"name": "g_bo_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "g_bo_i"], "postprocess": pP.g_bo_i_},
-    {"name": "g_bo_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "g_bo_i"], "postprocess": pP.g_bo_i_},
-    {"name": "g_bo_i", "symbols": []},
-    {"name": "b_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_i"], "postprocess": pP.r_i},
-    {"name": "b_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_i"], "postprocess": pP.g_i},
-    {"name": "b_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "i"], "postprocess": pP.b_i},
-    {"name": "b_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "b"], "postprocess": pP.b_i},
-    {"name": "b_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "b_bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "b_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "b_bo"], "postprocess": pP.b_bo},
-    {"name": "b_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "b_i"], "postprocess": pP.b_i_},
-    {"name": "b_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "b_i"], "postprocess": pP.b_i_},
-    {"name": "b_i", "symbols": []},
-    {"name": "b_bo", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_bo"], "postprocess": pP.r_bo},
-    {"name": "b_bo", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_bo"], "postprocess": pP.g_bo},
-    {"name": "b_bo", "symbols": [(lexer.has("b") ? {type: "b"} : b), "bo"], "postprocess": pP.b_bo},
-    {"name": "b_bo", "symbols": [(lexer.has("i") ? {type: "i"} : i), "b_bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "b_bo", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "b"], "postprocess": pP.b_bo},
-    {"name": "b_bo", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "b_i"], "postprocess": pP.b_i},
-    {"name": "b_bo", "symbols": [(lexer.has("char") ? {type: "char"} : char), "b_bo"], "postprocess": pP.b_bo_},
-    {"name": "b_bo", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "b_bo"], "postprocess": pP.b_bo_},
-    {"name": "b_bo", "symbols": []},
-    {"name": "b_bo_i", "symbols": [(lexer.has("r") ? {type: "r"} : r), "r_bo_i"], "postprocess": pP.r_bo_i},
-    {"name": "b_bo_i", "symbols": [(lexer.has("g") ? {type: "g"} : g), "g_bo_i"], "postprocess": pP.g_bo_i},
-    {"name": "b_bo_i", "symbols": [(lexer.has("b") ? {type: "b"} : b), "bo_i"], "postprocess": pP.b_bo_i},
-    {"name": "b_bo_i", "symbols": [(lexer.has("i") ? {type: "i"} : i), "b_bo"], "postprocess": pP.b_bo_i},
-    {"name": "b_bo_i", "symbols": [(lexer.has("bo") ? {type: "bo"} : bo), "b_i"], "postprocess": pP.b_bo_i},
-    {"name": "b_bo_i", "symbols": [(lexer.has("bo_i") ? {type: "bo_i"} : bo_i), "b"], "postprocess": pP.b_bo_i},
-    {"name": "b_bo_i", "symbols": [(lexer.has("char") ? {type: "char"} : char), "b_bo_i"], "postprocess": pP.b_bo_i_},
-    {"name": "b_bo_i", "symbols": [(lexer.has("noTag") ? {type: "noTag"} : noTag), "b_bo_i"], "postprocess": pP.b_bo_i_},
-    {"name": "b_bo_i", "symbols": []},
     {"name": "s", "symbols": [(lexer.has("openingBr") ? {type: "openingBr"} : openingBr), "br", "s"], "postprocess": br},
     {"name": "s", "symbols": [(lexer.has("closingBr") ? {type: "closingBr"} : closingBr), "s"], "postprocess": errorBr},
     {"name": "s", "symbols": [(lexer.has("errorOpeningBr") ? {type: "errorOpeningBr"} : errorOpeningBr), "s"], "postprocess": errorBr},

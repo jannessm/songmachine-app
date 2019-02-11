@@ -2,231 +2,140 @@
 const moo = require("moo");
 
 const lexer = moo.compile({
-  char: {match: /[^\[\]<>\*\n]/},
+  char: /[^<>\*\n]/,
   r: /<(?:r|R)>/,
   g: /<(?:g|G)>/,
   b: /<(?:b|B)>/,
-  bo_i: /\*\*\*/,
-  bo: /\*\*/,
-  i: /\*/,
-  noTag: /(?:(?!<)[^\*\[\]]?>)|(?:<[^\*\[\]]?(?!>))/,
-  closingBr: "]",
-  openingBr: /\[(?=[^\[]*?\])/,
-  errorClosingBr: {match: /\](?:(?=.*\])|\n|$)/, value: m => m.split('').reverse().join('')},
-  errorOpeningBr: /\[(?:(?!.*\])|(?=.*\[)|\n|$)/,
-  NL: {match: /\n/, lineBreaks: true}
+  bo_i: /\*\*\*(?!\*)/,
+  bo: /\*\*(?!\*)/,
+  i: /\*(?!\*)/,
+  noTag: /(?:(?!<)[^\*]?>)|(?:<[^\*]?(?!>))/
 });
 %}
 @lexer lexer
 
-s -> %r r {% pP.r %}
-  | %g g {% pP.g %}
-  | %b b {% pP.b %}
-  | %i i {% pP.i %}
-  | %bo bo {% pP.bo %}
-  | %bo_i bo_i {% pP.bo_i %}
-  | %char s {% pP.s %}
-  | %noTag s {% pP.s %}
-  | null
-
-r -> %r s {% pP.r %}
-  | %g g {% pP.g %}
-  | %b b {% pP.b %}
-  | %i r_i {% pP.r_i %}
-  | %bo r_bo {% pP.r_bo %}
-  | %bo_i r_bo_i {% pP.r_bo_i %}
-  | %char r {% pP.r_ %}
-  | %noTag r {% pP.r_ %}
-  | null
-
-g -> %r r {% pP.r %}
-  | %g s {% pP.g %}
-  | %b b {% pP.b %}
-  | %i g_i {% pP.g_i %}
-  | %bo g_bo {% pP.g_bo %}
-  | %bo_i g_bo_i {% pP.g_bo_i %}
-  | %char g {% pP.g_ %}
-  | %noTag g {% pP.g_ %}
-  | null
-
-b -> %r r {% pP.r %}
-  | %g g {% pP.g %}
-  | %b s {% pP.b %}
-  | %i b_i {% pP.b_i %}
-  | %bo b_bo {% pP.b_bo %}
-  | %bo_i b_bo_i {% pP.b_bo_i %}
-  | %char b {% pP.b_ %}
-  | %noTag b {% pP.b_ %}
-  | null
-
-i -> %r r_i {% pP.r_i %}
-  | %g g_i {% pP.g_i %}
-  | %b b_i {% pP.b_i %}
-  | %i s {% pP.i %}
-  | %bo bo_i {% pP.bo_i %}
-  | %bo_i bo {% pP.bo %}
-  | %char i {% pP.i_ %}
-  | %noTag i {% pP.i_ %}
-  | null
-
-bo -> %r r_bo {% pP.r_bo %}
-  | %g g_bo {% pP.g_bo %}
-  | %b b_bo {% pP.b_bo %}
-  | %i bo_i {% pP.bo_i %}
-  | %bo s {% pP.bo %}
-  | %bo_i i {% pP.i %}
-  | %char bo {% pP.bo_ %}
-  | %noTag bo {% pP.bo_ %}
-  | null
-
-bo_i -> %r r_bo_i {% pP.r_bo_i %}
-  | %g g_bo_i {% pP.g_bo_i %}
-  | %b b_bo_i {% pP.b_bo_i %}
-  | %i bo {% pP.bo_i %}
-  | %bo i {% pP.bo_i %}
-  | %bo_i s {% pP.bo_i %}
-  | %char bo_i {% pP.bo_i_ %}
-  | %noTag bo_i {% pP.bo_i_ %}
-  | null
-
-r_i -> %r i {% pP.r_i %}
-  | %g g_i {% pP.g_i %}
-  | %b b_i {% pP.b_i %}
-  | %i r {% pP.r_i %}
-  | %bo r_bo_i {% pP.r_bo_i %}
-  | %bo_i r_bo {% pP.r_bo %}
-  | %char r_i {% pP.r_i_ %}
-  | %noTag r_i {% pP.r_i_ %}
-  | null
-
-r_bo -> %r bo {% pP.r_bo %}
-  | %g g_bo {% pP.g_bo %}
-  | %b b_bo {% pP.b_bo %}
-  | %i r_bo_i {% pP.r_bo_i %}
-  | %bo r {% pP.r_bo %}
-  | %bo_i r_i {% pP.r_i %}
-  | %char r_bo {% pP.r_bo_ %}
-  | %noTag r_bo {% pP.r_bo_ %}
-  | null
-
-r_bo_i -> %r bo_i {% pP.r_bo_i %}
-  | %g g_bo_i {% pP.g_bo_i %}
-  | %b b_bo_i {% pP.b_bo_i %}
-  | %i r_bo {% pP.r_bo_i %}
-  | %bo r_i {% pP.r_bo_i %}
-  | %bo_i r {% pP.r_bo_i %}
-  | %char r_bo_i {% pP.r_bo_i_ %}
-  | %noTag r_bo_i {% pP.r_bo_i_ %}
-  | null
-
-g_i -> %r r_i {% pP.r_i %}
-  | %g i {% pP.g_i %}
-  | %b b_i {% pP.b_i %}
-  | %i g {% pP.g_i %}
-  | %bo g_bo_i {% pP.g_bo_i %}
-  | %bo_i g_bo {% pP.g_bo %}
-  | %char g_i {% pP.g_i_ %}
-  | %noTag g_i {% pP.g_i_ %}
-  | null
-
-g_bo -> %r r_bo {% pP.r_bo %}
-  | %g bo {% pP.g_bo %}
-  | %b b_bo {% pP.b_bo %}
-  | %i g_bo_i {% pP.g_bo_i %}
-  | %bo g {% pP.g_bo %}
-  | %bo_i g_i {% pP.g_i %}
-  | %char g_bo {% pP.g_bo_ %}
-  | %noTag g_bo {% pP.g_bo_ %}
-  | null
-
-g_bo_i -> %r bo_i {% pP.r_bo_i %}
-  | %g bo_i {% pP.g_bo_i %}
-  | %b b_bo_i {% pP.b_bo_i %}
-  | %i g_bo {% pP.g_bo_i %}
-  | %bo g_i {% pP.g_bo_i %}
-  | %bo_i g {% pP.g_bo_i %}
-  | %char g_bo_i {% pP.g_bo_i_ %}
-  | %noTag g_bo_i {% pP.g_bo_i_ %}
-  | null
-
-b_i -> %r r_i {% pP.r_i %}
-  | %g g_i {% pP.g_i %}
-  | %b i {% pP.b_i %}
-  | %i b {% pP.b_i %}
-  | %bo b_bo_i {% pP.b_bo_i %}
-  | %bo_i b_bo {% pP.b_bo %}
-  | %char b_i {% pP.b_i_ %}
-  | %noTag b_i {% pP.b_i_ %}
-  | null
-
-b_bo -> %r r_bo {% pP.r_bo %}
-  | %g g_bo {% pP.g_bo %}
-  | %b bo {% pP.b_bo %}
-  | %i b_bo_i {% pP.b_bo_i %}
-  | %bo b {% pP.b_bo %}
-  | %bo_i b_i {% pP.b_i %}
-  | %char b_bo {% pP.b_bo_ %}
-  | %noTag b_bo {% pP.b_bo_ %}
-  | null
-
-b_bo_i -> %r r_bo_i {% pP.r_bo_i %}
-  | %g g_bo_i {% pP.g_bo_i %}
-  | %b bo_i {% pP.b_bo_i %}
-  | %i b_bo {% pP.b_bo_i %}
-  | %bo b_i {% pP.b_bo_i %}
-  | %bo_i b {% pP.b_bo_i %}
-  | %char b_bo_i {% pP.b_bo_i_ %}
-  | %noTag b_bo_i {% pP.b_bo_i_ %}
-  | null
+s -> s %r {% pP.r %}
+  | s %g {% pP.g %}
+  | s %b {% pP.b %}
+  | s %i {% pP.i %}
+  | s %bo {% pP.bo %}
+  | s %bo_i {% pP.bo_i %}
+  | s %char {% pP.s %}
+  | s %noTag {% pP.s %}
+  | null {% resetState %}
 
 @{%
-const cssObj = function(css, data, isTerminal = true) {
-	return {
-        css,
-        content: data,
-        isTerminal
-      }
+
+var parsingState = {
+  color: "",
+  italic: false,
+  bold: false,
+  resetColor: false,
+  resetItalic: false,
+  resetBold: false
 }
 
-const post = function (css, data, rest, isTerminal = true){
-  return [cssObj(css, data, isTerminal)].concat(rest);
+const resetState = function(data) {
+  parsingState = {
+    color: "",
+    italic: false,
+    bold: false,
+    resetColor: false,
+    resetItalic: false,
+    resetBold: false
+  };
+  return data;
+}
+
+const getClasses = function() {
+  let italic = parsingState.italic ? "italic" : "";
+  let bold = parsingState.bold ? "bold" : "";
+  
+  let color = (!!parsingState.color || !!italic || !!bold) ? parsingState.color : 'text';
+  if(parsingState.resetColor){
+    parsingState.color = "";
+    parsingState.resetColor = false;
+  }
+  if(parsingState.resetItalic){
+    parsingState.italic = false;
+    parsingState.resetItalic = false;
+  }
+  if(parsingState.resetBold){
+    parsingState.bold = false;
+    parsingState.resetBold = false;
+  }
+  return [color, italic, bold].filter(val => !!val).join(' ');
+}
+
+const setColor = function(color) {
+  if (parsingState.color === color) {
+    parsingState.resetColor = true;
+  } else {
+    parsingState.color = color;
+  }
+}
+
+const cssObj = function(data, isTerminal = true) {
+  const css = getClasses();
+  if (css === 'text') {
+    return data;
+  }
+	return {
+    css,
+    content: data,
+    isTerminal
+  }
+}
+
+const postProcessor = function (s, match, isTerminal = true){
+  const next = s.concat([cssObj(match.value, isTerminal)]);
+  return next;
 }
 
 const pP = {
-  error: ([fst, d]) => post("error", fst.value, d),
-  invError: ([fst, d]) => post("error", d, fst.value).reverse(),
-
-  s: ([fst, d]) => [fst.value].concat(d),
-  r: ([fst, d])  => post("red", fst.value, d),
-  g: ([fst, d]) => post("green", fst.value, d),
-  b: ([fst, d]) => post("blue", fst.value, d),
-  i: ([fst, d]) => post("italic", fst.value, d),
-  bo: ([fst, d]) => post("bold", fst.value, d),
-  bo_i: ([fst, d]) => post("bold italic", fst.value, d),
-  r_i: ([fst, d]) => post("red italic", fst.value, d),
-  r_bo: ([fst, d]) => post("red bold", fst.value, d),
-  r_bo_i: ([fst, d]) => post("red bold italic", fst.value, d),
-  g_i: ([fst, d]) => post("green italic", fst.value, d),
-  g_bo: ([fst, d]) => post("green bold", fst.value, d),
-  g_bo_i: ([fst, d]) => post("green bold italic", fst.value, d),
-  b_i: ([fst, d]) => post("blue italic", fst.value, d),
-  b_bo: ([fst, d]) => post("blue bold", fst.value, d),
-  b_bo_i: ([fst, d]) => post("blue bold italic", fst.value, d),
-
-  r_: ([fst, d])  => post("red", fst.value, d, false),
-  g_: ([fst, d]) => post("green", fst.value, d, false),
-  b_: ([fst, d]) => post("blue", fst.value, d, false),
-  i_: ([fst, d]) => post("italic", fst.value, d, false),
-  bo_: ([fst, d]) => post("bold", fst.value, d, false),
-  bo_i_: ([fst, d]) => post("bold italic", fst.value, d, false),
-  r_i_: ([fst, d]) => post("red italic", fst.value, d, false),
-  r_bo_: ([fst, d]) => post("red bold", fst.value, d, false),
-  r_bo_i_: ([fst, d]) => post("red bold italic", fst.value, d, false),
-  g_i_: ([fst, d]) => post("green italic", fst.value, d, false),
-  g_bo_: ([fst, d]) => post("green bold", fst.value, d, false),
-  g_bo_i_: ([fst, d]) => post("green bold italic", fst.value, d, false),
-  b_i_: ([fst, d]) => post("blue italic", fst.value, d, false),
-  b_bo_: ([fst, d]) => post("blue bold", fst.value, d, false),
-  b_bo_i_: ([fst, d]) => post("blue bold italic", fst.value, d, false)
+  s: ([fst, d]) => {
+    return postProcessor(fst, d, false);
+  },
+  r: ([fst, d])  => {
+    setColor("red");
+    return postProcessor(fst, d);
+  },
+  g: ([fst, d])  => {
+    setColor("green");
+    return postProcessor(fst, d);
+  },
+  b: ([fst, d])  => {
+    setColor("blue");
+    return postProcessor(fst, d);
+  },
+  i: ([fst, d])  => {
+    if (parsingState.italic) {
+      parsingState.resetItalic = true;
+    } else {
+      parsingState.italic = true;
+    }
+    return postProcessor(fst, d);
+  },
+  bo: ([fst, d])  => {
+    if (parsingState.bold) {
+      parsingState.resetBold = true;
+    } else {
+      parsingState.bold = true;
+    }
+    return postProcessor(fst, d);
+  },
+  bo_i: ([fst, d])  => {
+    if (parsingState.italic) {
+      parsingState.resetItalic = true;
+    } else {
+      parsingState.italic = true;
+    }
+    if (parsingState.bold) {
+      parsingState.resetBold = true;
+    } else {
+      parsingState.bold = true;
+    }
+    return postProcessor(fst, d);
+  }
 }
 %}

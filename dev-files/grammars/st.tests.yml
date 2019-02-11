@@ -53,7 +53,11 @@ tests:
         - s
         - d
         - f
-    red:  
+    red:
+      a<r>d: #correct without end
+        - a
+        - r, <r>, true
+        - r, d
       <r>as<r>d: # correct start and ending
         - r, <r>, true
         - r, a
@@ -72,10 +76,6 @@ tests:
         - r, <r>, true
         - r, <r>, true
         - a
-      a<r>d: #correct without end
-        - a
-        - r, <r>, true
-        - r, d
       a<r>: #correct at end
         - a
         - r, <r>, true
@@ -245,7 +245,7 @@ tests:
         - oi, c
         - oi, **, true
         - i, d
-        - o, ***, true
+        - oi, ***, true
         - o, e
     bold: 
       a**b**c: # start and closing
@@ -273,7 +273,7 @@ tests:
         - oi, c
         - oi, *, true
         - o, d
-        - i, ***, true
+        - oi, ***, true
         - i, e
     bo_i: 
       a***b***c: # start and closing
@@ -337,7 +337,7 @@ tests:
         - roi, c
         - roi, **, true
         - ri, d
-        - ro, ***, true
+        - roi, ***, true
         - ro, e
     green italic:
       <g>a*b*c: # start and closing
@@ -372,7 +372,7 @@ tests:
         - goi, c
         - goi, **, true
         - gi, d
-        - go, ***, true
+        - goi, ***, true
         - go, e
     blue italic:
       <b>a*b*c: # start and closing
@@ -407,7 +407,7 @@ tests:
         - boi, c
         - boi, **, true
         - bi, d
-        - bo, ***, true
+        - boi, ***, true
         - bo, e
     red bold:
       <r>a**b**c: # start and closing
@@ -442,7 +442,7 @@ tests:
         - roi, c
         - roi, *, true
         - ro, d
-        - ri, ***, true
+        - roi, ***, true
         - ri, e
     green bold:
       <g>a**b**c: # start and closing
@@ -477,7 +477,7 @@ tests:
         - goi, c
         - goi, *, true
         - go, d
-        - gi, ***, true
+        - goi, ***, true
         - gi, e
     blue bold:
       <b>a**b**c: # start and closing
@@ -512,7 +512,7 @@ tests:
         - boi, c
         - boi, *, true
         - bo, d
-        - bi, ***, true
+        - boi, ***, true
         - bi, e
     red bo_i:
       <r>a***b***c: # start and closing

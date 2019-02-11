@@ -9,7 +9,9 @@ define(function(require, exports, module) {
       color: "",
       italic: false,
       bold: false,
-      resetColor: false
+      resetColor: false,
+      resetItalic: false,
+      resetBold: false
     };
     
     this.resetStates = function() {
@@ -17,7 +19,9 @@ define(function(require, exports, module) {
         color: "",
         italic: false,
         bold: false,
-        resetColor: false
+        resetColor: false,
+        resetItalic: false,
+        resetBold: false
       };
     }
       
@@ -28,6 +32,12 @@ define(function(require, exports, module) {
       let color = (!!this.highlightStates.color || !!italic || !!bold) ? this.highlightStates.color : 'text';
       if(this.highlightStates.resetColor){
         this.highlightStates.color = "";
+      }
+      if(this.highlightStates.resetItalic){
+        this.highlightStates.italic = false;
+      }
+      if(this.highlightStates.resetBold){
+        this.highlightStates.bold = false;
       }
       return [color, italic, bold].filter(val => !!val).join('_');
     }
@@ -59,17 +69,33 @@ define(function(require, exports, module) {
           }, regex : /<b>[^\|\[]*?/},
           
           {token : () => {
-              this.highlightStates.italic = !this.highlightStates.italic;
-              return this.getClasses();
+            if (this.highlightStates.italic) {
+              this.highlightedStates.resetItalic = true;
+            } else {
+              this.highlightStates.italic = true;
+            }
+            return this.getClasses();
           }, regex : /\*(?!\*)/},
           {token : () => {
-              this.highlightStates.bold = !this.highlightStates.bold;
-              return this.getClasses();
+            if (this.highlightStates.bold) {
+              this.highlightedStates.resetBold = true;
+            } else {
+              this.highlightStates.bold = true;
+            }
+            return this.getClasses();
           }, regex : /\*\*(?!\*)/},
           {token : () => {
-              this.highlightStates.bold = !this.highlightStates.bold;
-              this.highlightStates.italic = !this.highlightStates.italic;
-              return this.getClasses();
+            if (this.highlightStates.italic) {
+              this.highlightedStates.resetItalic = true;
+            } else {
+              this.highlightStates.italic = true;
+            }
+            if (this.highlightStates.bold) {
+              this.highlightedStates.resetBold = true;
+            } else {
+              this.highlightStates.bold = true;
+            }
+            return this.getClasses();
           }, regex : /\*\*\*(?!\*)/},
           {token: () => {
               return this.getClasses();
@@ -109,16 +135,32 @@ define(function(require, exports, module) {
         }, regex : /<b>[^\|;]*?/},
         
         {token : () => {
-          this.highlightStates.italic = !this.highlightStates.italic;
+          if (this.highlightStates.italic) {
+            this.highlightedStates.resetItalic = true;
+          } else {
+            this.highlightStates.italic = true;
+          }
           return this.getClasses();
         }, regex : /\*(?!\*)/},
         {token : () => {
-          this.highlightStates.bold = !this.highlightStates.bold;
+          if (this.highlightStates.bold) {
+            this.highlightedStates.resetBold = true;
+          } else {
+            this.highlightStates.bold = true;
+          }
           return this.getClasses();
         }, regex : /\*\*(?!\*)/},
         {token : () => {
-          this.highlightStates.bold = !this.highlightStates.bold;
-          this.highlightStates.italic = !this.highlightStates.italic;
+          if (this.highlightStates.italic) {
+            this.highlightedStates.resetItalic = true;
+          } else {
+            this.highlightStates.italic = true;
+          }
+          if (this.highlightStates.bold) {
+            this.highlightedStates.resetBold = true;
+          } else {
+            this.highlightStates.bold = true;
+          }
           return this.getClasses();
         }, regex : /\*\*\*(?!\*)/},
         {token: () => {
@@ -131,8 +173,7 @@ define(function(require, exports, module) {
       ]
     };
   };
-  oop.inherits(SongmachineHighlightRules, TextHighlightRules);
   
   exports.SongmachineHighlightRules = SongmachineHighlightRules;
-  });
+});
   

@@ -26,7 +26,6 @@ function compileGrammar(input){
   grammarParser = compile(grammarParser, {});
   // Generate JavaScript code from the rules
   grammarParser = generate(grammarParser, "grammar");
-  fs.writeFileSync('compiled2', grammarParser);
 
   // Pretend this is a CommonJS environment to catch exports from the grammar.
   let module = { exports: {} };
