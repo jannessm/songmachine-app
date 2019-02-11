@@ -9,7 +9,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div class="row streched-row fill">
-  <app-songsheet-textarea [input]="songIn$ | async" (value)="songOut($event)" #textfield></app-songsheet-textarea>
+<div #content class="row streched-row fill">
+  <ace-editor [text]="songIn$ | async" (value)="songOut($event)" #textfield [options]="aceOptions"></ace-editor>
   <app-preview [performMode]="false" [song]="song"></app-preview>
 </div>

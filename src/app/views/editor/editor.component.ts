@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
@@ -15,7 +14,12 @@ import { TranslationService } from '../../services/translation.service';
 })
 export class EditorComponent implements OnInit {
 
- @ViewChild(SongsheetTextareaComponent) textfield: SongsheetTextareaComponent;
+  @ViewChild('textfield') textfield;
+  @ViewChild('content', {read: ElementRef}) content: ElementRef;
+  aceOptions = {
+    wrap: true,
+    fontSize: 12
+  };
   songIn$: Observable<Song>;
   song: Song;
   songId: string;
@@ -61,6 +65,16 @@ export class EditorComponent implements OnInit {
         this.songIn$ = Observable.from<Song>(this.dataService.getSong(songId));
       }
     });
+  }
+
+  private setEditorHeight() {
+    // adjust height of editor
+    const editor = this.textfield;
+    if (editor) {
+      const maxLines = Math.floor((this.content.nativeElement.offsetHeight - 49) / Math.floor(this.aceOptions.fontSize * 1.2));
+      editor.getEditor().renderer.setOption('maxLines', maxLines);
+      editor.getEditor().renderer.setOption('minLines', maxLines);
+    }
   }
 
   songOut(song) {

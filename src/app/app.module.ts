@@ -34,7 +34,6 @@ import { AppComponent } from './app.component';
 import { SongComponent } from './components/song/song.component';
 import { SonggroupComponent } from './components/songgroup/songgroup.component';
 import { PreviewComponent } from './components/preview/preview.component';
-import { SongsheetTextareaComponent } from './components/songsheet-textarea/songsheet-textarea.component';
 import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
@@ -64,6 +63,7 @@ import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.compon
 import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
 import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
 
+import { AceEditorModule } from 'ng2-ace-editor';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
@@ -89,7 +89,6 @@ registerLocaleData(localeIt, 'it');
     SonggroupComponent,
     SongSonggroupFormComponent,
     PreviewComponent,
-    SongsheetTextareaComponent,
     PerformviewComponent,
     SafePipe,
     TranslatePipe,
@@ -123,7 +122,8 @@ registerLocaleData(localeIt, 'it');
     MatDatepickerModule,
     MatMomentDateModule,
     AutosizeModule,
-    HttpClientModule
+    HttpClientModule,
+    AceEditorModule,
   ],
   providers: [
     DataService,
