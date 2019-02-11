@@ -1,102 +1,152 @@
 import { Injectable } from '@angular/core';
 import { CreateOptions } from 'html-pdf';
-import { Connector, ConnectorFactoryFunction, Methods, Modes } from '@nilsroesel/utils';
-import {
-  CmCreateFileRequest, CmDeleteFileRequest, CmFileLoadRequest,
-  CmFileSystemIndexRequest,
-  CmPdfRequest,
-  CmResponse, CreateFileResponse, DeleteFileResponse, FileLoadResponse,
-  FileSystemIndexResponse,
-  PdfRequestResponse, UpdateFileResponse, LoadIndexFilesResponse,
-  HttpServerResponse, RunHttpServerRequest, StopHttpServerRequest, RunHttpServerResponse,
-  CmBlobRequest, BlobResponse, CmOpenUrlResponse, CmOpenUrlRequest
-} from './model/client.model';
-
-const Path = require('path');
+import * as fs from 'fs';
+import * as mkdirp from 'mkdirp';
+import * as path from 'path';
+import * as jiff from 'jiff';
+import { dialog, app } from 'electron';
 
 @Injectable()
 export class ApiService {
 
-  private ConnectorFactory: ConnectorFactoryFunction;
+  fileMap = {};
 
   constructor() {
-    this.ConnectorFactory = Connector.to('api://');
   }
 
-  generatePdfRequest(path: string, fileName: string, htmlData: string, opts?: CreateOptions): Promise<CmResponse<PdfRequestResponse>> {
-    return this.ConnectorFactory('pdf')
-      .setMode(Modes.CORS)
-      .dispatch<CmPdfRequest, CmResponse<PdfRequestResponse>>(Methods.POST,  {
-        filePath: path,
-        fileName: fileName,
-        payload: htmlData,
-        metadata: opts || {}
+  // generatePdfRequest(path: string, fileName: string, htmlData: string, opts?: CreateOptions): Promise<CmResponse<PdfRequestResponse>> {
+  //   return this.ConnectorFactory('pdf')
+  //     .setMode(Modes.CORS)
+  //     .dispatch<CmPdfRequest, CmResponse<PdfRequestResponse>>(Methods.POST,  {
+  //       filePath: path,
+  //       fileName: fileName,
+  //       payload: htmlData,
+  //       metadata: opts || {}
+  //   });
+  // }
+
+  loadFile(path): JSON { 
+    const file = JSON.parse(fs.readFileSync(path, 'utf8'));
+    this.fileMap[path] = file;
+    return file;
+  }
+
+  loadSongFiles() {
+    Object.keys(this.fileMap)
+      .map((key) => {
+        this.fileMap[key] = fs.readFileSync(key, 'utf8');
+        return this.fileMap[key];
+      })
+      .map((value) => {
+        try {
+          return JSON.parse(value);
+        } catch(err) { return null; }
+      })
+      .filter(v => !!v);
+    return this;
+  }
+
+  createFileIndex(dirPath: string) {
+    if(dirPath) {
+      fs.readdirSync(dirPath).forEach(entry => {
+        const entryPath = path.join(dirPath, entry);
+        if (fs.statSync(entryPath).isDirectory()) {
+          this.createFileIndex(entryPath);
+        } else if (path.extname(entryPath) === '.song' || path.extname(entryPath) === '.songgroup') {
+          this.fileMap[entryPath] = null;
+        }
+      });
+    }
+    return this;
+  }
+
+  createFile(filePath: string, payload: string): Promise<any> {
+    const promise = new Promise((res, rej) => {
+      fs.writeFile(filePath, JSON.stringify(payload, null, 2), err => {
+        if (err) {
+          rej(err);
+        } else {
+          this.fileMap[filePath] = JSON.parse(payload);
+          res(this.fileMap[filePath]);
+        }
+      });
     });
+    return promise;
   }
 
-  generateFileSystemIndex(path: string): Promise<CmResponse<FileSystemIndexResponse>> {
-    return this.ConnectorFactory('index')
-      .setMode(Modes.CORS)
-      .dispatch<CmFileSystemIndexRequest, CmResponse<FileSystemIndexResponse>>(Methods.POST, { path });
+  deleteFile(filePath: string): Promise<any> {
+    return new Promise((res, rej) => {
+      if (this.fileMap[filePath]) {
+        fs.unlinkSync(filePath);
+        delete this.fileMap[filePath];
+        res();
+      } else {
+        rej('No such resource');
+      }
+    })
   }
 
-  generateLoadIndexFilesResponseRequest(): Promise<CmResponse<LoadIndexFilesResponse>> {
-    return this.ConnectorFactory('index')
-      .setMode(Modes.CORS)
-      .dispatch<undefined, CmResponse<LoadIndexFilesResponse>>(Methods.GET);
+  updateFile<T>(filePath: string, payload: T): Promise<any> {
+    const promise = new Promise((res, rej) => {
+      if(this.fileMap[filePath]) {
+        try {
+          const indexedFile = this.fileMap[filePath];
+          const currentFile = this.loadFile(filePath);
+          const diff = jiff.diff(currentFile, indexedFile);
+          if(diff.length === 0) {
+            fs.writeFile(filePath, payload, () => {res(payload)});
+          } else {
+            // The file has been modified without being reloaded
+            rej({indexedFile, currentFile})
+          }
+        } catch (err) {
+          rej(err);
+        }
+      } else {
+        rej('The given resource has not been initialized')
+      }
+    });
+    return promise;
   }
 
-  generateFileCreateRequest<T>(path: string, payload: T): Promise<CmResponse<CreateFileResponse>> {
-    return this.ConnectorFactory('file')
-      .setMode(Modes.CORS)
-      .dispatch<CmCreateFileRequest<T>, CmResponse<CreateFileResponse>>(Methods.POST, {path, payload});
-  }
+  // generateRunHttpServerRequest(
+  //   htmls: string[], title: string, hostWidth: number, hostHeight: number): Promise<CmResponse<RunHttpServerResponse>> {
+  //   return this.ConnectorFactory('performserver/run')
+  //     .setMode(Modes.CORS)
+  //     .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { htmls, title, hostWidth, hostHeight });
+  // }
 
-  generateDeleteFileRequest(path: string): Promise<CmResponse<DeleteFileResponse>> {
-    return this.ConnectorFactory('file')
-      .setMode(Modes.CORS)
-      .dispatch<CmDeleteFileRequest, CmResponse<DeleteFileResponse>>(Methods.DELETE, { path });
-  }
-
-  generateFileUpdateRequest<T>(path: string, payload: T): Promise<CmResponse<UpdateFileResponse>> {
-    return this.ConnectorFactory('file/sync')
-      .setMode(Modes.CORS)
-      .dispatch<CmCreateFileRequest<T>, CmResponse<UpdateFileResponse>>(Methods.POST, { path, payload });
-  }
-
-  generateFileLoadRequest<T>(path: string, asJson?: boolean): Promise<CmResponse<FileLoadResponse<T>>> {
-    return this.ConnectorFactory('read')
-      .setMode(Modes.CORS)
-      .dispatch<CmFileLoadRequest, CmResponse<FileLoadResponse<T>>>(Methods.POST, { path, json: asJson });
-  }
-
-  generateRunHttpServerRequest(
-    htmls: string[], title: string, hostWidth: number, hostHeight: number): Promise<CmResponse<RunHttpServerResponse>> {
-    return this.ConnectorFactory('performserver/run')
-      .setMode(Modes.CORS)
-      .dispatch<RunHttpServerRequest, CmResponse<RunHttpServerResponse>>(Methods.POST, { htmls, title, hostWidth, hostHeight });
-  }
-
-  generateStopHttpServerRequest(): Promise<CmResponse<HttpServerResponse>> {
-    return this.ConnectorFactory('performserver/stop')
-      .setMode(Modes.CORS)
-      .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
-  }
+  // generateStopHttpServerRequest(): Promise<CmResponse<HttpServerResponse>> {
+  //   return this.ConnectorFactory('performserver/stop')
+  //     .setMode(Modes.CORS)
+  //     .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
+  // }
 
   generateBlobCreateRequest(blob: any, fileName: string, encoding?: string) {
     const reader = new FileReader();
     reader.onload = () => {
-      return this.ConnectorFactory('blob')
-      .setMode(Modes.CORS)
-      .dispatch<CmBlobRequest, CmResponse<BlobResponse>>(Methods.POST, { blob: reader.result, fileName, encoding});
+      try {
+        dialog.showSaveDialog(null, {
+          defaultPath: app.getPath('documents') + '/' + fileName,
+        }, file => {
+          if(file){
+            fs.writeFileSync(file, reader.result, encoding || 'binary');
+            // Created file
+          } else {
+            // Request Canceled
+          }
+        });
+      } catch (err) {
+        // Error while creating file
+      }
     };
     reader.readAsBinaryString(blob);
   }
 
-  generateOpenUrlRequest(url: string): Promise<CmResponse<CmOpenUrlResponse>> {
-    return this.ConnectorFactory('openurl')
-      .setMode(Modes.CORS)
-      .dispatch<CmOpenUrlRequest, CmResponse<CmOpenUrlResponse>>(Methods.POST, { url: url });
-  }
+  // generateOpenUrlRequest(url: string): Promise<CmResponse<CmOpenUrlResponse>> {
+  //   return this.ConnectorFactory('openurl')
+  //     .setMode(Modes.CORS)
+  //     .dispatch<CmOpenUrlRequest, CmResponse<CmOpenUrlResponse>>(Methods.POST, { url: url });
+  // }
 
 }

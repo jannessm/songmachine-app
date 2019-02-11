@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(code => {
           if (code === 1) {
-            this.apiService.generateOpenUrlRequest('http://songmachine.magnusson.berlin');
+            open('http://songmachine.magnusson.berlin');
           }
         });
       }

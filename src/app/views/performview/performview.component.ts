@@ -52,7 +52,7 @@ export class PerformviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.apiService.generateStopHttpServerRequest();
+    // this.apiService.generateStopHttpServerRequest();
   }
 
   private loadSong(id) {
@@ -103,15 +103,15 @@ export class PerformviewComponent implements OnInit, OnDestroy {
     this.songs.forEach(song => {
       htmls.push(this.parserService.songToHTML(song));
     });
-    this.apiService.generateRunHttpServerRequest(
-      htmls, this.title, this.doc.body.clientWidth, this.doc.body.clientHeight).then((data: any) => {
-      this.scrollApiService.setHost(new URL(data.url).host);
-      this.dialog.open(QRDialogComponent, {
-        height: '400px',
-        width: '300px',
-        data
-      });
-    });
+    // this.apiService.generateRunHttpServerRequest(
+    //   htmls, this.title, this.doc.body.clientWidth, this.doc.body.clientHeight).then((data: any) => {
+    //   this.scrollApiService.setHost(new URL(data.url).host);
+    //   this.dialog.open(QRDialogComponent, {
+    //     height: '400px',
+    //     width: '300px',
+    //     data
+    //   });
+    // });
   }
 
 }

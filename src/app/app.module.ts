@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { AutosizeModule } from 'ngx-autosize';
+// import { AutosizeModule } from 'ngx-autosize';
 
 import { ConnectivityModule } from './services/connectivity/connectivity.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -104,7 +104,6 @@ export function initConfigs(configService: ConfigService) {
     MatAutocompleteModule,
     MatExpansionModule,
     MatSelectModule,
-    AutosizeModule,
     HttpClientModule
   ],
   providers: [

@@ -3,7 +3,7 @@ import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
 import { TranslationService } from '../../services/translation.service';
@@ -58,7 +58,7 @@ export class EditorComponent implements OnInit {
       const songId = params['songId'];
       if (songId) {
         this.songId = songId;
-        this.songIn$ = Observable.from<Song>(this.dataService.getSong(songId));
+        this.songIn$ = from(this.dataService.getSong(songId));
       }
     });
   }
@@ -69,7 +69,7 @@ export class EditorComponent implements OnInit {
   }
 
   save() {
-    this.songIn$ = Observable.from<Song>(this.dataService.saveSong(this.song).then(song => {
+    this.songIn$ = from(this.dataService.saveSong(this.song).then(song => {
       if (song) {
         this.textfield.songHasChanged = false;
       }
