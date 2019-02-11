@@ -23,11 +23,10 @@ export class ApiService {
     this.ConnectorFactory = Connector.to('api://');
   }
 
-  generatePdfRequest(path: string, fileName: string, htmlData: string, opts?: CreateOptions): Promise<CmResponse<PdfRequestResponse>> {
+  generatePdfRequest(fileName: string, htmlData: string, opts?: CreateOptions): Promise<CmResponse<PdfRequestResponse>> {
     return this.ConnectorFactory('pdf')
       .setMode(Modes.CORS)
       .dispatch<CmPdfRequest, CmResponse<PdfRequestResponse>>(Methods.POST,  {
-        filePath: path,
         fileName: fileName,
         payload: htmlData,
         metadata: opts || {}

@@ -7,7 +7,6 @@ export interface CmResponse<P> {
 }
 
 export interface CmPdfRequest {
-  filePath: string;
   fileName: string;
   payload: string;
   metadata: CreateOptions;

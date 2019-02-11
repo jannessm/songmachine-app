@@ -14,6 +14,9 @@
         </mat-menu>
 
         <mat-menu #exportMenu="matMenu">
+        <button mat-menu-item (click)="exportPdf()">
+            <span>{{ 'menu.export.pdf' | translate }}</span>
+        </button>
         <button mat-menu-item (click)="exportSt()">
             <span>{{ 'menu.export.st' | translate }}</span>
         </button>

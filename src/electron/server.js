@@ -37,16 +37,30 @@ module.exports = class {
      */
     api.post('pdf', (request, response) => {
       const requestPayload = assembleBufferPayload(request);
-      if(requestPayload.filePath && requestPayload.fileName && requestPayload.payload && requestPayload.metadata) {
-        pdf.create(requestPayload.payload, requestPayload.metadata).toFile(path.join(requestPayload.filePath, requestPayload.fileName), err => {
+      if(requestPayload.fileName && requestPayload.payload && requestPayload.metadata) {
+        try{
+          dialog.showSaveDialog(null, {
+            defaultPath: app.getPath('documents') + '/' + requestPayload.fileName,
+          }, file => {
+            const style = /<style>(?:.|\n)*?<\/style>/.exec(requestPayload.payload)[0];
+            const html = `<html><head>${style.replace(/{{__dirname}}/g, __dirname)}</head><body>${requestPayload.payload.replace(style, '')}</body></html>`;
+            console.log(html);
+            pdf.create(html, requestPayload.metadata).toFile(file, err => {
+              response.json({
+                status: !err ? 201 : 500,
+                statusMessage: !err ? 'written file' : err.stack
+              });
+            });
+          });
+        } catch (err) {
           response.json({
-            status: !!err? 201: 500,
-            statusMessage: err.stack,
+            status: 500,
+            statusMessage: 'Can\'t create PDF',
             payload: {
-              created: !!err
+              created: false
             }
           });
-        });
+        }
       } else {
         response.json({
           status: 400,

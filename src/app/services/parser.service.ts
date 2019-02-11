@@ -26,8 +26,8 @@ export class ParserService {
     const html = this.songToHTML(song);
   }
 
-  public songToHTML( song: Song): string {
-    return this.htmlFactory.songToHTML(song);
+  public songToHTML( song: Song, withFontFamily = false): string {
+    return this.htmlFactory.songToHTML(song, withFontFamily);
   }
 
   public songToString( song: Song ): string {

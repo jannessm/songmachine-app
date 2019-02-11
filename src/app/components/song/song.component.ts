@@ -77,4 +77,8 @@ export class SongComponent {
     this.exportService.getPptx(this.song);
   }
 
+  exportPdf() {
+    this.apiService.generatePdfRequest(this.song.title + '.pdf', this.exportService.getPdf(this.song));
+  }
+
 }
