@@ -130,7 +130,7 @@ export class SongSonggroupFormComponent implements OnInit {
           }
           break;
       }
-    });
+    }).catch(() => {});
 
   }
 }

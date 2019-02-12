@@ -34,7 +34,7 @@ export class DexieService {
     }
 
     return this.getByKey(database, data.id).then(obj => {
-      if(obj){
+      if (obj) {
         return this.dexie[database]
           .update(data.id, data)
           .then(() => this.changes.emit(new IndexedDBChange()))
@@ -53,7 +53,11 @@ export class DexieService {
   }
 
   getByKey(database: DATABASES, key: string) {
-    return this.dexie[database].get(key);
+    if (key) {
+      return this.dexie[database].get(key);
+    } else {
+      return Promise.reject();
+    }
   }
 
   delete(database: DATABASES, key: string) {

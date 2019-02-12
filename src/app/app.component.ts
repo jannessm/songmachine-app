@@ -9,7 +9,6 @@ import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
 import { HttpClient } from '@angular/common/http';
 import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
 import { TranslationService } from './services/translation.service';
-import { ApiService } from './services/connectivity/api.service';
 import * as compareVersions from 'compare-versions';
 
 const packageJson = require('../../package.json');
@@ -48,8 +47,7 @@ export class AppComponent implements OnInit {
     private parserService: ParserService,
     private dialog: MatDialog,
     private httpClient: HttpClient,
-    private translationService: TranslationService,
-    private apiService: ApiService
+    private translationService: TranslationService
   ) { }
 
   ngOnInit() {

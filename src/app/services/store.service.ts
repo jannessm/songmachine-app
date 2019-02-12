@@ -7,7 +7,7 @@ import * as jiff from 'jiff';
 import { dialog, app } from 'electron';
 
 @Injectable()
-export class ApiService {
+export class StoreService {
 
   fileMap = {};
 
@@ -25,9 +25,9 @@ export class ApiService {
   //   });
   // }
 
-  loadFile(path): JSON { 
-    const file = JSON.parse(fs.readFileSync(path, 'utf8'));
-    this.fileMap[path] = file;
+  loadFile(filePath): JSON {
+    const file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    this.fileMap[filePath] = file;
     return file;
   }
 
@@ -40,14 +40,14 @@ export class ApiService {
       .map((value) => {
         try {
           return JSON.parse(value);
-        } catch(err) { return null; }
+        } catch (err) { return null; }
       })
       .filter(v => !!v);
     return this;
   }
 
   createFileIndex(dirPath: string) {
-    if(dirPath) {
+    if (dirPath) {
       fs.readdirSync(dirPath).forEach(entry => {
         const entryPath = path.join(dirPath, entry);
         if (fs.statSync(entryPath).isDirectory()) {
@@ -83,27 +83,27 @@ export class ApiService {
       } else {
         rej('No such resource');
       }
-    })
+    });
   }
 
   updateFile<T>(filePath: string, payload: T): Promise<any> {
     const promise = new Promise((res, rej) => {
-      if(this.fileMap[filePath]) {
+      if (this.fileMap[filePath]) {
         try {
           const indexedFile = this.fileMap[filePath];
           const currentFile = this.loadFile(filePath);
           const diff = jiff.diff(currentFile, indexedFile);
-          if(diff.length === 0) {
-            fs.writeFile(filePath, payload, () => {res(payload)});
+          if (diff.length === 0) {
+            fs.writeFile(filePath, payload, () => {res(payload); });
           } else {
             // The file has been modified without being reloaded
-            rej({indexedFile, currentFile})
+            rej({indexedFile, currentFile});
           }
         } catch (err) {
           rej(err);
         }
       } else {
-        rej('The given resource has not been initialized')
+        rej('The given resource has not been initialized');
       }
     });
     return promise;
@@ -129,7 +129,7 @@ export class ApiService {
         dialog.showSaveDialog(null, {
           defaultPath: app.getPath('documents') + '/' + fileName,
         }, file => {
-          if(file){
+          if (file) {
             fs.writeFileSync(file, reader.result, encoding || 'binary');
             // Created file
           } else {

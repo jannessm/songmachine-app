@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DATABASES } from '../models/databases';
-import { ApiService } from './connectivity/api.service';
 import { Songgroup } from '../models/songgroup';
 import { DexieService } from './dexie.service';
 import { Song } from '../models/song';
@@ -8,6 +7,7 @@ import { MergeService } from './merge.service';
 import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
 import { FILESYSTEM } from '../models/filesystem';
+import { StoreService } from './store.service';
 
 const uuid = require('uuid/v1');
 
@@ -16,7 +16,7 @@ export class FileSynchronizerService {
 
   constructor(
     private dexieService: DexieService,
-    private apiService: ApiService,
+    private storeService: StoreService,
     private mergeService: MergeService,
     private router: Router,
     private configService: ConfigService
@@ -28,7 +28,7 @@ export class FileSynchronizerService {
     this.dexieService.clear(DATABASES.songs);
     this.dexieService.clear(DATABASES.songgroups);
     return this.pathGuard().then(mainPath => {
-      return Object.keys(this.apiService.createFileIndex(mainPath).loadSongFiles().fileMap).forEach(filePath => {
+      return Object.keys(this.storeService.createFileIndex(mainPath).loadSongFiles().fileMap).forEach(filePath => {
         const file = filePath.replace(mainPath, '');
         if (file.startsWith(DATABASES.songs)) {
           this.syncOneFileIndexedDB(DATABASES.songs, filePath);
@@ -42,17 +42,17 @@ export class FileSynchronizerService {
   }
 
   private syncOneFileIndexedDB(dbType: DATABASES, filePath: string) {
-    this.dexieService.upsert(dbType, this.apiService.loadFile(filePath));  // filesystem determines data!!!
+    this.dexieService.upsert(dbType, this.storeService.loadFile(filePath));  // filesystem determines data!!!
   }
 
   private upsertSonggroup(filePath: string, data: Songgroup): Promise<Songgroup> {
-    return this.apiService.createFile(filePath, JSON.stringify(data, null, 2)).then(() => {
+    return this.storeService.createFile(filePath, JSON.stringify(data, null, 2)).then(() => {
       return new Promise<Songgroup>(resolve => resolve(data));
     });
   }
 
   private upsertSong(filePath: string, data: Song): Promise<Song> {
-    return this.apiService
+    return this.storeService
       .updateFile(filePath, data)
       .then(() => new Promise<Song>(resolve => resolve(data)))
       .catch((err) => {
@@ -100,7 +100,7 @@ export class FileSynchronizerService {
 
   public deleteSong(songid: string) {
     return this.pathGuard().then(mainPath => {
-      return this.apiService
+      return this.storeService
         .deleteFile(this.pathJoin(mainPath, DATABASES.songs, songid + '.song'))
         .then(res => {
           if (res.status === 200) {
@@ -146,7 +146,7 @@ export class FileSynchronizerService {
 
   public deleteSonggroup(songgroupid: string) {
     return this.pathGuard().then(mainPath => {
-      return this.apiService.deleteFile(
+      return this.storeService.deleteFile(
           this.pathJoin(mainPath, DATABASES.songgroups, songgroupid + '.songgroup')
         ).then(() => {
           this.dexieService.delete(DATABASES.songgroups, songgroupid);

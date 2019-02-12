@@ -5,9 +5,9 @@ import { Song } from '../../models/song';
 import { ScrollApiService } from '../../services/scroll-api.service';
 import { MatDialog } from '@angular/material';
 import { QRDialogComponent } from '../../dialogs/qr-dialog/qr-dialog.component';
-import { ApiService } from '../../services/connectivity/api.service';
 import { ParserService } from '../../services/parser.service';
 import { DOCUMENT } from '@angular/common';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-performview',
@@ -27,7 +27,7 @@ export class PerformviewComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private scrollApiService: ScrollApiService,
     private dialog: MatDialog,
-    private apiService: ApiService,
+    private storeService: StoreService,
     private parserService: ParserService,
     @Inject(DOCUMENT) private doc: Document
   ) { }
