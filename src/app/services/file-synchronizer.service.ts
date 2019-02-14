@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DATABASES } from '../models/databases';
 import { Songgroup } from '../models/songgroup';
-import { DexieService } from './dexie.service';
 import { Song } from '../models/song';
 import { MergeService } from './merge.service';
 import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
-import { FILESYSTEM } from '../models/filesystem';
 import { StoreService } from './store.service';
 
 const uuid = require('uuid/v1');
@@ -26,27 +24,27 @@ export class FileSynchronizerService {
     });
   }
 
-  private upsertSonggroup(filePath: string, data: Songgroup): Promise<Songgroup> {
-    return this.storeService.createFile(filePath, data).then(() => {
+  private upsertSonggroup(data: Songgroup): Promise<Songgroup> {
+    return this.storeService.createFile(DATABASES.songgroups, data).then(() => {
       return new Promise<Songgroup>(resolve => resolve(data));
     });
   }
 
-  private upsertSong(filePath: string, data: Song): Promise<Song> {
+  private upsertSong(data: Song): Promise<Song> {
     return new Promise((resolve, reject) => {
       this.storeService
-      .updateFile(filePath, data)
+      .updateFile(DATABASES.songs, data)
       .then(() => resolve(data))
       .catch((err) => {
         if (err === 'The given resource has not been initialized') {
-          return this.storeService.createFile(filePath, data);
+          return this.storeService.createFile(DATABASES.songs, data);
         } else if (err.indexedFile && err.currentFile) {
           console.log(err);
           return this.mergeService
             .mergeSong(err.indexedFile, err.currentFile, data)
             .then(song => {
             if (song) {
-              return this.upsertSong(filePath, <Song>song);
+              return this.upsertSong(<Song>song);
             }
             return;
           });
@@ -67,8 +65,8 @@ export class FileSynchronizerService {
     if (!song.id) {
       song.id = uuid();
     }
-    return this.pathGuard().then(mainPath => {
-      return this.upsertSong(this.pathJoin(mainPath, DATABASES.songs, song.id + '.song'), song).then(s => {
+    return this.pathGuard().then(() => {
+      return this.upsertSong(song).then(s => {
         if (s) {
             return new Promise<Song>(resolve => resolve(<Song>s));
         }
@@ -81,9 +79,8 @@ export class FileSynchronizerService {
   }
 
   public deleteSong(songid: string) {
-    return this.pathGuard().then(mainPath => {
-      return this.storeService
-        .deleteFile(this.pathJoin(mainPath, DATABASES.songs, songid + '.song'));
+    return this.pathGuard().then(() => {
+      return this.storeService.deleteFile(DATABASES.songs, songid);
     }).catch(() => {
       // no path defined
       this.router.navigateByUrl('/settings');
@@ -102,8 +99,8 @@ export class FileSynchronizerService {
     if (!songgroup.id) {
       songgroup.id = uuid();
     }
-    return this.pathGuard().then(mainPath => {
-      return this.upsertSonggroup(this.pathJoin(mainPath, DATABASES.songgroups, songgroup.id + '.songgroup'), songgroup);
+    return this.pathGuard().then(() => {
+      return this.upsertSonggroup(songgroup);
     }).catch(() => {
       // no path defined
       this.router.navigateByUrl('/settings');
@@ -112,10 +109,8 @@ export class FileSynchronizerService {
   }
 
   public deleteSonggroup(songgroupid: string) {
-    return this.pathGuard().then(mainPath => {
-      return this.storeService.deleteFile(
-          this.pathJoin(mainPath, DATABASES.songgroups, songgroupid + '.songgroup')
-        );
+    return this.pathGuard().then(() => {
+      return this.storeService.deleteFile(DATABASES.songgroups, songgroupid);
     });
   }
 
@@ -123,24 +118,10 @@ export class FileSynchronizerService {
     return new Promise((res, rej) => {
       const root = this.configService.get('defaultPath');
       if (root) {
-        const p = this.pathJoin(root, FILESYSTEM.DATA, '');
-        res(p);
+        res(root);
       } else {
         rej('no defaultPath defined');
       }
     });
-  }
-
-  private pathJoin(...args: string[]): string {
-    let delimiter = '/';
-    if (/Win/gi.test(navigator.platform)) {
-      delimiter = '\\';
-    }
-    return args.reduce((path, val) => {
-      if (path !== '' && path[path.length - 1] !== delimiter) {
-        path += delimiter;
-      }
-      return path + val;
-    }, '');
   }
 }

@@ -8,6 +8,7 @@ import { dialog, app } from 'electron';
 import { Song } from '../models/song';
 import { Songgroup } from '../models/songgroup';
 import { DATABASES } from '../models/databases';
+import { FILESYSTEM } from '../models/filesystem';
 
 @Injectable()
 export class StoreService {
@@ -34,7 +35,7 @@ export class StoreService {
 
   loadFile(filePath): JSON {
     const file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const p = filePath.replace(this.mainDirectory, '').split(path.sep);
+    const p = filePath.replace(path.join(this.mainDirectory, FILESYSTEM.DATA), '').split(path.sep).slice(1);
     this.addToMap(p, this.fileMap, file);
     return file;
   }
@@ -42,7 +43,7 @@ export class StoreService {
   loadSongFiles() {
     Object.keys(this.fileMap)
       .map((key) => {
-        this.fileMap[key] = fs.readFileSync(path.join(this.mainDirectory, key), 'utf8');
+        this.fileMap[key] = fs.readFileSync(path.join(this.mainDirectory, FILESYSTEM.DATA, key), 'utf8');
         return this.fileMap[key];
       })
       .map((value) => {
@@ -67,17 +68,21 @@ export class StoreService {
         this.loadFile(entryPath);
       }
     });
+    console.log(this.fileMap);
     return this;
   }
 
-  createFile(filePath: string, payload: Song|Songgroup): Promise<Song|Songgroup> {
+  createFile(type: DATABASES, payload: Song|Songgroup): Promise<Song|Songgroup> {
     const promise = new Promise<Song|Songgroup>((res, rej) => {
+      const suffix = this.suffix(type);
+
+      const filePath = path.join(this.mainDirectory, FILESYSTEM.DATA, type, payload.id + suffix);
       mkdirp(path.dirname(filePath));
       fs.writeFile(filePath, JSON.stringify(payload, null, 2), err => {
         if (err) {
           rej(err);
         } else {
-          this.fileMap[filePath] = JSON.stringify(payload, null, 2);
+          this.fileMap[type][payload.id + suffix] = payload;
           res(this.fileMap[filePath]);
         }
       });
@@ -85,11 +90,12 @@ export class StoreService {
     return promise;
   }
 
-  deleteFile(filePath: string): Promise<any> {
+  deleteFile(type: DATABASES, id: string): Promise<any> {
     return new Promise((res, rej) => {
-      if (this.fileMap[filePath]) {
-        fs.unlinkSync(filePath);
-        delete this.fileMap[filePath];
+      const suffix = this.suffix(type);
+      if (type === DATABASES.songs && this.fileMap[type][id + suffix]) {
+        fs.unlinkSync(path.join(this.mainDirectory, FILESYSTEM.DATA, type, id + suffix));
+        delete this.fileMap.songs[id + suffix];
         res();
       } else {
         rej('No such resource');
@@ -97,11 +103,14 @@ export class StoreService {
     });
   }
 
-  updateFile(filePath: string, payload: Song | Songgroup): Promise<Song|Songgroup> {
+  updateFile(type: DATABASES, payload: Song | Songgroup): Promise<Song|Songgroup> {
     const promise = new Promise<Song|Songgroup>((res, rej) => {
-      if (this.fileMap[filePath]) {
+      const suffix = this.suffix(payload);
+      const obj = this.fileMap[type][payload.id + suffix];
+      const filePath = path.join(this.mainDirectory, FILESYSTEM.DATA, type, payload.id + suffix);
+      if (obj) {
         try {
-          const indexedFile = this.fileMap[filePath];
+          const indexedFile = obj;
           const currentFile = this.loadFile(filePath);
           const diff = jiff.diff(currentFile, indexedFile);
           if (diff.length === 0) {
@@ -173,11 +182,8 @@ export class StoreService {
   }
 
   getByKey(type: DATABASES, id: string): Song | Songgroup {
-    if (type === DATABASES.songs) {
-      return this.fileMap.songs[id + '.song'];
-    } else {
-      return this.fileMap.songgroups[id + '.songgroup'];
-    }
+    const suffix = this.suffix(type);
+    return this.fileMap.songs[id + suffix];
   }
 
   addToMap(pathArray: string[], map: object, file: object) {
@@ -188,6 +194,14 @@ export class StoreService {
       this.addToMap(pathArray.slice(1), map[pathArray[0]], file);
     } else if (pathArray.length === 1) {
       map[pathArray[0]] = file;
+    }
+  }
+
+  suffix(obj: Song | Songgroup | DATABASES) {
+    if (obj instanceof Song || obj === DATABASES.songs) {
+      return '.song';
+    } else {
+      return '.songgroup';
     }
   }
 }
