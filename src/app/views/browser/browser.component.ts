@@ -134,26 +134,17 @@ export class BrowserComponent implements OnInit, OnDestroy {
   }
 
   updateElems() {
-    const arr = [];
-    setTimeout(() => {
-      this.dataService.getAll(<DATABASES>this.type).then( res => {
-        for (const e of res) {
-          if (this.type === DATABASES.songs) {
-            arr.push(new Song(e));
-          } else {
-            arr.push(new Songgroup(e));
-          }
-        }
-
-        if (this.type === DATABASES.songs) {
-          this.songs = arr.sort(this.sort);
-          this.filteredElems = this.songs;
-        } else {
-          this.songgroups = arr.sort(this.sort);
-          this.filteredElems = this.songgroups;
-        }
-      });
-    }, 10);
+    if (this.type === DATABASES.songs) {
+      let allDocs = this.dataService.getAll(DATABASES.songs);
+      allDocs = (<Song[]>allDocs).map(e => new Song(e)).sort(this.sort);
+      this.songs = allDocs;
+      this.filteredElems = this.songs;
+    } else {
+      let allDocs = this.dataService.getAll(DATABASES.songgroups);
+      allDocs = (<Songgroup[]>allDocs).map(e => new Songgroup(e)).sort(this.sort);
+      this.songgroups = allDocs;
+      this.filteredElems = this.songgroups;
+    }
   }
 
   private sort(a: Song | Songgroup, b: Song | Songgroup): number {

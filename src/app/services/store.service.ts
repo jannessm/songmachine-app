@@ -5,11 +5,18 @@ import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import * as jiff from 'jiff';
 import { dialog, app } from 'electron';
+import { Song } from '../models/song';
+import { Songgroup } from '../models/songgroup';
+import { DATABASES } from '../models/databases';
 
 @Injectable()
 export class StoreService {
 
-  fileMap = {};
+  fileMap = {
+    songs: {},
+    songgroups: {}
+  };
+  mainDirectory = '';
 
   constructor() {
   }
@@ -27,14 +34,15 @@ export class StoreService {
 
   loadFile(filePath): JSON {
     const file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    this.fileMap[filePath] = file;
+    const p = filePath.replace(this.mainDirectory, '').split(path.sep);
+    this.addToMap(p, this.fileMap, file);
     return file;
   }
 
   loadSongFiles() {
     Object.keys(this.fileMap)
       .map((key) => {
-        this.fileMap[key] = fs.readFileSync(key, 'utf8');
+        this.fileMap[key] = fs.readFileSync(path.join(this.mainDirectory, key), 'utf8');
         return this.fileMap[key];
       })
       .map((value) => {
@@ -46,27 +54,30 @@ export class StoreService {
     return this;
   }
 
-  createFileIndex(dirPath: string) {
-    if (dirPath) {
-      fs.readdirSync(dirPath).forEach(entry => {
-        const entryPath = path.join(dirPath, entry);
-        if (fs.statSync(entryPath).isDirectory()) {
-          this.createFileIndex(entryPath);
-        } else if (path.extname(entryPath) === '.song' || path.extname(entryPath) === '.songgroup') {
-          this.fileMap[entryPath] = null;
-        }
-      });
+  createFileIndex(dirPath?: string) {
+    if (!dirPath) {
+      dirPath = this.mainDirectory;
     }
+
+    fs.readdirSync(dirPath).forEach(entry => {
+      const entryPath = path.join(dirPath, entry);
+      if (fs.statSync(entryPath).isDirectory()) {
+        this.createFileIndex(entryPath);
+      } else if (path.extname(entryPath) === '.song' || path.extname(entryPath) === '.songgroup') {
+        this.loadFile(entryPath);
+      }
+    });
     return this;
   }
 
-  createFile(filePath: string, payload: string): Promise<any> {
-    const promise = new Promise((res, rej) => {
+  createFile(filePath: string, payload: Song|Songgroup): Promise<Song|Songgroup> {
+    const promise = new Promise<Song|Songgroup>((res, rej) => {
+      mkdirp(path.dirname(filePath));
       fs.writeFile(filePath, JSON.stringify(payload, null, 2), err => {
         if (err) {
           rej(err);
         } else {
-          this.fileMap[filePath] = JSON.parse(payload);
+          this.fileMap[filePath] = JSON.stringify(payload, null, 2);
           res(this.fileMap[filePath]);
         }
       });
@@ -86,15 +97,15 @@ export class StoreService {
     });
   }
 
-  updateFile<T>(filePath: string, payload: T): Promise<any> {
-    const promise = new Promise((res, rej) => {
+  updateFile(filePath: string, payload: Song | Songgroup): Promise<Song|Songgroup> {
+    const promise = new Promise<Song|Songgroup>((res, rej) => {
       if (this.fileMap[filePath]) {
         try {
           const indexedFile = this.fileMap[filePath];
           const currentFile = this.loadFile(filePath);
           const diff = jiff.diff(currentFile, indexedFile);
           if (diff.length === 0) {
-            fs.writeFile(filePath, payload, () => {res(payload); });
+            fs.writeFile(filePath, JSON.stringify(payload, null, 2), () => { res(payload); });
           } else {
             // The file has been modified without being reloaded
             rej({indexedFile, currentFile});
@@ -149,4 +160,34 @@ export class StoreService {
   //     .dispatch<CmOpenUrlRequest, CmResponse<CmOpenUrlResponse>>(Methods.POST, { url: url });
   // }
 
+  getAll(type: DATABASES): Array<Song> | Array<Songgroup> {
+    let table = {};
+
+    if (type === DATABASES.songs) {
+      table = this.fileMap.songs;
+    } else if (type === DATABASES.songgroups) {
+      table = this.fileMap.songgroups;
+    }
+
+    return table ? Object.keys(table).map(key => table[key]) : [];
+  }
+
+  getByKey(type: DATABASES, id: string): Song | Songgroup {
+    if (type === DATABASES.songs) {
+      return this.fileMap.songs[id + '.song'];
+    } else {
+      return this.fileMap.songgroups[id + '.songgroup'];
+    }
+  }
+
+  addToMap(pathArray: string[], map: object, file: object) {
+    if (pathArray.length > 1 && map[pathArray[0]]) {
+      this.addToMap(pathArray.slice(1), map[pathArray[0]], file);
+    } else if (pathArray.length > 1) {
+      map[pathArray[0]] = {};
+      this.addToMap(pathArray.slice(1), map[pathArray[0]], file);
+    } else if (pathArray.length === 1) {
+      map[pathArray[0]] = file;
+    }
+  }
 }

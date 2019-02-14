@@ -29,14 +29,15 @@ export class ExportService {
       });
 
     } else if (obj instanceof Songgroup) {
-      const promises: Promise<{path: string, content: string}>[] = [];
+      const songs: Promise<{path: string, content: string}>[] = [];
       obj.songs.forEach(songId => {
-        promises.push(this.dataService.getSong(songId).then(song => {
-          return {path: song.title + '.st', content: this.parserService.songToString(song)};
-        }));
+        const song = this.dataService.getSong(songId);
+        if (song) {
+          songs.push(Promise.resolve({path: song.title + '.st', content: this.parserService.songToString(song)}));
+        }
       });
 
-      return this.zip(promises);
+      return this.zip(songs);
     }
     return new Promise<Blob>(res => res());
   }
@@ -47,9 +48,10 @@ export class ExportService {
     } else if (obj instanceof Songgroup) {
       const promises: Promise<{path: string, content: string}>[] = [];
       obj.songs.forEach(songId => {
-        promises.push(this.dataService.getSong(songId).then(song => {
-          return {path: song.title + '.sng', content: this.sngService.getSngFile(song)};
-        }));
+        const song = this.dataService.getSong(songId);
+        if (song) {
+          promises.push(Promise.resolve({path: song.title + '.sng', content: this.sngService.getSngFile(song)}));
+        }
       });
 
       return this.zip(promises);

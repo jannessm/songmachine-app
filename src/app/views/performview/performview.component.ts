@@ -57,13 +57,11 @@ export class PerformviewComponent implements OnInit, OnDestroy {
 
   private loadSong(id) {
     if (id) {
-      return this.dataService
-        .getSong(id)
-        .then(result => {
-          this.songs.push(<Song>result);
-      });
+      const song = this.dataService.getSong(id);
+      if (song) {
+        this.songs.push(<Song>song);
+      }
     }
-    return Promise.resolve();
   }
 
   protected increaseActiveSong(e) {

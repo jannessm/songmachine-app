@@ -68,11 +68,10 @@ export class SonggroupComponent implements OnInit {
 
   setSongs() {
     this.songgroup.songs.forEach( uuid => {
-      this.dataService.getSong(uuid).then(res => {
-        if (res) {
-          this.songs.push(res.title);
-        }
-      }).catch(() => {});
+      const song = this.dataService.getSong(uuid);
+      if (song) {
+        this.songs.push(song.title);
+      }
     });
   }
 

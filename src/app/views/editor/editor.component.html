@@ -10,6 +10,6 @@
 </mat-toolbar>
 
 <div class="row streched-row fill">
-  <app-songsheet-textarea [input]="songIn$ | async" (value)="songOut($event)" #textfield></app-songsheet-textarea>
+  <app-songsheet-textarea [input]="songIn" (value)="songOut($event)" #textfield></app-songsheet-textarea>
   <app-preview [performMode]="false" [song]="song"></app-preview>
 </div>
