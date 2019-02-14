@@ -78,7 +78,7 @@ export class SongComponent {
   }
 
   exportPdf() {
-    this.apiService.generatePdfRequest(this.song.title + '.pdf', this.exportService.getPdf(this.song));
+    // this.apiService.generatePdfRequest(this.song.title + '.pdf', this.exportService.getPdf(this.song));
   }
 
 }

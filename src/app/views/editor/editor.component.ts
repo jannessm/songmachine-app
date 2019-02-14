@@ -20,7 +20,7 @@ export class EditorComponent implements OnInit {
     wrap: true,
     fontSize: 12
   };
-  songIn$: Observable<Song>;
+  songIn: Song;
   song: Song;
   songId: string;
 
