@@ -57,7 +57,7 @@ export class SonggroupComponent implements OnInit {
     dialogRef.afterClosed().subscribe(code => {
       switch (code) {
         case 1:
-          this.dataService.deleteSonggroup(songgroup.name);
+          this.dataService.deleteSonggroup(songgroup.id);
           break;
         case 0:
         default:

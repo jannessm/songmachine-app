@@ -79,13 +79,13 @@ export class FileSynchronizerService {
     });
   }
 
-  public deleteSong(songid: string) {
-    return this.pathGuard().then(() => {
-      return this.storeService.deleteFile(DATABASES.songs, songid);
-    }).catch(() => {
-      // no path defined
-      this.router.navigateByUrl('/settings');
-    });
+  public deleteSong(songid: string): Promise<void> {
+    return this.pathGuard()
+      .then(() => this.storeService.deleteFile(DATABASES.songs, songid))
+      .catch(() => {
+        // no path defined
+        this.router.navigateByUrl('/settings');
+      });
   }
 
   public getSonggroups(): Songgroup[] {

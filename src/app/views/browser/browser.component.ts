@@ -12,6 +12,7 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslationService } from '../../services/translation.service';
 import { DOCUMENT } from '@angular/common';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-browser',
@@ -43,12 +44,12 @@ export class BrowserComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
+    private storeService: StoreService,
     private router: Router,
-    private dexieService: DexieService,
     private dialog: MatDialog,
     private translationService: TranslationService,
     @Inject(DOCUMENT) private doc: Document
-  ) { }
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   resizeHandler(event) {
@@ -64,10 +65,6 @@ export class BrowserComponent implements OnInit, OnDestroy {
       this.gridCols = 5;
     }
 
-    this.dexieService.changes.subscribe(() => {
-      this.updateElems();
-    });
-
     this.route.params.subscribe(params => {
       this.type = params['type'];
       switch (this.type) {
@@ -75,9 +72,11 @@ export class BrowserComponent implements OnInit, OnDestroy {
         case DATABASES.songs:
           this.type = DATABASES.songs;
           Object.assign(this, this.songView);
+          this.storeService.songsChanged.subscribe(() => this.updateElems());
           break;
         case DATABASES.songgroups:
           Object.assign(this, this.songgroupView);
+          this.storeService.songgroupsChanged.subscribe(() => this.updateElems());
           break;
       }
 
@@ -125,8 +124,6 @@ export class BrowserComponent implements OnInit, OnDestroy {
         this.dataService.saveType(this.type, result).then(res => {
           if (res instanceof Song && newObject) {
             this.router.navigateByUrl('/editor/' + res.id);
-          } else if (res) {
-            this.updateElems();
           }
         });
       }

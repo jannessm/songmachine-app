@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { CreateOptions } from 'html-pdf';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
@@ -9,6 +9,7 @@ import { Song } from '../models/song';
 import { Songgroup } from '../models/songgroup';
 import { DATABASES } from '../models/databases';
 import { FILESYSTEM } from '../models/filesystem';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class StoreService {
@@ -18,6 +19,8 @@ export class StoreService {
     songgroups: {}
   };
   mainDirectory = '';
+  songsChanged = new EventEmitter<void>();
+  songgroupsChanged = new EventEmitter<void>();
 
   constructor() {
   }
@@ -33,7 +36,7 @@ export class StoreService {
   //   });
   // }
 
-  loadFile(filePath): JSON {
+  public loadFile(filePath): JSON {
     try {
       const file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       const p = filePath.replace(path.join(this.mainDirectory, FILESYSTEM.DATA), '').split(path.sep).slice(1);
@@ -45,22 +48,7 @@ export class StoreService {
     return;
   }
 
-  loadSongFiles() {
-    Object.keys(this.fileMap)
-      .map((key) => {
-        this.fileMap[key] = fs.readFileSync(path.join(this.mainDirectory, FILESYSTEM.DATA, key), 'utf8');
-        return this.fileMap[key];
-      })
-      .map((value) => {
-        try {
-          return JSON.parse(value);
-        } catch (err) { return null; }
-      })
-      .filter(v => !!v);
-    return this;
-  }
-
-  createFileIndex(dirPath?: string) {
+  public createFileIndex(dirPath?: string) {
     if (!dirPath) {
       dirPath = this.mainDirectory;
     }
@@ -76,7 +64,7 @@ export class StoreService {
     return this;
   }
 
-  createFile(type: DATABASES, payload: Song|Songgroup): Promise<Song|Songgroup> {
+  public createFile(type: DATABASES, payload: Song|Songgroup): Promise<Song|Songgroup> {
     const promise = new Promise<Song|Songgroup>((res, rej) => {
       const suffix = this.suffix(type);
 
@@ -86,7 +74,7 @@ export class StoreService {
         if (err) {
           rej(err);
         } else {
-          this.fileMap[type][payload.id + suffix] = payload;
+          this.setFileMap(type, payload.id + suffix, payload);
           res(payload);
         }
       });
@@ -94,12 +82,13 @@ export class StoreService {
     return promise;
   }
 
-  deleteFile(type: DATABASES, id: string): Promise<any> {
+  public deleteFile(type: DATABASES, id: string): Promise<any> {
     return new Promise((res, rej) => {
       const suffix = this.suffix(type);
-      if (type === DATABASES.songs && this.fileMap[type][id + suffix]) {
+      console.log(this.fileMap[type][id + suffix], type, id + suffix, this.fileMap);
+      if (this.fileMap[type][id + suffix]) {
         fs.unlinkSync(path.join(this.mainDirectory, FILESYSTEM.DATA, type, id + suffix));
-        delete this.fileMap.songs[id + suffix];
+        this.deleteFromFileMap(type, id + suffix);
         res();
       } else {
         rej('No such resource');
@@ -107,18 +96,18 @@ export class StoreService {
     });
   }
 
-  updateFile(type: DATABASES, payload: Song | Songgroup): Promise<Song|Songgroup> {
+  public updateFile(type: DATABASES, payload: Song | Songgroup): Promise<Song|Songgroup> {
     const promise = new Promise<Song|Songgroup>((res, rej) => {
       const suffix = this.suffix(payload);
       const obj = this.fileMap[type][payload.id + suffix];
       const filePath = path.join(this.mainDirectory, FILESYSTEM.DATA, type, payload.id + suffix);
       if (obj) {
         try {
-          const indexedFile = obj;
+          const indexedFile = obj; // unmodified file
           const currentFile = this.loadFile(filePath);
           const diff = jiff.diff(currentFile, indexedFile);
           if (diff.length === 0) {
-            fs.writeFile(filePath, JSON.stringify(payload, null, 2), () => { res(payload); });
+            this.createFile(type, payload).then(() => res(), err => rej(err));
           } else {
             // The file has been modified without being reloaded
             rej({indexedFile, currentFile});
@@ -146,7 +135,7 @@ export class StoreService {
   //     .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
   // }
 
-  generateBlobCreateRequest(blob: any, fileName: string, encoding?: string) {
+  public generateBlobCreateRequest(blob: any, fileName: string, encoding?: string) {
     const reader = new FileReader();
     reader.onload = () => {
       try {
@@ -173,7 +162,7 @@ export class StoreService {
   //     .dispatch<CmOpenUrlRequest, CmResponse<CmOpenUrlResponse>>(Methods.POST, { url: url });
   // }
 
-  getAll(type: DATABASES): Array<Song> | Array<Songgroup> {
+  public getAll(type: DATABASES): Array<Song> | Array<Songgroup> {
     let table = {};
 
     if (type === DATABASES.songs) {
@@ -185,12 +174,12 @@ export class StoreService {
     return table ? Object.keys(table).map(key => table[key]) : [];
   }
 
-  getByKey(type: DATABASES, id: string): Song | Songgroup {
+  public getByKey(type: DATABASES, id: string): Song | Songgroup {
     const suffix = this.suffix(type);
     return this.fileMap.songs[id + suffix];
   }
 
-  addToMap(pathArray: string[], map: object, file: object) {
+  private addToMap(pathArray: string[], map: object, file: object) {
     if (pathArray.length > 1 && map[pathArray[0]]) {
       this.addToMap(pathArray.slice(1), map[pathArray[0]], file);
     } else if (pathArray.length > 1) {
@@ -201,11 +190,29 @@ export class StoreService {
     }
   }
 
-  suffix(obj: Song | Songgroup | DATABASES) {
+  private suffix(obj: Song | Songgroup | DATABASES) {
     if (obj instanceof Song || obj === DATABASES.songs) {
       return '.song';
     } else {
       return '.songgroup';
+    }
+  }
+
+  private setFileMap(type: DATABASES, file: string, data: Song | Songgroup) {
+    this.fileMap[type][file] = data;
+    if (DATABASES.songs === type) {
+      this.songsChanged.next();
+    } else {
+      this.songgroupsChanged.next();
+    }
+  }
+
+  private deleteFromFileMap(type: DATABASES, file: string) {
+    delete this.fileMap[type][file];
+    if (DATABASES.songs === type) {
+      this.songsChanged.emit();
+    } else {
+      this.songgroupsChanged.emit();
     }
   }
 }
