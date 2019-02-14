@@ -109,28 +109,26 @@ export class SongSonggroupFormComponent implements OnInit {
   }
 
   initValues() {
-    this.dataService.getSongs().then( songs => {
-      this.songs = songs;
+    this.songs = this.dataService.getSongs();
 
-      // init song/songgroup if editMeta is called
-      switch (this.type) {
-        case DATABASES.songs:
-          this.song = new Song(this.data.object);
-          this.songBooksStr = this.song.books ? this.song.books.join('; ') : '';
-          break;
+    // init song/songgroup if editMeta is called
+    switch (this.type) {
+      case DATABASES.songs:
+        this.song = new Song(this.data.object);
+        this.songBooksStr = this.song.books ? this.song.books.join('; ') : '';
+        break;
 
-        case DATABASES.songgroups:
-          this.songgroup = new Songgroup(this.data.object);
-          for (const song of this.songgroup.songs) {
-            this.addSongField(
-              this.songs.find((val, id, obj) => {
-                return val.id === song;
-              })
-            );
-          }
-          break;
-      }
-    });
+      case DATABASES.songgroups:
+        this.songgroup = new Songgroup(this.data.object);
+        for (const song of this.songgroup.songs) {
+          this.addSongField(
+            this.songs.find((val, id, obj) => {
+              return val.id === song;
+            })
+          );
+        }
+        break;
+    }
 
   }
 }

@@ -24,14 +24,11 @@ export class PptxService {
     const pptx = new PptxGen();
     this.initPptx(pptx);
     songgroup.songs.forEach(songId => {
-      promises.push(this.dataService.getSong(songId).then(song => {
-        this.appendSlidesForSong(pptx, song);
-        pptx.addNewSlide('BLANK');
-      }));
+      const song = this.dataService.getSong(songId);
+      this.appendSlidesForSong(pptx, song);
+      pptx.addNewSlide('BLANK');
     });
-    Promise.all(promises).then(() => {
-      pptx.save(songgroup.name);
-    });
+    pptx.save(songgroup.name);
   }
 
   private appendSlidesForSong(pptx, song: Song) {

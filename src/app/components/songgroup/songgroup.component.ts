@@ -3,10 +3,10 @@ import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 import { ExportService } from '../../services/export.service';
-import { ApiService } from '../../services/connectivity/api.service';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
 import { TranslationService } from '../../services/translation.service';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-songgroup',
@@ -23,9 +23,9 @@ export class SonggroupComponent implements OnInit {
     private dataService: DataService,
     private router: Router,
     private exportService: ExportService,
-    private apiService: ApiService,
     private dialog: MatDialog,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private storeService: StoreService
   ) { }
 
   songs: string[] = [];
@@ -57,7 +57,7 @@ export class SonggroupComponent implements OnInit {
     dialogRef.afterClosed().subscribe(code => {
       switch (code) {
         case 1:
-          this.dataService.deleteSonggroup(songgroup.name);
+          this.dataService.deleteSonggroup(songgroup.id);
           break;
         case 0:
         default:
@@ -68,11 +68,10 @@ export class SonggroupComponent implements OnInit {
 
   setSongs() {
     this.songgroup.songs.forEach( uuid => {
-      this.dataService.getSong(uuid).then(res => {
-        if (res) {
-          this.songs.push(res.title);
-        }
-      });
+      const song = this.dataService.getSong(uuid);
+      if (song) {
+        this.songs.push(song.title);
+      }
     });
   }
 
@@ -82,13 +81,13 @@ export class SonggroupComponent implements OnInit {
 
   exportSt() {
     this.exportService.getStFile(this.songgroup).then(
-      zipData => this.apiService.generateBlobCreateRequest(zipData, this.songgroup.name + '-st.zip')
+      zipData => this.storeService.generateBlobCreateRequest(zipData, this.songgroup.name + '-st.zip')
     ).catch(err => console.log(err));
   }
 
   exportSng() {
     this.exportService.getSngFile(this.songgroup).then(
-      zipData => this.apiService.generateBlobCreateRequest(zipData, this.songgroup.name + '-sng.zip')
+      zipData => this.storeService.generateBlobCreateRequest(zipData, this.songgroup.name + '-sng.zip')
     ).catch(err => console.log(err));
   }
 

@@ -9,7 +9,7 @@ export class DataService {
 
   constructor(private fileSynchronizer: FileSynchronizerService) {}
 
-  getAll(dbType: DATABASES): Promise<Song[] | Songgroup[]> {
+  getAll(dbType: DATABASES): Song[] | Songgroup[] {
     switch (dbType) {
       case DATABASES.songs:
         return this.getSongs();
@@ -27,15 +27,15 @@ export class DataService {
     }
   }
 
-  getSongs(): Promise<Song[]> {
+  getSongs(): Song[] {
     return this.fileSynchronizer.getSongs();
   }
 
-  getSonggroups(): Promise<Songgroup[]> {
+  getSonggroups(): Songgroup[] {
     return this.fileSynchronizer.getSonggroups();
   }
 
-  getSong(songid: string): Promise<Song> {
+  getSong(songid: string): Song {
     return this.fileSynchronizer.getSong(songid);
   }
 
@@ -47,7 +47,7 @@ export class DataService {
     this.fileSynchronizer.deleteSong(songid);
   }
 
-  getSonggroup(songgroupid: string): Promise<Songgroup> {
+  getSonggroup(songgroupid: string): Songgroup {
     return this.fileSynchronizer.getSonggroup(songgroupid);
   }
 

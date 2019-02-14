@@ -1,29 +1,24 @@
 const uuid = require('uuid/v1');
-import idb, { DB } from 'idb';
 
 import { Injectable, EventEmitter } from '@angular/core';
 import { DATABASES } from '../models/databases';
 import { IndexedDBChange } from '../models/indexedDBChange';
+import Dexie from 'dexie';
 
 @Injectable()
 export class DexieService {
 
-  private dbPromise: Promise<DB>;
+  private dexie;
 
   public changes = new EventEmitter<IndexedDBChange>();
 
   constructor() {
-    this.dbPromise = idb.open('songsheet', 1, (upgradeDb) => {
-      if (!upgradeDb.objectStoreNames.contains(DATABASES.settings)) {
-        upgradeDb.createObjectStore(DATABASES.settings, {keyPath: 'id'});
-      }
-      if (!upgradeDb.objectStoreNames.contains(DATABASES.songs)) {
-        upgradeDb.createObjectStore(DATABASES.songs, {keyPath: 'id'});
-      }
-      if (!upgradeDb.objectStoreNames.contains(DATABASES.songgroups)) {
-        upgradeDb.createObjectStore(DATABASES.songgroups, {keyPath: 'id'});
-      }
-    });
+    this.dexie = new Dexie('songsheet');
+    const stores = {};
+    stores[DATABASES.settings] = '&id';
+    stores[DATABASES.songs] = '&id';
+    stores[DATABASES.songgroups] = '&id';
+    this.dexie.version(1).stores(stores);
   }
 
   public upsert(database: DATABASES, data: any) {
@@ -38,57 +33,38 @@ export class DexieService {
       data.id = uuid();
     }
 
-    return this.getByKey(database, data.id).then( obj => {
-      return this.dbPromise.then(db => {
-        const tx = db.transaction(database, 'readwrite');
-        const store = tx.objectStore(database);
-        store.put(data);
-        this.changes.emit(new IndexedDBChange());
-        return tx.complete;
-      });
-    }).catch(() => {
-      return this.dbPromise.then(db => {
-        const tx = db.transaction(database, 'readwrite');
-        const store = tx.objectStore(database);
-        store.add(data);
-        this.changes.emit(new IndexedDBChange());
-        return tx.complete;
-      }).then(res => {
-        console.log(res);
-      });
+    return this.getByKey(database, data.id).then(obj => {
+      if (obj) {
+        return this.dexie[database]
+          .update(data.id, data)
+          .then(() => this.changes.emit(new IndexedDBChange()))
+          .catch(err => console.log(err));
+      } else {
+        return this.dexie[database]
+          .add(data)
+          .then(() => this.changes.emit(new IndexedDBChange()))
+          .catch(err => console.log(err));
+      }
     });
   }
 
   getAll(database: DATABASES) {
-    return this.dbPromise.then(db => {
-      return db.transaction(database, 'readonly').objectStore(database).getAll();
-    });
+    return this.dexie[database].toArray();
   }
 
   getByKey(database: DATABASES, key: string) {
-    return this.dbPromise.then(db => {
-      return db.transaction(database, 'readonly').objectStore(database).get(key);
-    });
+    if (key) {
+      return this.dexie[database].get(key);
+    } else {
+      return Promise.reject();
+    }
   }
 
   delete(database: DATABASES, key: string) {
-    return this.dbPromise.then(db => {
-      const tx = db.transaction(database, 'readwrite');
-      tx.objectStore(database).delete(key);
-      this.changes.emit(new IndexedDBChange());
-      if (database === DATABASES.settings) {  // settings should always have a value!!!
-        return;
-      }
-      return tx.complete;
-    });
+    return this.dexie[database].delete(key).then(() => this.changes.emit(new IndexedDBChange()));
   }
 
   clear(database: DATABASES) {
-    return this.dbPromise.then(db => {
-      const tx = db.transaction(database, 'readwrite');
-      tx.objectStore(database).clear();
-      this.changes.emit(new IndexedDBChange());
-      return tx.complete;
-    });
+    return this.dexie[database].clear().then(() => this.changes.emit(new IndexedDBChange()));
   }
 }

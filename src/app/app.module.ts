@@ -19,9 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { AutosizeModule } from 'ngx-autosize';
+// import { AutosizeModule } from 'ngx-autosize';
 
-import { ConnectivityModule } from './services/connectivity/connectivity.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -58,6 +57,7 @@ import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
 import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.component';
 import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
 import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
+import { StoreService } from './services/store.service';
 
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
@@ -83,7 +83,6 @@ export function initConfigs(configService: ConfigService) {
     HelpDialogComponent
   ],
   imports: [
-    ConnectivityModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -104,7 +103,6 @@ export function initConfigs(configService: ConfigService) {
     MatAutocompleteModule,
     MatExpansionModule,
     MatSelectModule,
-    AutosizeModule,
     HttpClientModule
   ],
   providers: [
@@ -121,6 +119,7 @@ export function initConfigs(configService: ConfigService) {
     SngService,
     PptxService,
     ScrollApiService,
+    StoreService,
     GrammarParser,
     {
       provide: APP_INITIALIZER,
