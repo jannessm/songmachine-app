@@ -34,10 +34,15 @@ export class StoreService {
   // }
 
   loadFile(filePath): JSON {
-    const file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const p = filePath.replace(path.join(this.mainDirectory, FILESYSTEM.DATA), '').split(path.sep).slice(1);
-    this.addToMap(p, this.fileMap, file);
-    return file;
+    try {
+      const file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const p = filePath.replace(path.join(this.mainDirectory, FILESYSTEM.DATA), '').split(path.sep).slice(1);
+      this.addToMap(p, this.fileMap, file);
+      return file;
+    } catch (err) {
+      console.warn(filePath, err);
+    }
+    return;
   }
 
   loadSongFiles() {
@@ -68,7 +73,6 @@ export class StoreService {
         this.loadFile(entryPath);
       }
     });
-    console.log(this.fileMap);
     return this;
   }
 
@@ -83,7 +87,7 @@ export class StoreService {
           rej(err);
         } else {
           this.fileMap[type][payload.id + suffix] = payload;
-          res(this.fileMap[filePath]);
+          res(payload);
         }
       });
     });

@@ -37,17 +37,18 @@ export class FileSynchronizerService {
       .then(() => resolve(data))
       .catch((err) => {
         if (err === 'The given resource has not been initialized') {
-          return this.storeService.createFile(DATABASES.songs, data);
+          this.storeService.createFile(DATABASES.songs, data)
+            .then(() => resolve(data), error => reject(error));
         } else if (err.indexedFile && err.currentFile) {
           console.log(err);
           return this.mergeService
             .mergeSong(err.indexedFile, err.currentFile, data)
             .then(song => {
-            if (song) {
-              return this.upsertSong(<Song>song);
-            }
-            return;
-          });
+              if (song) {
+                return this.upsertSong(<Song>song);
+              }
+              return;
+            });
         }
       });
     });
@@ -68,7 +69,7 @@ export class FileSynchronizerService {
     return this.pathGuard().then(() => {
       return this.upsertSong(song).then(s => {
         if (s) {
-            return new Promise<Song>(resolve => resolve(<Song>s));
+          return new Promise<Song>(resolve => resolve(<Song>s));
         }
       });
     }).catch(() => {
