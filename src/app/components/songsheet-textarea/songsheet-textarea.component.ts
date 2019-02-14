@@ -47,7 +47,6 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.update('');
     this.inputGroup.get('inputControl').valueChanges.subscribe((v) => {
         this.update(v);
         this.songText = v;
@@ -55,8 +54,7 @@ export class SongsheetTextareaComponent implements OnInit, OnChanges {
         this.song.transposedBy = this.transposeSteps;
         this.value.emit(this.song);
     });
-  }
-  ngOnChanges() {
+
     if (this.input) {
       this.song = this.input;
       this.transposeSteps = this.song.transposedBy || 0;

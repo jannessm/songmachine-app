@@ -40,7 +40,6 @@ export class FileSynchronizerService {
           this.storeService.createFile(DATABASES.songs, data)
             .then(() => resolve(data), error => reject(error));
         } else if (err.indexedFile && err.currentFile) {
-          console.log(err);
           return this.mergeService
             .mergeSong(err.indexedFile, err.currentFile, data)
             .then(song => {

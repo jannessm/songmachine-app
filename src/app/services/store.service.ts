@@ -85,7 +85,6 @@ export class StoreService {
   public deleteFile(type: DATABASES, id: string): Promise<any> {
     return new Promise((res, rej) => {
       const suffix = this.suffix(type);
-      console.log(this.fileMap[type][id + suffix], type, id + suffix, this.fileMap);
       if (this.fileMap[type][id + suffix]) {
         fs.unlinkSync(path.join(this.mainDirectory, FILESYSTEM.DATA, type, id + suffix));
         this.deleteFromFileMap(type, id + suffix);
