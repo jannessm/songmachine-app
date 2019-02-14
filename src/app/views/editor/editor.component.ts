@@ -62,7 +62,7 @@ export class EditorComponent implements OnInit {
       const songId = params['songId'];
       if (songId) {
         this.songId = songId;
-        this.songIn$ = Observable.from<Song>(this.dataService.getSong(songId));
+        this.songIn = this.dataService.getSong(songId);
       }
     });
   }
@@ -83,12 +83,13 @@ export class EditorComponent implements OnInit {
   }
 
   save() {
-    this.songIn$ = Observable.from<Song>(this.dataService.saveSong(this.song).then(song => {
+    this.dataService.saveSong(this.song).then(song => {
       if (song) {
+        this.songIn = song;
         this.textfield.songHasChanged = false;
       }
       return song;
-    }));
+    });
   }
 
   performMode() {
@@ -127,9 +128,7 @@ export class EditorComponent implements OnInit {
             break;
           case 2:
             this.save();
-            this.songIn$.subscribe(() => {
-              callback();
-            });
+            callback();
             break;
           case 1:
           default:

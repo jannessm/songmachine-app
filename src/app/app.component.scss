@@ -1,5 +1,4 @@
-@import "~assets/icons";
-@import "~assets/colors.scss";
+@import "../assets/colors.scss";
 
 mat-sidenav-container{
   height: 100%;
@@ -12,6 +11,7 @@ mat-sidenav{
   height: 100%;
   background: $dark-secondary;
   padding-top: 20px;
+  overflow: hidden;
   
   a{
     background: $dark-secondary;

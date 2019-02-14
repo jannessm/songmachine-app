@@ -26,7 +26,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { AutosizeModule } from 'ngx-autosize';
 
-import { ConnectivityModule } from './services/connectivity/connectivity.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -62,6 +61,7 @@ import { AlertDialogComponent } from './dialogs/alert/alert-dialog.component';
 import { MergeDialogComponent } from './dialogs/merge-dialog/merge-dialog.component';
 import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-songgroup-form.component';
 import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
+import { StoreService } from './services/store.service';
 
 import { AceEditorModule } from 'ng2-ace-editor';
 import { registerLocaleData } from '@angular/common';
@@ -98,7 +98,6 @@ registerLocaleData(localeIt, 'it');
     HelpDialogComponent
   ],
   imports: [
-    ConnectivityModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -139,6 +138,7 @@ registerLocaleData(localeIt, 'it');
     SngService,
     PptxService,
     ScrollApiService,
+    StoreService,
     GrammarParser,
     {
       provide: APP_INITIALIZER,

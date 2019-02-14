@@ -4,6 +4,8 @@ import { FileSynchronizerService } from '../../services/file-synchronizer.servic
 import { TranslationService } from '../../services/translation.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DexieService } from '../../services/dexie.service';
+import { DATABASES } from '../../models/databases';
 
 @Component({
   selector: 'app-settings',
@@ -20,9 +22,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private configService: ConfigService,
-    private fileSynchronizer: FileSynchronizerService,
     private translationService: TranslationService,
-    private router: Router
+    private dexieService: DexieService
   ) { }
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class SettingsComponent implements OnInit {
 
   setDefaultPath(path) {
     this.configService.set('defaultPath', path);
-    this.fileSynchronizer.syncFilesIndexedDB();
+    this.dexieService.upsert(DATABASES.settings, path);
     this.path = path;
   }
 

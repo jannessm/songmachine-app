@@ -12,6 +12,7 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslationService } from '../../services/translation.service';
 import { DOCUMENT } from '@angular/common';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-browser',
@@ -43,12 +44,12 @@ export class BrowserComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
+    private storeService: StoreService,
     private router: Router,
-    private dexieService: DexieService,
     private dialog: MatDialog,
     private translationService: TranslationService,
     @Inject(DOCUMENT) private doc: Document
-  ) { }
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   resizeHandler(event) {
@@ -64,10 +65,6 @@ export class BrowserComponent implements OnInit, OnDestroy {
       this.gridCols = 5;
     }
 
-    this.dexieService.changes.subscribe(() => {
-      this.updateElems();
-    });
-
     this.route.params.subscribe(params => {
       this.type = params['type'];
       switch (this.type) {
@@ -75,9 +72,11 @@ export class BrowserComponent implements OnInit, OnDestroy {
         case DATABASES.songs:
           this.type = DATABASES.songs;
           Object.assign(this, this.songView);
+          this.storeService.songsChanged.subscribe(() => this.updateElems());
           break;
         case DATABASES.songgroups:
           Object.assign(this, this.songgroupView);
+          this.storeService.songgroupsChanged.subscribe(() => this.updateElems());
           break;
       }
 
@@ -125,8 +124,6 @@ export class BrowserComponent implements OnInit, OnDestroy {
         this.dataService.saveType(this.type, result).then(res => {
           if (res instanceof Song && newObject) {
             this.router.navigateByUrl('/editor/' + res.id);
-          } else if (res) {
-            this.updateElems();
           }
         });
       }
@@ -134,30 +131,21 @@ export class BrowserComponent implements OnInit, OnDestroy {
   }
 
   updateElems() {
-    const arr = [];
-    setTimeout(() => {
-      this.dataService.getAll(<DATABASES>this.type).then( res => {
-        for (const e of res) {
-          if (this.type === DATABASES.songs) {
-            arr.push(new Song(e));
-          } else {
-            arr.push(new Songgroup(e));
-          }
-        }
-
-        if (this.type === DATABASES.songs) {
-          this.songs = arr.sort(this.sort);
-          this.filteredElems = this.songs;
-        } else {
-          this.songgroups = arr.sort(this.sort);
-          this.filteredElems = this.songgroups;
-        }
-      });
-    }, 10);
+    if (this.type === DATABASES.songs) {
+      let allDocs = this.dataService.getAll(DATABASES.songs);
+      allDocs = (<Song[]>allDocs).map(e => new Song(e)).sort(this.sort);
+      this.songs = allDocs;
+      this.filteredElems = this.songs;
+    } else {
+      let allDocs = this.dataService.getAll(DATABASES.songgroups);
+      allDocs = (<Songgroup[]>allDocs).map(e => new Songgroup(e)).sort(this.sort);
+      this.songgroups = allDocs;
+      this.filteredElems = this.songgroups;
+    }
   }
 
   private sort(a: Song | Songgroup, b: Song | Songgroup): number {
-    if (a && b && a instanceof Song && b instanceof Song) {
+    if (a && b && a instanceof Song && b instanceof Song && !!a.title && !!b.title) {
       if (a.title.toLowerCase() < b.title.toLowerCase()) {
         return -1;
       } else if (a.title.toLowerCase() > b.title.toLowerCase()) {
@@ -165,8 +153,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
       } else {
         return 0;
       }
-    } else if (a && b && a instanceof Songgroup && b instanceof Songgroup) {
-      console.log(a, b);
+    } else if (a && b && a instanceof Songgroup && b instanceof Songgroup && !!a.name && !!b.name) {
       if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
       } else if (a.name.toLowerCase() > b.name.toLowerCase()) {

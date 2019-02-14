@@ -5,9 +5,9 @@ import { Song } from '../../models/song';
 import { ScrollApiService } from '../../services/scroll-api.service';
 import { MatDialog } from '@angular/material';
 import { QRDialogComponent } from '../../dialogs/qr-dialog/qr-dialog.component';
-import { ApiService } from '../../services/connectivity/api.service';
 import { ParserService } from '../../services/parser.service';
 import { DOCUMENT } from '@angular/common';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-performview',
@@ -27,7 +27,7 @@ export class PerformviewComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private scrollApiService: ScrollApiService,
     private dialog: MatDialog,
-    private apiService: ApiService,
+    private storeService: StoreService,
     private parserService: ParserService,
     @Inject(DOCUMENT) private doc: Document
   ) { }
@@ -52,18 +52,16 @@ export class PerformviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.apiService.generateStopHttpServerRequest();
+    // this.apiService.generateStopHttpServerRequest();
   }
 
   private loadSong(id) {
     if (id) {
-      return this.dataService
-        .getSong(id)
-        .then(result => {
-          this.songs.push(<Song>result);
-      });
+      const song = this.dataService.getSong(id);
+      if (song) {
+        this.songs.push(<Song>song);
+      }
     }
-    return Promise.resolve();
   }
 
   protected increaseActiveSong(e) {
@@ -103,15 +101,15 @@ export class PerformviewComponent implements OnInit, OnDestroy {
     this.songs.forEach(song => {
       htmls.push(this.parserService.songToHTML(song));
     });
-    this.apiService.generateRunHttpServerRequest(
-      htmls, this.title, this.doc.body.clientWidth, this.doc.body.clientHeight).then((data: any) => {
-      this.scrollApiService.setHost(new URL(data.url).host);
-      this.dialog.open(QRDialogComponent, {
-        height: '400px',
-        width: '300px',
-        data
-      });
-    });
+    // this.apiService.generateRunHttpServerRequest(
+    //   htmls, this.title, this.doc.body.clientWidth, this.doc.body.clientHeight).then((data: any) => {
+    //   this.scrollApiService.setHost(new URL(data.url).host);
+    //   this.dialog.open(QRDialogComponent, {
+    //     height: '400px',
+    //     width: '300px',
+    //     data
+    //   });
+    // });
   }
 
 }

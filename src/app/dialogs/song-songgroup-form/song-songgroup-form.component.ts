@@ -130,31 +130,26 @@ export class SongSonggroupFormComponent implements OnInit {
   }
 
   initValues() {
-    this.dataService.getSongs().then( songs => {
-      this.songs = songs.sort((a: Song, b: Song) => this._sortStrings(a.title, b.title));
+    this.songs = this.dataService.getSongs();
 
-      // init song/songgroup if editMeta is called
-      switch (this.type) {
-        case DATABASES.songs:
-          this.song = new Song(this.data.object);
-          this.songBooksStr = this.song.books ? this.song.books.join('; ') : '';
-          break;
+    // init song/songgroup if editMeta is called
+    switch (this.type) {
+      case DATABASES.songs:
+        this.song = new Song(this.data.object);
+        this.songBooksStr = this.song.books ? this.song.books.join('; ') : '';
+        break;
 
-        case DATABASES.songgroups:
-          this.songgroup = new Songgroup(this.data.object);
-          this.songgroupDate = this.songgroup.date;
-          this.songgroupTime = this.songgroup.time;
-
-          for (const song of this.songgroup.songs) {
-            this.addSongField(
-              this.songs.find((val, id, obj) => {
-                return val.id === song;
-              })
-            );
-          }
-          break;
-      }
-    });
+      case DATABASES.songgroups:
+        this.songgroup = new Songgroup(this.data.object);
+        for (const song of this.songgroup.songs) {
+          this.addSongField(
+            this.songs.find((val, id, obj) => {
+              return val.id === song;
+            })
+          );
+        }
+        break;
+    }
   }
 
   private _sortStrings(a: string, b: string): number {
@@ -163,7 +158,6 @@ export class SongSonggroupFormComponent implements OnInit {
 
   private _filter(value: string): Song[] {
     const filterValue = value.toLowerCase();
-
     return this.songs.filter(option => option.title.toLowerCase().includes(filterValue));
   }
 }
