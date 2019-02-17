@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
 import { TranslationService } from '../../services/translation.service';
@@ -14,13 +13,7 @@ import { TranslationService } from '../../services/translation.service';
 })
 export class EditorComponent implements OnInit {
 
-  @ViewChild('textfield') textfield;
-  @ViewChild('content', {read: ElementRef}) content: ElementRef;
-  aceOptions = {
-    wrap: true,
-    fontSize: 12
-  };
-  songIn: Song;
+  @ViewChild('aceWrapper') aceWrapper;
   song: Song;
   songId: string;
 
@@ -62,31 +55,16 @@ export class EditorComponent implements OnInit {
       const songId = params['songId'];
       if (songId) {
         this.songId = songId;
-        this.songIn = this.dataService.getSong(songId);
+        this.song = this.dataService.getSong(songId);
       }
     });
-  }
-
-  private setEditorHeight() {
-    // adjust height of editor
-    const editor = this.textfield;
-    if (editor) {
-      const maxLines = Math.floor((this.content.nativeElement.offsetHeight - 49) / Math.floor(this.aceOptions.fontSize * 1.2));
-      editor.getEditor().renderer.setOption('maxLines', maxLines);
-      editor.getEditor().renderer.setOption('minLines', maxLines);
-    }
-  }
-
-  songOut(song) {
-    this.song = song;
-    this.song.id = this.songId;
   }
 
   save() {
     this.dataService.saveSong(this.song).then(song => {
       if (song) {
-        this.songIn = song;
-        this.textfield.songHasChanged = false;
+        this.song = song;
+        this.aceWrapper.songHasChanged = false;
       }
       return song;
     });
@@ -99,15 +77,15 @@ export class EditorComponent implements OnInit {
   }
 
   transposeUp() {
-    this.textfield.transposeUp();
+    this.aceWrapper.transposeUp();
   }
 
   transposeDown() {
-    this.textfield.transposeDown();
+    this.aceWrapper.transposeDown();
   }
 
   public checkState(callback: Function) {
-    if (this.textfield.songHasChanged) {
+    if (this.aceWrapper.songHasChanged) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         width: '400px',
         height: '200px',

@@ -12,6 +12,7 @@ export class Song {
   annotationCells = 0;
   maxLineWidth = 0;
   preview?: string;
+  text?: string;
 
   constructor(song?: string | any) {
     if (typeof song === 'string') {
@@ -27,6 +28,7 @@ export class Song {
       this.annotationCells = song.annotationCells || 0;
       this.maxLineWidth = song.maxLineWidth || 0;
       this.preview = song.preview;
+      this.text = song.text;
     }
   }
 }

@@ -1,5 +1,19 @@
 define(function(require, exports, module) {
   "use strict";
+
+  var oop = require("../lib/oop");
+  // defines the parent mode
+  var TextMode = require("./text").Mode;
+  var Tokenizer = require("../tokenizer").Tokenizer;
+  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+
+  var Mode = function() {
+    // set everything up
+    this.HighlightRules = SongmachineHighlightRules;
+    this.$outdent = new MatchingBraceOutdent();
+    this.foldingRules = new MyNewFoldMode();
+  };
+  oop.inherits(Mode, TextMode);
   
   var SongmachineHighlightRules = function() {
 
@@ -173,7 +187,19 @@ define(function(require, exports, module) {
       ]
     };
   };
-  
-  exports.SongmachineHighlightRules = SongmachineHighlightRules;
+
+  (function() {
+    // create worker for live syntax checking
+    this.createWorker = function(session) {
+      var worker = new WorkerClient(["ace"], "ace/mode/mynew_worker", "NewWorker");
+      worker.attachToDocument(session.getDocument());
+      worker.on("errors", function(e) {
+          session.setAnnotations(e.data);
+      });
+      return worker;
+    };
+  }).call(Mode.prototype);
+
+  exports.Mode = Mode;
 });
   

@@ -37,6 +37,7 @@ import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { PerformviewComponent } from './views/performview/performview.component';
+import { AceWrapperComponent } from './components/ace-wrapper/ace-wrapper.component';
 
 import { DataService } from './services/data.service';
 import { ParserService } from './services/parser.service';
@@ -95,7 +96,8 @@ registerLocaleData(localeIt, 'it');
     MergeDialogComponent,
     QRDialogComponent,
     AlertDialogComponent,
-    HelpDialogComponent
+    HelpDialogComponent,
+    AceWrapperComponent
   ],
   imports: [
     BrowserModule,

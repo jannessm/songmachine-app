@@ -1,0 +1,3 @@
+<div id="content" #content>
+  <ace-editor [(text)]="song.text" (textChange)="emitSongChangeEvent()" #textfield [options]="aceOptions"></ace-editor>
+</div>

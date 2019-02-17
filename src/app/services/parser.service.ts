@@ -67,6 +67,8 @@ export class ParserService {
       newSong.maxLineWidth = this.max(b.maxLineWidth, newSong.maxLineWidth);
     }
 
+    newSong.text = str;
+
     return newSong;
   }
 
