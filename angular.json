@@ -33,7 +33,11 @@
               "node_modules/normalize.css/normalize.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/ace-builds/src-min/ace.js",
+              "node_modules/ace-builds/src-min/ext-searchbox.js",
+              "src/assets/mode-editor.js"
+            ]
           },
           "configurations": {
             "dev": {

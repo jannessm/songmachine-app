@@ -1,19 +1,8 @@
-define(function(require, exports, module) {
+define("ace/mode/st_hightlight_rules", ["require","exports","module","ace/lib/oop","ace/lib/lang"], function(require, exports, module) {
   "use strict";
 
   var oop = require("../lib/oop");
-  // defines the parent mode
-  var TextMode = require("./text").Mode;
-  var Tokenizer = require("../tokenizer").Tokenizer;
-  var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
-
-  var Mode = function() {
-    // set everything up
-    this.HighlightRules = SongmachineHighlightRules;
-    this.$outdent = new MatchingBraceOutdent();
-    this.foldingRules = new MyNewFoldMode();
-  };
-  oop.inherits(Mode, TextMode);
+  var lang = require("../lib/lang");
   
   var SongmachineHighlightRules = function() {
 
@@ -188,18 +177,49 @@ define(function(require, exports, module) {
     };
   };
 
-  (function() {
-    // create worker for live syntax checking
-    this.createWorker = function(session) {
-      var worker = new WorkerClient(["ace"], "ace/mode/mynew_worker", "NewWorker");
-      worker.attachToDocument(session.getDocument());
-      worker.on("errors", function(e) {
-          session.setAnnotations(e.data);
-      });
-      return worker;
-    };
-  }).call(Mode.prototype);
+  exports.StHighlightRules = SongmachineHighlightRules;
+});
 
+define("ace/mode/st", ["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/st_highlight_rules", "ace/worker/worker_client"], function(require, exports, module) {
+  "use strict";
+
+  var oop = require("../lib/oop");
+  var TextMode = require("./text").Mode;
+  var SongmachineHighlightRules = require("./st_highlight_rules").SongmachineHighlightRules;
+  var WorkerClient = require("../worker/worker_client").WorkerClient;
+  
+  var Mode = function() {
+      this.HighlightRules = SongmachineHighlightRules;
+  };
+  oop.inherits(Mode, TextMode);
+  
+  (function() {
+  
+      this.createWorker = function(session) {
+          var worker = new WorkerClient(["ace"], "ace/mode/st_worker", "Worker");
+          worker.attachToDocument(session.getDocument());
+  
+          worker.on("annotate", function(e) {
+              session.setAnnotations(e.data);
+          });
+  
+          worker.on("terminate", function() {
+              session.clearAnnotations();
+          });
+  
+          return worker;
+      };
+  
+      this.$id = "ace/mode/st";
+  }).call(Mode.prototype);
+  
   exports.Mode = Mode;
 });
-  
+
+(function() {
+  window.require(["ace/mode/st"], function(m) {
+      if (typeof module == "object" && typeof exports == "object" && module) {
+        module.exports = m;
+      }
+  });
+})();
