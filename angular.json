@@ -36,7 +36,7 @@
             "scripts": [
               "node_modules/ace-builds/src-min/ace.js",
               "node_modules/ace-builds/src-min/ext-searchbox.js",
-              "src/assets/mode-editor.js"
+              "src/assets/grammars/mode-st.js"
             ]
           },
           "configurations": {

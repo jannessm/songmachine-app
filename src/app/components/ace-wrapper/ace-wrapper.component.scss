@@ -2,3 +2,25 @@
   width: 100%;
   height: 100%;
 }
+
+::ng-deep.ace_br, ::ng-deep.ace_chord{
+  color: orange;
+}
+::ng-deep.ace_br_block, ::ng-deep.ace_chord_start{
+  color: grey;
+}
+::ng-deep.ace_red{
+  color: red;
+}
+::ng-deep.ace_green{
+  color: green;
+}
+::ng-deep.ace_blue{
+  color: blue;
+}
+::ng-deep.ace_bold{
+  font-weight: bold;
+}
+::ng-deep.ace_itlaic{
+  font-style: italic;
+}

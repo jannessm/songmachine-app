@@ -37,6 +37,8 @@ export class EditorComponent implements OnInit {
   saveHotKeyUp() {
     if (this.cmdOrCtrlPressed && this.sPressed) {
       this.save();
+    } else {
+      this.aceWrapper.emitSongChangeEvent();
     }
     this.cmdOrCtrlPressed = false;
     this.sPressed = false;

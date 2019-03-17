@@ -1,10 +1,11 @@
-define("ace/mode/st_hightlight_rules", ["require","exports","module","ace/lib/oop","ace/lib/lang"], function(require, exports, module) {
+define("ace/mode/st_highlight_rules", ["require","exports","module","ace/lib/oop","ace/lib/lang"], function(require, exports, module) {
   "use strict";
 
   var oop = require("../lib/oop");
   var lang = require("../lib/lang");
+  var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   
-  var SongmachineHighlightRules = function() {
+  var StHighlightRules = function() {
 
     this.getRules = () => this.$rules;
   
@@ -176,8 +177,7 @@ define("ace/mode/st_hightlight_rules", ["require","exports","module","ace/lib/oo
       ]
     };
   };
-
-  exports.StHighlightRules = SongmachineHighlightRules;
+  exports.StHighlightRules = StHighlightRules;
 });
 
 define("ace/mode/st", ["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/st_highlight_rules", "ace/worker/worker_client"], function(require, exports, module) {
@@ -185,30 +185,24 @@ define("ace/mode/st", ["require","exports","module","ace/lib/oop","ace/mode/text
 
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
-  var SongmachineHighlightRules = require("./st_highlight_rules").SongmachineHighlightRules;
+  var StHighlightRules = require("./st_highlight_rules").StHighlightRules;
   var WorkerClient = require("../worker/worker_client").WorkerClient;
   
   var Mode = function() {
-      this.HighlightRules = SongmachineHighlightRules;
+      this.HighlightRules = StHighlightRules;
   };
   oop.inherits(Mode, TextMode);
   
   (function() {
   
-      this.createWorker = function(session) {
-          var worker = new WorkerClient(["ace"], "ace/mode/st_worker", "Worker");
-          worker.attachToDocument(session.getDocument());
-  
-          worker.on("annotate", function(e) {
-              session.setAnnotations(e.data);
-          });
-  
-          worker.on("terminate", function() {
-              session.clearAnnotations();
-          });
-  
-          return worker;
-      };
+      // this.createWorker = function(session) {
+      //     var worker = new WorkerClient(["ace"], "ace/mode/st_worker", "Worker");
+      //     worker.attachToDocument(session.getDocument());
+      //     worker.on("errors", function(e) {
+      //       session.setAnnotations(e.data);
+      //     });
+      //     return worker;
+      // };
   
       this.$id = "ace/mode/st";
   }).call(Mode.prototype);
