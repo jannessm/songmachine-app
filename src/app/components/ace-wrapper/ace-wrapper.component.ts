@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, Output, ElementRef, EventEmitter, OnInit, OnChanges, HostListener } from '@angular/core';
+import { Component, ViewChild, Input, Output, ElementRef, EventEmitter, OnInit, OnChanges, HostListener, OnDestroy } from '@angular/core';
 import { Song } from '../../models/song';
 import { ParserService } from '../../services/parser.service';
 import { MUSICAL_KEYS } from '../../models/keys';
@@ -9,7 +9,7 @@ import { KeyFinderService } from '../../services/keyFinder.service';
   templateUrl: './ace-wrapper.component.html',
   styleUrls: ['./ace-wrapper.component.scss']
 })
-export class AceWrapperComponent implements OnChanges {
+export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
 
   @ViewChild('textfield') textfield;
   @ViewChild('content', {read: ElementRef}) content: ElementRef;
@@ -20,6 +20,8 @@ export class AceWrapperComponent implements OnChanges {
   };
 
   songHasChanged = true;
+  initText = '';
+  checkInterval;
 
   @Input() song: Song;
   @Output() songChange = new EventEmitter<Song>();
@@ -29,14 +31,29 @@ export class AceWrapperComponent implements OnChanges {
     private keyFinder: KeyFinderService
   ) { }
 
+  ngOnInit() {
+    this.checkInterval = setInterval(() => {
+      if (this.song.text !== this.initText) {
+        this.emitSongChangeEvent();
+      }
+    }, 2000);
+  }
+
+  ngOnDestroy() {
+    this.checkInterval.clearInterval();
+  }
+
   ngOnChanges() {
     if (this.song && !this.song.text) {
       this.song.text = this.parserService.songToString(this.song);
+      this.initText = this.song.text;
+    } else if (this.song && this.initText !== this.song.text) {
+      this.initText = this.song.text;
     }
   }
 
   emitSongChangeEvent() {
-    // this.song = this.parserService.stringToSong(this.song.text);
+    this.song = this.parserService.stringToSong(this.initText);
     this.songChange.emit(this.song);
     this.songHasChanged = true;
   }
