@@ -293,11 +293,8 @@ export class ParserService {
     let m;
     const regex = /(<(r|g|b)>|\*)/gi;
     do {
-      m = regex.exec(string);
+      m = regex.exec(string.substr(start));
       if (m) {
-        if (start && m.index > start + chars) {
-          break;
-        }
         chars += m[0].length;
         string.replace(m[0], '');
       }

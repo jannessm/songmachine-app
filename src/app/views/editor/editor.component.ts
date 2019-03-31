@@ -34,18 +34,21 @@ export class EditorComponent implements OnInit {
       this.sPressed = false;
     }
   }
-  @HostListener('window:keyup')
-  saveHotKeyUp() {
+  @HostListener('window:keyup', ['$event.key'])
+  saveHotKeyUp(key) {
     if (this.cmdOrCtrlPressed && this.sPressed) {
       this.save();
     }
     this.cmdOrCtrlPressed = false;
     this.sPressed = false;
 
-    clearTimeout(this.updateInterval);
-    this.updateInterval = setTimeout(() => {
-      this.aceWrapper.emitSongChangeEvent();
-    }, 1000);
+    const nonUpdateKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Meta', 'Control', 'Shift', 'Alt'];
+    if (!nonUpdateKeys.find(val => val === key)) {
+      clearTimeout(this.updateInterval);
+      this.updateInterval = setTimeout(() => {
+        this.aceWrapper.emitSongChangeEvent();
+      }, 1000);
+    }
   }
 
   constructor(

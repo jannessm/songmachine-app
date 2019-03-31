@@ -82,6 +82,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges() {
     this.html = this.htmlFactory.songToHTML(this.song);
+    console.log('changes');
   }
 
   scrollUp() {
