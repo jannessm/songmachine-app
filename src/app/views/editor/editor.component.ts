@@ -19,6 +19,7 @@ export class EditorComponent implements OnInit {
 
   private cmdOrCtrlPressed = false;
   private sPressed = false;
+  private updateInterval;
 
   @HostListener('window:keydown', ['$event'])
   saveHotKeyDown(event) {
@@ -40,6 +41,11 @@ export class EditorComponent implements OnInit {
     }
     this.cmdOrCtrlPressed = false;
     this.sPressed = false;
+
+    clearTimeout(this.updateInterval);
+    this.updateInterval = setTimeout(() => {
+      this.aceWrapper.emitSongChangeEvent();
+    }, 1000);
   }
 
   constructor(

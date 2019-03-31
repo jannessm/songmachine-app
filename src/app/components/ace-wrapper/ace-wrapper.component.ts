@@ -32,11 +32,6 @@ export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.checkInterval = setInterval(() => {
-      if (this.song.text !== this.initText) {
-        this.emitSongChangeEvent();
-      }
-    }, 2000);
   }
 
   ngOnDestroy() {
@@ -52,7 +47,7 @@ export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  emitSongChangeEvent() {
+  public emitSongChangeEvent() {
     this.song = this.parserService.stringToSong(this.initText);
     this.songChange.emit(this.song);
     this.songHasChanged = true;
