@@ -17,6 +17,45 @@ describe('UNIT Testing Parser Service:', () => {
     });
   });
 
+  describe('getBlock()', () => {
+    it('should parse a block correctly', () => {
+      const parser = TestBed.get(ParserService);
+    });
+  });
+
+  describe('getAllLines()', () => {
+    it('should parse a block of lines correctly', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `<r>das [C]hier sind lyrics | eine tolle bla | noch <b>was anderes; tooooolllles | oder so
+<r>das [C]hier sind lyrics | eine tolle bla | noch <b>was anderes; tooooolllles | oder so`;
+
+      const res = parser.getAllLines(input);
+      expect(res.length).toEqual(2);
+    });
+  });
+
+  describe('getLine()', () => {
+    it('should parse a line correctly', () => {
+      const parser = TestBed.get(ParserService);
+      const expected = new Line();
+      expected.annotations = [['eine tolle bla'], ['noch <b>was anderes', 'tooooolllles'], ['oder so']];
+      expected.annotationCells = 3;
+      expected.differentAnnotations = 2;
+      expected.lyrics.bottomLine = '<r>das hier sind lyrics';
+      expected.lyrics.topLine = '    C';
+
+      const resLine = parser.getLine(
+        '<r>das [C]hier sind lyrics | eine tolle bla | noch <b>was anderes; tooooolllles | oder so'
+      );
+
+      expect(resLine.annotations).toEqual(expected.annotations);
+      expect(resLine.annotationCells).toBe(expected.annotationCells);
+      expect(resLine.differentAnnotations).toBe(expected.differentAnnotations);
+      expect(resLine.lyrics).toEqual(expected.lyrics);
+      expect(resLine.lyricsWidth).toEqual(expected.lyrics.bottomLine.length - 3);
+    });
+  });
+
   describe('processAnnotations()', () => {
     it('should process annotations correctly (split cells, split multiple states)', () => {
       const parser = TestBed.get(ParserService);
@@ -76,6 +115,15 @@ describe('UNIT Testing Parser Service:', () => {
       expect(res.lyrics.topLine).toBe(expectedTop);
       expect(res.lyrics.bottomLine).toBe(expectedBottom);
       expect(res.lyricsWidth).toBe(expectedTop.length);
+
+      expectedTop =    'C  D  E           Am F';
+      expectedBottom = 'eine alte dampflock';
+      str = '[C]ein[D]e a[E]lte dampfloc[Am]k [F]';
+
+      res = parser.getLine(str);
+      expect(res.lyrics.topLine).toBe(expectedTop);
+      expect(res.lyrics.bottomLine).toBe(expectedBottom);
+      expect(res.lyricsWidth).toBe(expectedTop.length);
     });
 
     it('should get correct length with formatting', () => {
@@ -115,19 +163,56 @@ describe('UNIT Testing Parser Service:', () => {
   });
 
   describe('metaToString()', () => {
+    const song = {
+      'title': 'Privileg F-CAMP',
+      'transposedBy': 0,
+      'blocks': [],
+      'order': [
+        'intro',
+        'strophe 1',
+        'refrain'
+      ],
+      'artist': 'Samuel Harfst'
+    };
+
+    it('should parse all meta data to a correct string (only title)', () => {
+      const parser = TestBed.get(ParserService);
+      const songCopy = Object.assign({}, song);
+      songCopy.artist = '';
+      songCopy.order = [];
+      expect(parser.metaToString(songCopy)).toBe('[title: Privileg F-CAMP]\n\n');
+    });
+
+    it('should parse all meta data to a correct string (only artist)', () => {
+      const parser = TestBed.get(ParserService);
+      const songCopy = Object.assign({}, song);
+      songCopy.title = '';
+      songCopy.order = [];
+      expect(parser.metaToString(songCopy)).toBe('[artist: Samuel Harfst]\n\n');
+    });
+
+    it('should parse all meta data to a correct string (only bpm)', () => {
+      const parser = TestBed.get(ParserService);
+      const songCopy = Object.assign({}, song);
+      songCopy.title = '';
+      songCopy.artist = '';
+      songCopy['bpm'] = 1;
+      songCopy.order = [];
+      expect(parser.metaToString(songCopy)).toBe('[bpm: 1]\n\n');
+    });
+
+    it('should parse all meta data to a correct string (only books)', () => {
+      const parser = TestBed.get(ParserService);
+      const songCopy = Object.assign({}, song);
+      songCopy.title = '';
+      songCopy.artist = '';
+      songCopy.order = [];
+      songCopy['books'] = ['buch 1', 'buch 2'];
+      expect(parser.metaToString(songCopy)).toBe('[books: buch 1, buch 2]\n\n');
+    });
+
     it('should parse all meta data to a correct string', () => {
       const parser = TestBed.get(ParserService);
-      const song = {
-        'title': 'Privileg F-CAMP',
-        'transposedBy': 0,
-        'blocks': [],
-        'order': [
-          'intro',
-          'strophe 1',
-          'refrain'
-        ],
-        'artist': 'Samuel Harfst'
-      };
       expect(parser.metaToString(song)).toBe('[title: Privileg F-CAMP; artist: Samuel Harfst]\n\n[order: intro, strophe 1, refrain]\n\n');
 
       song['bpm'] = 1;

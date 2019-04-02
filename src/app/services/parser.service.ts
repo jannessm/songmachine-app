@@ -143,13 +143,15 @@ export class ParserService {
   private getAllLines(str: string): Line[] {
     this.resetRegex();
     const lines: Line[] = [];
-    for (const l of str.split(this.regexs.newline)) {
-      if (l.trim() === '' || this.regexs.block.test(l)) {
-        continue;
-      }
-      const line = this.getLine(l);
-      lines.push(line);
-    }
+
+    str.split(this.regexs.newline)
+      .forEach((line: string) => {
+        if (line.trim() !== '' && !this.regexs.block.test(line)) {
+          const l = this.getLine(line);
+          lines.push(l);
+        }
+      });
+
     return lines;
   }
 
@@ -189,7 +191,7 @@ export class ParserService {
         const topLen = newLine.lyrics.topLine.length - this.countRegexChars(newLine.lyrics.topLine);
 
         if (topLen > bottomLen) {
-          newLine.lyrics.bottomLine += Array(topLen + 1 - bottomLen + 1).join(' ');
+          newLine.lyrics.bottomLine += Array(topLen - bottomLen + 1).join(' ');
           bottomLen = newLine.lyrics.bottomLine.length - this.countRegexChars(newLine.lyrics.bottomLine);
         }
 
