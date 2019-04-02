@@ -21,7 +21,7 @@ export class HtmlFactoryService {
       .map(line => `<pre class="line-wrapper">${ line }</pre>`);
   }
 
-  public songToHTML(song: Song, withFontFamily = false): string {
+  public songToHTML(song: Song): string {
     if (!song) {
       return '';
     }
@@ -61,7 +61,7 @@ export class HtmlFactoryService {
     // reset print counter
     // song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
 
-    return html + '</div>' + this.style(withFontFamily);
+    return html + '</div>' + this.style();
   }
 
   private blockToHTML(block: Block, cells: number, maxLineWidth: number): string {
@@ -115,10 +115,8 @@ export class HtmlFactoryService {
     return this.grammarParser.parse(str, editorParsing);
   }
 
-  public style(withFontFamily = false): string {
-    let fontfamily = '';
-    if (withFontFamily) {
-      fontfamily = `/* latin-ext */
+  public style(): string {
+    const fontfamily = `/* latin-ext */
       @font-face {
         font-family: 'Ubuntu Mono';
         font-style: italic;
@@ -182,7 +180,6 @@ export class HtmlFactoryService {
         src: url('file://{{__dirname}}/UbuntuMono_latin_Bold.woff2') format('woff2');
         unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }`;
-    }
     return `<style>
       .page {
         width: 100%;

@@ -4,17 +4,93 @@ import { HtmlFactoryService } from './html-factory.service';
 import { GrammarParser } from './grammar-parser.service';
 import { Line } from '../models/line';
 import { Block } from '../models/block';
+import { Song } from '../models/song';
 
 describe('UNIT Testing Parser Service:', () => {
+  let htmlFactory;
   beforeEach(() => {
-    const htmlFactory = jasmine.createSpyObj('HtmlFactoryService', ['songToHTML']);
+    htmlFactory = jasmine.createSpyObj('htmlFactory', ['songToHTML']);
 
     TestBed.configureTestingModule({
       providers: [
         ParserService,
-        {provide: HtmlFactoryService, use: htmlFactory},
+        {provide: HtmlFactoryService, useValue: htmlFactory},
         GrammarParser
       ]
+    });
+  });
+
+  describe('stringToHTML()', () => {
+    it('should call htmlFactory', () => {
+      const parser = TestBed.get(ParserService);
+      parser.songToHTML();
+      expect(htmlFactory.songToHTML).toHaveBeenCalled();
+    });
+  });
+
+  const songString = `[title: titel; artist: künstler; bpm: 10; books: test1, test2; ccli: eineID; transpose: -11]
+
+[order: block 1, block2]
+
+[block: blaaaa]
+[C]eine Zeile | mit anmerkungen| test; test2
+eine ohne alles
+
+[block: nächster]
+
+`;
+  let song: Song;
+
+  describe('stringToSong()', () => {
+    it('should create a correct song obj', () => {
+      const parser = TestBed.get(ParserService);
+
+      song = parser.stringToSong(songString);
+      expect(song.title).toBe('titel');
+      expect(song.bpm).toBe(10);
+      expect(song.books).toEqual(['test1', 'test2']);
+      expect(song.ccli).toBe('eineID');
+      expect(song.transposedBy).toBe(-11);
+      expect(song.blocks.length).toBe(2);
+      expect(song.blocks[0].title).toBe('blaaaa');
+      expect(song.blocks[0].maxLineWidth).toBe(song.blocks[0].lines[1].lyricsWidth);
+      expect(song.maxLineWidth).toBe(song.blocks[0].lines[1].lyricsWidth);
+      expect(song.order).toEqual(['block 1', 'block2']);
+    });
+
+    it('should create a correct song obj without order', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[title: titel; artist: künstler   ; bpm: 10; books: test1, test2; ccli: eineID; transpose: -11]
+
+[block: blaaaa]
+[C]eine Zeile | mit anmerkungen | test; test2
+eine ohne alles
+[block: nächster]
+`;
+
+      const resSong: Song = parser.stringToSong(input);
+      expect(resSong.title).toBe('titel');
+      expect(resSong.bpm).toBe(10);
+      expect(resSong.books).toEqual(['test1', 'test2']);
+      expect(resSong.ccli).toBe('eineID');
+      expect(resSong.transposedBy).toBe(-11);
+      expect(resSong.blocks.length).toBe(2);
+      expect(resSong.blocks[0].title).toBe('blaaaa');
+      expect(resSong.blocks[0].maxLineWidth).toBe(resSong.blocks[0].lines[1].lyricsWidth);
+      expect(resSong.maxLineWidth).toBe(resSong.blocks[0].lines[1].lyricsWidth);
+      expect(resSong.order).toEqual(['blaaaa', 'nächster']);
+    });
+  });
+
+  describe('songToString()', () => {
+    it('should return an empty string if there is no song', () => {
+      const parser = TestBed.get(ParserService);
+      expect(parser.songToString()).toBe('');
+    });
+
+    it('should return a correct string for a given song', () => {
+      const parser = TestBed.get(ParserService);
+      expect(parser.songToString(song)).toEqual(songString);
     });
   });
 
@@ -30,7 +106,7 @@ describe('UNIT Testing Parser Service:', () => {
       expect(res).toEqual({
         title: 'titel',
         artist: 'künstler',
-        bpm: '10',
+        bpm: 10,
         books: ['test1', 'test2'],
         ccli: 'eineID',
         transposedBy: 1,
@@ -62,7 +138,7 @@ describe('UNIT Testing Parser Service:', () => {
 
       const res = parser.getMeta(input);
 
-      expect(res).toEqual({ bpm: '10' });
+      expect(res).toEqual({ bpm: 10 });
     });
 
     it('should get only books', () => {
@@ -291,9 +367,8 @@ describe('UNIT Testing Parser Service:', () => {
   });
 
   describe('metaToString()', () => {
-    const song = {
+    const songObj = {
       'title': 'Privileg F-CAMP',
-      'transposedBy': 0,
       'blocks': [],
       'order': [
         'intro',
@@ -306,7 +381,7 @@ describe('UNIT Testing Parser Service:', () => {
 
     it('should parse all meta data to a correct string (only title)', () => {
       const parser = TestBed.get(ParserService);
-      const songCopy = Object.assign({}, song);
+      const songCopy = Object.assign({}, songObj);
       songCopy.artist = '';
       songCopy.ccli = '';
       songCopy.order = [];
@@ -315,7 +390,7 @@ describe('UNIT Testing Parser Service:', () => {
 
     it('should parse all meta data to a correct string (only artist)', () => {
       const parser = TestBed.get(ParserService);
-      const songCopy = Object.assign({}, song);
+      const songCopy = Object.assign({}, songObj);
       songCopy.title = '';
       songCopy.ccli = '';
       songCopy.order = [];
@@ -324,7 +399,7 @@ describe('UNIT Testing Parser Service:', () => {
 
     it('should parse all meta data to a correct string (only bpm)', () => {
       const parser = TestBed.get(ParserService);
-      const songCopy = Object.assign({}, song);
+      const songCopy = Object.assign({}, songObj);
       songCopy.title = '';
       songCopy.artist = '';
       songCopy.ccli = '';
@@ -335,7 +410,7 @@ describe('UNIT Testing Parser Service:', () => {
 
     it('should parse all meta data to a correct string (only books)', () => {
       const parser = TestBed.get(ParserService);
-      const songCopy = Object.assign({}, song);
+      const songCopy = Object.assign({}, songObj);
       songCopy.title = '';
       songCopy.artist = '';
       songCopy.ccli = '';
@@ -346,21 +421,32 @@ describe('UNIT Testing Parser Service:', () => {
 
     it('should parse all meta data to a correct string (only ccli)', () => {
       const parser = TestBed.get(ParserService);
-      const songCopy = Object.assign({}, song);
+      const songCopy = Object.assign({}, songObj);
       songCopy.title = '';
       songCopy.artist = '';
       songCopy.order = [];
       expect(parser.metaToString(songCopy)).toBe('[ccli: irgendeineID]\n\n');
     });
 
+    it('should parse all meta data to a correct string (only transpose)', () => {
+      const parser = TestBed.get(ParserService);
+      const songCopy = Object.assign({}, songObj);
+      songCopy.title = '';
+      songCopy.artist = '';
+      songCopy.ccli = '';
+      songCopy['transposedBy'] = -11;
+      songCopy.order = [];
+      expect(parser.metaToString(songCopy)).toBe('[transpose: -11]\n\n');
+    });
+
     it('should parse all meta data to a correct string', () => {
       const parser = TestBed.get(ParserService);
-      expect(parser.metaToString(song))
+      expect(parser.metaToString(songObj))
         .toBe('[title: Privileg F-CAMP; artist: Samuel Harfst; ccli: irgendeineID]\n\n[order: intro, strophe 1, refrain]\n\n');
 
-      song['bpm'] = 1;
-      song['books'] = ['buch 1', 'buch 2'];
-      expect(parser.metaToString(song))
+      songObj['bpm'] = 1;
+      songObj['books'] = ['buch 1', 'buch 2'];
+      expect(parser.metaToString(songObj))
         .toBe(`[title: Privileg F-CAMP; artist: Samuel Harfst; bpm: 1; books: buch 1, buch 2; ccli: irgendeineID]
 
 [order: intro, strophe 1, refrain]\n\n`);

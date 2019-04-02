@@ -14,13 +14,14 @@ export class ParserService {
         regex: /\[(?:[^;]*;\s*)*(?:title|titel)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
       },
       bpm: {
-        regex: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+        regex: /\[(?:[^;]*;\s*)*bpm\s*:\s*(\d*?)\s*(?:;.*\]|\])/gi,
+        formatter: val => parseInt(val, 10)
       },
       ccli: {
         regex: /\[(?:[^;]*;\s*)*ccli\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
       },
       transposedBy: {
-        regex: /\[(?:[^;]*;\s*)*transpose\s*:\s*(\d*?)\s*(?:;.*\]|\])/gi,
+        regex: /\[(?:[^;]*;\s*)*transpose\s*:\s*((?:\+|-)?\d*?)\s*(?:;.*\]|\])/gi,
         formatter: val => parseInt(val, 10)
       },
       artist: {
@@ -43,39 +44,28 @@ export class ParserService {
 
   constructor(private htmlFactory: HtmlFactoryService, private grammarParser: GrammarParser) { }
 
-  public songToPDF( song: Song ) {
-    const html = this.songToHTML(song);
-  }
-
-  public songToHTML( song: Song, withFontFamily = false): string {
-    return this.htmlFactory.songToHTML(song, withFontFamily);
+  public songToHTML(song: Song): string {
+    return this.htmlFactory.songToHTML(song);
   }
 
   public songToString( song: Song ): string {
     if (!song) {
       return '';
-    } else {
-      song = new Song(song);
     }
-    let str = this.metaToString(song);
+    const str = this.metaToString(song);
 
-    // blocks
-    for (const block of song.blocks) {
-      str += this.blockToString(block) + '\n';
-    }
-
-    return str;
+    return song.blocks.reduce((reduced, curr) => reduced + this.blockToString(curr) + '\n', str);
   }
 
   public stringToSong( str: string ): Song {
     const newSong = new Song();
     // get meta
     const meta = this.getMeta(str);
-    for (const m in meta) {
-      if (meta[m]) {
-        newSong[m] = meta[m];
+    Object.keys(meta).forEach(metaKey => {
+      if (meta[metaKey]) {
+        newSong[metaKey] = meta[metaKey];
       }
-    }
+    });
 
     // get blocks
     newSong.blocks = this.getAllBlocks(str);
@@ -83,10 +73,10 @@ export class ParserService {
     if (!newSong.order) {
       newSong.order = newSong.blocks.map(block => block.title);
     }
-    for (const b of newSong.blocks) {
+    newSong.blocks.forEach(b => {
       newSong.annotationCells = this.max(b.annotationCells, newSong.annotationCells);
       newSong.maxLineWidth = this.max(b.maxLineWidth, newSong.maxLineWidth);
-    }
+    });
 
     newSong.text = str;
 
@@ -238,9 +228,10 @@ export class ParserService {
     const bpm = song.bpm ? 'bpm: ' + song.bpm : '';
     const ccli = song.ccli ? 'ccli: ' + song.ccli : '';
     const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(', ') : '';
+    const transpose = song.transposedBy ? 'transpose: ' + song.transposedBy : '';
 
-    if (title || artist || bpm || books || ccli) {
-      str += '[' + [title, artist, bpm, books, ccli].filter(val => !!val).join('; ') + ']\n\n';
+    if (title || artist || bpm || books || ccli || transpose) {
+      str += '[' + [title, artist, bpm, books, ccli, transpose].filter(val => !!val).join('; ') + ']\n\n';
     }
 
     // order
@@ -311,7 +302,7 @@ export class ParserService {
 
   private resetRegex() {
     Object.values(this.regexs).forEach(element => {
-      if ((<RegExp>element).lastIndex) {
+      if (typeof (<RegExp>element).lastIndex === 'number') {
         (<RegExp>element).lastIndex = 0;
       } else {
         Object.values(element).forEach(elem => {
