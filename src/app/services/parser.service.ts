@@ -15,7 +15,7 @@ export class ParserService {
     artist: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     order: /\[(?:[^;]*;\s*)*(?:order|reihenfolge)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
-    block: /\[(?:block\s*:\s*)([\w\s-_\.]*)\]/gi,
+    block: /\[(?:block\s*:\s*)([^\],;]*)\]/gi,
     chord: /(?:\[\s*)([^\s]*?)(?:\s*\])/gi,
     invChord: /([^\s]+)/gi
   };

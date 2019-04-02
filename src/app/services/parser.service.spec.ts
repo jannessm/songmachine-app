@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HtmlFactoryService } from './html-factory.service';
 import { GrammarParser } from './grammar-parser.service';
 import { Line } from '../models/line';
+import { Block } from '../models/block';
 
 describe('UNIT Testing Parser Service:', () => {
   beforeEach(() => {
@@ -17,9 +18,52 @@ describe('UNIT Testing Parser Service:', () => {
     });
   });
 
+  describe('getAllBlocks()', () => {
+    it('should distinguish between different blocks and parse them', () => {
+      const parser = TestBed.get(ParserService);
+      const input = '[block: ein blöck]\nerste zeile\nzweite zeile etc...\n[block: noch einer]\ncooool ein block';
+
+      const res: Block[] = parser.getAllBlocks(input);
+      expect(res.length).toBe(2);
+      expect(res[0].title).toEqual('ein blöck');
+      expect(res[0].lines.length).toEqual(2);
+      expect(res[1].title).toEqual('noch einer');
+      expect(res[1].lines.length).toEqual(1);
+    });
+
+    it('if no block tag is there create one single block', () => {
+      const parser = TestBed.get(ParserService);
+      const input = 'erste zeile\nzweite zeile etc...';
+
+      const res: Block[] = parser.getAllBlocks(input);
+      expect(res.length).toBe(1);
+      expect(res[0].title).toEqual('');
+      expect(res[0].lines.length).toEqual(2);
+    });
+  });
+
   describe('getBlock()', () => {
     it('should parse a block correctly', () => {
       const parser = TestBed.get(ParserService);
+      const res: Block = parser.getBlock('title', `<r>das [C]hier sind lyrics | eine tolle bla | noch <b>was anderes; tooooolllles | oder so
+<r>das [C]hier sind | eine tolle bla | noch <b>was anderes; tooooolllles | oder so`);
+
+      expect(res.title).toBe('title');
+      expect(res.maxDiffAnnotationsPerRepition).toBe(2);
+      expect(res.maxLineWidth).toBe(20);
+      expect(res.annotationCells).toBe(3);
+      expect(res.lines.length).toBe(2);
+    });
+
+    it('also if string is empty', () => {
+      const parser = TestBed.get(ParserService);
+      const res: Block = parser.getBlock('title', ``);
+
+      expect(res.title).toBe('title');
+      expect(res.maxDiffAnnotationsPerRepition).toBe(0);
+      expect(res.maxLineWidth).toBe(0);
+      expect(res.annotationCells).toBe(0);
+      expect(res.lines.length).toBe(0);
     });
   });
 
