@@ -20,6 +20,39 @@ describe('UNIT Testing Parser Service:', () => {
   describe('processAnnotations()', () => {
     it('should process annotations correctly (split cells, split multiple states)', () => {
       const parser = TestBed.get(ParserService);
+      const expected = new Line();
+      expected.annotations = [['eine tolle bla'], ['noch was anderes', 'tooooolllles'], ['oder so']];
+      expected.annotationCells = 3;
+      expected.differentAnnotations = 2;
+      const expectedRes = 'das hier sind lyrics';
+      const resLine = new Line();
+
+      const res = parser.processAnnotations('das hier sind lyrics | eine tolle bla | noch was anderes; tooooolllles | oder so', resLine);
+
+      expect(resLine.annotations).toEqual(expected.annotations);
+      expect(resLine.annotationCells).toBe(expected.annotationCells);
+      expect(resLine.differentAnnotations).toBe(expected.differentAnnotations);
+      expect(res).toBe(expectedRes);
+    });
+
+    it('also for formatted lines', () => {
+      const parser = TestBed.get(ParserService);
+      const expected = new Line();
+      expected.annotations = [['<r>eine tolle bla'], ['noch was a**nderes', 'tooooolllles'], ['oder so']];
+      expected.annotationCells = 3;
+      expected.differentAnnotations = 2;
+      const expectedRes = 'das <g>hier [C]sind lyrics';
+      const resLine = new Line();
+
+      const res = parser.processAnnotations(
+        'das <g>hier [C]sind lyrics | <r>eine tolle bla | noch was a**nderes ; tooooolllles | oder so',
+        resLine
+      );
+
+      expect(resLine.annotations).toEqual(expected.annotations);
+      expect(resLine.annotationCells).toBe(expected.annotationCells);
+      expect(resLine.differentAnnotations).toBe(expected.differentAnnotations);
+      expect(res).toBe(expectedRes);
     });
   });
 
