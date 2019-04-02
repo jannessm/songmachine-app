@@ -157,7 +157,14 @@ export class ParserService {
     this.resetRegex();
     const newLine: Line = new Line();
 
-    // process annotations
+    str = this.processAnnotations(str, newLine);
+
+    // process chords
+    this.processChords(str, newLine);
+    return newLine;
+  }
+
+  private processAnnotations(str: string, newLine: Line): string {
     const annotationblocks = str.split('|').map(value => value.replace(/\s*$/g, ''));
     newLine.annotationCells = annotationblocks.length - 1;
     annotationblocks.forEach(anno => {
@@ -169,9 +176,10 @@ export class ParserService {
       newLine.differentAnnotations = this.max(newLine.differentAnnotations, annotations.length);
       newLine.annotations.push(annotations);
     });
-    str = annotationblocks[0];
+    return annotationblocks[0];
+  }
 
-    // process chords
+  private processChords(str: string, newLine: Line) {
     const splitted = this.grammarParser.parseChords(str);
     splitted.forEach((val: string | {chord: string[]}) => {
       if (typeof val === 'string') {
@@ -180,19 +188,24 @@ export class ParserService {
         let bottomLen = newLine.lyrics.bottomLine.length - this.countRegexChars(newLine.lyrics.bottomLine);
         const topLen = newLine.lyrics.topLine.length - this.countRegexChars(newLine.lyrics.topLine);
 
-        if (topLen >= bottomLen) {
+        if (topLen > bottomLen) {
           newLine.lyrics.bottomLine += Array(topLen + 1 - bottomLen + 1).join(' ');
           bottomLen = newLine.lyrics.bottomLine.length - this.countRegexChars(newLine.lyrics.bottomLine);
         }
 
-        newLine.lyrics.topLine += Array(bottomLen - topLen + 1).join(' ') + val.chord;
+        newLine.lyrics.topLine += Array(bottomLen - topLen + 1).join(' ') + val.chord + ' ';
       }
     });
-    newLine.lyricsWidth = newLine.lyrics.bottomLine.replace(/(<(r|g|b)>|\*)/gi, '').length;
-    return newLine;
+
+    newLine.lyrics.topLine = newLine.lyrics.topLine.replace(/\s+$/g, '');
+    newLine.lyrics.bottomLine = newLine.lyrics.bottomLine.replace(/\s+$/g, '');
+    newLine.lyricsWidth = this.max(
+      newLine.lyrics.bottomLine.replace(/<(r|g|b)>|\*/gi, '').length,
+      newLine.lyrics.topLine.replace(/<(r|g|b)>|\*/gi, '').length
+    );
   }
 
-  private max(a, b) {
+  private max(a: number, b: number) {
     if (!a) {
       return b;
     }
@@ -208,7 +221,7 @@ export class ParserService {
     const title = song.title && song.title !== '' ? 'title: ' + song.title : '';
     const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist : '';
     const bpm = song.bpm ? 'bpm: ' + song.bpm : '';
-    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(',') : '';
+    const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(', ') : '';
 
     if (title || artist || bpm || books) {
       str += '[' + [title, artist, bpm, books].filter(val => !!val).join('; ') + ']\n\n';
@@ -226,9 +239,9 @@ export class ParserService {
   private blockToString(block: Block): string {
     let str = '[block: ' + block.title + ']\n';
 
-    for (const l of block.lines) {
+    block.lines.forEach((l: Line) => {
       str += this.joinTopAndBottomLine(l) + this.joinAnnotations(l) + '\n';
-    }
+    });
 
     return str;
   }
@@ -244,11 +257,19 @@ export class ParserService {
       m = this.regexs.invChord.exec(line.lyrics.topLine);
       if (m) {
         // add string until chord
-        const regexChars = this.countRegexChars(line.lyrics.bottomLine, m.index + totalRegChars);
-        finalLine += line.lyrics.bottomLine.substr(
-          lastStart + totalRegChars, m.index - lastStart + regexChars - totalRegChars).replace(/^\s+/, ' ');
-        totalRegChars = this.max(regexChars, totalRegChars);
+        const regChars = this.countRegexChars(line.lyrics.bottomLine, m.index + totalRegChars); // 2 because largest regexp is 3
+
+        finalLine += line.lyrics.bottomLine.substring(
+          lastStart + totalRegChars,
+          m.index + regChars
+        ).replace(/^\s+/, ' ');
+        totalRegChars = regChars;
+
         // add chord
+        const lengthDiff =  m.index - (line.lyrics.bottomLine.length - totalRegChars);
+        if (lengthDiff > 0) {
+          finalLine += Array(1 + lengthDiff).join(' ');
+        }
         finalLine += '[' + m[1] + ']';
         lastStart = m.index;
       } else {
@@ -281,6 +302,7 @@ export class ParserService {
   public getPlainLine(line: string): string {
     return line.replace(/<(r|g|b)>/gi, '') // color markdown
       .replace(/\*/g, '') // bold, italic
+      .replace(/\[.*?\]/g, '') // chords
       .replace(/\s+/g, ' ') // multiple spaces
       .replace(/\s*-\s*/g, '') // spaces in words
       .replace(/\d+x/gi, '') // amount of repetitions
@@ -288,17 +310,17 @@ export class ParserService {
       .trim();
   }
 
-  private countRegexChars(string: string, start?: number): number {
-    let chars = 0;
-    let m;
+  private countRegexChars(string: string, end?: number): number {
     const regex = /(<(r|g|b)>|\*)/gi;
-    do {
-      m = regex.exec(string.substr(start));
-      if (m) {
-        chars += m[0].length;
-        string.replace(m[0], '');
-      }
-    } while (m);
-    return chars;
+    let testString = string.substring(0, end);
+
+    // set end
+    let moveRight = 0;
+    while (/(\*|<(r|g|b)>|<(r|g|b)|<)$/i.test(testString)) {
+      testString += string[end + moveRight];
+      moveRight++;
+    }
+
+    return testString.length - testString.replace(regex, '').length;
   }
 }
