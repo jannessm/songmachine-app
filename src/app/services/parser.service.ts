@@ -9,12 +9,32 @@ import { GrammarParser } from './grammar-parser.service';
 export class ParserService {
 
   private regexs = {
+    meta: {
+      title: {
+        regex: /\[(?:[^;]*;\s*)*(?:title|titel)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+      },
+      bpm: {
+        regex: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+      },
+      ccli: {
+        regex: /\[(?:[^;]*;\s*)*ccli\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+      },
+      transposedBy: {
+        regex: /\[(?:[^;]*;\s*)*transpose\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+      },
+      artist: {
+        regex: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+      },
+      books: {
+        regex: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+        formatter: val => val.split(',').map(value => value.trim())
+      },
+      order: {
+        regex: /\[(?:[^;]*;\s*)*(?:order|reihenfolge)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
+        formatter: val => val.split(',').map(value => value.trim())
+      }
+    },
     newline: /\r?\n/,
-    title: /\[(?:[^;]*;\s*)*(?:title|titel)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
-    bpm: /\[(?:[^;]*;\s*)*bpm\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
-    artist: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
-    books: /\[(?:[^;]*;\s*)*(?:books|bücher)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
-    order: /\[(?:[^;]*;\s*)*(?:order|reihenfolge)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi,
     block: /\[(?:block\s*:\s*)([^\],;]*)\]/gi,
     chord: /(?:\[\s*)([^\s]*?)(?:\s*\])/gi,
     invChord: /([^\s]+)/gi
@@ -76,20 +96,15 @@ export class ParserService {
     this.resetRegex();
     const meta = {};
 
-    const order = this.regexs.order.exec(str);
-    if (order) {
-      meta['order'] = order[1].split(',').map(value => value.trim());
-    }
-
-    const matchTitle = this.regexs.title.exec(str);
-    const matchArtist = this.regexs.artist.exec(str);
-    const matchBPM = this.regexs.bpm.exec(str);
-    const matchBooks = this.regexs.books.exec(str);
-
-    meta['title'] = matchTitle ? matchTitle[1] : undefined;
-    meta['artist'] = matchArtist ? matchArtist[1] : undefined;
-    meta['bpm'] = matchBPM ? matchBPM[1] : undefined;
-    meta['books'] = matchBooks ? matchBooks[1].split(',').map(val => val.trim()) : undefined;
+    Object.keys(this.regexs.meta).forEach(metaKey => {
+      const match = this.regexs.meta[metaKey].regex.exec(str);
+      if (!this.regexs.meta[metaKey].formatter) {
+        this.regexs.meta[metaKey].formatter = val => val;
+      }
+      if (match) {
+        meta[metaKey] = this.regexs.meta[metaKey].formatter(match[1]);
+      }
+    });
 
     return meta;
   }
@@ -295,7 +310,13 @@ export class ParserService {
 
   private resetRegex() {
     Object.values(this.regexs).forEach(element => {
-      element.lastIndex = 0;
+      if ((<RegExp>element).lastIndex) {
+        (<RegExp>element).lastIndex = 0;
+      } else {
+        Object.values(element).forEach(elem => {
+          elem.lastIndex = 0;
+        });
+      }
     });
   }
 

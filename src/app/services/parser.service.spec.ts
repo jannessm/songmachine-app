@@ -20,7 +20,73 @@ describe('UNIT Testing Parser Service:', () => {
 
   describe('getMeta()', () => {
     it('should get all meta data', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[title: titel; artist: künstler   ; bpm: 10; books: test1, test2; ccli: eineID]\n\n[order: block 1  , block2]\n\n`;
 
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({
+        title: 'titel',
+        artist: 'künstler',
+        bpm: '10',
+        books: ['test1', 'test2'],
+        ccli: 'eineID',
+        order: ['block 1', 'block2']
+      });
+    });
+
+    it('should get only title', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[title: titel]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({ title: 'titel' });
+    });
+
+    it('should get only artist', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[artist: künstler]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({ artist: 'künstler' });
+    });
+
+    it('should get only bpm', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[bpm: 10]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({ bpm: '10' });
+    });
+
+    it('should get only books', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[books: buch 1, buch2]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({ books: ['buch 1', 'buch2'] });
+    });
+
+    it('should get only ccli', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[ccli: eineID]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({ ccli: 'eineID' });
+    });
+
+    it('should get only transpose', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[transpose: 1]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({ transposedBy: '1' });
     });
   });
 
