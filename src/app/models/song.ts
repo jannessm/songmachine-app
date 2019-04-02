@@ -6,6 +6,7 @@ export class Song {
   artist?: string;
   bpm?: number;
   books?: string[];
+  ccli?: string;
   transposedBy = 0;
   blocks: Block[] = [];
   order?: string[];

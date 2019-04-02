@@ -100,13 +100,10 @@ export class ParserService {
     const blockStarts: number[] = [];
     const titles: string[] = [];
     let m;
-    do {
-      m = this.regexs.block.exec(str);
-      if (m) {
-        blockStarts.push(m.index);
-        titles.push(m[1]);
-      }
-    } while (m);
+    while ((m = this.regexs.block.exec(str)) !== null) {
+      blockStarts.push(m.index);
+      titles.push(m[1]);
+    }
 
     if (blockStarts.length > 0) {
       blockStarts.forEach((start, i) => {
@@ -223,10 +220,11 @@ export class ParserService {
     const title = song.title && song.title !== '' ? 'title: ' + song.title : '';
     const artist = song.artist && song.artist !== '' ? 'artist: ' + song.artist : '';
     const bpm = song.bpm ? 'bpm: ' + song.bpm : '';
+    const ccli = song.ccli ? 'ccli: ' + song.ccli : '';
     const books = song.books && song.books.length > 0 ? 'books: ' + song.books.filter(val => !!val).join(', ') : '';
 
-    if (title || artist || bpm || books) {
-      str += '[' + [title, artist, bpm, books].filter(val => !!val).join('; ') + ']\n\n';
+    if (title || artist || bpm || books || ccli) {
+      str += '[' + [title, artist, bpm, books, ccli].filter(val => !!val).join('; ') + ']\n\n';
     }
 
     // order
