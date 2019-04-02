@@ -21,7 +21,9 @@ describe('UNIT Testing Parser Service:', () => {
   describe('getMeta()', () => {
     it('should get all meta data', () => {
       const parser = TestBed.get(ParserService);
-      const input = `[title: titel; artist: künstler   ; bpm: 10; books: test1, test2; ccli: eineID]\n\n[order: block 1  , block2]\n\n`;
+      const input = `[title: titel; artist: künstler   ; bpm: 10; books: test1, test2; ccli: eineID; transpose: 1]
+
+[order: block 1  , block2]\n\n`;
 
       const res = parser.getMeta(input);
 
@@ -31,6 +33,7 @@ describe('UNIT Testing Parser Service:', () => {
         bpm: '10',
         books: ['test1', 'test2'],
         ccli: 'eineID',
+        transposedBy: 1,
         order: ['block 1', 'block2']
       });
     });
@@ -86,7 +89,16 @@ describe('UNIT Testing Parser Service:', () => {
 
       const res = parser.getMeta(input);
 
-      expect(res).toEqual({ transposedBy: '1' });
+      expect(res).toEqual({ transposedBy: 1 });
+    });
+
+    it('should not get transpose if it is not a number', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[transpose: a]`;
+
+      const res = parser.getMeta(input);
+
+      expect(res).toEqual({});
     });
   });
 

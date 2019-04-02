@@ -20,7 +20,8 @@ export class ParserService {
         regex: /\[(?:[^;]*;\s*)*ccli\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
       },
       transposedBy: {
-        regex: /\[(?:[^;]*;\s*)*transpose\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
+        regex: /\[(?:[^;]*;\s*)*transpose\s*:\s*(\d*?)\s*(?:;.*\]|\])/gi,
+        formatter: val => parseInt(val, 10)
       },
       artist: {
         regex: /\[(?:[^;]*;\s*)*(?:artist|künstler)\s*:\s*([^;]*?)\s*(?:;.*\]|\])/gi
