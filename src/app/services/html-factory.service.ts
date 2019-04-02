@@ -48,13 +48,13 @@ export class HtmlFactoryService {
     html += '</ul></div>';
 
     if (!song.order && song.blocks) {
-      html += song.blocks.reduce((red, b) => red + this.blockToHTML(b, song.annotationCells, song.maxLineWidth), '');
+      html += song.blocks.reduce((red, b) => red + this.blockToHtml(b, song.annotationCells, song.maxLineWidth), '');
     } else if (song.blocks) {
       for (const b of song.order) {
         const block = song.blocks.find(elem => {
           return elem.title === b;
         });
-        html += this.blockToHTML(block, song.annotationCells, song.maxLineWidth);
+        html += this.blockToHtml(block, song.annotationCells, song.maxLineWidth);
       }
     }
 
@@ -64,7 +64,7 @@ export class HtmlFactoryService {
     return html + '</div>' + this.style();
   }
 
-  private blockToHTML(block: Block, cells: number, maxLineWidth: number): string {
+  private blockToHtml(block: Block, cells: number, maxLineWidth: number): string {
     if (!block) {
       return '';
     }
@@ -85,7 +85,7 @@ export class HtmlFactoryService {
         </td>`;
 
       let c = 0;
-      for (const ann of line.annotations) {
+      line.annotations.forEach(ann => {
         const id = ann.length > 1 ? line.printed : 0;
         if (ann[id]) {
           html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
@@ -93,10 +93,9 @@ export class HtmlFactoryService {
           html += '<td class="annotation_border"></td>';
         }
         c++;
-      }
+      });
       line.printed++;
-      html += this.extendMissingCells(c, cells);
-      html += '</tr>';
+      html += this.extendMissingCells(c, cells) + '</tr>';
     });
 
     return html + '</table></div>';
