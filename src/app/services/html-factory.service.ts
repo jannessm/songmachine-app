@@ -25,6 +25,10 @@ export class HtmlFactoryService {
     if (!song) {
       return '';
     }
+    // reset print counter
+    if (song.blocks) {
+      song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
+    }
     const title = song.title || '';
     const artist = song.artist || '';
     const bpm = song.bpm || '';
@@ -56,11 +60,6 @@ export class HtmlFactoryService {
         });
         html += this.blockToHtml(block, song.annotationCells, song.maxLineWidth);
       }
-    }
-
-    // reset print counter
-    if (song.blocks) {
-      song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
     }
 
     return html + '</div>' + this.style();
