@@ -67,10 +67,6 @@ export class ExportService {
     }
   }
 
-  public getPdf(obj: Song) {
-    return this.parserService.songToHTML(obj, true);
-  }
-
   private zip(promises: Promise<BlobFile>[]): Promise<Blob> {
     return Promise.all(promises).then(results => {
       const zip = new jszip();

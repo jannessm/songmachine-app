@@ -205,7 +205,7 @@ eine ohne alles
   describe('getBlock()', () => {
     it('should parse a block correctly', () => {
       const parser = TestBed.get(ParserService);
-      const res: Block = parser.getBlock('title', `<r>das [C]hier sind lyrics | eine tolle bla | noch <b>was anderes; tooooolllles | oder so
+      const res: Block = parser.getBlock('title', `<r>das [C]hier sind lyrics | eine tolle bla| noch <b>was anderes; tooooolllles| oder so
 <r>das [C]hier sind | eine tolle bla | noch <b>was anderes; tooooolllles | oder so`);
 
       expect(res.title).toBe('title');
@@ -249,7 +249,7 @@ eine ohne alles
       expected.lyrics.topLine = '    C';
 
       const resLine = parser.getLine(
-        '<r>das [C]hier sind lyrics | eine tolle bla | noch <b>was anderes; tooooolllles | oder so'
+        '<r>das [C]hier sind lyrics | eine tolle bla| noch <b>was anderes; tooooolllles | oder so'
       );
 
       expect(resLine.annotations).toEqual(expected.annotations);

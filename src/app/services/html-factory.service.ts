@@ -12,6 +12,8 @@ export class HtmlFactoryService {
   private bpm_image = '';
   private books_image = '';
 
+  private tableWidthFactor = 4;
+
   constructor(private grammarParser: GrammarParser) { }
 
   public highlightText(text: string): string[] {
@@ -75,13 +77,13 @@ export class HtmlFactoryService {
 
     block.lines.forEach(line => {
       html += `<tr>
-        <td style="width: ${maxLineWidth * 6.5}pt">
+        <td style="width: ${maxLineWidth * this.tableWidthFactor}pt">
           <pre>${this.markdown(line.lyrics.topLine)}</pre>
         </td>
         ${this.extendMissingCells(0, cells)}
       </tr>
       <tr>
-        <td style="width: ${maxLineWidth * 6.5}pt">
+        <td style="width: ${maxLineWidth * this.tableWidthFactor}pt">
           <pre>${this.markdown(line.lyrics.bottomLine)}</pre>
         </td>`;
 
