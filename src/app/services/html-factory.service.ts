@@ -59,7 +59,9 @@ export class HtmlFactoryService {
     }
 
     // reset print counter
-    // song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
+    if (song.blocks) {
+      song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
+    }
 
     return html + '</div>' + this.style();
   }

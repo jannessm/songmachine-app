@@ -17,7 +17,8 @@ describe('UNIT tests HtmlFactoryService', () => {
       const htmlFactory = TestBed.get(HtmlFactoryService);
       const input = `<r>**ein string | mit <r> styled annotations | oder so\nund eine zeile ohne`;
       const expected = [
-        `<pre class="line-wrapper"><pre></pre><pre class="red">&lt;r&gt;</pre><pre class="red bold">**ein string </pre><pre>|</pre><pre> mit </pre><pre class="red">&lt;r&gt; styled annotations </pre><pre>|</pre><pre> oder so</pre></pre>`,
+        '<pre class="line-wrapper"><pre></pre><pre class="red">&lt;r&gt;</pre><pre class="red bold">**ein string ' +
+        '</pre><pre>|</pre><pre> mit </pre><pre class="red">&lt;r&gt; styled annotations </pre><pre>|</pre><pre> oder so</pre></pre>',
         `<pre class="line-wrapper"><pre>und eine zeile ohne</pre></pre>`
       ];
       expect(htmlFactory.highlightText(input)).toEqual(expected);
@@ -244,7 +245,8 @@ describe('UNIT tests HtmlFactoryService', () => {
       <tr>
         <td style="width: ${4 * 6.5}pt">
           <pre><pre> </pre><pre class="red">text</pre></pre>
-        </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td><td class="annotation_border"></td></tr></table></div><div class="block">
+        </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td>${ ''
+        }<td class="annotation_border"></td></tr></table></div><div class="block">
       <h4>Intro</h4>
       <table class="block_table"><tr>
         <td style="width: ${4 * 6.5}pt">
@@ -255,7 +257,45 @@ describe('UNIT tests HtmlFactoryService', () => {
       <tr>
         <td style="width: ${4 * 6.5}pt">
           <pre><pre> </pre><pre class="red">text</pre></pre>
-        </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td><td class="annotation_border"><pre> <pre>2nd printed</pre></pre></td></tr></table></div>`);
+        </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td>${''
+      }<td class="annotation_border"><pre> <pre>2nd printed</pre></pre></td></tr></table></div>`);
+    });
+
+    it('should be stateless', () => {
+      const htmlFactory = TestBed.get(HtmlFactoryService);
+      const song = {
+        title: '',
+        artist: '',
+        bpm: undefined,
+        books: undefined,
+        blocks: [{
+          'maxLineWidth': 4,
+          'title': 'Intro',
+          'lines': [
+            {
+              'lyrics': {
+                'topLine': ' D',
+                'bottomLine': ' <r>text'
+              },
+              'annotations': [['Finna, Flip'], ['', '2nd printed', 'test']],
+              'differentAnnotations': 3,
+              'annotationCells': 1,
+              'printed': 0,
+              'lyricsWidth': 1
+            }
+          ],
+          'maxDiffAnnotationsPerRepition': 1,
+          'annotationCells': 1
+        }],
+        order: ['Intro', 'Intro'],
+        maxLineWidth: 4,
+        annotationCells: 2
+      };
+
+      const res = htmlFactory.songToHTML(song);
+      expect(htmlFactory.songToHTML(song)).toEqual(res);
+      expect(htmlFactory.songToHTML(song)).toEqual(res);
+      expect(htmlFactory.songToHTML(song)).toEqual(res);
     });
   });
 
@@ -311,7 +351,8 @@ describe('UNIT tests HtmlFactoryService', () => {
       <tr>
         <td style="width: ${20 * 6.5}pt">
           <pre><pre> </pre><pre class="red">text</pre></pre>
-        </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td><td class="annotation_border"><pre> <pre>2nd printed</pre></pre></td></tr></table></div>`;
+        </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td>${''
+      }<td class="annotation_border"><pre> <pre>2nd printed</pre></pre></td></tr></table></div>`;
 
       expect(htmlFactory.blockToHtml(block, 2, 20)).toEqual(expected);
       expect(htmlFactory.blockToHtml(block, 2, 20)).toEqual(expected2);
