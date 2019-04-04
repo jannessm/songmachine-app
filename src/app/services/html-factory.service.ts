@@ -12,7 +12,7 @@ export class HtmlFactoryService {
   private bpm_image = '';
   private books_image = '';
 
-  private tableWidthFactor = 4;
+  private tableWidthFactor = 0.6;
 
   constructor(private grammarParser: GrammarParser) { }
 
@@ -77,13 +77,13 @@ export class HtmlFactoryService {
 
     block.lines.forEach(line => {
       html += `<tr>
-        <td style="width: ${maxLineWidth * this.tableWidthFactor}pt">
+        <td style="width: ${maxLineWidth * this.tableWidthFactor}em">
           <pre>${this.markdown(line.lyrics.topLine)}</pre>
         </td>
         ${this.extendMissingCells(0, cells)}
       </tr>
       <tr>
-        <td style="width: ${maxLineWidth * this.tableWidthFactor}pt">
+        <td style="width: ${maxLineWidth * this.tableWidthFactor}em">
           <pre>${this.markdown(line.lyrics.bottomLine)}</pre>
         </td>`;
 

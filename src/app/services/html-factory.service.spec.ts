@@ -191,13 +191,13 @@ describe('UNIT tests HtmlFactoryService', () => {
       expect(res).toContain(`<div class="block">
       <h4>Intro</h4>
       <table class="block_table"><tr>
-        <td style="width: ${4 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${4 * htmlFactory.tableWidthFactor}em">
           <pre><pre> D</pre></pre>
         </td>
         <td class="annotation_border"></td><td class="annotation_border"></td>
       </tr>
       <tr>
-        <td style="width: ${4 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${4 * htmlFactory.tableWidthFactor}em">
           <pre><pre> </pre><pre class="red">text</pre></pre>
         </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td><td class="annotation_border"></td></tr></table></div>`);
     });
@@ -237,25 +237,25 @@ describe('UNIT tests HtmlFactoryService', () => {
       expect(res).toContain(`<div class="block">
       <h4>Intro</h4>
       <table class="block_table"><tr>
-        <td style="width: ${4 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${4 * htmlFactory.tableWidthFactor}em">
           <pre><pre> D</pre></pre>
         </td>
         <td class="annotation_border"></td><td class="annotation_border"></td>
       </tr>
       <tr>
-        <td style="width: ${4 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${4 * htmlFactory.tableWidthFactor}em">
           <pre><pre> </pre><pre class="red">text</pre></pre>
         </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td>${ ''
         }<td class="annotation_border"></td></tr></table></div><div class="block">
       <h4>Intro</h4>
       <table class="block_table"><tr>
-        <td style="width: ${4 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${4 * htmlFactory.tableWidthFactor}em">
           <pre><pre> D</pre></pre>
         </td>
         <td class="annotation_border"></td><td class="annotation_border"></td>
       </tr>
       <tr>
-        <td style="width: ${4 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${4 * htmlFactory.tableWidthFactor}em">
           <pre><pre> </pre><pre class="red">text</pre></pre>
         </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td>${''
       }<td class="annotation_border"><pre> <pre>2nd printed</pre></pre></td></tr></table></div>`);
@@ -330,26 +330,26 @@ describe('UNIT tests HtmlFactoryService', () => {
       const expected = `<div class="block">
       <h4>Intro</h4>
       <table class="block_table"><tr>
-        <td style="width: ${20 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${20 * htmlFactory.tableWidthFactor}em">
           <pre><pre> D</pre></pre>
         </td>
         <td class="annotation_border"></td><td class="annotation_border"></td>
       </tr>
       <tr>
-        <td style="width: ${20 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${20 * htmlFactory.tableWidthFactor}em">
           <pre><pre> </pre><pre class="red">text</pre></pre>
         </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td><td class="annotation_border"></td></tr></table></div>`;
 
       const expected2 = `<div class="block">
       <h4>Intro</h4>
       <table class="block_table"><tr>
-        <td style="width: ${20 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${20 * htmlFactory.tableWidthFactor}em">
           <pre><pre> D</pre></pre>
         </td>
         <td class="annotation_border"></td><td class="annotation_border"></td>
       </tr>
       <tr>
-        <td style="width: ${20 * htmlFactory.tableWidthFactor}pt">
+        <td style="width: ${20 * htmlFactory.tableWidthFactor}em">
           <pre><pre> </pre><pre class="red">text</pre></pre>
         </td><td class="annotation_border"><pre> <pre>Finna, Flip</pre></pre></td>${''
       }<td class="annotation_border"><pre> <pre>2nd printed</pre></pre></td></tr></table></div>`;

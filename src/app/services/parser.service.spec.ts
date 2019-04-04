@@ -10,12 +10,11 @@ describe('UNIT Testing Parser Service:', () => {
   let htmlFactory;
   beforeEach(() => {
     htmlFactory = jasmine.createSpyObj('htmlFactory', ['songToHTML']);
-
     TestBed.configureTestingModule({
       providers: [
         ParserService,
         {provide: HtmlFactoryService, useValue: htmlFactory},
-        GrammarParser
+        GrammarParser,
       ]
     });
   });
@@ -79,6 +78,65 @@ eine ohne alles
       expect(resSong.blocks[0].maxLineWidth).toBe(resSong.blocks[0].lines[1].lyricsWidth);
       expect(resSong.maxLineWidth).toBe(resSong.blocks[0].lines[1].lyricsWidth);
       expect(resSong.order).toEqual(['blaaaa', 'nächster']);
+    });
+
+    it('should be stateless', () => {
+      const parser = TestBed.get(ParserService);
+      const input = `[title: Blessed Be Your Name (Intro - XX); bpm: 100]
+
+[order: Intro, Verse 1, pre-chorus, Chorus, Intro, Verse 2, pre-chorus, Chorus, Bridge, Bridge, Chorus, Chorus, Intro]
+
+[block: Intro]
+  [C] | Nils fängt an, nach einem Takt Filip; ruhig; ruhig; impro; ruhig| Nils muss lauter gestellt sein.; ; ;
+  [C] [Em] [Cmaj6] [Em] [Esus4] [C]
+
+[block: Verse 1]
+  [C]Blessed Be Your Name | | Finia, Anna
+  [Em]In the land that is plentiful
+  [C]Where Your streams of abundance flow
+  [Em]Blessed be Your name
+  [C]Blessed Be Your name
+  [Em]When I'm found in the desert place
+  [C]Though I walk through the wilderness
+  [Em]Blessed be Your name
+
+[block: pre-chorus]
+  [C]Every blessing You pour out, I'll | steigern| Jannes Gesang
+  [Em]Turn back to praise
+  [C]When the darkness closes in, Lord
+  [Em]Still I will say
+
+[block: Chorus]
+Blessed be the [C]name of the Lord | ; ; leicht steigern; noch mehr steigern; | ; ; ; Anna 2. Stimme
+Blessed be Your [Em]name
+Blessed be the [C]name of the Lord
+Blessed be Your [Em]glorious name
+
+[block: Verse 2]
+  [C]Blessed be Your name | | Larissa, Marlene
+  [Em]When the sun's shining down on me
+  [C]When the world's 'all as it should be'
+  [Em]Blessed be Your name
+  [C]Blessed be Your name
+  [Em]On the road marked with suffering
+  [C]Though there's pain in the offering
+  [Em]Blessed be Your name
+
+[block: Bridge]
+  [C]You give and take a - way | 1. mal ruhig und 2. steigern| Marlene, Larissa, Finia 2. Stimme
+  [Em]You give and take a - way
+  [C]My heart will choose to say
+  [Em]Lord blessed be Your name
+
+`;
+
+      const res1 = parser.stringToSong(input);
+      const res2 = parser.stringToSong(input);
+      console.log(res1.bpm);
+      console.log(res2.bpm);
+      expect(res2).toEqual(res1);
+      // expect(parser.stringToSong(input)).toEqual(res1);
+      // expect(parser.stringToSong(input)).toEqual(res1);
     });
   });
 

@@ -29,7 +29,7 @@ const routes: Routes = [
     component: SettingsComponent
   },
   {
-    path: 'perform/:songId/:title',
+    path: 'perform/:songId',
     component: PerformviewComponent
   }
 ];

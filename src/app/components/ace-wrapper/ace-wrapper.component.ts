@@ -9,7 +9,7 @@ import { KeyFinderService } from '../../services/keyFinder.service';
   templateUrl: './ace-wrapper.component.html',
   styleUrls: ['./ace-wrapper.component.scss']
 })
-export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
+export class AceWrapperComponent implements OnChanges {
 
   @ViewChild('textfield') textfield;
   @ViewChild('content', {read: ElementRef}) content: ElementRef;
@@ -21,7 +21,6 @@ export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
 
   songHasChanged = true;
   initText = '';
-  checkInterval;
 
   @Input() song: Song;
   @Output() songChange = new EventEmitter<Song>();
@@ -30,13 +29,6 @@ export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
     private parserService: ParserService,
     private keyFinder: KeyFinderService
   ) { }
-
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-    this.checkInterval.clearInterval();
-  }
 
   ngOnChanges() {
     if (this.song && !this.song.text) {
@@ -48,9 +40,10 @@ export class AceWrapperComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public emitSongChangeEvent() {
+    this.song.text = this.initText;
     this.song = this.parserService.stringToSong(this.initText);
-    this.songChange.emit(this.song);
     this.songHasChanged = true;
+    this.songChange.emit(this.song);
   }
 
   public transposeUp() {

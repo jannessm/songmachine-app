@@ -306,7 +306,7 @@ export class ParserService {
         (<RegExp>element).lastIndex = 0;
       } else {
         Object.values(element).forEach(elem => {
-          elem.lastIndex = 0;
+          elem.regex.lastIndex = 0;
         });
       }
     });

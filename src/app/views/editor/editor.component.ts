@@ -42,7 +42,7 @@ export class EditorComponent implements OnInit {
     this.cmdOrCtrlPressed = false;
     this.sPressed = false;
 
-    const nonUpdateKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Meta', 'Control', 'Shift', 'Alt'];
+    const nonUpdateKeys = ['Meta', 'Control', 'Shift', 'Alt'];
     if (!nonUpdateKeys.find(val => val === key)) {
       clearTimeout(this.updateInterval);
       this.updateInterval = setTimeout(() => {
@@ -81,7 +81,7 @@ export class EditorComponent implements OnInit {
 
   performMode() {
     this.checkState(() => {
-      this.router.navigateByUrl('perform/' + this.songId + '/' + this.song.title);
+      this.router.navigateByUrl('perform/' + this.songId);
     });
   }
 
