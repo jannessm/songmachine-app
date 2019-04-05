@@ -12,6 +12,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { Moment } from 'moment';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-song-songgroup-form',
@@ -159,5 +160,13 @@ export class SongSonggroupFormComponent implements OnInit {
   private _filter(value: string): Song[] {
     const filterValue = value.toLowerCase();
     return this.songs.filter(option => option.title.toLowerCase().includes(filterValue));
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(
+      (<FormArray>this.songsForm.get('songsArray')).controls,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 }

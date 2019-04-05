@@ -5,9 +5,8 @@ import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTableDataSource } from '@angular/material';
 import { SongSonggroupFormComponent } from '../../dialogs/song-songgroup-form/song-songgroup-form.component';
-import { DexieService } from '../../services/dexie.service';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslationService } from '../../services/translation.service';
@@ -40,6 +39,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
   gridCols = 3;
 
   filteredElems: Song[] | Songgroup[] = [];
+  dataSource: MatTableDataSource<Song | Songgroup>;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,16 +53,18 @@ export class BrowserComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   resizeHandler(event) {
-    if (event.srcElement.document.body.clientWidth > 1199) {
-      this.gridCols = 5;
-    } else {
+    if (event.srcElement.document.body.clientWidth > 999) {
       this.gridCols = 3;
+    } else {
+      this.gridCols = 1;
     }
   }
 
   ngOnInit() {
-    if (this.doc.body.clientWidth > 1199) {
-      this.gridCols = 5;
+    if (this.doc.body.clientWidth > 999) {
+      this.gridCols = 3;
+    } else {
+      this.gridCols = 1;
     }
 
     this.route.params.subscribe(params => {

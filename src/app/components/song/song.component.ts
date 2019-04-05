@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 
 import { Song } from '../../models/song';
 import { DataService } from '../../services/data.service';
@@ -14,10 +14,13 @@ import { StoreService } from '../../services/store.service';
   templateUrl: './song.component.html',
   styleUrls: ['./song.component.scss']
 })
-export class SongComponent {
+export class SongComponent implements AfterViewChecked {
 
   @Input() song: Song;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild('title', {read: ElementRef}) title: ElementRef;
+  tooltip = false;
 
   constructor(
     private dataService: DataService,
@@ -25,8 +28,18 @@ export class SongComponent {
     private exportService: ExportService,
     private dialog: MatDialog,
     private translationService: TranslationService,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private cdRef: ChangeDetectorRef
   ) { }
+
+  ngAfterViewChecked() {
+    if (this.title.nativeElement.offsetWidth < this.title.nativeElement.scrollWidth) {
+      this.tooltip = true;
+    } else {
+      this.tooltip = false;
+    }
+    this.cdRef.detectChanges();
+  }
 
   editSong(song: Song) {
     this.router.navigateByUrl('/editor/' + song.id);
