@@ -40,8 +40,9 @@ export class AceWrapperComponent implements OnChanges {
   }
 
   public emitSongChangeEvent() {
-    this.song.text = this.initText;
+    const songID = this.song.id;
     this.song = this.parserService.stringToSong(this.initText);
+    this.song.id = songID;
     this.songHasChanged = true;
     this.songChange.emit(this.song);
   }

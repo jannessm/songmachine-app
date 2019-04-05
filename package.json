@@ -27,7 +27,7 @@
     "e2e": "npm run postinstall:web && ng e2e",
     "build": "ng build --prod --aot && cp -R src/electron/* dist/ && cp package.json dist/",
     "lint": "ng lint",
-    "deploy": "npm run build && electron-builder -mw",
+    "deploy": "npm run build && electron-builder",
     "grammar-tester": "node dev-files/grammars/tester/tester.js",
     "compile-grammars": "nearleyc ./dev-files/grammars/st.ne -o ./src/assets/grammars/st-grammar.js && nearleyc ./dev-files/grammars/chords.ne -o ./src/assets/grammars/chords-grammar.js",
     "extract": "../../xliff-extractor/bin/cli.js -i ./src -o ./src/assets/i18n/source.xlf -m i18n"
@@ -40,7 +40,8 @@
       "output": "release-builds"
     },
     "files": [
-      "dist/**/*"
+      "dist/**/*",
+      "main.js"
     ],
     "mac": {
       "icon": "./src/assets/main-icon/mac/songsheet.icns"
