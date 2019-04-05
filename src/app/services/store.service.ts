@@ -48,6 +48,15 @@ export class StoreService {
     return;
   }
 
+  public recreateIndex(dirPath?: string) {
+    this.fileMap = {
+      songs: {},
+      songgroups: {}
+    };
+
+    this.createFileIndex(dirPath);
+  }
+
   public createFileIndex(dirPath?: string) {
     if (!dirPath) {
       dirPath = this.mainDirectory;

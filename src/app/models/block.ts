@@ -12,8 +12,8 @@ import { Line } from './line';
 export class Block {
     title: string;
     lines: Line[];
-    annotationCells: number;
+    annotationCells = 0;
     maxLineWidth = 0;
-    maxDiffAnnotationsPerRepition: number;
+    maxDiffAnnotationsPerRepition = 0;
     printed?: number;
 }

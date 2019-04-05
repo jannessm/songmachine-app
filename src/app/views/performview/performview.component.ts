@@ -19,7 +19,6 @@ export class PerformviewComponent implements OnInit, OnDestroy {
   songs: Song[] = [];
   activeSong = 0;
   songId = '';
-  title: string;
   host: string;
 
   constructor(
@@ -35,7 +34,6 @@ export class PerformviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       const songId = params['songId'];
-      this.title = params['title'];
       if (/_/g.test(songId)) {
         const proms = [];
         songId.split('_').filter(val => !!val).forEach(element => {

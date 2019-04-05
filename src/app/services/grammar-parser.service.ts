@@ -36,10 +36,6 @@ export class GrammarParser {
     if (!input) {
       return input;
     }
-    const isBalanced = this.checkBalancedBrackets(input);
-    if (!!isBalanced) {
-      return isBalanced;
-    }
 
     let parser;
     if (!keepChars) {
@@ -51,10 +47,10 @@ export class GrammarParser {
     try {
       parser.feed(input);
     } catch (err) {
-      console.log(err);
+      console.log(input, err);
     }
     if (!parser.results || (parser.results && parser.results.length === 0)) {
-      return '';
+      return GrammarParser.escapeHTML(input);
     }
 
     const results = parser.results[0];
@@ -70,7 +66,7 @@ export class GrammarParser {
         id !== 0 && typeof currVal !== 'string' && typeof arr[id - 1] !== 'string' &&
         (<NearleyResultObj>currVal).css === (<NearleyResultObj>arr[id - 1]).css
       ) {
-        html += GrammarParser.escapeHTML((<NearleyResultObj>currVal).content);
+        html += keepChars || !(<NearleyResultObj>currVal).isTerminal ? GrammarParser.escapeHTML(currVal.content) : '';
       } else if (
         (id !== 0 && typeof currVal === 'string' && typeof arr[id - 1] !== 'string')
       ) {
@@ -110,37 +106,5 @@ export class GrammarParser {
       }
       return reduced;
     }, []);
-  }
-
-  private checkBalancedBrackets(input: string, tag: string = 'pre'): string {
-    const stack = [];
-    let i = 0;
-    let lastOpened;
-
-    for (i = 0; input && i < input.length; i++) {
-      const char = input[i];
-      if (char === '[' && stack.length === 0) {
-        stack.push(i);
-        lastOpened = i;
-      } else if (char === '[' && stack.length > 0) {
-        return this.composeError(input, stack.pop(), 1, tag);
-      } else if (char === ']' && stack.length === 1) {
-        stack.pop();
-      } else if (char === ']' && stack.length === 0) {
-        return this.composeError(input, i, 1, tag);
-      }
-    }
-
-    if (stack.length === 0) {
-      return '';
-    } else {
-      return this.composeError(input, lastOpened, 1, tag);
-    }
-  }
-
-  private composeError(input: string, from: number, length: number, tag: string = 'pre'): string {
-    return `<${tag}>${input.substr(0, from)}</${tag}>` +
-      `<${tag} class="error">${input.substr(from, length)}</${tag}>` +
-      `<${tag}>${input.substr(from + length)}</${tag}>`;
   }
 }

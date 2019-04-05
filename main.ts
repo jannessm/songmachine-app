@@ -31,7 +31,7 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   win.once('ready-to-show', () => {
     win.show();
@@ -63,7 +63,7 @@ try {
         {role: 'selectAll'}
       ]
     }
-  ]
+  ];
   if (process.platform === 'darwin') {
     template.unshift({
       label: app.getName(),
@@ -77,7 +77,7 @@ try {
         {role: 'close'},
         {role: 'quit'}
       ]
-    })
+    });
   }
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);

@@ -12,14 +12,19 @@ import {
   MatGridListModule,
   MatSnackBarModule,
   MatExpansionModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDatepickerModule,
+  MAT_DATE_LOCALE,
+  DateAdapter,
+  MAT_DATE_FORMATS
 } from '@angular/material';
+import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
-// import { AutosizeModule } from 'ngx-autosize';
+import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
+import { AutosizeModule } from 'ngx-autosize';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,11 +33,11 @@ import { AppComponent } from './app.component';
 import { SongComponent } from './components/song/song.component';
 import { SonggroupComponent } from './components/songgroup/songgroup.component';
 import { PreviewComponent } from './components/preview/preview.component';
-import { SongsheetTextareaComponent } from './components/songsheet-textarea/songsheet-textarea.component';
 import { BrowserComponent } from './views/browser/browser.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { PerformviewComponent } from './views/performview/performview.component';
+import { AceWrapperComponent } from './components/ace-wrapper/ace-wrapper.component';
 
 import { DataService } from './services/data.service';
 import { ParserService } from './services/parser.service';
@@ -59,9 +64,21 @@ import { SongSonggroupFormComponent } from './dialogs/song-songgroup-form/song-s
 import { HelpDialogComponent } from './dialogs/help/help-dialog.component';
 import { StoreService } from './services/store.service';
 
+import { AceEditorModule } from 'ng2-ace-editor';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
+import localeEs from '@angular/common/locales/es';
+import localeIt from '@angular/common/locales/it';
+
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
 }
+
+registerLocaleData(localeDe, 'de');
+registerLocaleData(localeEn, 'en');
+registerLocaleData(localeEs, 'es');
+registerLocaleData(localeIt, 'it');
 
 @NgModule({
   declarations: [
@@ -73,14 +90,14 @@ export function initConfigs(configService: ConfigService) {
     SonggroupComponent,
     SongSonggroupFormComponent,
     PreviewComponent,
-    SongsheetTextareaComponent,
     PerformviewComponent,
     SafePipe,
     TranslatePipe,
     MergeDialogComponent,
     QRDialogComponent,
     AlertDialogComponent,
-    HelpDialogComponent
+    HelpDialogComponent,
+    AceWrapperComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +120,11 @@ export function initConfigs(configService: ConfigService) {
     MatAutocompleteModule,
     MatExpansionModule,
     MatSelectModule,
-    HttpClientModule
+    MatDatepickerModule,
+    MatMomentDateModule,
+    AutosizeModule,
+    HttpClientModule,
+    AceEditorModule,
   ],
   providers: [
     DataService,
@@ -126,7 +147,11 @@ export function initConfigs(configService: ConfigService) {
       useFactory: initConfigs,
       deps: [ConfigService],
       multi: true
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'en' },
+    { provide: MAT_DATE_LOCALE, useValue: 'en' },
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
   entryComponents: [
     SongSonggroupFormComponent,

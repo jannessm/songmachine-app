@@ -1,15 +1,15 @@
 <mat-toolbar id="menu">
   <mat-toolbar-row>
-    <button mat-button (click)="save()" [disabled]="!textfield.songHasChanged">{{ 'editor.save' | translate }}</button>
+    <button mat-button (click)="save()" [disabled]="!aceWrapper.songHasChanged">{{ 'editor.save' | translate }}</button>
     <button mat-button (click)="performMode()">{{ 'editor.performMode' | translate }}</button>
     <span>{{ 'editor.transpose' | translate }}</span>
     <button mat-icon-button (click)="transposeDown()"><i class="icon icon-minus"></i></button>
-    <span class="transpose-steps">{{ textfield.getStepsString() }}</span>
+    <span class="transpose-steps">{{ song.transposedBy }}</span>
     <button mat-icon-button (click)="transposeUp()"><i class="icon icon-plus"></i></button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <div class="row streched-row fill">
-  <app-songsheet-textarea [input]="songIn" (value)="songOut($event)" #textfield></app-songsheet-textarea>
+  <app-ace-wrapper [(song)]="song" #aceWrapper></app-ace-wrapper>
   <app-preview [performMode]="false" [song]="song"></app-preview>
 </div>

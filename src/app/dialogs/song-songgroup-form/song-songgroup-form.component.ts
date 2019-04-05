@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { FormControl, FormGroup, FormArray } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
@@ -8,11 +8,15 @@ import { Songgroup } from '../../models/songgroup';
 
 import { DataService } from '../../services/data.service';
 import { TranslationService } from '../../services/translation.service';
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'app-song-songgroup-form',
   templateUrl: './song-songgroup-form.component.html',
-  styleUrls: ['./song-songgroup-form.component.scss']
+  styleUrls: ['./song-songgroup-form.component.scss'],
 })
 export class SongSonggroupFormComponent implements OnInit {
 
@@ -22,11 +26,14 @@ export class SongSonggroupFormComponent implements OnInit {
   id: string;
   songscounter: number[] = [1];
   songs: Song[] = [];
+  filteredSongs: Observable<Song[]>[] = [];
 
   song: Song = new Song();
   songBooksStr = '';
 
   songgroup: Songgroup = new Songgroup();
+  songgroupDate: string;
+  songgroupTime: string;
   songUUID: string;
 
   @ViewChild('songTitle') songTitle: ElementRef;
@@ -78,6 +85,14 @@ export class SongSonggroupFormComponent implements OnInit {
         break;
       case DATABASES.songgroups:
         this.songgroup.songs = [];
+
+        if (this.songgroupDate) {
+          this.songgroup.date = this.songgroupDate;
+        }
+        if (this.songgroupTime) {
+          this.songgroup.time = this.songgroupTime;
+        }
+
         for (const control of this.songsArray.controls) {
           if (control.value.songSelect) {
             this.songgroup.songs.push(control.value.songSelect.id);
@@ -93,9 +108,15 @@ export class SongSonggroupFormComponent implements OnInit {
   }
 
   addSongField(value?: Song) {
+    const control = new FormControl(value);
+
+    this.filteredSongs.push(control.valueChanges.pipe(
+      startWith(''),
+      map(song => this._filter(song))));
+
     (<FormArray>this.songsForm.get('songsArray')).push(
       new FormGroup({
-        songSelect: new FormControl(value)
+        songSelect: control
       })
     );
   }
@@ -129,6 +150,14 @@ export class SongSonggroupFormComponent implements OnInit {
         }
         break;
     }
+  }
 
+  private _sortStrings(a: string, b: string): number {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  }
+
+  private _filter(value: string): Song[] {
+    const filterValue = value.toLowerCase();
+    return this.songs.filter(option => option.title.toLowerCase().includes(filterValue));
   }
 }

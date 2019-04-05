@@ -18,9 +18,13 @@ export class FileSynchronizerService {
     private router: Router,
     private configService: ConfigService
   ) {
+    this.syncFiles();
+  }
+
+  public syncFiles() {
     this.pathGuard().then(mainPath => {
       this.storeService.mainDirectory = mainPath;
-      this.storeService.createFileIndex();
+      this.storeService.recreateIndex();
     });
   }
 

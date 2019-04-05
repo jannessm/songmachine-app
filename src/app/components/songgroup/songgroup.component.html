@@ -26,6 +26,14 @@
         <div class="songgroup_preview">{{ songgroup.description }}</div>
         <table class="songgroup_attr">
             <tr>
+                <th>{{ 'form.new.songgroup.date' | translate }}</th>
+                <td>
+                    <ul *ngIf="songgroup.date && !songgroup.time">{{ songgroup.date | date:'shortDate':undefined:locale }}</ul>
+                    <ul *ngIf="!songgroup.date && songgroup.time">{{ songgroup.time | date:'shortTime':undefined:locale }}</ul>
+                    <ul *ngIf="songgroup.date && songgroup.time">{{ songgroup.date.replace('00:00', songgroup.time) | date:'short':undefined:locale }}</ul>
+                </td>
+            </tr>
+            <tr>
                 <th>{{ 'Songs' | translate }}</th>
                 <td>
                     <ul>

@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ConfigService } from '../../services/config.service';
-import { FileSynchronizerService } from '../../services/file-synchronizer.service';
 import { TranslationService } from '../../services/translation.service';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DexieService } from '../../services/dexie.service';
 import { DATABASES } from '../../models/databases';
+import { FileSynchronizerService } from '../../services/file-synchronizer.service';
 
 @Component({
   selector: 'app-settings',
@@ -23,7 +22,8 @@ export class SettingsComponent implements OnInit {
   constructor(
     private configService: ConfigService,
     private translationService: TranslationService,
-    private dexieService: DexieService
+    private dexieService: DexieService,
+    private syncService: FileSynchronizerService
   ) { }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class SettingsComponent implements OnInit {
 
   setDefaultPath(path) {
     this.configService.set('defaultPath', path);
-    this.dexieService.upsert(DATABASES.settings, path);
+    this.syncService.syncFiles();
     this.path = path;
   }
 

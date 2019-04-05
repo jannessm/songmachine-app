@@ -23,17 +23,17 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/trayIcon.png",
-              "src/favicon.256x256.png",
-              "src/favicon.512x512.png"
+              "src/assets"
             ],
             "styles": [
               "node_modules/normalize.css/normalize.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/ace-builds/src-min/ace.js",
+              "node_modules/ace-builds/src-min/ext-searchbox.js",
+              "src/assets/grammars/mode-st.js"
+            ]
           },
           "configurations": {
             "dev": {

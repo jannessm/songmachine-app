@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Song } from '../models/song';
 import { Block } from '../models/block';
 import { GrammarParser } from './grammar-parser.service';
-import { TranslationService } from './translation.service';
 
 const convert = require('xml-js');
 
@@ -13,8 +12,9 @@ export class HtmlFactoryService {
   private bpm_image = '';
   private books_image = '';
 
-  constructor(private grammarParser: GrammarParser, private translationService: TranslationService) {
-  }
+  private tableWidthFactor = 0.6;
+
+  constructor(private grammarParser: GrammarParser) { }
 
   public highlightText(text: string): string[] {
     return text
@@ -23,40 +23,13 @@ export class HtmlFactoryService {
       .map(line => `<pre class="line-wrapper">${ line }</pre>`);
   }
 
-  public addTooltips(htmlLines: string[]): string[] {
-    // return htmlLines.map(line => {
-    //   const xml = convert.xml2js(line);
-    //   xml.elements[0].elements.map(tag => this.addTooltipXml(tag));
-    //   return convert.js2xml(xml);
-    // });
-    return htmlLines;
-  }
-
-  private addTooltipXml(xmlObj) {
-    if (xmlObj.attributes && /error/.test(xmlObj.attributes.class)) {
-      const inner = xmlObj.elements[0].text;
-      let tooltip = '';
-      if (inner === '[' || inner === ']') {
-        tooltip = this.translationService.i18n('editor.brackets.error');
-      } else if (/[<>]/.test(inner)) {
-        tooltip = this.translationService.i18n('editor.colors.error');
-      }
-      xmlObj.elements.push({
-        type: 'element',
-        name: 'span',
-        elements: [{
-          type: 'text',
-          text: tooltip
-        }]
-      });
-    }
-
-    return xmlObj;
-  }
-
   public songToHTML(song: Song): string {
     if (!song) {
       return '';
+    }
+    // reset print counter
+    if (song.blocks) {
+      song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
     }
     const title = song.title || '';
     const artist = song.artist || '';
@@ -81,23 +54,20 @@ export class HtmlFactoryService {
     html += '</ul></div>';
 
     if (!song.order && song.blocks) {
-      html += song.blocks.reduce((red, b) => red + this.blockToHTML(b, song.annotationCells, song.maxLineWidth), '');
+      html += song.blocks.reduce((red, b) => red + this.blockToHtml(b, song.annotationCells, song.maxLineWidth), '');
     } else if (song.blocks) {
       for (const b of song.order) {
         const block = song.blocks.find(elem => {
           return elem.title === b;
         });
-        html += this.blockToHTML(block, song.annotationCells, song.maxLineWidth);
+        html += this.blockToHtml(block, song.annotationCells, song.maxLineWidth);
       }
     }
-
-    // reset print counter
-    // song.blocks.forEach(block => block.lines.forEach(line => line.printed = 0));
 
     return html + '</div>' + this.style();
   }
 
-  private blockToHTML(block: Block, cells: number, maxLineWidth: number): string {
+  private blockToHtml(block: Block, cells: number, maxLineWidth: number): string {
     if (!block) {
       return '';
     }
@@ -107,18 +77,18 @@ export class HtmlFactoryService {
 
     block.lines.forEach(line => {
       html += `<tr>
-        <td style="width: ${maxLineWidth * 6.5}pt">
+        <td style="width: ${maxLineWidth * this.tableWidthFactor}em">
           <pre>${this.markdown(line.lyrics.topLine)}</pre>
         </td>
         ${this.extendMissingCells(0, cells)}
       </tr>
       <tr>
-        <td style="width: ${maxLineWidth * 6.5}pt">
+        <td style="width: ${maxLineWidth * this.tableWidthFactor}em">
           <pre>${this.markdown(line.lyrics.bottomLine)}</pre>
         </td>`;
 
       let c = 0;
-      for (const ann of line.annotations) {
+      line.annotations.forEach(ann => {
         const id = ann.length > 1 ? line.printed : 0;
         if (ann[id]) {
           html += `<td class="annotation_border"><pre> ${this.markdown(ann[id])}</pre></td>`;
@@ -126,10 +96,9 @@ export class HtmlFactoryService {
           html += '<td class="annotation_border"></td>';
         }
         c++;
-      }
+      });
       line.printed++;
-      html += this.extendMissingCells(c, cells);
-      html += '</tr>';
+      html += this.extendMissingCells(c, cells) + '</tr>';
     });
 
     return html + '</table></div>';

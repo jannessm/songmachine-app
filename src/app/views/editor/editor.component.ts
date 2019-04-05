@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Song } from '../../models/song';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { SongsheetTextareaComponent } from '../../components/songsheet-textarea/songsheet-textarea.component';
-import { Observable, from } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from '../../dialogs/alert/alert-dialog.component';
 import { TranslationService } from '../../services/translation.service';
@@ -15,13 +13,13 @@ import { TranslationService } from '../../services/translation.service';
 })
 export class EditorComponent implements OnInit {
 
- @ViewChild(SongsheetTextareaComponent) textfield: SongsheetTextareaComponent;
-  songIn: Song;
+  @ViewChild('aceWrapper') aceWrapper;
   song: Song;
   songId: string;
 
   private cmdOrCtrlPressed = false;
   private sPressed = false;
+  private updateTimeout;
 
   @HostListener('window:keydown', ['$event'])
   saveHotKeyDown(event) {
@@ -36,13 +34,21 @@ export class EditorComponent implements OnInit {
       this.sPressed = false;
     }
   }
-  @HostListener('window:keyup')
-  saveHotKeyUp() {
+  @HostListener('window:keyup', ['$event.key'])
+  saveHotKeyUp(key) {
     if (this.cmdOrCtrlPressed && this.sPressed) {
       this.save();
     }
     this.cmdOrCtrlPressed = false;
     this.sPressed = false;
+
+    const nonUpdateKeys = ['Meta', 'Control', 'Shift', 'Alt'];
+    if (!nonUpdateKeys.find(val => val === key)) {
+      clearTimeout(this.updateTimeout);
+      this.updateTimeout = setTimeout(() => {
+        this.aceWrapper.emitSongChangeEvent();
+      }, 1000);
+    }
   }
 
   constructor(
@@ -58,21 +64,16 @@ export class EditorComponent implements OnInit {
       const songId = params['songId'];
       if (songId) {
         this.songId = songId;
-        this.songIn = this.dataService.getSong(songId);
+        this.song = this.dataService.getSong(songId);
       }
     });
-  }
-
-  songOut(song) {
-    this.song = song;
-    this.song.id = this.songId;
   }
 
   save() {
     this.dataService.saveSong(this.song).then(song => {
       if (song) {
-        this.songIn = song;
-        this.textfield.songHasChanged = false;
+        this.song = song;
+        this.aceWrapper.songHasChanged = false;
       }
       return song;
     });
@@ -80,20 +81,20 @@ export class EditorComponent implements OnInit {
 
   performMode() {
     this.checkState(() => {
-      this.router.navigateByUrl('perform/' + this.songId + '/' + this.song.title);
+      this.router.navigateByUrl('perform/' + this.songId);
     });
   }
 
   transposeUp() {
-    this.textfield.transposeUp();
+    this.aceWrapper.transposeUp();
   }
 
   transposeDown() {
-    this.textfield.transposeDown();
+    this.aceWrapper.transposeDown();
   }
 
   public checkState(callback: Function) {
-    if (this.textfield.songHasChanged) {
+    if (this.aceWrapper.songHasChanged) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         width: '400px',
         height: '200px',
