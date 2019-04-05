@@ -19,7 +19,7 @@ export class EditorComponent implements OnInit {
 
   private cmdOrCtrlPressed = false;
   private sPressed = false;
-  private updateInterval;
+  private updateTimeout;
 
   @HostListener('window:keydown', ['$event'])
   saveHotKeyDown(event) {
@@ -44,8 +44,8 @@ export class EditorComponent implements OnInit {
 
     const nonUpdateKeys = ['Meta', 'Control', 'Shift', 'Alt'];
     if (!nonUpdateKeys.find(val => val === key)) {
-      clearTimeout(this.updateInterval);
-      this.updateInterval = setTimeout(() => {
+      clearTimeout(this.updateTimeout);
+      this.updateTimeout = setTimeout(() => {
         this.aceWrapper.emitSongChangeEvent();
       }, 1000);
     }

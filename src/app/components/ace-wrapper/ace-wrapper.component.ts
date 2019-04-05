@@ -82,8 +82,9 @@ export class AceWrapperComponent implements OnChanges {
   private getNewChord(chord, flat) {
     let mainKey = chord[0].toLowerCase();
     let firstTwo = false;
-    if (chord[1] && (chord[1].toLowerCase() === '#' || chord[1].toLowerCase() === 'b')) {
-      mainKey += chord[1].toLowerCase();
+    const chordStr = chord[1];
+    if (chordStr && (chordStr.toLowerCase() === '#' || chordStr.toLowerCase() === 'b')) {
+      mainKey += chordStr.toLowerCase();
       firstTwo = true;
     }
 
