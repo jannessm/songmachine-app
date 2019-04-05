@@ -18,6 +18,7 @@ import {
   DateAdapter,
   MAT_DATE_FORMATS
 } from '@angular/material';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
@@ -122,6 +123,7 @@ registerLocaleData(localeIt, 'it');
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    DragDropModule,
     AutosizeModule,
     HttpClientModule,
     AceEditorModule,

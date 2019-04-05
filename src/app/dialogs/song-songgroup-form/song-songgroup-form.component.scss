@@ -9,10 +9,15 @@
 }
 .songselector-label{
     display: inline-block;
+    cursor: move;
     width: 45px;
 }
 .songselection-input{
     width: calc(100% - 50px);
+    cursor: move;
+}
+.songbox {
+    cursor: move;
 }
 mat-form-field{
     width: 100%;

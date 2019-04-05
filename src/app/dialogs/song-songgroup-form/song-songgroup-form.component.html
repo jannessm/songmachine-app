@@ -92,8 +92,8 @@
                     >
                 </mat-form-field>
                 <form [formGroup]="songsForm">
-                    <div formArrayName="songsArray">
-                        <div *ngFor="let scontrol of getControls(); let i = index">
+                    <div formArrayName="songsArray" cdkDropList (cdkDropListDropped)="drop($event)">
+                        <div *ngFor="let scontrol of getControls(); let i = index" cdkDrag>
                             <span class="songselector-label"><label for="song{{ i+1 }}">{{ i+1 }}.</label></span>
                             <!-- if songs selectable-->
                             <mat-form-field class="songselection-input" [formGroupName]="i" floatLabel="never">
