@@ -6,7 +6,7 @@
     "email": "jannes@magnusson.berlin"
   },
   "main": "main.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "all rights reserved",
   "description": "Manage your songs and events for your band. Take notes during the practice lessons and use screens during your gig.",
   "scripts": {
