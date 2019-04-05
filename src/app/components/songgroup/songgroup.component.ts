@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, AfterViewChecked, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
@@ -13,11 +13,14 @@ import { StoreService } from '../../services/store.service';
   templateUrl: './songgroup.component.html',
   styleUrls: ['./../song/song.component.scss', './songgroup.component.scss']
 })
-export class SonggroupComponent implements OnInit {
+export class SonggroupComponent implements OnInit, AfterViewChecked {
 
   @Input() songgroup: Songgroup;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
   JSON = JSON;
+
+  @ViewChild('title', {read: ElementRef}) title: ElementRef;
+  tooltip = false;
 
   constructor(
     private dataService: DataService,
@@ -25,7 +28,8 @@ export class SonggroupComponent implements OnInit {
     private exportService: ExportService,
     private dialog: MatDialog,
     private translationService: TranslationService,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private cdRef: ChangeDetectorRef
   ) { }
 
   songs: string[] = [];
@@ -37,6 +41,15 @@ export class SonggroupComponent implements OnInit {
       this.songgroup = new Songgroup();
     }
     this.setSongs();
+  }
+
+  ngAfterViewChecked() {
+    if (this.title.nativeElement.offsetWidth < this.title.nativeElement.scrollWidth) {
+      this.tooltip = true;
+    } else {
+      this.tooltip = false;
+    }
+    this.cdRef.detectChanges();
   }
 
   emitEditMeta(songgroup: Songgroup) {

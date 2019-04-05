@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit, AfterViewInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 
 import { Song } from '../../models/song';
 import { DataService } from '../../services/data.service';
@@ -19,7 +19,7 @@ export class SongComponent implements AfterViewChecked {
   @Input() song: Song;
   @Output() editMeta: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('title', {read: ElementRef})title: ElementRef;
+  @ViewChild('title', {read: ElementRef}) title: ElementRef;
   tooltip = false;
 
   constructor(
@@ -28,7 +28,8 @@ export class SongComponent implements AfterViewChecked {
     private exportService: ExportService,
     private dialog: MatDialog,
     private translationService: TranslationService,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private cdRef: ChangeDetectorRef
   ) { }
 
   ngAfterViewChecked() {
@@ -37,6 +38,7 @@ export class SongComponent implements AfterViewChecked {
     } else {
       this.tooltip = false;
     }
+    this.cdRef.detectChanges();
   }
 
   editSong(song: Song) {

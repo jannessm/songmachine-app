@@ -61,8 +61,10 @@ export class BrowserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.doc.body.clientWidth > 1199) {
-      this.gridCols = 5;
+    if (this.doc.body.clientWidth > 999) {
+      this.gridCols = 3;
+    } else {
+      this.gridCols = 1;
     }
 
     this.route.params.subscribe(params => {

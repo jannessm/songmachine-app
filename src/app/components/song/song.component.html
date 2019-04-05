@@ -1,7 +1,6 @@
 <mat-card>
     <div class="mat-card-header">
-        <span #title class="mat-card-title" *ngIf="tooltip" [matTooltip]="song.title">{{ song.title }}</span>
-        <span #title class="mat-card-title" *ngIf="!tooltip">{{ song.title }}</span>
+        <span #title class="mat-card-title" [matTooltipDisabled]="!tooltip" [matTooltip]="song.title">{{ song.title }}</span>
         <br>
         <div #artist class="mat-card-subtitle">{{ song.artist }}</div>
         
