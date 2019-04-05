@@ -20,12 +20,12 @@
             </mat-toolbar-row>
         </mat-toolbar> -->
 
-        <mat-grid-list [cols]="gridCols" rowHeight="260px" gutterSize="10px" *ngSwitchCase="'songs'" class="cards">
+        <mat-grid-list [cols]="gridCols" rowHeight="260px" gutterSize="20px" *ngSwitchCase="'songs'" class="cards">
             <mat-grid-tile rowspan="1" colspan="1" *ngFor="let song of filteredElems" >
                 <app-song [song]="song" (editMeta)="showAddForm(song)" (delete)="updateElems()"></app-song>
             </mat-grid-tile>
         </mat-grid-list>
-        <mat-grid-list [cols]="gridCols" rowHeight="430px" gutterSize="10px" *ngSwitchCase="'songgroups'" class="cards">
+        <mat-grid-list [cols]="gridCols" rowHeight="430px" gutterSize="20px" *ngSwitchCase="'songgroups'" class="cards">
             <mat-grid-tile rowspan="1" colspan="1" *ngFor="let group of filteredElems">
                 <app-songgroup [songgroup]="group" (editMeta)="showAddForm(group)" (delete)="updateElems()"></app-songgroup>
             </mat-grid-tile>
