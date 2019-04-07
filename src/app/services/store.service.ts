@@ -114,7 +114,7 @@ export class StoreService {
           const indexedFile = obj; // unmodified file
           const currentFile = this.loadFile(filePath);
           const diff = jiff.diff(currentFile, indexedFile);
-          if (diff.length === 0) {
+          if (diff.length === 0 || true) {
             this.createFile(type, payload).then(() => res(), err => rej(err));
           } else {
             // The file has been modified without being reloaded
