@@ -99,7 +99,7 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
 
   scrollDown() {
     const nativeElem = this.wrapperElem.nativeElement;
-    if (this.step === this.scrollSteps.length - 2) {
+    if (this.step === this.scrollSteps.length - 1) {
       this.step = 0;
       this.scrolledToBottom.emit();
       nativeElem.scroll({top: 0, behavior: 'smooth'});

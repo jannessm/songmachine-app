@@ -91,7 +91,7 @@ export class SonggroupComponent implements OnInit, AfterViewChecked {
   }
 
   performSonggroup() {
-    this.router.navigateByUrl('perform/' + this.songgroup.songs.join('_') + '/' + this.songgroup.name);
+    this.router.navigateByUrl('perform/' + this.songgroup.songs.join('_'));
   }
 
   exportSt() {
