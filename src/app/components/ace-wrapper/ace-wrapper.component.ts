@@ -21,6 +21,7 @@ export class AceWrapperComponent implements OnChanges {
 
   songHasChanged = true;
   initText = '';
+  public key = '';
 
   @Input() song: Song;
   @Output() songChange = new EventEmitter<Song>();
@@ -34,8 +35,10 @@ export class AceWrapperComponent implements OnChanges {
     if (this.song && !this.song.text) {
       this.song.text = this.parserService.songToString(this.song);
       this.initText = this.song.text;
+      this.key = this.keyFinder.findKey(this.initText);
     } else if (this.song && this.initText !== this.song.text) {
       this.initText = this.song.text;
+      this.key = this.keyFinder.findKey(this.initText);
     }
   }
 
@@ -80,6 +83,7 @@ export class AceWrapperComponent implements OnChanges {
       }
     });
     this.emitSongChangeEvent();
+    this.key = this.keyFinder.findKey(this.initText);
   }
 
   private getNewChord(chord, flat, transposeBy: number) {
