@@ -58,9 +58,9 @@ export class AceWrapperComponent implements OnChanges {
   }
 
   private transpose(transposeBy: number) {
-    const m = /^((?:.|\n)*transpose:\s*)((?:\+|-)\d+)((?:.|\n)*)$/gi.exec(this.initText);
-    if (m) {
-      this.initText = m[1] + this.song.transposedBy + m[3];
+    const transposeMatch = /^((?:.|\n)*transpose:\s*)((?:\+|-)\d+)((?:.|\n)*)$/gi.exec(this.initText);
+    if (transposeMatch) {
+      this.initText = transposeMatch[1] + this.song.transposedBy + transposeMatch[3];
     }
     const res = this.keyFinder.getKeys(this.initText);
     const matches: RegExpExecArray[] = res.matches;
@@ -79,6 +79,7 @@ export class AceWrapperComponent implements OnChanges {
                         this.initText.substr(m.index + m[0].length);
       }
     });
+    this.emitSongChangeEvent();
   }
 
   private getNewChord(chord, flat, transposeBy: number) {
