@@ -49,37 +49,39 @@ export class AceWrapperComponent implements OnChanges {
 
   public transposeUp() {
     this.song.transposedBy = (this.song.transposedBy + 1) % 12;
-    this.song.transposedBy = 1;
-    this.transpose();
+    this.transpose(1);
   }
 
   public transposeDown() {
     this.song.transposedBy = (this.song.transposedBy - 1) % 12;
-    this.song.transposedBy = -1;
-    this.transpose();
+    this.transpose(-1);
   }
 
-  private transpose() {
-    const res = this.keyFinder.getKeys(this.song.text);
+  private transpose(transposeBy: number) {
+    const m = /^((?:.|\n)*transpose:\s*)((?:\+|-)\d+)((?:.|\n)*)$/gi.exec(this.initText);
+    if (m) {
+      this.initText = m[1] + this.song.transposedBy + m[3];
+    }
+    const res = this.keyFinder.getKeys(this.initText);
     const matches: RegExpExecArray[] = res.matches;
     const flat = res.flat;
 
     matches.reverse().forEach(m => {
       // if there is no extra basenote
       if (!m[2]) {
-        this.song.text = this.song.text.substr(0, m.index) +
-                        '[' + this.getNewChord(m[1], flat) + ']' +
-                        this.song.text.substr(m.index + m[0].length);
+        this.initText = this.initText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat, transposeBy) + ']' +
+                        this.initText.substr(m.index + m[0].length);
       } else {
-        this.song.text = this.song.text.substr(0, m.index) +
-                        '[' + this.getNewChord(m[1], flat) + '/' +
-                        this.getNewChord(m[2], flat) + ']' +
-                        this.song.text.substr(m.index + m[0].length);
+        this.initText = this.initText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat, transposeBy) + '/' +
+                        this.getNewChord(m[2], flat, transposeBy) + ']' +
+                        this.initText.substr(m.index + m[0].length);
       }
     });
   }
 
-  private getNewChord(chord, flat) {
+  private getNewChord(chord, flat, transposeBy: number) {
     let mainKey = chord[0].toLowerCase();
     let firstTwo = false;
     const chordStr = chord[1];
@@ -97,7 +99,7 @@ export class AceWrapperComponent implements OnChanges {
 
     if (id > -1) {
       let newMainKey;
-      const newId = (id + this.song.transposedBy + 12) % 12;
+      const newId = (id + transposeBy + 12) % 12;
       if (flat) {
         newMainKey = MUSICAL_KEYS.flats[newId];
       } else {
