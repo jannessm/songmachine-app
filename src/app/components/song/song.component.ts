@@ -76,13 +76,13 @@ export class SongComponent implements AfterViewChecked {
 
   exportSt() {
     this.exportService.getStFile(this.song).then(
-      zipData => this.storeService.generateBlobCreateRequest(zipData, this.song.title + '.st')
+      zipData => this.storeService.saveBlob(zipData, this.song.title + '.st')
     ).catch(err => console.log(err));
   }
 
   exportSng() {
     this.exportService.getSngFile(this.song).then(
-      zipData => this.storeService.generateBlobCreateRequest(zipData, this.song.title + '.sng')
+      zipData => this.storeService.saveBlob(zipData, this.song.title + '.sng')
     ).catch(err => console.log(err));
   }
 

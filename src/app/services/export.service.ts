@@ -50,7 +50,7 @@ export class ExportService {
       obj.songs.forEach(songId => {
         const song = this.dataService.getSong(songId);
         if (song) {
-          promises.push(Promise.resolve({path: song.title + '.sng', content: this.sngService.getSngFile(song)}));
+          promises.push(Promise.resolve({path: song.title.replace('/', '-') + '.sng', content: this.sngService.getSngFile(song)}));
         }
       });
 
@@ -76,12 +76,7 @@ export class ExportService {
 
       return zip
         .generateInternalStream({type: 'blob'})
-        .accumulate((err, content) => {
-          if (err) {
-            return;
-          }
-          return content;
-        });
+        .accumulate(process => {});
     });
   }
 }

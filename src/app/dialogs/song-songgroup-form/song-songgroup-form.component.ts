@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Song } from '../../models/song';
 import { DATABASES } from '../../models/databases';
@@ -10,8 +10,7 @@ import { DataService } from '../../services/data.service';
 import { TranslationService } from '../../services/translation.service';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
-import { Moment } from 'moment';
+import * as moment from 'moment';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -34,6 +33,7 @@ export class SongSonggroupFormComponent implements OnInit {
 
   songgroup: Songgroup = new Songgroup();
   songgroupDate: string;
+  initDate: moment.Moment;
   songgroupTime: string;
   songUUID: string;
 
@@ -142,6 +142,8 @@ export class SongSonggroupFormComponent implements OnInit {
 
       case DATABASES.songgroups:
         this.songgroup = new Songgroup(this.data.object);
+        this.initDate = moment(this.songgroup.date);
+        this.songgroupTime = this.songgroup.time;
         for (const song of this.songgroup.songs) {
           this.addSongField(
             this.songs.find((val, id, obj) => {

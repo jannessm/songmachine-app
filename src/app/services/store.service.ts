@@ -4,12 +4,11 @@ import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import * as jiff from 'jiff';
-import { dialog, app } from 'electron';
+import { remote } from 'electron';
 import { Song } from '../models/song';
 import { Songgroup } from '../models/songgroup';
 import { DATABASES } from '../models/databases';
 import { FILESYSTEM } from '../models/filesystem';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class StoreService {
@@ -143,12 +142,12 @@ export class StoreService {
   //     .dispatch<StopHttpServerRequest, CmResponse<HttpServerResponse>>(Methods.GET);
   // }
 
-  public generateBlobCreateRequest(blob: any, fileName: string, encoding?: string) {
+  public saveBlob(blob: any, fileName: string, encoding?: string) {
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        dialog.showSaveDialog(null, {
-          defaultPath: app.getPath('documents') + '/' + fileName,
+        remote.dialog.showSaveDialog(null, {
+          defaultPath: remote.app.getPath('documents') + '/' + fileName,
         }, file => {
           if (file) {
             fs.writeFileSync(file, reader.result, encoding || 'binary');
@@ -159,6 +158,7 @@ export class StoreService {
         });
       } catch (err) {
         // Error while creating file
+        console.log(err);
       }
     };
     reader.readAsBinaryString(blob);

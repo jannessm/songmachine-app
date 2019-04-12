@@ -76,8 +76,8 @@
                         matInput
                         [matDatepicker]="dp"
                         placeholder="{{ 'form.new.songgroup.date' | translate }}"
-                        (dateChange)="songgroupDate = $event.target.value"
-                        [value]="songgroupDate"
+                        (dateChange)="songgroupDate = $event.target.value.toISOString(true)"
+                        [value]="initDate"
                     >
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp></mat-datepicker>

@@ -96,17 +96,21 @@ export class SonggroupComponent implements OnInit, AfterViewChecked {
 
   exportSt() {
     this.exportService.getStFile(this.songgroup).then(
-      zipData => this.storeService.generateBlobCreateRequest(zipData, this.songgroup.name + '-st.zip')
+      zipData => this.storeService.saveBlob(zipData, this.songgroup.name + '-st.zip')
     ).catch(err => console.log(err));
   }
 
   exportSng() {
     this.exportService.getSngFile(this.songgroup).then(
-      zipData => this.storeService.generateBlobCreateRequest(zipData, this.songgroup.name + '-sng.zip')
+      zipData => this.storeService.saveBlob(zipData, this.songgroup.name + '-sng.zip')
     ).catch(err => console.log(err));
   }
 
   exportPptx() {
     this.exportService.getPptx(this.songgroup);
+  }
+
+  getTime() {
+    return this.songgroup.date.replace(/T\d\d:\d\d/, 'T' + this.songgroup.time);
   }
 }
