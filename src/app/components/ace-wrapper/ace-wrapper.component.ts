@@ -61,10 +61,7 @@ export class AceWrapperComponent implements OnChanges {
   }
 
   private transpose(transposeBy: number) {
-    const transposeMatch = /^((?:.|\n)*transpose:\s*)((?:\+|-)\d+)((?:.|\n)*)$/gi.exec(this.initText);
-    if (transposeMatch) {
-      this.initText = transposeMatch[1] + this.song.transposedBy + transposeMatch[3];
-    }
+    this.setTransposeInText();
     const res = this.keyFinder.getKeys(this.initText);
     const matches: RegExpExecArray[] = res.matches;
     const flat = res.flat;
@@ -84,6 +81,20 @@ export class AceWrapperComponent implements OnChanges {
     });
     this.emitSongChangeEvent();
     this.key = this.keyFinder.findKey(this.initText);
+  }
+
+  private setTransposeInText() {
+    let transposeMatch = /^((?:.|\n)*)(;\s*transpose:\s*)((?:\+|-)?\d+)((?:.|\n)*)$/gi.exec(this.initText);
+    if (transposeMatch && this.song.transposedBy === 0) {
+      this.initText = transposeMatch[1] + transposeMatch[4];
+    } else if (transposeMatch) {
+      this.initText = transposeMatch[1] + transposeMatch[2] + this.song.transposedBy + transposeMatch[4];
+    } else {
+      transposeMatch = /^((?:.|\n)*\[\s*title:.*)(\](?:.|\n)*)$/gi.exec(this.initText);
+      if (transposeMatch) {
+        this.initText = transposeMatch[1] + `; transpose: ${this.song.transposedBy}` + transposeMatch[2];
+      }
+    }
   }
 
   private getNewChord(chord, flat, transposeBy: number) {
