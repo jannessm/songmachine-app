@@ -12,6 +12,13 @@
     cursor: move;
     width: 45px;
 }
+.dragable {
+    padding: 12px;
+}
+.dragable:not(:last-child){
+    border-bottom: 1px solid grey;
+}
+
 .songselection-input{
     width: calc(100% - 70px);
     cursor: move;

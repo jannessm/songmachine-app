@@ -104,8 +104,9 @@
                 </mat-form-field>
                 <button mat-flat-button (click)="addSongField($event)" class="half_button">+</button>
                 <div cdkDropList (cdkDropListDropped)="drop($event)">
-                    <div *ngFor="let song of songgroupSongs; let i = index" cdkDrag>
-                        <span class="songselector-label"><label>{{ i+1 }}.</label><span>{{ song.title }}</span></span>
+                    <div class="dragable" *ngFor="let song of songgroupSongs; let i = index" cdkDrag>
+                        <span class="songselector-label"><label>{{ i+1 }}.</label></span>
+                        <span>{{ song.title }}</span>
                     </div>
                 </div>
             </form>
