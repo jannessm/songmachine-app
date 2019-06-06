@@ -8,8 +8,6 @@ import { Songgroup } from '../../models/songgroup';
 
 import { DataService } from '../../services/data.service';
 import { TranslationService } from '../../services/translation.service';
-import { startWith, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -21,12 +19,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class SongSonggroupFormComponent implements OnInit {
 
   songsForm: FormGroup;
-  songsArray: FormArray = new FormArray([]);
   type: DATABASES;
   id: string;
   songscounter: number[] = [1];
+  songgroupSongs: Song[] = [];
   songs: Song[] = [];
-  filteredSongs: Observable<Song[]>[] = [];
+  filteredSongs: Song[] = [];
+  songSelect: FormControl;
 
   song: Song = new Song();
   songBooksStr = '';
@@ -52,9 +51,6 @@ export class SongSonggroupFormComponent implements OnInit {
       this.type = DATABASES.songs;
     } else {
       this.type = DATABASES.songgroups;
-      this.songsForm = new FormGroup({
-        songsArray: this.songsArray
-      });
     }
     this.initValues();
   }
@@ -94,36 +90,20 @@ export class SongSonggroupFormComponent implements OnInit {
           this.songgroup.time = this.songgroupTime;
         }
 
-        for (const control of this.songsArray.controls) {
-          if (control.value.songSelect) {
-            this.songgroup.songs.push(control.value.songSelect.id);
-          }
-        }
+        // if (control.value.songSelect) {
+        //   this.songgroup.songs.push(control.value.songSelect.id);
+        // }
         this.dialogRef.close(this.songgroup);
         break;
     }
   }
 
-  getControls() {
-    return (<FormArray>this.songsForm.get('songsArray')).controls;
-  }
-
   addSongField(value?: Song) {
-    const control = new FormControl(value);
-
-    this.filteredSongs.push(control.valueChanges.pipe(
-      startWith(''),
-      map(song => this._filter(song))));
-
-    (<FormArray>this.songsForm.get('songsArray')).push(
-      new FormGroup({
-        songSelect: control
-      })
-    );
+    this.songgroupSongs.push(value);
   }
 
   removeSongField() {
-    this.songsArray.removeAt(this.songsArray.length - 1);
+    // this.songsArray.removeAt(this.songsArray.length - 1);
   }
 
   showSong(song?: Song) {
@@ -141,12 +121,17 @@ export class SongSonggroupFormComponent implements OnInit {
         break;
 
       case DATABASES.songgroups:
+        this.songSelect = new FormControl('');
+        this.songSelect.valueChanges.subscribe(value => {
+          this.filteredSongs = this._filter(value);
+        });
+        this.filteredSongs = this.songs.sort((a, b) => this._sortStrings(a.title, b.title));
         this.songgroup = new Songgroup(this.data.object);
         this.initDate = moment(this.songgroup.date);
         this.songgroupTime = this.songgroup.time;
         for (const song of this.songgroup.songs) {
           this.addSongField(
-            this.songs.find((val, id, obj) => {
+            this.songs.find(val => {
               return val.id === song;
             })
           );
@@ -160,8 +145,12 @@ export class SongSonggroupFormComponent implements OnInit {
   }
 
   private _filter(value: string): Song[] {
-    const filterValue = value.toLowerCase();
-    return this.songs.filter(option => option.title.toLowerCase().includes(filterValue));
+    if (typeof value === 'string') {
+      const filterValue = value.toLowerCase();
+      return this.songs.filter(option => option.title.toLowerCase().includes(filterValue));
+    } else {
+      return this.songs;
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {
