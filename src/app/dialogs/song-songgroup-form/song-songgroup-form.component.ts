@@ -96,13 +96,13 @@ export class SongSonggroupFormComponent implements OnInit {
     }
   }
 
-  addSongField(value?: Song) {
-    console.log(value.title);
+  addSong(value?: Song) {
+    value = value || this.songSelect.value;
     this.songgroupSongs.push(value);
   }
 
-  removeSongField() {
-    // this.songsArray.removeAt(this.songsArray.length - 1);
+  removeSong(id) {
+    this.songgroupSongs.splice(id, 1);
   }
 
   showSong(song?: Song) {
@@ -129,7 +129,7 @@ export class SongSonggroupFormComponent implements OnInit {
         this.initDate = moment(this.songgroup.date);
         this.songgroupTime = this.songgroup.time;
         for (const song of this.songgroup.songs) {
-          this.addSongField(
+          this.addSong(
             this.songs.find(val => {
               return val.id === song;
             })

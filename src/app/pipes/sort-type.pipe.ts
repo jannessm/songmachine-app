@@ -16,7 +16,7 @@ export class SortTypePipe implements PipeTransform {
         translation = this.translationService.i18n('sortType.date');
         break;
       case SortType.LEXICAL:
-        translation = this.translationService.i18n('sortType.date');
+        translation = this.translationService.i18n('sortType.lexical');
         break;
       default:
         translation = <string>value;

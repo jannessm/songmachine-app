@@ -102,11 +102,12 @@
                         <mat-option *ngFor="let s of filteredSongs" [value]="s">{{ s.title }}</mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button mat-flat-button (click)="addSongField($event)" class="half_button">+</button>
+                <button mat-flat-button (click)="addSong()" class="half_button">+</button>
                 <div cdkDropList (cdkDropListDropped)="drop($event)">
                     <div class="dragable" *ngFor="let song of songgroupSongs; let i = index" cdkDrag>
                         <span class="songselector-label"><label>{{ i+1 }}.</label></span>
                         <span>{{ song.title }}</span>
+                        <button mat-button (click)="removeSong(i)"><i class="icon icon-delete"></i></button>
                     </div>
                 </div>
             </form>
