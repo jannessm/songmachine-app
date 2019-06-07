@@ -13,10 +13,10 @@
     width: 45px;
 }
 .dragable {
-    padding: 12px;
+    padding: 18px;
 }
 .dragable:not(:last-child){
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid rgba(0,0,0,.42);
 }
 
 .songselection-input{

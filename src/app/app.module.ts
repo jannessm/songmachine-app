@@ -71,6 +71,7 @@ import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
 import localeEs from '@angular/common/locales/es';
 import localeIt from '@angular/common/locales/it';
+import { SortTypePipe } from './pipes/sort-type.pipe';
 
 export function initConfigs(configService: ConfigService) {
   return () => configService.init();
@@ -94,6 +95,7 @@ registerLocaleData(localeIt, 'it');
     PerformviewComponent,
     SafePipe,
     TranslatePipe,
+    SortTypePipe,
     MergeDialogComponent,
     QRDialogComponent,
     AlertDialogComponent,

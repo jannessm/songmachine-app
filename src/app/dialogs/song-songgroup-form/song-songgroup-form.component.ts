@@ -90,15 +90,14 @@ export class SongSonggroupFormComponent implements OnInit {
           this.songgroup.time = this.songgroupTime;
         }
 
-        // if (control.value.songSelect) {
-        //   this.songgroup.songs.push(control.value.songSelect.id);
-        // }
+        this.songgroupSongs.forEach(song => this.songgroup.songs.push(song.id));
         this.dialogRef.close(this.songgroup);
         break;
     }
   }
 
   addSongField(value?: Song) {
+    console.log(value.title);
     this.songgroupSongs.push(value);
   }
 
@@ -155,7 +154,7 @@ export class SongSonggroupFormComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(
-      (<FormArray>this.songsForm.get('songsArray')).controls,
+      this.songgroupSongs,
       event.previousIndex,
       event.currentIndex
     );

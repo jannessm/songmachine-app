@@ -7,11 +7,13 @@ import { Songgroup } from '../../models/songgroup';
 import { DataService } from '../../services/data.service';
 import { MatDialog, MatTableDataSource } from '@angular/material';
 import { SongSonggroupFormComponent } from '../../dialogs/song-songgroup-form/song-songgroup-form.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslationService } from '../../services/translation.service';
 import { DOCUMENT } from '@angular/common';
 import { StoreService } from '../../services/store.service';
+import { SortFunctions, SortDirection, SortType, SortFunction } from '../../models/sort';
+import moment = require('moment');
 
 @Component({
   selector: 'app-browser',
@@ -25,6 +27,9 @@ export class BrowserComponent implements OnInit, OnDestroy {
   searchText: string;
   searchControl = new FormControl('');
   searchSubscription: Subscription;
+
+  sortFunctions = SortFunctions;
+  sortDirection = SortDirection;
 
   songView: object = {
     headline: this.translationService.i18n('browser.headline.songs'),
@@ -41,6 +46,10 @@ export class BrowserComponent implements OnInit, OnDestroy {
   filteredElems: Song[] | Songgroup[] = [];
   dataSource: MatTableDataSource<Song | Songgroup>;
 
+  sortForm: FormGroup;
+  currentSortFunc: SortFunction = SortFunctions[1];
+  currentSortDirection = SortDirection.DESC;
+
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
@@ -48,6 +57,7 @@ export class BrowserComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private translationService: TranslationService,
+    private fb: FormBuilder,
     @Inject(DOCUMENT) private doc: Document
   ) {}
 
@@ -79,6 +89,16 @@ export class BrowserComponent implements OnInit, OnDestroy {
         case DATABASES.songgroups:
           Object.assign(this, this.songgroupView);
           this.storeService.songgroupsChanged.subscribe(() => this.updateElems());
+          this.sortForm = this.fb.group({
+            type: [this.currentSortFunc],
+            direction: [this.currentSortDirection]
+          });
+
+          this.sortForm.valueChanges.subscribe(values => {
+            this.currentSortFunc = values.type;
+            this.currentSortDirection = values.direction;
+            this.updateElems();
+          });
           break;
       }
 
@@ -135,12 +155,14 @@ export class BrowserComponent implements OnInit, OnDestroy {
   updateElems() {
     if (this.type === DATABASES.songs) {
       let allDocs = this.dataService.getAll(DATABASES.songs);
-      allDocs = (<Song[]>allDocs).map(e => new Song(e)).sort(this.sort);
+      allDocs = (<Song[]>allDocs).map(e => new Song(e))
+        .sort(this.sort.bind(this));
       this.songs = allDocs;
       this.filteredElems = this.songs;
     } else {
       let allDocs = this.dataService.getAll(DATABASES.songgroups);
-      allDocs = (<Songgroup[]>allDocs).map(e => new Songgroup(e)).sort(this.sort);
+      allDocs = (<Songgroup[]>allDocs).map(e => new Songgroup(e))
+        .sort(this.sort.bind(this));
       this.songgroups = allDocs;
       this.filteredElems = this.songgroups;
     }
@@ -156,12 +178,10 @@ export class BrowserComponent implements OnInit, OnDestroy {
         return 0;
       }
     } else if (a && b && a instanceof Songgroup && b instanceof Songgroup && !!a.name && !!b.name) {
-      if (a.name.toLowerCase() < b.name.toLowerCase()) {
-        return -1;
-      } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
-        return 1;
+      if (this.currentSortFunc.name === SortType.DATE) {
+        return this.currentSortFunc.func(moment(a.date), moment(b.date)) * this.currentSortDirection;
       } else {
-        return 0;
+        return this.currentSortFunc.func(a.name.toLowerCase(), b.name.toLowerCase()) * this.currentSortDirection;
       }
     }
     return 0;
