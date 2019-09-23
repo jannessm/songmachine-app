@@ -21,6 +21,7 @@ export class AceWrapperComponent implements OnChanges {
 
   songHasChanged = true;
   initText = '';
+  public key = '';
 
   @Input() song: Song;
   @Output() songChange = new EventEmitter<Song>();
@@ -34,8 +35,10 @@ export class AceWrapperComponent implements OnChanges {
     if (this.song && !this.song.text) {
       this.song.text = this.parserService.songToString(this.song);
       this.initText = this.song.text;
+      this.key = this.keyFinder.findKey(this.initText);
     } else if (this.song && this.initText !== this.song.text) {
       this.initText = this.song.text;
+      this.key = this.keyFinder.findKey(this.initText);
     }
   }
 
@@ -49,37 +52,52 @@ export class AceWrapperComponent implements OnChanges {
 
   public transposeUp() {
     this.song.transposedBy = (this.song.transposedBy + 1) % 12;
-    this.song.transposedBy = 1;
-    this.transpose();
+    this.transpose(1);
   }
 
   public transposeDown() {
     this.song.transposedBy = (this.song.transposedBy - 1) % 12;
-    this.song.transposedBy = -1;
-    this.transpose();
+    this.transpose(-1);
   }
 
-  private transpose() {
-    const res = this.keyFinder.getKeys(this.song.text);
+  private transpose(transposeBy: number) {
+    this.setTransposeInText();
+    const res = this.keyFinder.getKeys(this.initText);
     const matches: RegExpExecArray[] = res.matches;
     const flat = res.flat;
 
     matches.reverse().forEach(m => {
       // if there is no extra basenote
       if (!m[2]) {
-        this.song.text = this.song.text.substr(0, m.index) +
-                        '[' + this.getNewChord(m[1], flat) + ']' +
-                        this.song.text.substr(m.index + m[0].length);
+        this.initText = this.initText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat, transposeBy) + ']' +
+                        this.initText.substr(m.index + m[0].length);
       } else {
-        this.song.text = this.song.text.substr(0, m.index) +
-                        '[' + this.getNewChord(m[1], flat) + '/' +
-                        this.getNewChord(m[2], flat) + ']' +
-                        this.song.text.substr(m.index + m[0].length);
+        this.initText = this.initText.substr(0, m.index) +
+                        '[' + this.getNewChord(m[1], flat, transposeBy) + '/' +
+                        this.getNewChord(m[2], flat, transposeBy) + ']' +
+                        this.initText.substr(m.index + m[0].length);
       }
     });
+    this.emitSongChangeEvent();
+    this.key = this.keyFinder.findKey(this.initText);
   }
 
-  private getNewChord(chord, flat) {
+  private setTransposeInText() {
+    let transposeMatch = /^((?:.|\n)*)(;\s*transpose:\s*)((?:\+|-)?\d+)((?:.|\n)*)$/gi.exec(this.initText);
+    if (transposeMatch && this.song.transposedBy === 0) {
+      this.initText = transposeMatch[1] + transposeMatch[4];
+    } else if (transposeMatch) {
+      this.initText = transposeMatch[1] + transposeMatch[2] + this.song.transposedBy + transposeMatch[4];
+    } else {
+      transposeMatch = /^((?:.|\n)*\[\s*title:.*)(\](?:.|\n)*)$/gi.exec(this.initText);
+      if (transposeMatch) {
+        this.initText = transposeMatch[1] + `; transpose: ${this.song.transposedBy}` + transposeMatch[2];
+      }
+    }
+  }
+
+  private getNewChord(chord, flat, transposeBy: number) {
     let mainKey = chord[0].toLowerCase();
     let firstTwo = false;
     const chordStr = chord[1];
@@ -97,7 +115,7 @@ export class AceWrapperComponent implements OnChanges {
 
     if (id > -1) {
       let newMainKey;
-      const newId = (id + this.song.transposedBy + 12) % 12;
+      const newId = (id + transposeBy + 12) % 12;
       if (flat) {
         newMainKey = MUSICAL_KEYS.flats[newId];
       } else {

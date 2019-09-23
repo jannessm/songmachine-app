@@ -6,6 +6,8 @@
     <button mat-icon-button (click)="transposeDown()"><i class="icon icon-minus"></i></button>
     <span class="transpose-steps">{{ song.transposedBy }}</span>
     <button mat-icon-button (click)="transposeUp()"><i class="icon icon-plus"></i></button>
+    <span>{{ 'editor.key' | translate }}</span>
+    <span>{{ aceWrapper.key }}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 

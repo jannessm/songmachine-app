@@ -7,11 +7,9 @@ app-ace-wrapper, app-preview{
   vertical-align: top;
 }
 
-mat-toolbar-row{
-  span{
-    font-size: 14px;
-    padding: 0 16px;
-  }
+mat-toolbar-row span{
+  font-size: 14px;
+  padding: 0 16px;
 }
 mat-icon-button{
   cursor: pointer;

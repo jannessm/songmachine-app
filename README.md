@@ -1,27 +1,36 @@
-# Songsheet
+# Songmachine v1.1.0
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+This is an application to manage songsheets for your band into songs and events including a performmode.
+Share the data via Dropbox, Google Drive and so on.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+These features are currently supported. But a bunch of ideas are waiting to be implemented.
 
-## Code scaffolding
+#### Editor
+* create songs in a ChordPro like format
+* annotate each song
+* highlight important parts
+* transpose
+* recognize key
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Performmode
+* use Enter and Space to scroll
+* switch between songs in an event
+* see where it will scroll
 
-## Build
+#### Exports
+* own songsheet format
+* powerpoint
+* songbeamer
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+## Future
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+* project performmode by a local hotspot to all possible devices as smartphones and tablets
+* group events to have subevents
+* export to pdf
+* export to chordpro
+* import chordpro
+* import from ccli
+* import from ultimate guitar
+* be able to open a lot of songs at the same time in the editor

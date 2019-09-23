@@ -92,7 +92,7 @@
       </trans-unit>
       <trans-unit id="alert.closeWithoutSaving" datatype="html">
         <source></source>
-        <target>Todos modificaciónes van deshacer. Quieres guadarlo?</target>
+        <target>Todas las modificaciónes se van a deshacer. ¿Desea guadarlas?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/alert/alert-dialog.component.html</context>
           <context context-type="linenumber">2</context>
@@ -140,7 +140,7 @@
       </trans-unit>
       <trans-unit id="help.editor.introduction" datatype="html">
         <source></source>
-        <target>Songmachine oferte un formato especial con que se admistra canciones muy facíl. En esté página encontra una visión general de todas funciones soportido.</target>
+        <target>Songmachine ofrece un formato especial para administrar canciones más fácilmente. En esta página puede encontrar una visión general de todas las funciones.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">10</context>
@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="help.editor.meta.description" datatype="html">
         <source></source>
-        <target>En Songmachine puedes añadir informaciones generales a tus canciones. Los son título, ártista, bpm y referencias a cancioneros y las numeros. Todas informaciones ayuden buscar canciones en la visión general de caciones. Se los escriben entre chorchetes uno detrás de otro y seperado con puntos y comas. Un ejemplo:</target>
+        <target>En Songmachine puede añadir informaciones generales a sus canciones. Estas son título, artista, bpm y referencias a libros de canciones y sus números. Estas informaciones ayudan a buscar canciones en la vista general. Los campos se escriben entre chorchetes, uno detrás de otro y separados con punto y coma. Un ejemplo:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">15</context>
@@ -180,7 +180,7 @@
       </trans-unit>
       <trans-unit id="help.editor.artist.description" datatype="html">
         <source></source>
-        <target>Indicar la ártista de una canción.</target>
+        <target>Indicar el artista de la canción.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">24</context>
@@ -196,7 +196,7 @@
       </trans-unit>
       <trans-unit id="help.editor.books.description" datatype="html">
         <source></source>
-        <target>Con books puedes referenciar cancioneros. Todas tienes que seperar con comas.</target>
+        <target>Con books puedes referenciar libros de canciones. Todas las referencias tienen que estar separadas con coma.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">32</context>
@@ -212,7 +212,7 @@
       </trans-unit>
       <trans-unit id="help.editor.blocks.description" datatype="html">
         <source></source>
-        <target>Cuando una canción tiene muchas partes y unas partes se repeten, se merece la pena de organizar las en bloques. Un bloque empieza con:</target>
+        <target>Cuando una canción tiene muchas partes y algunas partes se repiten, merece la pena organizarlas en bloques. Un bloque empieza con:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">37</context>
@@ -220,8 +220,8 @@
       </trans-unit>
       <trans-unit id="help.editor.line.description" datatype="html">
         <source></source>
-        <target>Toda línea inclue acordes y puedes completar con notas. Acordes se escriben entre corchetes. Con esté, se asegure que todas acordes estan siempre arriba del carácter siguente.
-        Notas añades con |. Todos | carácteres añaden una columna, en que puedes escribir notas para persones diferentes. Para agregar notas diferentes por repeticiones diferentes, puedes separar toda repectición con un punto y coma. En el ejemplo sigiuente va aparecer 'Break' en el tercero uso del bloque en la primera columna de notas. Pero en la segunda cada vez se escribe 'Mia 2. voz'.</target>
+        <target>Una línea puede incluir acordes y/o comentarios. Los acordes se escriben entre corchetes. Con esto, se asegura de que todos los acordes están siempre encima del carácter siguente.
+        Los comentarios se añaden con |. Todos los | carácteres añaden una columna, en la que se pueden escribir notas para personas diferentes. Para agregar comentarios diferentes a distintas repeticiones, puede separar cada repetición con un punto y coma. En el ejemplo sigiuente aparecería 'Break' en el tercer uso del bloque (ver orden) en la primera columna de los comentarios. Pero en la segunda se escribe 'Mia 2. voz' todas las veces.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">40</context>
@@ -253,7 +253,7 @@
       </trans-unit>
       <trans-unit id="help.editor.order.description" datatype="html">
         <source></source>
-        <target>Para fijar un orden de los bloques, puede escribirlo debajo de las informaciones generales con el palabra clave order. Es importa de escribir todos bloques como en el elemto. Todos bloques se sepera con un coma:</target>
+        <target>Para fijar un orden de los bloques, puede escribirlo debajo de las informaciones generales con la palabra clave order. Es importante escribir todos los bloques como en el elemento. Todos los bloques se separan con coma:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">44</context>
@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="help.editor.format.description" datatype="html">
         <source></source>
-        <target>Puedes formatear el text con los elementos siguientes:</target>
+        <target>Puede formatear el texto con los elementos siguientes:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">48</context>
@@ -309,7 +309,7 @@
       </trans-unit>
       <trans-unit id="help.editor.blue.description" datatype="html">
         <source></source>
-        <target>texto azúl</target>
+        <target>texto azul</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">68</context>
@@ -317,7 +317,7 @@
       </trans-unit>
       <trans-unit id="help.performMode.title" datatype="html">
         <source></source>
-        <target>Modo de actuación</target>
+        <target>Modo actuación</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">75</context>
@@ -325,7 +325,7 @@
       </trans-unit>
       <trans-unit id="help.performMode.description" datatype="html">
         <source></source>
-        <target>Esté modo puedes usar para actuaciones. Con la ayuda de la tecla Return y el espaciador, puedes navegar en está vista. Se comenza un evento en esté modo, al término de una canción se navega de la siguiente.</target>
+        <target>Este modo se puede usar para actuaciones. Con la ayuda de la tecla intro y el espaciador, puede navegar en esta vista. Al abrir un evento en este modo, todas las canciones se abren y al término de una canción se navega a la siguiente.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">78</context>
@@ -341,8 +341,8 @@
       </trans-unit>
       <trans-unit id="help.mergeDialog.description" datatype="html">
         <source></source>
-        <target>Cuando usas Songmachine con Dropbox, Google Drive o parecidos como un lugar de guardar, en casos raros una persona ha podido modificar el mismo cancion como tú.
-        En esté caso cuando puedes guardar tús modificaciones, un diálogo abre dónde puedes reunirlas con las en el Dropbox. Puedes usar solo las modificaciones de una version o crear una version nueva en el medio de las otras versiones.</target>
+        <target>Cuando usa Songmachine con Dropbox, Google Drive o parecidos para guardar sus documentos, a veces dos personas pueden modificar la misma canción a la vez.
+        En este caso cuando una persona intenta guardar sus modificaciones, un diálogo se abre para compararlas. Puede usar solo las modificaciones de una version o crear una version nueva con una mezcla.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dialogs/help/help-dialog.component.html</context>
           <context context-type="linenumber">86</context>
@@ -582,7 +582,7 @@
       </trans-unit>
       <trans-unit id="browser.songgroup.actions.performmode" datatype="html">
         <source></source>
-        <target>Modo de actuación</target>
+        <target>Modo actuación</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/songgroup/songgroup.component.html</context>
           <context context-type="linenumber">40</context>
@@ -614,7 +614,7 @@
       </trans-unit>
       <trans-unit id="editor.performMode" datatype="html">
         <source></source>
-        <target>Modo de actuación</target>
+        <target>Modo actuación</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/editor/editor.component.html</context>
           <context context-type="linenumber">4</context>
@@ -638,7 +638,7 @@
       </trans-unit>
       <trans-unit id="settings.path" datatype="html">
         <source></source>
-        <target>Lugar de guardar</target>
+        <target>Guardar datos en</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/views/settings/settings.component.html</context>
           <context context-type="linenumber">3</context>
@@ -692,6 +692,62 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.component.ts</context>
           <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editor.key" datatype="html">
+        <source>editor.key</source>
+        <target>Tonalidad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortType" datatype="html">
+        <source>browser.sortType</source>
+        <target>Ordenar por</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortDirection" datatype="html">
+        <source>browser.sortDirection</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortDirection.asc" datatype="html">
+        <source>browser.sortDirection.asc</source>
+        <target>ascendente</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortDirection.desc" datatype="html">
+        <source>browser.sortDirection.desc</source>
+        <target>descendente</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sortType.date" datatype="html">
+        <source>sortType.date</source>
+        <target>fecha</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pipes/sort-type.pipe.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sortType.lexical" datatype="html">
+        <source>sortType.lexical</source>
+        <target>alfabeto</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pipes/sort-type.pipe.ts</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
     </body>

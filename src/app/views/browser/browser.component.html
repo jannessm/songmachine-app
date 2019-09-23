@@ -13,12 +13,29 @@
         </button>
     </mat-form-field>
     <div id="songs">
-        <!-- <mat-toolbar>
+        <mat-toolbar *ngSwitchCase="'songgroups'" [formGroup]="sortForm">
             <mat-toolbar-row>
-                <button mat-button>{{ 'browser.new' | translate }}</button>
-                <button mat-button>{{ 'browser.import' | translate }}</button>
+                <span class="toolbar-entry">{{ 'browser.sortType' | translate }}</span>
+                <mat-form-field class="toolbar-entry">
+                    <mat-select formControlName="type">
+                        <mat-option *ngFor="let sortFunc of sortFunctions" [value]="sortFunc">
+                            {{ sortFunc.name | sortTypeTranslation }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- <span class="toolbar-entry">{{ 'browser.sortDirection' | translate }}</span> -->
+                <mat-form-field class="toolbar-entry">
+                    <mat-select formControlName="direction">
+                        <mat-option [value]="sortDirection.ASC">
+                            {{ 'browser.sortDirection.asc' | translate }}
+                        </mat-option>
+                        <mat-option [value]="sortDirection.DESC">
+                            {{ 'browser.sortDirection.desc' | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </mat-toolbar-row>
-        </mat-toolbar> -->
+        </mat-toolbar>
 
         <mat-grid-list [cols]="gridCols" rowHeight="260px" gutterSize="20px" *ngSwitchCase="'songs'" class="cards">
             <mat-grid-tile rowspan="1" colspan="1" *ngFor="let song of filteredElems" >

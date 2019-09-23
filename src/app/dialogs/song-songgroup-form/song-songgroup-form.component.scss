@@ -12,11 +12,16 @@
     cursor: move;
     width: 45px;
 }
-.songselection-input{
-    width: calc(100% - 50px);
+.dragable {
+    padding: 18px;
     cursor: move;
 }
-.songbox {
+.dragable:not(:last-child){
+    border-bottom: 1px solid rgba(0,0,0,.42);
+}
+
+.songselection-input{
+    width: calc(100% - 70px);
     cursor: move;
 }
 mat-form-field{

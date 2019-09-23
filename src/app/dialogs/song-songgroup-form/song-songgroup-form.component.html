@@ -76,8 +76,8 @@
                         matInput
                         [matDatepicker]="dp"
                         placeholder="{{ 'form.new.songgroup.date' | translate }}"
-                        (dateChange)="songgroupDate = $event.target.value"
-                        [value]="songgroupDate"
+                        (dateChange)="songgroupDate = $event.target.value.toISOString(true)"
+                        [value]="initDate"
                     >
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp></mat-datepicker>
@@ -91,32 +91,30 @@
                         [(ngModel)]="songgroupTime"
                     >
                 </mat-form-field>
-                <form [formGroup]="songsForm">
-                    <div formArrayName="songsArray" cdkDropList (cdkDropListDropped)="drop($event)">
-                        <div *ngFor="let scontrol of getControls(); let i = index" cdkDrag>
-                            <span class="songselector-label"><label for="song{{ i+1 }}">{{ i+1 }}.</label></span>
-                            <!-- if songs selectable-->
-                            <mat-form-field class="songselection-input" [formGroupName]="i" floatLabel="never">
-                                <input matInput type="text"
-                                    formControlName="songSelect"
-                                    [value]="songUUID"
-                                    [matAutocomplete]="songselection"
-                                    placeholder="{{ 'form.new.songgroup.selectASong' | translate }}"
-                                    [attr.disabled]="songs.length === 0">
-                                <mat-autocomplete #songselection="matAutocomplete" [displayWith]="showSong">
-                                    <mat-option *ngFor="let s of filteredSongs[i] | async" [value]="s">{{ s.title }}</mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </div>
-                        <button mat-flat-button (click)="addSongField($event)" class="half_button">+</button>
-                        <button mat-flat-button (click)="removeSongField($event)" class="half_button">-</button>
+                <mat-form-field class="songselection-input" floatLabel="never">
+                    <input matInput type="text"
+                        [formControl]="songSelect"
+                        [value]="songUUID"
+                        [matAutocomplete]="songselection"
+                        placeholder="{{ 'form.new.songgroup.selectASong' | translate }}"
+                        [attr.disabled]="songs.length === 0">
+                    <mat-autocomplete #songselection="matAutocomplete" [displayWith]="showSong">
+                        <mat-option *ngFor="let s of filteredSongs" [value]="s">{{ s.title }}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                <button mat-flat-button (click)="addSong()" class="half_button">+</button>
+                <div cdkDropList (cdkDropListDropped)="drop($event)">
+                    <div class="dragable" *ngFor="let song of songgroupSongs; let i = index" cdkDrag>
+                        <span class="songselector-label"><label>{{ i+1 }}.</label></span>
+                        <span>{{ song.title }}</span>
+                        <button mat-button (click)="removeSong(i)"><i class="icon icon-delete"></i></button>
                     </div>
-                </form>
+                </div>
             </form>
         </span>
     </mat-dialog-content>
     <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">{{ 'form.new.cancel' | translate }}</button>
-        <button mat-button (click)="onSave()" cdkFocusInitial>{{ 'form.new.save' | translate }}</button>
+        <button mat-button (click)="onSave()" cdkFocusInitial color="primary">{{ 'form.new.save' | translate }}</button>
     </div>
 </span>
