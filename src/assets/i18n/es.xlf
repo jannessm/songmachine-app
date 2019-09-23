@@ -694,6 +694,62 @@
           <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="editor.key" datatype="html">
+        <source>editor.key</source>
+        <target>Tonalidad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/editor/editor.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortType" datatype="html">
+        <source>browser.sortType</source>
+        <target>Ordenar por</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortDirection" datatype="html">
+        <source>browser.sortDirection</source>
+        <target></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortDirection.asc" datatype="html">
+        <source>browser.sortDirection.asc</source>
+        <target>ascendente</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browser.sortDirection.desc" datatype="html">
+        <source>browser.sortDirection.desc</source>
+        <target>descendente</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/views/browser/browser.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sortType.date" datatype="html">
+        <source>sortType.date</source>
+        <target>fecha</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pipes/sort-type.pipe.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sortType.lexical" datatype="html">
+        <source>sortType.lexical</source>
+        <target>alfabeto</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pipes/sort-type.pipe.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

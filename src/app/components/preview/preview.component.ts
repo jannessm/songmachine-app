@@ -40,14 +40,17 @@ export class PreviewComponent implements OnInit, AfterViewInit, OnChanges {
   @HostListener('window:keypress', ['$event', '$event.keyCode'])
   scroll(e, code) {
     if (this.performMode && this.scrollIsActive) {
+      console.log(code);
       e.preventDefault();
       switch (code) {
         case 13:
+        case 34:
         case 39:
         case 40:
           this.scrollDown();
           break;
         case 32:
+        case 33:
         case 37:
         case 38:
           this.scrollUp();
