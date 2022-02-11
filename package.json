@@ -101,7 +101,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "acorn": "^6.1.1",
-    "ajv": "^6.10.0",
+    "ajv": "^6.12.3",
     "assert": "^1.4.1",
     "codelyzer": "~4.5.0",
     "electron": "^4.0.0",
